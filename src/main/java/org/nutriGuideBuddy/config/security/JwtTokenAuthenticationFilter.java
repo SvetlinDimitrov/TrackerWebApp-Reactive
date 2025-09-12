@@ -37,8 +37,11 @@ public class JwtTokenAuthenticationFilter implements WebFilter {
     excludedPaths.put("/api/user/reset-password", HttpMethod.PATCH);
     excludedPaths.put("/api/verify", null);
 
-    if (excludedPaths.entrySet().stream().anyMatch(entry ->
-        path.startsWith(entry.getKey()) && (entry.getValue() == null || method == entry.getValue()))) {
+    if (excludedPaths.entrySet().stream()
+        .anyMatch(
+            entry ->
+                path.startsWith(entry.getKey())
+                    && (entry.getValue() == null || method == entry.getValue()))) {
       return chain.filter(exchange);
     }
 
@@ -46,9 +49,12 @@ public class JwtTokenAuthenticationFilter implements WebFilter {
     if (StringUtils.hasText(token) && this.tokenProvider.validateToken(token)) {
       return Mono.fromCallable(() -> this.tokenProvider.getAuthentication(token))
           .subscribeOn(Schedulers.boundedElastic())
-          .flatMap(authentication -> chain.filter(exchange)
-              .contextWrite(ReactiveSecurityContextHolder.withAuthentication(authentication))
-          );
+          .flatMap(
+              authentication ->
+                  chain
+                      .filter(exchange)
+                      .contextWrite(
+                          ReactiveSecurityContextHolder.withAuthentication(authentication)));
     } else {
       exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
       return exchange.getResponse().setComplete();
@@ -62,5 +68,4 @@ public class JwtTokenAuthenticationFilter implements WebFilter {
     }
     return null;
   }
-
 }

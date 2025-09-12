@@ -10,5 +10,4 @@ public enum AllowedCalorieUnits {
   AllowedCalorieUnits(String symbol) {
     this.symbol = symbol;
   }
-
 }

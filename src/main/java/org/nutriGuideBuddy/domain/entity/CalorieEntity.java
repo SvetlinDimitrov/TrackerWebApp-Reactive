@@ -12,19 +12,22 @@ import java.util.UUID;
 @Data
 public class CalorieEntity {
 
-  @Id
-  private String id;
+  @Id private String id;
+
   @Column("amount")
   private BigDecimal amount;
+
   @Column("unit")
   private String unit;
+
   @Column("meal_id")
   private String mealId;
+
   @Column("food_id")
   private String foodId;
+
   @Column("user_id")
   private String userId;
-
 
   public CalorieEntity() {
     this.id = UUID.randomUUID().toString();

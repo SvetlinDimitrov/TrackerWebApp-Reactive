@@ -25,26 +25,25 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * Naming convention follows the Given-When-Then structure, which is commonly used in behavior-driven development (BDD) to make tests more descriptive and easier to understand.
- **/
+ * Naming convention follows the Given-When-Then structure, which is commonly used in
+ * behavior-driven development (BDD) to make tests more descriptive and easier to understand.
+ */
 @SpringBootTest
 @AutoConfigureWebTestClient
 @ActiveProfiles("secret")
 @Testcontainers
 class UserControllerIntegrationTest {
 
-  @Autowired
-  private WebTestClient webTestClient;
-  @Autowired
-  private UserRepository userRepository;
-  @Autowired
-  private JWTUtilEmailValidation jwtUtilEmailValidation;
+  @Autowired private WebTestClient webTestClient;
+  @Autowired private UserRepository userRepository;
+  @Autowired private JWTUtilEmailValidation jwtUtilEmailValidation;
 
   @Container
-  public static GenericContainer<?> mysqlContainer = new GenericContainer<>("mysql:latest")
-      .withExposedPorts(3306)
-      .withEnv("MYSQL_ROOT_PASSWORD", "12345")
-      .withEnv("MYSQL_DATABASE", "reactiveDB");
+  public static GenericContainer<?> mysqlContainer =
+      new GenericContainer<>("mysql:latest")
+          .withExposedPorts(3306)
+          .withEnv("MYSQL_ROOT_PASSWORD", "12345")
+          .withEnv("MYSQL_DATABASE", "reactiveDB");
 
   @BeforeAll
   static void beforeAll() {
@@ -57,31 +56,48 @@ class UserControllerIntegrationTest {
   }
 
   private Mono<Void> cleanupDatabase() {
-    return userRepository.findAllUsers()
+    return userRepository
+        .findAllUsers()
         .flatMap(user -> userRepository.deleteUserById(user.getId()))
         .then();
   }
 
   @DynamicPropertySource
   static void setDatasourceProperties(DynamicPropertyRegistry registry) {
-    registry.add("spring.r2dbc.url", () -> "r2dbc:mysql://" + mysqlContainer.getHost() + ":" + mysqlContainer.getFirstMappedPort() + "/reactiveDB");
-    registry.add("spring.liquibase.url", () -> "jdbc:mysql://" + mysqlContainer.getHost() + ":" + mysqlContainer.getFirstMappedPort() + "/reactiveDB");
+    registry.add(
+        "spring.r2dbc.url",
+        () ->
+            "r2dbc:mysql://"
+                + mysqlContainer.getHost()
+                + ":"
+                + mysqlContainer.getFirstMappedPort()
+                + "/reactiveDB");
+    registry.add(
+        "spring.liquibase.url",
+        () ->
+            "jdbc:mysql://"
+                + mysqlContainer.getHost()
+                + ":"
+                + mysqlContainer.getFirstMappedPort()
+                + "/reactiveDB");
   }
 
   @Test
   void givenValidUserData_whenTestingCreateUser_thenUserIsSuccessfullyCreated() {
 
-    UserCreate newUser = createUser(
-        Credentials.VALID_USERNAME.getValue(),
-        Credentials.VALID_EMAIL.getValue(),
-        Credentials.VALID_PASSWORD.getValue()
-    );
+    UserCreate newUser =
+        createUser(
+            Credentials.VALID_USERNAME.getValue(),
+            Credentials.VALID_EMAIL.getValue(),
+            Credentials.VALID_PASSWORD.getValue());
 
-    webTestClient.post()
+    webTestClient
+        .post()
         .uri("/api/user")
         .bodyValue(newUser)
         .exchange()
-        .expectStatus().isCreated()
+        .expectStatus()
+        .isCreated()
         .expectBody(JwtResponse.class)
         .value(user -> assertNotNull(user.userView().user().id()))
         .value(user -> assertEquals(newUser.username(), user.userView().user().username()))
@@ -94,22 +110,24 @@ class UserControllerIntegrationTest {
   @Test
   void givenInvalidUsername_whenTestingCreateUser_thenStatusBadRequest() {
 
-    List<String> INVALID_USERNAMES = List.of(
-        "",
-        "        ",
-        "Antidisestablishmentarianism's beauty may never be fully comprehended by the uninitiated, but those who delve deep into its labyrinthine depths will find themselves ensnared by its seductive allure, forever lost in a kaleidoscope of convoluted concepts and intricate ideologies that dance upon the precipice of comprehension."
-    );
+    List<String> INVALID_USERNAMES =
+        List.of(
+            "",
+            "        ",
+            "Antidisestablishmentarianism's beauty may never be fully comprehended by the uninitiated, but those who delve deep into its labyrinthine depths will find themselves ensnared by its seductive allure, forever lost in a kaleidoscope of convoluted concepts and intricate ideologies that dance upon the precipice of comprehension.");
 
     for (String username : INVALID_USERNAMES) {
-      webTestClient.post()
+      webTestClient
+          .post()
           .uri("/api/user")
-          .bodyValue(createUser(
-              username,
-              Credentials.VALID_EMAIL.getValue(),
-              Credentials.VALID_PASSWORD.getValue()
-          ))
+          .bodyValue(
+              createUser(
+                  username,
+                  Credentials.VALID_EMAIL.getValue(),
+                  Credentials.VALID_PASSWORD.getValue()))
           .exchange()
-          .expectStatus().isBadRequest();
+          .expectStatus()
+          .isBadRequest();
     }
   }
 
@@ -118,11 +136,13 @@ class UserControllerIntegrationTest {
 
     UserLogin asd = new UserLogin("asd@abv.bg", "asd");
 
-    webTestClient.post()
+    webTestClient
+        .post()
         .uri("/api/user/login")
         .bodyValue(asd)
         .exchange()
-        .expectStatus().isBadRequest();
+        .expectStatus()
+        .isBadRequest();
   }
 
   @Test
@@ -130,263 +150,301 @@ class UserControllerIntegrationTest {
 
     setUpUserAndReturnAuthHeader();
 
-    UserLogin asd = new UserLogin(Credentials.VALID_EMAIL.getValue(), Credentials.VALID_PASSWORD.getValue());
+    UserLogin asd =
+        new UserLogin(Credentials.VALID_EMAIL.getValue(), Credentials.VALID_PASSWORD.getValue());
 
-    webTestClient.post()
+    webTestClient
+        .post()
         .uri("/api/user/login")
         .bodyValue(asd)
         .exchange()
-        .expectStatus().isCreated();
+        .expectStatus()
+        .isCreated();
   }
 
   @Test
   void givenInvalidPassword_whenTestingCreateUser_thenStatusBadRequest() {
 
-    List<String> INVALID_PASSWORDS = List.of(
-        "Antidisestablishmentarianism's beauty may never be fully comprehended by the uninitiated, but those who delve deep into its labyrinthine depths will find themselves ensnared by its seductive allure, forever lost in a kaleidoscope of convoluted concepts and intricate ideologies that dance upon the precipice of comprehension.",
-        "        ",
-        "     .      ",
-        "123",
-        "12",
-        "        ! "
-    );
+    List<String> INVALID_PASSWORDS =
+        List.of(
+            "Antidisestablishmentarianism's beauty may never be fully comprehended by the uninitiated, but those who delve deep into its labyrinthine depths will find themselves ensnared by its seductive allure, forever lost in a kaleidoscope of convoluted concepts and intricate ideologies that dance upon the precipice of comprehension.",
+            "        ",
+            "     .      ",
+            "123",
+            "12",
+            "        ! ");
 
     for (String password : INVALID_PASSWORDS) {
-      webTestClient.post()
+      webTestClient
+          .post()
           .uri("/api/user")
-          .bodyValue(createUser(
-              Credentials.VALID_USERNAME.getValue(),
-              Credentials.VALID_EMAIL.getValue(),
-              password
-          ))
+          .bodyValue(
+              createUser(
+                  Credentials.VALID_USERNAME.getValue(),
+                  Credentials.VALID_EMAIL.getValue(),
+                  password))
           .exchange()
-          .expectStatus().isBadRequest();
+          .expectStatus()
+          .isBadRequest();
     }
   }
 
   @Test
   void givenInvalidEmail_whenTestingCreateUser_thenStatusBadRequest() {
 
-    List<String> INVALID_EMAILS = List.of(
-        "",
-        "asdd@asd@as123!",
-        "     .      ",
-        "sadasda@sdasdasdasdasd",
-        "dasda@sd",
-        "@sdad",
-        "sada.sda@sdasdsd"
-    );
+    List<String> INVALID_EMAILS =
+        List.of(
+            "",
+            "asdd@asd@as123!",
+            "     .      ",
+            "sadasda@sdasdasdasdasd",
+            "dasda@sd",
+            "@sdad",
+            "sada.sda@sdasdsd");
 
     for (String email : INVALID_EMAILS) {
-      webTestClient.post()
+      webTestClient
+          .post()
           .uri("/api/user")
-          .bodyValue(createUser(
-              Credentials.VALID_USERNAME.getValue(),
-              email,
-              Credentials.VALID_PASSWORD.getValue()
-          ))
+          .bodyValue(
+              createUser(
+                  Credentials.VALID_USERNAME.getValue(),
+                  email,
+                  Credentials.VALID_PASSWORD.getValue()))
           .exchange()
-          .expectStatus().isBadRequest();
+          .expectStatus()
+          .isBadRequest();
     }
   }
 
   @Test
   void givenTwoUserWithTheSameEmail_whenTestingCreateUser_thenStatusBadRequest() {
 
-    webTestClient.post()
+    webTestClient
+        .post()
         .uri("/api/user")
-        .bodyValue(createUser(
-            Credentials.VALID_USERNAME.getValue(),
-            Credentials.VALID_EMAIL.getValue(),
-            Credentials.VALID_PASSWORD.getValue()
-        ))
+        .bodyValue(
+            createUser(
+                Credentials.VALID_USERNAME.getValue(),
+                Credentials.VALID_EMAIL.getValue(),
+                Credentials.VALID_PASSWORD.getValue()))
         .exchange()
-        .expectStatus().isCreated();
+        .expectStatus()
+        .isCreated();
 
-    webTestClient.post()
+    webTestClient
+        .post()
         .uri("/api/user")
-        .bodyValue(createUser(
-            Credentials.VALID_USERNAME.getValue(),
-            Credentials.VALID_EMAIL.getValue(),
-            Credentials.VALID_PASSWORD.getValue()
-        ))
+        .bodyValue(
+            createUser(
+                Credentials.VALID_USERNAME.getValue(),
+                Credentials.VALID_EMAIL.getValue(),
+                Credentials.VALID_PASSWORD.getValue()))
         .exchange()
-        .expectStatus().isBadRequest();
+        .expectStatus()
+        .isBadRequest();
   }
 
   @Test
   void givenTwoUserWithTheSameUsername_whenTestingCreateUser_thenShouldBeAllSuccessfullyCreated() {
 
-    webTestClient.post()
+    webTestClient
+        .post()
         .uri("/api/user")
-        .bodyValue(createUser(
-            Credentials.VALID_USERNAME.getValue(),
-            Credentials.VALID_EMAIL.getValue(),
-            Credentials.VALID_PASSWORD.getValue()
-        ))
+        .bodyValue(
+            createUser(
+                Credentials.VALID_USERNAME.getValue(),
+                Credentials.VALID_EMAIL.getValue(),
+                Credentials.VALID_PASSWORD.getValue()))
         .exchange()
-        .expectStatus().isCreated();
+        .expectStatus()
+        .isCreated();
 
-    webTestClient.post()
+    webTestClient
+        .post()
         .uri("/api/user")
-        .bodyValue(createUser(
-            Credentials.VALID_USERNAME.getValue(),
-            "test2@abv.bg",
-            Credentials.VALID_PASSWORD.getValue()
-        ))
+        .bodyValue(
+            createUser(
+                Credentials.VALID_USERNAME.getValue(),
+                "test2@abv.bg",
+                Credentials.VALID_PASSWORD.getValue()))
         .exchange()
-        .expectStatus().isCreated();
+        .expectStatus()
+        .isCreated();
   }
 
   @Test
   void givenNotProvidingBasicAuth_whenTestingGetUserView_thenServerShouldReturnStatus401() {
 
-    webTestClient.get()
-        .uri("/api/user")
-        .exchange()
-        .expectStatus().isUnauthorized();
+    webTestClient.get().uri("/api/user").exchange().expectStatus().isUnauthorized();
   }
 
   @Test
-  void givenProvidingBasicAuth_whenTestingGetUserView_thenServerShouldReturnStatusOkWithTheCorrectCredentials() {
+  void
+      givenProvidingBasicAuth_whenTestingGetUserView_thenServerShouldReturnStatusOkWithTheCorrectCredentials() {
 
-    UserCreate newUser = createUser(
-        Credentials.VALID_USERNAME.getValue(),
-        Credentials.VALID_EMAIL.getValue(),
-        Credentials.VALID_PASSWORD.getValue()
-    );
+    UserCreate newUser =
+        createUser(
+            Credentials.VALID_USERNAME.getValue(),
+            Credentials.VALID_EMAIL.getValue(),
+            Credentials.VALID_PASSWORD.getValue());
 
-    JwtResponse responseBody = webTestClient.post()
-        .uri("/api/user")
-        .bodyValue(newUser)
-        .exchange()
-        .expectStatus().isCreated()
-        .expectBody(JwtResponse.class)
-        .value(user -> assertNotNull(user.userView().user().id()))
-        .value(user -> assertEquals(newUser.username(), user.userView().user().username()))
-        .value(user -> assertEquals(newUser.email(), user.userView().user().email()))
-        .value(user -> assertNotNull(user.accessToken()))
-        .value(user -> assertNotNull(user.accessToken().value()))
-        .value(user -> assertNotNull(user.accessToken().expiresIn()))
-        .returnResult()
-        .getResponseBody();
+    JwtResponse responseBody =
+        webTestClient
+            .post()
+            .uri("/api/user")
+            .bodyValue(newUser)
+            .exchange()
+            .expectStatus()
+            .isCreated()
+            .expectBody(JwtResponse.class)
+            .value(user -> assertNotNull(user.userView().user().id()))
+            .value(user -> assertEquals(newUser.username(), user.userView().user().username()))
+            .value(user -> assertEquals(newUser.email(), user.userView().user().email()))
+            .value(user -> assertNotNull(user.accessToken()))
+            .value(user -> assertNotNull(user.accessToken().value()))
+            .value(user -> assertNotNull(user.accessToken().expiresIn()))
+            .returnResult()
+            .getResponseBody();
 
     assert responseBody != null;
-    webTestClient.get()
+    webTestClient
+        .get()
         .uri("/api/user")
         .header("Authorization", "Bearer " + responseBody.accessToken().value())
         .exchange()
-        .expectStatus().isOk()
+        .expectStatus()
+        .isOk()
+        .expectBody(UserView.class)
+        .value(user -> assertNotNull(user.id()))
+        .value(user -> assertEquals(newUser.username(), user.username()))
+        .value(user -> assertEquals(newUser.email(), user.email()));
+  }
+
+  @Test
+  void
+      givenValidUserCredentials_whenDeletingUser_thenServerShouldRemoveTheUserFromAuthAndDbReturning204() {
+
+    UserCreate newUser =
+        createUser(
+            Credentials.VALID_USERNAME.getValue(),
+            Credentials.VALID_EMAIL.getValue(),
+            Credentials.VALID_PASSWORD.getValue());
+
+    JwtResponse responseBody =
+        webTestClient
+            .post()
+            .uri("/api/user")
+            .bodyValue(newUser)
+            .exchange()
+            .expectStatus()
+            .isCreated()
+            .expectBody(JwtResponse.class)
+            .value(user -> assertNotNull(user.userView().user().id()))
+            .value(user -> assertEquals(newUser.username(), user.userView().user().username()))
+            .value(user -> assertEquals(newUser.email(), user.userView().user().email()))
+            .value(user -> assertNotNull(user.accessToken()))
+            .value(user -> assertNotNull(user.accessToken().value()))
+            .value(user -> assertNotNull(user.accessToken().expiresIn()))
+            .returnResult()
+            .getResponseBody();
+
+    assert responseBody != null;
+    webTestClient
+        .get()
+        .uri("/api/user")
+        .header("Authorization", "Bearer " + responseBody.accessToken().value())
+        .exchange()
+        .expectStatus()
+        .isOk()
         .expectBody(UserView.class)
         .value(user -> assertNotNull(user.id()))
         .value(user -> assertEquals(newUser.username(), user.username()))
         .value(user -> assertEquals(newUser.email(), user.email()));
 
+    webTestClient
+        .delete()
+        .uri("/api/user")
+        .header("Authorization", "Bearer " + responseBody.accessToken().value())
+        .exchange()
+        .expectStatus()
+        .isNoContent()
+        .returnResult(Void.class)
+        .consumeWith(
+            response -> {
+              webTestClient
+                  .get()
+                  .uri("/api/user")
+                  .header("Authorization", "Bearer " + responseBody.accessToken().value())
+                  .exchange()
+                  .expectStatus()
+                  .isUnauthorized();
+
+              webTestClient
+                  .delete()
+                  .uri("/api/user")
+                  .header("Authorization", "Bearer " + responseBody.accessToken().value())
+                  .exchange()
+                  .expectStatus()
+                  .isUnauthorized();
+            });
   }
 
   @Test
-  void givenValidUserCredentials_whenDeletingUser_thenServerShouldRemoveTheUserFromAuthAndDbReturning204() {
+  void
+      givenValidUserCredentials_whenDeletingUserMultipleTimesInARowWithTheSameCredentials_thenServerShouldRemoveTheUserFromAuthAndDbReturning204AndThen401() {
 
-    UserCreate newUser = createUser(
-        Credentials.VALID_USERNAME.getValue(),
-        Credentials.VALID_EMAIL.getValue(),
-        Credentials.VALID_PASSWORD.getValue()
-    );
+    UserCreate newUser =
+        createUser(
+            Credentials.VALID_USERNAME.getValue(),
+            Credentials.VALID_EMAIL.getValue(),
+            Credentials.VALID_PASSWORD.getValue());
 
-    JwtResponse responseBody = webTestClient.post()
-        .uri("/api/user")
-        .bodyValue(newUser)
-        .exchange()
-        .expectStatus().isCreated()
-        .expectBody(JwtResponse.class)
-        .value(user -> assertNotNull(user.userView().user().id()))
-        .value(user -> assertEquals(newUser.username(), user.userView().user().username()))
-        .value(user -> assertEquals(newUser.email(), user.userView().user().email()))
-        .value(user -> assertNotNull(user.accessToken()))
-        .value(user -> assertNotNull(user.accessToken().value()))
-        .value(user -> assertNotNull(user.accessToken().expiresIn()))
-        .returnResult()
-        .getResponseBody();
-
-    assert responseBody != null;
-    webTestClient.get()
-        .uri("/api/user")
-        .header("Authorization", "Bearer " + responseBody.accessToken().value())
-        .exchange()
-        .expectStatus().isOk()
-        .expectBody(UserView.class)
-        .value(user -> assertNotNull(user.id()))
-        .value(user -> assertEquals(newUser.username(), user.username()))
-        .value(user -> assertEquals(newUser.email(), user.email()));
-
-    webTestClient.delete()
-        .uri("/api/user")
-        .header("Authorization", "Bearer " + responseBody.accessToken().value())
-        .exchange()
-        .expectStatus().isNoContent()
-        .returnResult(Void.class)
-        .consumeWith(response -> {
-          webTestClient.get()
-              .uri("/api/user")
-              .header("Authorization", "Bearer " + responseBody.accessToken().value())
-              .exchange()
-              .expectStatus().isUnauthorized();
-
-          webTestClient.delete()
-              .uri("/api/user")
-              .header("Authorization", "Bearer " + responseBody.accessToken().value())
-              .exchange()
-              .expectStatus().isUnauthorized();
-        });
-
-  }
-
-  @Test
-  void givenValidUserCredentials_whenDeletingUserMultipleTimesInARowWithTheSameCredentials_thenServerShouldRemoveTheUserFromAuthAndDbReturning204AndThen401() {
-
-    UserCreate newUser = createUser(
-        Credentials.VALID_USERNAME.getValue(),
-        Credentials.VALID_EMAIL.getValue(),
-        Credentials.VALID_PASSWORD.getValue()
-    );
-
-    JwtResponse responseBody = webTestClient.post()
-        .uri("/api/user")
-        .bodyValue(newUser)
-        .exchange()
-        .expectStatus().isCreated()
-        .expectBody(JwtResponse.class)
-        .value(user -> assertNotNull(user.userView().user().id()))
-        .value(user -> assertEquals(newUser.username(), user.userView().user().username()))
-        .value(user -> assertEquals(newUser.email(), user.userView().user().email()))
-        .value(user -> assertNotNull(user.accessToken()))
-        .value(user -> assertNotNull(user.accessToken().value()))
-        .value(user -> assertNotNull(user.accessToken().expiresIn()))
-        .returnResult()
-        .getResponseBody();
-
+    JwtResponse responseBody =
+        webTestClient
+            .post()
+            .uri("/api/user")
+            .bodyValue(newUser)
+            .exchange()
+            .expectStatus()
+            .isCreated()
+            .expectBody(JwtResponse.class)
+            .value(user -> assertNotNull(user.userView().user().id()))
+            .value(user -> assertEquals(newUser.username(), user.userView().user().username()))
+            .value(user -> assertEquals(newUser.email(), user.userView().user().email()))
+            .value(user -> assertNotNull(user.accessToken()))
+            .value(user -> assertNotNull(user.accessToken().value()))
+            .value(user -> assertNotNull(user.accessToken().expiresIn()))
+            .returnResult()
+            .getResponseBody();
 
     assert responseBody != null;
-    webTestClient.delete()
+    webTestClient
+        .delete()
         .uri("/api/user")
         .header("Authorization", "Bearer " + responseBody.accessToken().value())
         .exchange()
-        .expectStatus().isNoContent()
+        .expectStatus()
+        .isNoContent()
         .returnResult(Void.class)
-        .consumeWith(response -> {
-          webTestClient.delete()
-              .uri("/api/user")
-              .header("Authorization", "Bearer " + responseBody.accessToken().value())
-              .exchange()
-              .expectStatus().isUnauthorized();
+        .consumeWith(
+            response -> {
+              webTestClient
+                  .delete()
+                  .uri("/api/user")
+                  .header("Authorization", "Bearer " + responseBody.accessToken().value())
+                  .exchange()
+                  .expectStatus()
+                  .isUnauthorized();
 
-          webTestClient.delete()
-              .uri("/api/user")
-              .header("Authorization", "Bearer " + responseBody.accessToken().value())
-              .exchange()
-              .expectStatus().isUnauthorized();
-        });
-
+              webTestClient
+                  .delete()
+                  .uri("/api/user")
+                  .header("Authorization", "Bearer " + responseBody.accessToken().value())
+                  .exchange()
+                  .expectStatus()
+                  .isUnauthorized();
+            });
   }
 
   @Test
@@ -396,18 +454,21 @@ class UserControllerIntegrationTest {
 
     UserDto validUserUpdateCredentials = new UserDto("Pesho", "12345");
 
-    webTestClient.patch()
+    webTestClient
+        .patch()
         .uri("/api/user")
         .header(authHeader.getName(), authHeader.getValues().get(0))
         .bodyValue(validUserUpdateCredentials)
         .exchange()
-        .expectStatus().isOk()
+        .expectStatus()
+        .isOk()
         .expectBody(JwtResponse.class)
         .value(user -> assertNotNull(user.userView().user().id()))
-        .value(user -> assertEquals(validUserUpdateCredentials.username(), user.userView().user().username()))
+        .value(
+            user ->
+                assertEquals(
+                    validUserUpdateCredentials.username(), user.userView().user().username()))
         .value(user -> assertNotEquals(authHeader.getValues().get(0), user.accessToken().value()));
-
-
   }
 
   @Test
@@ -417,12 +478,14 @@ class UserControllerIntegrationTest {
 
     UserDto emptyCredentials = new UserDto(null, null);
 
-    webTestClient.patch()
+    webTestClient
+        .patch()
         .uri("/api/user")
         .header(authHeader.getName(), authHeader.getValues().get(0))
         .bodyValue(emptyCredentials)
         .exchange()
-        .expectStatus().isOk();
+        .expectStatus()
+        .isOk();
   }
 
   @Test
@@ -430,32 +493,36 @@ class UserControllerIntegrationTest {
 
     UserDto emptyCredentials = new UserDto(null, null);
 
-    webTestClient.patch()
+    webTestClient
+        .patch()
         .uri("/api/user")
         .bodyValue(emptyCredentials)
         .exchange()
-        .expectStatus().isUnauthorized();
-
+        .expectStatus()
+        .isUnauthorized();
   }
 
   private Header setUpUserAndReturnAuthHeader() {
     String token = jwtUtilEmailValidation.generateToken(Credentials.VALID_EMAIL.getValue());
 
-    UserCreate newUser = createUser(
-        Credentials.VALID_USERNAME.getValue(),
-        Credentials.VALID_EMAIL.getValue(),
-        Credentials.VALID_PASSWORD.getValue(),
-        token
-    );
+    UserCreate newUser =
+        createUser(
+            Credentials.VALID_USERNAME.getValue(),
+            Credentials.VALID_EMAIL.getValue(),
+            Credentials.VALID_PASSWORD.getValue(),
+            token);
 
-    JwtResponse responseBody = webTestClient.post()
-        .uri("/api/user")
-        .bodyValue(newUser)
-        .exchange()
-        .expectStatus().isCreated()
-        .expectBody(JwtResponse.class)
-        .returnResult()
-        .getResponseBody();
+    JwtResponse responseBody =
+        webTestClient
+            .post()
+            .uri("/api/user")
+            .bodyValue(newUser)
+            .exchange()
+            .expectStatus()
+            .isCreated()
+            .expectBody(JwtResponse.class)
+            .returnResult()
+            .getResponseBody();
 
     assert responseBody != null;
     return new Header("Authorization", "Bearer " + responseBody.accessToken().value());

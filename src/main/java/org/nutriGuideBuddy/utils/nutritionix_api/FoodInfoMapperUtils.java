@@ -11,22 +11,18 @@ public class FoodInfoMapperUtils {
 
   public static FoodInfoView generateFoodInfo(FoodItem foodItem) {
     return Optional.ofNullable(foodItem.getBrandName())
-        .map(brandName ->
-            new FoodInfoView(brandName,
-                foodItem.getNfIngredientStatement(),
-                getPicture(foodItem))
-        )
+        .map(
+            brandName ->
+                new FoodInfoView(
+                    brandName, foodItem.getNfIngredientStatement(), getPicture(foodItem)))
         .orElse(
-            new FoodInfoView(Optional.ofNullable(foodItem.getTags())
-                .map(Tags::getItem)
-                .orElse(null),
+            new FoodInfoView(
+                Optional.ofNullable(foodItem.getTags()).map(Tags::getItem).orElse(null),
                 foodItem.getNfIngredientStatement(),
                 getPicture(foodItem)));
   }
 
   private static String getPicture(FoodItem foodItem) {
-    return Optional.ofNullable(foodItem.getPhoto())
-        .map(Photo::getThumb)
-        .orElse(null);
+    return Optional.ofNullable(foodItem.getPhoto()).map(Photo::getThumb).orElse(null);
   }
 }

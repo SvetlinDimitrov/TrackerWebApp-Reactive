@@ -14,18 +14,23 @@ import java.util.UUID;
 @Data
 public class UserDetails {
 
-  @Id
-  private String id;
+  @Id private String id;
+
   @Column("kilograms")
   private BigDecimal kilograms;
+
   @Column("height")
   private BigDecimal height;
+
   @Column("age")
   private Integer age;
+
   @Column("workout_state")
   private WorkoutState workoutState;
+
   @Column("gender")
   private Gender gender;
+
   @Column("user_id")
   private String userId;
 

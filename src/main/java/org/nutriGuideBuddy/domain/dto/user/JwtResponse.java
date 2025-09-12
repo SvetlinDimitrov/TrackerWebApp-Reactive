@@ -1,4 +1,3 @@
 package org.nutriGuideBuddy.domain.dto.user;
 
-public record JwtResponse(UserWithDetailsView userView, JwtToken accessToken) {
-}
+public record JwtResponse(UserWithDetailsView userView, JwtToken accessToken) {}

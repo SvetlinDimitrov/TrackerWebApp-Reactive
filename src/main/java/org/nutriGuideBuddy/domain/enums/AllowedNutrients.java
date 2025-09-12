@@ -4,7 +4,6 @@ import lombok.Getter;
 
 @Getter
 public enum AllowedNutrients {
-
   Carbohydrate("Carbohydrate", "g"),
   Protein("Protein", "g"),
   Fat("Fat", "g"),
@@ -13,9 +12,9 @@ public enum AllowedNutrients {
   Omega6("Linoleic Acid", "g"),
   Omega3("α-Linolenic Acid", "g"),
   Cholesterol("Cholesterol", "mg"),
-  Water("Water" , "L"),
-  Saturated_Fat("Saturated Fat" , "g"),
-  Trans_Fat("Trans Fat" , "g"),
+  Water("Water", "L"),
+  Saturated_Fat("Saturated Fat", "g"),
+  Trans_Fat("Trans Fat", "g"),
 
   VitaminA("Vitamin A", "µg"),
   VitaminD_D2_D3("Vitamin D (D2 + D3)", "µg"),
@@ -30,7 +29,7 @@ public enum AllowedNutrients {
   VitaminB7_Biotin("Vitamin B7 (Biotin)", "µg"),
   VitaminB9_Folate("Vitamin B9 (Folate)", "µg"),
   VitaminB12("Vitamin B12", "µg"),
-  Choline("Choline" , "mg"),
+  Choline("Choline", "mg"),
 
   Calcium_Ca("Calcium , Ca", "mg"),
   Chromium_Cr("Chromium , Cr", "μg"),
@@ -51,12 +50,8 @@ public enum AllowedNutrients {
   private final String nutrientName;
   private final String nutrientUnit;
 
-  AllowedNutrients(
-      String nutrientName,
-      String nutrientUnit) {
+  AllowedNutrients(String nutrientName, String nutrientUnit) {
     this.nutrientName = nutrientName;
     this.nutrientUnit = nutrientUnit;
-
   }
-
 }

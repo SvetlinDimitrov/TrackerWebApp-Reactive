@@ -29,10 +29,13 @@ public class EmailVerificationService {
 
   @Value("${sendinblue.api.key}")
   private String sendinblueApiKey;
+
   @Value("${front-end.url}")
   private String frontendUrl;
+
   @Value("${api.email.sender}")
   private String emailSender;
+
   private final UserRepository userRepository;
   private final JWTUtilEmailValidation JWTUtil;
 
@@ -41,49 +44,67 @@ public class EmailVerificationService {
         .map(UserEntity::getEmail)
         .flatMap(userRepository::findUserByEmail)
         .hasElement()
-        .flatMap(userExists -> {
-          if (userExists) {
-            return Mono.error(new BadRequestException("User already exists"));
-          } else {
-            ApiClient defaultClient = Configuration.getDefaultApiClient();
-            ApiKeyAuth apiKey = (ApiKeyAuth) defaultClient.getAuthentication("api-key");
-            apiKey.setApiKey(sendinblueApiKey);
+        .flatMap(
+            userExists -> {
+              if (userExists) {
+                return Mono.error(new BadRequestException("User already exists"));
+              } else {
+                ApiClient defaultClient = Configuration.getDefaultApiClient();
+                ApiKeyAuth apiKey = (ApiKeyAuth) defaultClient.getAuthentication("api-key");
+                apiKey.setApiKey(sendinblueApiKey);
 
-            TransactionalEmailsApi apiInstance = new TransactionalEmailsApi();
-            String verificationUrl = frontendUrl + "/email-verification?token=" + JWTUtil.generateToken(dto.email());
-            SendSmtpEmail email = getSendSmtpEmail(dto.email(), verificationUrl, "Email Verification", "Please verify your email by clicking the link below: ");
-            try {
-              apiInstance.sendTransacEmail(email);
-              return Mono.empty();
-            } catch (ApiException e) {
-              return Mono.error(new ResponseStatusException(HttpStatus.TOO_MANY_REQUESTS));
-            }
-          }
-        });
+                TransactionalEmailsApi apiInstance = new TransactionalEmailsApi();
+                String verificationUrl =
+                    frontendUrl + "/email-verification?token=" + JWTUtil.generateToken(dto.email());
+                SendSmtpEmail email =
+                    getSendSmtpEmail(
+                        dto.email(),
+                        verificationUrl,
+                        "Email Verification",
+                        "Please verify your email by clicking the link below: ");
+                try {
+                  apiInstance.sendTransacEmail(email);
+                  return Mono.empty();
+                } catch (ApiException e) {
+                  return Mono.error(new ResponseStatusException(HttpStatus.TOO_MANY_REQUESTS));
+                }
+              }
+            });
   }
 
   public Mono<Void> sendForgotPasswordEmail(String email) {
-    return userRepository.findUserByEmail(email)
+    return userRepository
+        .findUserByEmail(email)
         .switchIfEmpty(Mono.error(new BadRequestException("User not found")))
-        .flatMap(user -> {
-          ApiClient defaultClient = Configuration.getDefaultApiClient();
-          ApiKeyAuth apiKey = (ApiKeyAuth) defaultClient.getAuthentication("api-key");
-          apiKey.setApiKey(sendinblueApiKey);
+        .flatMap(
+            user -> {
+              ApiClient defaultClient = Configuration.getDefaultApiClient();
+              ApiKeyAuth apiKey = (ApiKeyAuth) defaultClient.getAuthentication("api-key");
+              apiKey.setApiKey(sendinblueApiKey);
 
-          TransactionalEmailsApi apiInstance = new TransactionalEmailsApi();
-          String verificationUrl = frontendUrl + "/recreate-password?token=" + JWTUtil.generateToken(user.getEmail());
-          SendSmtpEmail emailSend = getSendSmtpEmail(user.getEmail(), verificationUrl, "Reset Password", "Please reset your password by clicking the link below: ");
+              TransactionalEmailsApi apiInstance = new TransactionalEmailsApi();
+              String verificationUrl =
+                  frontendUrl
+                      + "/recreate-password?token="
+                      + JWTUtil.generateToken(user.getEmail());
+              SendSmtpEmail emailSend =
+                  getSendSmtpEmail(
+                      user.getEmail(),
+                      verificationUrl,
+                      "Reset Password",
+                      "Please reset your password by clicking the link below: ");
 
-          try {
-            apiInstance.sendTransacEmail(emailSend);
-            return Mono.empty();
-          } catch (ApiException e) {
-            return Mono.error(new ResponseStatusException(HttpStatus.TOO_MANY_REQUESTS));
-          }
-        });
+              try {
+                apiInstance.sendTransacEmail(emailSend);
+                return Mono.empty();
+              } catch (ApiException e) {
+                return Mono.error(new ResponseStatusException(HttpStatus.TOO_MANY_REQUESTS));
+              }
+            });
   }
 
-  private SendSmtpEmail getSendSmtpEmail(String recipientEmail, String verificationUrl, String subject, String text) {
+  private SendSmtpEmail getSendSmtpEmail(
+      String recipientEmail, String verificationUrl, String subject, String text) {
     SendSmtpEmailSender sender = new SendSmtpEmailSender();
     sender.setEmail(emailSender);
     sender.setName("Dont replay");
@@ -95,7 +116,12 @@ public class EmailVerificationService {
     email.setSender(sender);
     email.setTo(List.of(to));
     email.setSubject(subject);
-    email.setHtmlContent("<html><body><p>" + text + "<a href=\"" + verificationUrl + "\">Verify Email</a></p></body></html>");
+    email.setHtmlContent(
+        "<html><body><p>"
+            + text
+            + "<a href=\""
+            + verificationUrl
+            + "\">Verify Email</a></p></body></html>");
     return email;
   }
 }

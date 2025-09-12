@@ -10,8 +10,8 @@ import java.util.Set;
 
 public class MineralCreator {
   /*
-   data from: https://www.ncbi.nlm.nih.gov/books/NBK545442/table/appJ_tab3/?report=objectonly
-   */
+  data from: https://www.ncbi.nlm.nih.gov/books/NBK545442/table/appJ_tab3/?report=objectonly
+  */
 
   public static final Set<String> allAllowedMinerals =
       Set.of(
@@ -29,10 +29,10 @@ public class MineralCreator {
           AllowedNutrients.Molybdenum_Mo.getNutrientName(),
           AllowedNutrients.Chloride.getNutrientName(),
           AllowedNutrients.Chromium_Cr.getNutrientName(),
-          AllowedNutrients.Fluoride.getNutrientName()
-      );
+          AllowedNutrients.Fluoride.getNutrientName());
 
-  public static Map<String, NutritionIntakeView> fillMinerals(Map<String, NutritionIntakeView> map, Gender gender, Integer age) {
+  public static Map<String, NutritionIntakeView> fillMinerals(
+      Map<String, NutritionIntakeView> map, Gender gender, Integer age) {
     fillCalcium(map, gender, age);
     fillChromium(map, gender, age);
     fillCopper(map, gender, age);
@@ -51,12 +51,14 @@ public class MineralCreator {
     return map;
   }
 
-  private static void fillCalcium(Map<String, NutritionIntakeView> map, Gender gender, Integer age) {
-    NutritionIntakeView calcium = NutritionIntakeView
-        .builder()
-        .name(AllowedNutrients.Calcium_Ca.getNutrientName())
-        .measurement(AllowedNutrients.Calcium_Ca.getNutrientUnit())
-        .dailyConsumed(BigDecimal.ZERO).build();
+  private static void fillCalcium(
+      Map<String, NutritionIntakeView> map, Gender gender, Integer age) {
+    NutritionIntakeView calcium =
+        NutritionIntakeView.builder()
+            .name(AllowedNutrients.Calcium_Ca.getNutrientName())
+            .measurement(AllowedNutrients.Calcium_Ca.getNutrientUnit())
+            .dailyConsumed(BigDecimal.ZERO)
+            .build();
 
     BigDecimal dailyIntake = BigDecimal.ZERO;
 
@@ -76,7 +78,6 @@ public class MineralCreator {
           }
         }
         case FEMALE -> {
-
           if (ageBetween(9, 18, age)) {
             dailyIntake = BigDecimal.valueOf(1300);
           } else if (ageBetween(19, 50, age)) {
@@ -91,12 +92,14 @@ public class MineralCreator {
     map.put(calcium.getName(), calcium);
   }
 
-  private static void fillChromium(Map<String, NutritionIntakeView> map, Gender gender, Integer age) {
-    NutritionIntakeView chromium = NutritionIntakeView
-        .builder()
-        .name(AllowedNutrients.Chromium_Cr.getNutrientName())
-        .measurement(AllowedNutrients.Chromium_Cr.getNutrientUnit())
-        .dailyConsumed(BigDecimal.ZERO).build();
+  private static void fillChromium(
+      Map<String, NutritionIntakeView> map, Gender gender, Integer age) {
+    NutritionIntakeView chromium =
+        NutritionIntakeView.builder()
+            .name(AllowedNutrients.Chromium_Cr.getNutrientName())
+            .measurement(AllowedNutrients.Chromium_Cr.getNutrientUnit())
+            .dailyConsumed(BigDecimal.ZERO)
+            .build();
 
     BigDecimal dailyIntake = BigDecimal.ZERO;
 
@@ -116,7 +119,6 @@ public class MineralCreator {
           }
         }
         case FEMALE -> {
-
           if (ageBetween(9, 13, age)) {
             dailyIntake = BigDecimal.valueOf(21);
           } else if (ageBetween(14, 18, age)) {
@@ -134,11 +136,12 @@ public class MineralCreator {
   }
 
   private static void fillCopper(Map<String, NutritionIntakeView> map, Gender gender, Integer age) {
-    NutritionIntakeView copper = NutritionIntakeView
-        .builder()
-        .name(AllowedNutrients.Copper_Cu.getNutrientName())
-        .measurement(AllowedNutrients.Copper_Cu.getNutrientUnit())
-        .dailyConsumed(BigDecimal.ZERO).build();
+    NutritionIntakeView copper =
+        NutritionIntakeView.builder()
+            .name(AllowedNutrients.Copper_Cu.getNutrientName())
+            .measurement(AllowedNutrients.Copper_Cu.getNutrientUnit())
+            .dailyConsumed(BigDecimal.ZERO)
+            .build();
 
     BigDecimal dailyIntake = BigDecimal.ZERO;
 
@@ -163,12 +166,14 @@ public class MineralCreator {
     map.put(copper.getName(), copper);
   }
 
-  private static void fillFluoride(Map<String, NutritionIntakeView> map, Gender gender, Integer age) {
-    NutritionIntakeView fluoride = NutritionIntakeView
-        .builder()
-        .name(AllowedNutrients.Fluoride.getNutrientName())
-        .measurement(AllowedNutrients.Fluoride.getNutrientUnit())
-        .dailyConsumed(BigDecimal.ZERO).build();
+  private static void fillFluoride(
+      Map<String, NutritionIntakeView> map, Gender gender, Integer age) {
+    NutritionIntakeView fluoride =
+        NutritionIntakeView.builder()
+            .name(AllowedNutrients.Fluoride.getNutrientName())
+            .measurement(AllowedNutrients.Fluoride.getNutrientUnit())
+            .dailyConsumed(BigDecimal.ZERO)
+            .build();
 
     BigDecimal dailyIntake = BigDecimal.ZERO;
 
@@ -188,7 +193,6 @@ public class MineralCreator {
           }
         }
         case FEMALE -> {
-
           if (ageBetween(9, 13, age)) {
             dailyIntake = BigDecimal.valueOf(2);
           } else {
@@ -202,11 +206,12 @@ public class MineralCreator {
   }
 
   private static void fillIodine(Map<String, NutritionIntakeView> map, Gender gender, Integer age) {
-    NutritionIntakeView iodine = NutritionIntakeView
-        .builder()
-        .name(AllowedNutrients.Iodine_I.getNutrientName())
-        .measurement(AllowedNutrients.Iodine_I.getNutrientUnit())
-        .dailyConsumed(BigDecimal.ZERO).build();
+    NutritionIntakeView iodine =
+        NutritionIntakeView.builder()
+            .name(AllowedNutrients.Iodine_I.getNutrientName())
+            .measurement(AllowedNutrients.Iodine_I.getNutrientUnit())
+            .dailyConsumed(BigDecimal.ZERO)
+            .build();
 
     BigDecimal dailyIntake = BigDecimal.ZERO;
 
@@ -228,11 +233,12 @@ public class MineralCreator {
   }
 
   private static void fillIron(Map<String, NutritionIntakeView> map, Gender gender, Integer age) {
-    NutritionIntakeView iron = NutritionIntakeView
-        .builder()
-        .name(AllowedNutrients.Iron_Fe.getNutrientName())
-        .measurement(AllowedNutrients.Iron_Fe.getNutrientUnit())
-        .dailyConsumed(BigDecimal.ZERO).build();
+    NutritionIntakeView iron =
+        NutritionIntakeView.builder()
+            .name(AllowedNutrients.Iron_Fe.getNutrientName())
+            .measurement(AllowedNutrients.Iron_Fe.getNutrientUnit())
+            .dailyConsumed(BigDecimal.ZERO)
+            .build();
 
     BigDecimal dailyIntake = BigDecimal.ZERO;
 
@@ -252,7 +258,6 @@ public class MineralCreator {
           }
         }
         case FEMALE -> {
-
           if (ageBetween(9, 13, age)) {
             dailyIntake = BigDecimal.valueOf(8);
           } else if (ageBetween(14, 18, age)) {
@@ -269,12 +274,14 @@ public class MineralCreator {
     map.put(iron.getName(), iron);
   }
 
-  private static void fillMagnesium(Map<String, NutritionIntakeView> map, Gender gender, Integer age) {
-    NutritionIntakeView magnesium = NutritionIntakeView
-        .builder()
-        .name(AllowedNutrients.Magnesium_Mg.getNutrientName())
-        .measurement(AllowedNutrients.Magnesium_Mg.getNutrientUnit())
-        .dailyConsumed(BigDecimal.ZERO).build();
+  private static void fillMagnesium(
+      Map<String, NutritionIntakeView> map, Gender gender, Integer age) {
+    NutritionIntakeView magnesium =
+        NutritionIntakeView.builder()
+            .name(AllowedNutrients.Magnesium_Mg.getNutrientName())
+            .measurement(AllowedNutrients.Magnesium_Mg.getNutrientUnit())
+            .dailyConsumed(BigDecimal.ZERO)
+            .build();
 
     BigDecimal dailyIntake = BigDecimal.ZERO;
 
@@ -296,7 +303,6 @@ public class MineralCreator {
           }
         }
         case FEMALE -> {
-
           if (ageBetween(9, 13, age)) {
             dailyIntake = BigDecimal.valueOf(240);
           } else if (ageBetween(14, 18, age)) {
@@ -313,12 +319,14 @@ public class MineralCreator {
     map.put(magnesium.getName(), magnesium);
   }
 
-  private static void fillManganese(Map<String, NutritionIntakeView> map, Gender gender, Integer age) {
-    NutritionIntakeView manganese = NutritionIntakeView
-        .builder()
-        .name(AllowedNutrients.Manganese_Mn.getNutrientName())
-        .measurement(AllowedNutrients.Manganese_Mn.getNutrientUnit())
-        .dailyConsumed(BigDecimal.ZERO).build();
+  private static void fillManganese(
+      Map<String, NutritionIntakeView> map, Gender gender, Integer age) {
+    NutritionIntakeView manganese =
+        NutritionIntakeView.builder()
+            .name(AllowedNutrients.Manganese_Mn.getNutrientName())
+            .measurement(AllowedNutrients.Manganese_Mn.getNutrientUnit())
+            .dailyConsumed(BigDecimal.ZERO)
+            .build();
 
     BigDecimal dailyIntake = BigDecimal.ZERO;
 
@@ -350,12 +358,14 @@ public class MineralCreator {
     map.put(manganese.getName(), manganese);
   }
 
-  private static void fillMolybdenum(Map<String, NutritionIntakeView> map, Gender gender, Integer age) {
-    NutritionIntakeView molybdenum = NutritionIntakeView
-        .builder()
-        .name(AllowedNutrients.Molybdenum_Mo.getNutrientName())
-        .measurement(AllowedNutrients.Molybdenum_Mo.getNutrientUnit())
-        .dailyConsumed(BigDecimal.ZERO).build();
+  private static void fillMolybdenum(
+      Map<String, NutritionIntakeView> map, Gender gender, Integer age) {
+    NutritionIntakeView molybdenum =
+        NutritionIntakeView.builder()
+            .name(AllowedNutrients.Molybdenum_Mo.getNutrientName())
+            .measurement(AllowedNutrients.Molybdenum_Mo.getNutrientUnit())
+            .dailyConsumed(BigDecimal.ZERO)
+            .build();
 
     BigDecimal dailyIntake = BigDecimal.ZERO;
 
@@ -380,12 +390,14 @@ public class MineralCreator {
     map.put(molybdenum.getName(), molybdenum);
   }
 
-  private static void fillPhosphorus(Map<String, NutritionIntakeView> map, Gender gender, Integer age) {
-    NutritionIntakeView phosphorus = NutritionIntakeView
-        .builder()
-        .name(AllowedNutrients.Phosphorus_P.getNutrientName())
-        .measurement(AllowedNutrients.Phosphorus_P.getNutrientUnit())
-        .dailyConsumed(BigDecimal.ZERO).build();
+  private static void fillPhosphorus(
+      Map<String, NutritionIntakeView> map, Gender gender, Integer age) {
+    NutritionIntakeView phosphorus =
+        NutritionIntakeView.builder()
+            .name(AllowedNutrients.Phosphorus_P.getNutrientName())
+            .measurement(AllowedNutrients.Phosphorus_P.getNutrientUnit())
+            .dailyConsumed(BigDecimal.ZERO)
+            .build();
 
     BigDecimal dailyIntake = BigDecimal.ZERO;
 
@@ -408,12 +420,14 @@ public class MineralCreator {
     map.put(phosphorus.getName(), phosphorus);
   }
 
-  private static void fillSelenium(Map<String, NutritionIntakeView> map, Gender gender, Integer age) {
-    NutritionIntakeView selenium = NutritionIntakeView
-        .builder()
-        .name(AllowedNutrients.Selenium_Se.getNutrientName())
-        .measurement(AllowedNutrients.Selenium_Se.getNutrientUnit())
-        .dailyConsumed(BigDecimal.ZERO).build();
+  private static void fillSelenium(
+      Map<String, NutritionIntakeView> map, Gender gender, Integer age) {
+    NutritionIntakeView selenium =
+        NutritionIntakeView.builder()
+            .name(AllowedNutrients.Selenium_Se.getNutrientName())
+            .measurement(AllowedNutrients.Selenium_Se.getNutrientUnit())
+            .dailyConsumed(BigDecimal.ZERO)
+            .build();
 
     BigDecimal dailyIntake = BigDecimal.ZERO;
 
@@ -437,11 +451,12 @@ public class MineralCreator {
   }
 
   private static void fillZinc(Map<String, NutritionIntakeView> map, Gender gender, Integer age) {
-    NutritionIntakeView zinc = NutritionIntakeView
-        .builder()
-        .name(AllowedNutrients.Zinc_Zn.getNutrientName())
-        .measurement(AllowedNutrients.Zinc_Zn.getNutrientUnit())
-        .dailyConsumed(BigDecimal.ZERO).build();
+    NutritionIntakeView zinc =
+        NutritionIntakeView.builder()
+            .name(AllowedNutrients.Zinc_Zn.getNutrientName())
+            .measurement(AllowedNutrients.Zinc_Zn.getNutrientUnit())
+            .dailyConsumed(BigDecimal.ZERO)
+            .build();
 
     BigDecimal dailyIntake = BigDecimal.ZERO;
 
@@ -473,12 +488,14 @@ public class MineralCreator {
     map.put(zinc.getName(), zinc);
   }
 
-  private static void fillPotassium(Map<String, NutritionIntakeView> map, Gender gender, Integer age) {
-    NutritionIntakeView potassium = NutritionIntakeView
-        .builder()
-        .name(AllowedNutrients.Potassium_K.getNutrientName())
-        .measurement(AllowedNutrients.Potassium_K.getNutrientUnit())
-        .dailyConsumed(BigDecimal.ZERO).build();
+  private static void fillPotassium(
+      Map<String, NutritionIntakeView> map, Gender gender, Integer age) {
+    NutritionIntakeView potassium =
+        NutritionIntakeView.builder()
+            .name(AllowedNutrients.Potassium_K.getNutrientName())
+            .measurement(AllowedNutrients.Potassium_K.getNutrientUnit())
+            .dailyConsumed(BigDecimal.ZERO)
+            .build();
 
     BigDecimal dailyIntake = BigDecimal.ZERO;
 
@@ -511,11 +528,12 @@ public class MineralCreator {
   }
 
   private static void fillSodium(Map<String, NutritionIntakeView> map, Gender gender, Integer age) {
-    NutritionIntakeView sodium = NutritionIntakeView
-        .builder()
-        .name(AllowedNutrients.Sodium_Na.getNutrientName())
-        .measurement(AllowedNutrients.Sodium_Na.getNutrientUnit())
-        .dailyConsumed(BigDecimal.ZERO).build();
+    NutritionIntakeView sodium =
+        NutritionIntakeView.builder()
+            .name(AllowedNutrients.Sodium_Na.getNutrientName())
+            .measurement(AllowedNutrients.Sodium_Na.getNutrientUnit())
+            .dailyConsumed(BigDecimal.ZERO)
+            .build();
 
     BigDecimal dailyIntake = BigDecimal.ZERO;
 
@@ -538,12 +556,14 @@ public class MineralCreator {
     map.put(sodium.getName(), sodium);
   }
 
-  private static void fillChloride(Map<String, NutritionIntakeView> map, Gender gender, Integer age) {
-    NutritionIntakeView chloride = NutritionIntakeView
-        .builder()
-        .name(AllowedNutrients.Chloride.getNutrientName())
-        .measurement(AllowedNutrients.Chloride.getNutrientUnit())
-        .dailyConsumed(BigDecimal.ZERO).build();
+  private static void fillChloride(
+      Map<String, NutritionIntakeView> map, Gender gender, Integer age) {
+    NutritionIntakeView chloride =
+        NutritionIntakeView.builder()
+            .name(AllowedNutrients.Chloride.getNutrientName())
+            .measurement(AllowedNutrients.Chloride.getNutrientUnit())
+            .dailyConsumed(BigDecimal.ZERO)
+            .build();
 
     BigDecimal dailyIntake = BigDecimal.ZERO;
 
@@ -571,5 +591,4 @@ public class MineralCreator {
   private static boolean ageBetween(Integer minAge, Integer maxAge, Integer age) {
     return (age >= minAge && age <= maxAge);
   }
-
 }

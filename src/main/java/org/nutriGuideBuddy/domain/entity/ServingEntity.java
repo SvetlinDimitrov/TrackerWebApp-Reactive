@@ -12,16 +12,20 @@ import java.util.UUID;
 @Data
 public class ServingEntity {
 
-  @Id
-  private String id;
+  @Id private String id;
+
   @Column("amount")
   private BigDecimal amount;
+
   @Column("serving_weight")
   private BigDecimal servingWeight;
+
   @Column("metric")
   private String metric;
+
   @Column("main")
   private Boolean main;
+
   @Column("food_id")
   private String foodId;
 

@@ -19,20 +19,14 @@ public class RecordRepository {
   private final R2dbcEntityTemplate entityTemplate;
 
   public Flux<CalorieEntity> findCalorieByUserId(String userId) {
-    return entityTemplate.select(
-        query(where("userId").is(userId)), CalorieEntity.class
-    );
+    return entityTemplate.select(query(where("userId").is(userId)), CalorieEntity.class);
   }
 
   public Flux<NutritionEntity> findAllNutritionsByUserId(String userId) {
-    return entityTemplate.select(
-        query(where("userId").is(userId)), NutritionEntity.class
-    );
+    return entityTemplate.select(query(where("userId").is(userId)), NutritionEntity.class);
   }
 
   public Mono<UserDetails> findUserDetailsByUserId(String userId) {
-    return entityTemplate.selectOne(
-        query(where("userId").is(userId)), UserDetails.class
-    );
+    return entityTemplate.selectOne(query(where("userId").is(userId)), UserDetails.class);
   }
 }

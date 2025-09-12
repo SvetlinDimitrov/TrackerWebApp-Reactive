@@ -22,28 +22,24 @@ public class UserDetailsRepository {
   }
 
   public Mono<UserDetails> findUserDetailsByUserId(String userId) {
-    return entityTemplate.selectOne(
-        query(where("userId").is(userId)), UserDetails.class
-    );
+    return entityTemplate.selectOne(query(where("userId").is(userId)), UserDetails.class);
   }
 
   public Mono<UserDetails> findUserDetailsById(String id) {
-    return entityTemplate.selectOne(
-        query(where("id").is(id)), UserDetails.class
-    );
+    return entityTemplate.selectOne(query(where("id").is(id)), UserDetails.class);
   }
 
   @Modifying
   public Mono<UserDetails> updateUserDetails(String id, UserDetails updatedEntity) {
-    return entityTemplate.update(UserDetails.class)
+    return entityTemplate
+        .update(UserDetails.class)
         .matching(query(where("id").is(id)))
         .apply(
             Update.update("kilograms", updatedEntity.getKilograms())
                 .set("height", updatedEntity.getHeight())
                 .set("age", updatedEntity.getAge())
                 .set("workoutState", updatedEntity.getWorkoutState())
-                .set("gender", updatedEntity.getGender())
-        )
+                .set("gender", updatedEntity.getGender()))
         .then(findUserDetailsById(id));
   }
 }

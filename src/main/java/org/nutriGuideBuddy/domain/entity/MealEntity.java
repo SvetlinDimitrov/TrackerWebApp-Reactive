@@ -11,10 +11,11 @@ import java.util.UUID;
 @Data
 public class MealEntity {
 
-  @Id
-  private String id;
+  @Id private String id;
+
   @Column("name")
   private String name;
+
   @Column("user_id")
   private String userId;
 

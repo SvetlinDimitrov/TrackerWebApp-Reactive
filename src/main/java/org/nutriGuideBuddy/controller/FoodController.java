@@ -28,7 +28,8 @@ public class FoodController {
   }
 
   @PutMapping("/{foodId}")
-  private Mono<Void> changeFood(@PathVariable String mealId, @PathVariable String foodId, @RequestBody InsertFoodDto dto) {
+  private Mono<Void> changeFood(
+      @PathVariable String mealId, @PathVariable String foodId, @RequestBody InsertFoodDto dto) {
     return service.changeFood(mealId, foodId, dto);
   }
 

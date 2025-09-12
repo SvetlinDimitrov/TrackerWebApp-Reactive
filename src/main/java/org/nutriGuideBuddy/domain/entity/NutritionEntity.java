@@ -12,16 +12,20 @@ import java.util.UUID;
 @Data
 public class NutritionEntity {
 
-  @Id
-  private String id;
+  @Id private String id;
+
   @Column("name")
   private String name;
+
   @Column("unit")
   private String unit;
+
   @Column("amount")
   private BigDecimal amount;
+
   @Column("food_id")
   private String foodId;
+
   @Column("user_id")
   private String userId;
 

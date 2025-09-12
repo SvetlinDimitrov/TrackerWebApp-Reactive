@@ -28,9 +28,7 @@ public class UserRepository {
   }
 
   public Mono<UserEntity> findUserById(String id) {
-    return entityTemplate.selectOne(
-        query(where("id").is(id)), UserEntity.class
-    );
+    return entityTemplate.selectOne(query(where("id").is(id)), UserEntity.class);
   }
 
   public Flux<UserEntity> findAllUsers() {
@@ -39,41 +37,37 @@ public class UserRepository {
 
   public Mono<UserEntity> findUserByEmail(String email) {
 
-    return entityTemplate.selectOne(
-        query(where("email").is(email)), UserEntity.class
-    );
+    return entityTemplate.selectOne(query(where("email").is(email)), UserEntity.class);
   }
 
   @Modifying
   public Mono<Void> deleteUserById(String id) {
-    return entityTemplate.delete(UserEntity.class)
-        .matching(
-            query(where("id").is(id))
-        ).all()
-        .then();
+    return entityTemplate.delete(UserEntity.class).matching(query(where("id").is(id))).all().then();
   }
 
   @Modifying
   public Mono<UserEntity> updateUsernameAndPassword(String id, UserEntity updatedEntity) {
-    return entityTemplate.update(UserEntity.class)
+    return entityTemplate
+        .update(UserEntity.class)
         .matching(query(where("id").is(id)))
         .apply(
             Update.update("username", updatedEntity.getUsername())
-                .set("password", updatedEntity.getPassword())
-        )
+                .set("password", updatedEntity.getPassword()))
         .then(findUserById(id));
   }
 
   @Transactional(readOnly = true)
   public Mono<UserWithDetails> getUserWithDetailsByEmail(String email) {
-    return entityTemplate.select(UserEntity.class)
+    return entityTemplate
+        .select(UserEntity.class)
         .matching(Query.query(Criteria.where("email").is(email)))
         .one()
-        .flatMap(userEntity ->
-            entityTemplate.select(UserDetails.class)
-                .matching(Query.query(Criteria.where("userId").is(userEntity.getId())))
-                .one()
-                .map(userDetails -> new UserWithDetails(userEntity, userDetails))
-        );
+        .flatMap(
+            userEntity ->
+                entityTemplate
+                    .select(UserDetails.class)
+                    .matching(Query.query(Criteria.where("userId").is(userEntity.getId())))
+                    .one()
+                    .map(userDetails -> new UserWithDetails(userEntity, userDetails)));
   }
 }

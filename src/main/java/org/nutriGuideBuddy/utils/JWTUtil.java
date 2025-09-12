@@ -35,33 +35,29 @@ public class JWTUtil {
   }
 
   public JwtToken generateToken(UserDetails userDetails) {
-    String role = (
-        userDetails.getAge() != null && userDetails.getHeight() != null && userDetails.getKilograms() != null
-            && userDetails.getGender() != null && userDetails.getWorkoutState() != null
-    )
-        ? UserRoles.FULLY_REGISTERED.name()
-        : UserRoles.NOT_FULLY_REGISTERED.name();
+    String role =
+        (userDetails.getAge() != null
+                && userDetails.getHeight() != null
+                && userDetails.getKilograms() != null
+                && userDetails.getGender() != null
+                && userDetails.getWorkoutState() != null)
+            ? UserRoles.FULLY_REGISTERED.name()
+            : UserRoles.NOT_FULLY_REGISTERED.name();
 
     Date expireAt = new Date(System.currentTimeMillis() + 30L * 24 * 60 * 60 * 1000);
-    return new JwtToken(Jwts.builder()
-        .setSubject(userDetails.getUserId())
-        .claim("role", role)
-        .setExpiration(expireAt) // 1 month expiration
-        .signWith(secretKey, SignatureAlgorithm.HS256)
-        .compact(),
-
-        expireAt.toInstant()
-            .atZone(ZoneId.systemDefault())
-            .toLocalDateTime()
-    );
+    return new JwtToken(
+        Jwts.builder()
+            .setSubject(userDetails.getUserId())
+            .claim("role", role)
+            .setExpiration(expireAt) // 1 month expiration
+            .signWith(secretKey, SignatureAlgorithm.HS256)
+            .compact(),
+        expireAt.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime());
   }
 
   public boolean validateToken(String token) {
     try {
-      Jwts.parserBuilder()
-          .setSigningKey(secretKey)
-          .build()
-          .parseClaimsJws(token);
+      Jwts.parserBuilder().setSigningKey(secretKey).build().parseClaimsJws(token);
       return true;
     } catch (io.jsonwebtoken.security.SignatureException e) {
       log.info("Invalid JWT token: {}", e.getMessage());
@@ -78,11 +74,8 @@ public class JWTUtil {
   }
 
   public Authentication getAuthentication(String token) {
-    Claims claims = Jwts.parserBuilder()
-        .setSigningKey(secretKey)
-        .build()
-        .parseClaimsJws(token)
-        .getBody();
+    Claims claims =
+        Jwts.parserBuilder().setSigningKey(secretKey).build().parseClaimsJws(token).getBody();
 
     String userId = claims.getSubject();
     String role = claims.get("role", String.class);

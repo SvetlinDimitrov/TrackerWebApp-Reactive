@@ -20,25 +20,29 @@ public class UserHelperFinder {
 
   public Mono<UserEntity> getUser() {
     return ReactiveSecurityContextHolder.getContext()
-        .flatMap(securityContext -> {
-          Authentication authentication = securityContext.getAuthentication();
-          if (authentication instanceof UsernamePasswordAuthenticationToken) {
-            String userId = (String) authentication.getPrincipal();
-            return userRepository.findUserById(userId)
-                .switchIfEmpty(Mono.error(new ResponseStatusException(HttpStatusCode.valueOf(401))));
-          }
-          return Mono.error(new ResponseStatusException(HttpStatusCode.valueOf(401)));
-        });
+        .flatMap(
+            securityContext -> {
+              Authentication authentication = securityContext.getAuthentication();
+              if (authentication instanceof UsernamePasswordAuthenticationToken) {
+                String userId = (String) authentication.getPrincipal();
+                return userRepository
+                    .findUserById(userId)
+                    .switchIfEmpty(
+                        Mono.error(new ResponseStatusException(HttpStatusCode.valueOf(401))));
+              }
+              return Mono.error(new ResponseStatusException(HttpStatusCode.valueOf(401)));
+            });
   }
 
   public Mono<String> getUserId() {
     return ReactiveSecurityContextHolder.getContext()
-        .flatMap(securityContext -> {
-          Authentication authentication = securityContext.getAuthentication();
-          if (authentication instanceof UsernamePasswordAuthenticationToken) {
-            return Mono.just((String) authentication.getPrincipal());
-          }
-          return Mono.error(new ResponseStatusException(HttpStatus.UNAUTHORIZED));
-        });
+        .flatMap(
+            securityContext -> {
+              Authentication authentication = securityContext.getAuthentication();
+              if (authentication instanceof UsernamePasswordAuthenticationToken) {
+                return Mono.just((String) authentication.getPrincipal());
+              }
+              return Mono.error(new ResponseStatusException(HttpStatus.UNAUTHORIZED));
+            });
   }
 }

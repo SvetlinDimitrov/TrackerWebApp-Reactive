@@ -12,7 +12,7 @@ public class CommandFoodShortenDto {
 
   @JsonProperty("food_name")
   private String foodName;
+
   @JsonProperty("tag_name")
   private String tagName;
-
 }

@@ -15,24 +15,35 @@ public class FoodServiceImp extends AbstractFoodService {
   }
 
   public Mono<Void> deleteFoodById(String mealId, String foodId) {
-    return userHelper.getUserId()
+    return userHelper
+        .getUserId()
         .flatMap(userId -> getFoodEntityByIdMealIdUserId(foodId, mealId, userId))
         .flatMap(food -> repository.deleteFoodById(food.getId(), food.getMealId()));
   }
 
   public Mono<Void> addFoodToMeal(InsertFoodDto dto, String mealId) {
-    return userHelper.getUserId()
+    return userHelper
+        .getUserId()
         .flatMap(userId -> repository.findMealByIdAndUserId(mealId, userId))
         .switchIfEmpty(Mono.error(new BadRequestException("No meal found with id: " + mealId)))
         .flatMap(mealEntity -> createAndGetFood(mealEntity.getUserId(), dto, mealEntity.getId()))
-        .flatMap(data -> saveFoodEntity(data.getT1(), data.getT2(), data.getT3(), data.getT4(), data.getT5()));
+        .flatMap(
+            data ->
+                saveFoodEntity(
+                    data.getT1(), data.getT2(), data.getT3(), data.getT4(), data.getT5()));
   }
 
   public Mono<Void> changeFood(String mealId, String foodId, InsertFoodDto dto) {
-    return userHelper.getUserId()
+    return userHelper
+        .getUserId()
         .flatMap(userId -> getFoodEntityByIdMealIdUserId(foodId, mealId, userId))
         .flatMap(food -> createAndGetFood(food.getUserId(), dto, mealId))
-        .flatMap(data -> repository.deleteFoodById(foodId, mealId)
-            .then(saveFoodEntity(data.getT1(), data.getT2(), data.getT3(), data.getT4(), data.getT5())));
+        .flatMap(
+            data ->
+                repository
+                    .deleteFoodById(foodId, mealId)
+                    .then(
+                        saveFoodEntity(
+                            data.getT1(), data.getT2(), data.getT3(), data.getT4(), data.getT5())));
   }
 }

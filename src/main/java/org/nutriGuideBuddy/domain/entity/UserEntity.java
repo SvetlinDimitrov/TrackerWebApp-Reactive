@@ -11,12 +11,14 @@ import java.util.UUID;
 @Data
 public class UserEntity {
 
-  @Id
-  private String id;
+  @Id private String id;
+
   @Column("username")
   private String username;
+
   @Column("email")
   private String email;
+
   @Column("password")
   private String password;
 

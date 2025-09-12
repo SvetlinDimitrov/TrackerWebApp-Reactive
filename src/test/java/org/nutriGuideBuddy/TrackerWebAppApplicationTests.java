@@ -10,31 +10,43 @@ import org.testcontainers.containers.GenericContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
-
 @SpringBootTest
 @ActiveProfiles("secret")
 @Testcontainers
 class TrackerWebAppApplicationTests {
 
-	@Container
-	public static GenericContainer<?> mysqlContainer = new GenericContainer<>("mysql:latest")
-			.withExposedPorts(3306)
-			.withEnv("MYSQL_ROOT_PASSWORD", "12345")
-			.withEnv("MYSQL_DATABASE", "reactiveDB");
+  @Container
+  public static GenericContainer<?> mysqlContainer =
+      new GenericContainer<>("mysql:latest")
+          .withExposedPorts(3306)
+          .withEnv("MYSQL_ROOT_PASSWORD", "12345")
+          .withEnv("MYSQL_DATABASE", "reactiveDB");
 
-	@BeforeAll
-	static void beforeAll() {
-		mysqlContainer.start();
-	}
+  @BeforeAll
+  static void beforeAll() {
+    mysqlContainer.start();
+  }
 
-	@DynamicPropertySource
-	static void setDatasourceProperties(DynamicPropertyRegistry registry) {
-		registry.add("spring.r2dbc.url", () -> "r2dbc:mysql://" + mysqlContainer.getHost() + ":" + mysqlContainer.getFirstMappedPort() + "/reactiveDB");
-		registry.add("spring.liquibase.url", () -> "jdbc:mysql://" + mysqlContainer.getHost() + ":" + mysqlContainer.getFirstMappedPort() + "/reactiveDB");
-	}
+  @DynamicPropertySource
+  static void setDatasourceProperties(DynamicPropertyRegistry registry) {
+    registry.add(
+        "spring.r2dbc.url",
+        () ->
+            "r2dbc:mysql://"
+                + mysqlContainer.getHost()
+                + ":"
+                + mysqlContainer.getFirstMappedPort()
+                + "/reactiveDB");
+    registry.add(
+        "spring.liquibase.url",
+        () ->
+            "jdbc:mysql://"
+                + mysqlContainer.getHost()
+                + ":"
+                + mysqlContainer.getFirstMappedPort()
+                + "/reactiveDB");
+  }
 
-	@Test
-	void contextLoads() {
-	}
-
+  @Test
+  void contextLoads() {}
 }

@@ -16,6 +16,7 @@ public class AltMeasures {
 
   @JsonProperty("serving_weight")
   private BigDecimal servingWeight;
+
   private String measure;
   private BigDecimal seq;
   private BigDecimal qty;

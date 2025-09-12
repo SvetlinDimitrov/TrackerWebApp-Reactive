@@ -27,42 +27,64 @@ import java.util.Collections;
 public class SecurityConfig {
 
   private final JwtTokenAuthenticationFilter jwtAuthenticationFilter;
+
   @Value("${allowed.cors.origins}")
   private String allowedOrigins;
 
   @Bean
   public SecurityWebFilterChain securityFilterChain(ServerHttpSecurity http) {
-    return http
-        .csrf(ServerHttpSecurity.CsrfSpec::disable)
+    return http.csrf(ServerHttpSecurity.CsrfSpec::disable)
         .httpBasic(ServerHttpSecurity.HttpBasicSpec::disable)
-        .cors(cors -> cors.configurationSource(request -> {
-          CorsConfiguration corsConfiguration = new CorsConfiguration();
-          corsConfiguration.setAllowedOriginPatterns(Collections.singletonList(allowedOrigins));
-          corsConfiguration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"));
-          corsConfiguration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type", "Accept", "Origin", "DNT", "X-CustomHeader", "Keep-Alive", "User-Agent", "X-Requested-With", "If-Modified-Since", "Cache-Control", "Content-Range", "Range"));
-          corsConfiguration.setAllowCredentials(true);
-          corsConfiguration.setMaxAge(1728000L);
-          return corsConfiguration;
-        }))
+        .cors(
+            cors ->
+                cors.configurationSource(
+                    request -> {
+                      CorsConfiguration corsConfiguration = new CorsConfiguration();
+                      corsConfiguration.setAllowedOriginPatterns(
+                          Collections.singletonList(allowedOrigins));
+                      corsConfiguration.setAllowedMethods(
+                          Arrays.asList("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"));
+                      corsConfiguration.setAllowedHeaders(
+                          Arrays.asList(
+                              "Authorization",
+                              "Content-Type",
+                              "Accept",
+                              "Origin",
+                              "DNT",
+                              "X-CustomHeader",
+                              "Keep-Alive",
+                              "User-Agent",
+                              "X-Requested-With",
+                              "If-Modified-Since",
+                              "Cache-Control",
+                              "Content-Range",
+                              "Range"));
+                      corsConfiguration.setAllowCredentials(true);
+                      corsConfiguration.setMaxAge(1728000L);
+                      return corsConfiguration;
+                    }))
         .securityContextRepository(NoOpServerSecurityContextRepository.getInstance())
-        .authorizeExchange(request ->
-            request
-                .pathMatchers(HttpMethod.POST, "/api/user" , "/api/user/login").permitAll()
-                .pathMatchers("/api/user/reset-password").permitAll()
-                .pathMatchers("/api/verify/**").permitAll()
-                .pathMatchers("/api/meals/**").hasRole("FULLY_REGISTERED")
-                .pathMatchers("/api/record/**").hasRole("FULLY_REGISTERED")
-                .anyExchange().authenticated()
-        )
+        .authorizeExchange(
+            request ->
+                request
+                    .pathMatchers(HttpMethod.POST, "/api/user", "/api/user/login")
+                    .permitAll()
+                    .pathMatchers("/api/user/reset-password")
+                    .permitAll()
+                    .pathMatchers("/api/verify/**")
+                    .permitAll()
+                    .pathMatchers("/api/meals/**")
+                    .hasRole("FULLY_REGISTERED")
+                    .pathMatchers("/api/record/**")
+                    .hasRole("FULLY_REGISTERED")
+                    .anyExchange()
+                    .authenticated())
         .addFilterAt(jwtAuthenticationFilter, SecurityWebFiltersOrder.AUTHENTICATION)
         .build();
   }
-
 
   @Bean
   public PasswordEncoder passwordEncoder() {
     return new BCryptPasswordEncoder();
   }
-
 }
-

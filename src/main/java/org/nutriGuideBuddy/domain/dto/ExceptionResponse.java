@@ -1,4 +1,3 @@
 package org.nutriGuideBuddy.domain.dto;
 
-public record ExceptionResponse(String message) {
-}
+public record ExceptionResponse(String message) {}

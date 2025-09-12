@@ -18,13 +18,13 @@ public class NutritionixApiController {
 
   private final NutritionixApiService service;
 
-  //Mostly return a single food
+  // Mostly return a single food
   @GetMapping("/common/{term}")
   public Mono<List<InsertFoodDto>> getFoodBySearchCriteria(@PathVariable String term) {
     return service.getCommonFoodBySearchTerm(term);
   }
 
-  //Mostly return a single food
+  // Mostly return a single food
   @GetMapping("/branded/{id}")
   public Mono<List<InsertFoodDto>> getBrandedFoodById(@PathVariable String id) {
     return service.getBrandedFoodById(id);

@@ -23,8 +23,7 @@ public class CustomFoodController {
 
   @GetMapping
   private Mono<Page<FoodView>> getAllCustomFoods(
-      @RequestParam(defaultValue = "0") int page,
-      @RequestParam(defaultValue = "10") int size) {
+      @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {
 
     if (page < 0 || size < 0) {
       return Mono.error(new BadRequestException("Page and size must be greater than 0"));
@@ -36,8 +35,7 @@ public class CustomFoodController {
 
   @GetMapping("/short")
   private Mono<Page<ShortenFood>> searchCustomFoods(
-      @RequestParam(defaultValue = "0") int page,
-      @RequestParam(defaultValue = "10") int size) {
+      @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {
 
     if (page < 0 || size < 0) {
       return Mono.error(new BadRequestException("Page and size must be greater than 0"));
@@ -75,4 +73,3 @@ public class CustomFoodController {
     return Mono.just(new ExceptionResponse(e.getMessage()));
   }
 }
-

@@ -1,6 +1,5 @@
 package org.nutriGuideBuddy.domain.dto.nutritionxApi;
 
-
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 
@@ -77,5 +76,4 @@ public class FoodItem {
 
   @JsonProperty("alt_measures")
   private List<AltMeasures> measures;
-
 }

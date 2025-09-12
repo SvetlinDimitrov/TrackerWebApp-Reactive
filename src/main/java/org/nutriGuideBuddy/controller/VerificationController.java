@@ -18,7 +18,6 @@ public class VerificationController {
 
   private final EmailVerificationService emailVerificationService;
 
-
   @PostMapping("/send-email")
   public Mono<Void> sendVerificationEmail(@RequestBody UserEmailValidationCreate userDto) {
     return emailVerificationService.validateUserAndSendVerificationEmail(userDto);
@@ -27,7 +26,7 @@ public class VerificationController {
   @PostMapping("/forgot-password")
   public Mono<Void> sendForgotPasswordEmail(@RequestBody Map<String, String> request) {
     String email = request.get("email");
-    if(email == null || email.isBlank()) {
+    if (email == null || email.isBlank()) {
       return Mono.error(new BadRequestException("Invalid email"));
     }
     return emailVerificationService.sendForgotPasswordEmail(email);

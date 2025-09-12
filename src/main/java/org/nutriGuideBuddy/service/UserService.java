@@ -27,25 +27,28 @@ public class UserService {
   private final UserHelperFinder userHelper;
 
   public Mono<UserView> getById() {
-    return userHelper.getUser()
-        .map(UserView::toView);
+    return userHelper.getUser().map(UserView::toView);
   }
 
   public Mono<JwtResponse> modifyUsername(UserDto userDto) {
-    return userHelper.getUser()
+    return userHelper
+        .getUser()
         .flatMap(user -> UserModifier.modifyAndSaveUsername(user, userDto))
-        .flatMap(user ->
-            repository.updateUsernameAndPassword(user.getId(), user)
-                .then(Mono.just(user))
-                .zipWith(userDetailsRepository.findUserDetailsByUserId(user.getId())
-                    .switchIfEmpty(Mono.error(new BadRequestException("User details not found")))
-                )
-                .map(tuple -> toJwtResponse(tuple.getT1(), tuple.getT2())));
+        .flatMap(
+            user ->
+                repository
+                    .updateUsernameAndPassword(user.getId(), user)
+                    .then(Mono.just(user))
+                    .zipWith(
+                        userDetailsRepository
+                            .findUserDetailsByUserId(user.getId())
+                            .switchIfEmpty(
+                                Mono.error(new BadRequestException("User details not found"))))
+                    .map(tuple -> toJwtResponse(tuple.getT1(), tuple.getT2())));
   }
 
   public Mono<Void> deleteUserById() {
-    return userHelper.getUser()
-        .flatMap(user -> repository.deleteUserById(user.getId()));
+    return userHelper.getUser().flatMap(user -> repository.deleteUserById(user.getId()));
   }
 
   public Mono<JwtResponse> createUser(UserCreate userDto) {
@@ -53,8 +56,13 @@ public class UserService {
       return Mono.error(new BadRequestException("Invalid email"));
     }
 
-    return repository.findUserByEmail(userDto.email())
-        .flatMap(user -> Mono.error(new BadRequestException("User with email " + userDto.email() + " already exists")))
+    return repository
+        .findUserByEmail(userDto.email())
+        .flatMap(
+            user ->
+                Mono.error(
+                    new BadRequestException(
+                        "User with email " + userDto.email() + " already exists")))
         .switchIfEmpty(createUserAndSave(userDto))
         .cast(JwtResponse.class);
   }
@@ -64,17 +72,21 @@ public class UserService {
       return Mono.error(new BadRequestException("Invalid email"));
     }
 
-    return repository.findUserByEmail(dto.email())
-        .switchIfEmpty(Mono.error(new BadRequestException("User with email " + dto.email() + " not found")))
-        .flatMap(user -> {
-          if (passwordEncoder.matches(dto.password(), user.getPassword())) {
-            return userDetailsRepository.findUserDetailsByUserId(user.getId())
-                .switchIfEmpty(Mono.error(new BadRequestException("User details not found")))
-                .map(userDetails -> toJwtResponse(user, userDetails));
-          } else {
-            return Mono.error(new BadRequestException("Invalid password"));
-          }
-        });
+    return repository
+        .findUserByEmail(dto.email())
+        .switchIfEmpty(
+            Mono.error(new BadRequestException("User with email " + dto.email() + " not found")))
+        .flatMap(
+            user -> {
+              if (passwordEncoder.matches(dto.password(), user.getPassword())) {
+                return userDetailsRepository
+                    .findUserDetailsByUserId(user.getId())
+                    .switchIfEmpty(Mono.error(new BadRequestException("User details not found")))
+                    .map(userDetails -> toJwtResponse(user, userDetails));
+              } else {
+                return Mono.error(new BadRequestException("Invalid password"));
+              }
+            });
   }
 
   private Mono<JwtResponse> createUserAndSave(UserCreate userDto) {
@@ -86,17 +98,18 @@ public class UserService {
     }
 
     return UserModifier.validateAndModifyUserCreation(new UserEntity(), userDto)
-        .map(user -> {
-          user.setPassword(passwordEncoder.encode(user.getPassword()));
-          return user;
-        })
+        .map(
+            user -> {
+              user.setPassword(passwordEncoder.encode(user.getPassword()));
+              return user;
+            })
         .flatMap(repository::save)
-        .flatMap(userData -> {
-          UserDetails details = new UserDetails();
-          details.setUserId(userData.getId());
-          return userDetailsRepository.save(details)
-              .zipWith(Mono.fromCallable(() -> userData));
-        })
+        .flatMap(
+            userData -> {
+              UserDetails details = new UserDetails();
+              details.setUserId(userData.getId());
+              return userDetailsRepository.save(details).zipWith(Mono.fromCallable(() -> userData));
+            })
         .map(tuple -> toJwtResponse(tuple.getT2(), tuple.getT1()));
   }
 
@@ -109,24 +122,24 @@ public class UserService {
       return Mono.error(new BadRequestException("Invalid password reset token"));
     }
 
-    return repository.findUserByEmail(email)
+    return repository
+        .findUserByEmail(email)
         .switchIfEmpty(Mono.error(new BadRequestException("User not found")))
-        .flatMap(user -> {
-          if (dto.newPassword().length() < 4 || dto.newPassword().length() > 255) {
-            return Mono.error(new BadRequestException("Password must be between 4 and 255 characters"));
-          }
-          user.setPassword(passwordEncoder.encode(dto.newPassword()));
-          return repository.updateUsernameAndPassword(user.getId(), user);
-        })
+        .flatMap(
+            user -> {
+              if (dto.newPassword().length() < 4 || dto.newPassword().length() > 255) {
+                return Mono.error(
+                    new BadRequestException("Password must be between 4 and 255 characters"));
+              }
+              user.setPassword(passwordEncoder.encode(dto.newPassword()));
+              return repository.updateUsernameAndPassword(user.getId(), user);
+            })
         .then();
   }
 
   private JwtResponse toJwtResponse(UserEntity user, UserDetails userDetails) {
     return new JwtResponse(
-        new UserWithDetailsView(UserView.toView(user), UserDetailsView.toView(userDetails))
-        , jwtUtil2.generateToken(userDetails)
-    );
+        new UserWithDetailsView(UserView.toView(user), UserDetailsView.toView(userDetails)),
+        jwtUtil2.generateToken(userDetails));
   }
-
-
 }

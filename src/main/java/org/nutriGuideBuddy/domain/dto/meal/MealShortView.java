@@ -6,16 +6,10 @@ import java.math.BigDecimal;
 import java.util.List;
 
 public record MealShortView(
-    String id,
-    String name,
-    BigDecimal consumedCalories,
-    List<ShortenFood> foods) {
+    String id, String name, BigDecimal consumedCalories, List<ShortenFood> foods) {
 
-  public static MealShortView toView(MealEntity entity, List<ShortenFood> foodView, BigDecimal caloriesConsumed) {
-    return new MealShortView(
-        entity.getId(),
-        entity.getName(),
-        caloriesConsumed,
-        foodView);
+  public static MealShortView toView(
+      MealEntity entity, List<ShortenFood> foodView, BigDecimal caloriesConsumed) {
+    return new MealShortView(entity.getId(), entity.getName(), caloriesConsumed, foodView);
   }
 }

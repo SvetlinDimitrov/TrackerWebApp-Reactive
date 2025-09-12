@@ -27,10 +27,10 @@ public class VitaminCreator {
           AllowedNutrients.VitaminB7_Biotin.getNutrientName(),
           AllowedNutrients.VitaminB9_Folate.getNutrientName(),
           AllowedNutrients.VitaminB12.getNutrientName(),
-          AllowedNutrients.Choline.getNutrientName()
-      );
+          AllowedNutrients.Choline.getNutrientName());
 
-  public static Map<String, NutritionIntakeView> fillVitamins(Map<String, NutritionIntakeView> map, Gender gender, Integer age) {
+  public static Map<String, NutritionIntakeView> fillVitamins(
+      Map<String, NutritionIntakeView> map, Gender gender, Integer age) {
     fillVitaminA(map, gender, age);
     fillVitaminC(map, gender, age);
     fillVitaminD(map, gender, age);
@@ -48,12 +48,14 @@ public class VitaminCreator {
     return map;
   }
 
-  private static void fillVitaminA(Map<String, NutritionIntakeView> map, Gender gender, Integer age) {
-    NutritionIntakeView vitmainA = NutritionIntakeView
-        .builder()
-        .name(AllowedNutrients.VitaminA.getNutrientName())
-        .measurement(AllowedNutrients.VitaminA.getNutrientUnit())
-        .dailyConsumed(BigDecimal.ZERO).build();
+  private static void fillVitaminA(
+      Map<String, NutritionIntakeView> map, Gender gender, Integer age) {
+    NutritionIntakeView vitmainA =
+        NutritionIntakeView.builder()
+            .name(AllowedNutrients.VitaminA.getNutrientName())
+            .measurement(AllowedNutrients.VitaminA.getNutrientUnit())
+            .dailyConsumed(BigDecimal.ZERO)
+            .build();
 
     BigDecimal dailyIntake = BigDecimal.ZERO;
 
@@ -71,7 +73,6 @@ public class VitaminCreator {
           }
         }
         case FEMALE -> {
-
           if (ageBetween(9, 13, age)) {
             dailyIntake = BigDecimal.valueOf(600);
           } else {
@@ -84,12 +85,14 @@ public class VitaminCreator {
     map.put(vitmainA.getName(), vitmainA);
   }
 
-  private static void fillVitaminC(Map<String, NutritionIntakeView> map, Gender gender, Integer age) {
-    NutritionIntakeView vitmainC = NutritionIntakeView
-        .builder()
-        .name(AllowedNutrients.VitaminC.getNutrientName())
-        .measurement(AllowedNutrients.VitaminC.getNutrientUnit())
-        .dailyConsumed(BigDecimal.ZERO).build();
+  private static void fillVitaminC(
+      Map<String, NutritionIntakeView> map, Gender gender, Integer age) {
+    NutritionIntakeView vitmainC =
+        NutritionIntakeView.builder()
+            .name(AllowedNutrients.VitaminC.getNutrientName())
+            .measurement(AllowedNutrients.VitaminC.getNutrientUnit())
+            .dailyConsumed(BigDecimal.ZERO)
+            .build();
 
     BigDecimal dailyIntake = BigDecimal.ZERO;
 
@@ -123,12 +126,14 @@ public class VitaminCreator {
     map.put(vitmainC.getName(), vitmainC);
   }
 
-  private static void fillVitaminD(Map<String, NutritionIntakeView> map, Gender gender, Integer age) {
-    NutritionIntakeView vitaminD = NutritionIntakeView
-        .builder()
-        .name(AllowedNutrients.VitaminD_D2_D3.getNutrientName())
-        .measurement(AllowedNutrients.VitaminD_D2_D3.getNutrientUnit())
-        .dailyConsumed(BigDecimal.ZERO).build();
+  private static void fillVitaminD(
+      Map<String, NutritionIntakeView> map, Gender gender, Integer age) {
+    NutritionIntakeView vitaminD =
+        NutritionIntakeView.builder()
+            .name(AllowedNutrients.VitaminD_D2_D3.getNutrientName())
+            .measurement(AllowedNutrients.VitaminD_D2_D3.getNutrientUnit())
+            .dailyConsumed(BigDecimal.ZERO)
+            .build();
 
     BigDecimal dailyIntake = BigDecimal.ZERO;
 
@@ -149,12 +154,14 @@ public class VitaminCreator {
     map.put(vitaminD.getName(), vitaminD);
   }
 
-  private static void fillVitaminE(Map<String, NutritionIntakeView> map, Gender gender, Integer age) {
-    NutritionIntakeView vitaminE = NutritionIntakeView
-        .builder()
-        .name(AllowedNutrients.VitaminE.getNutrientName())
-        .measurement(AllowedNutrients.VitaminE.getNutrientUnit())
-        .dailyConsumed(BigDecimal.ZERO).build();
+  private static void fillVitaminE(
+      Map<String, NutritionIntakeView> map, Gender gender, Integer age) {
+    NutritionIntakeView vitaminE =
+        NutritionIntakeView.builder()
+            .name(AllowedNutrients.VitaminE.getNutrientName())
+            .measurement(AllowedNutrients.VitaminE.getNutrientUnit())
+            .dailyConsumed(BigDecimal.ZERO)
+            .build();
 
     BigDecimal dailyIntake = BigDecimal.ZERO;
 
@@ -177,12 +184,14 @@ public class VitaminCreator {
     map.put(vitaminE.getName(), vitaminE);
   }
 
-  private static void fillVitaminK(Map<String, NutritionIntakeView> map, Gender gender, Integer age) {
-    NutritionIntakeView vitamin = NutritionIntakeView
-        .builder()
-        .name(AllowedNutrients.VitaminK.getNutrientName())
-        .measurement(AllowedNutrients.VitaminK.getNutrientUnit())
-        .dailyConsumed(BigDecimal.ZERO).build();
+  private static void fillVitaminK(
+      Map<String, NutritionIntakeView> map, Gender gender, Integer age) {
+    NutritionIntakeView vitamin =
+        NutritionIntakeView.builder()
+            .name(AllowedNutrients.VitaminK.getNutrientName())
+            .measurement(AllowedNutrients.VitaminK.getNutrientUnit())
+            .dailyConsumed(BigDecimal.ZERO)
+            .build();
 
     BigDecimal dailyIntake = BigDecimal.ZERO;
 
@@ -216,12 +225,14 @@ public class VitaminCreator {
     map.put(vitamin.getName(), vitamin);
   }
 
-  private static void fillVitaminB1(Map<String, NutritionIntakeView> map, Gender gender, Integer age) {
-    NutritionIntakeView vitamin = NutritionIntakeView
-        .builder()
-        .name(AllowedNutrients.VitaminB1_Thiamin.getNutrientName())
-        .measurement(AllowedNutrients.VitaminB1_Thiamin.getNutrientUnit())
-        .dailyConsumed(BigDecimal.ZERO).build();
+  private static void fillVitaminB1(
+      Map<String, NutritionIntakeView> map, Gender gender, Integer age) {
+    NutritionIntakeView vitamin =
+        NutritionIntakeView.builder()
+            .name(AllowedNutrients.VitaminB1_Thiamin.getNutrientName())
+            .measurement(AllowedNutrients.VitaminB1_Thiamin.getNutrientUnit())
+            .dailyConsumed(BigDecimal.ZERO)
+            .build();
 
     BigDecimal dailyIntake = BigDecimal.ZERO;
 
@@ -253,12 +264,14 @@ public class VitaminCreator {
     map.put(vitamin.getName(), vitamin);
   }
 
-  private static void fillVitaminB2(Map<String, NutritionIntakeView> map, Gender gender, Integer age) {
-    NutritionIntakeView vitamin = NutritionIntakeView
-        .builder()
-        .name(AllowedNutrients.VitaminB2_Riboflavin.getNutrientName())
-        .measurement(AllowedNutrients.VitaminB2_Riboflavin.getNutrientUnit())
-        .dailyConsumed(BigDecimal.ZERO).build();
+  private static void fillVitaminB2(
+      Map<String, NutritionIntakeView> map, Gender gender, Integer age) {
+    NutritionIntakeView vitamin =
+        NutritionIntakeView.builder()
+            .name(AllowedNutrients.VitaminB2_Riboflavin.getNutrientName())
+            .measurement(AllowedNutrients.VitaminB2_Riboflavin.getNutrientUnit())
+            .dailyConsumed(BigDecimal.ZERO)
+            .build();
 
     BigDecimal dailyIntake = BigDecimal.ZERO;
 
@@ -290,12 +303,14 @@ public class VitaminCreator {
     map.put(vitamin.getName(), vitamin);
   }
 
-  private static void fillVitaminB3(Map<String, NutritionIntakeView> map, Gender gender, Integer age) {
-    NutritionIntakeView vitamin = NutritionIntakeView
-        .builder()
-        .name(AllowedNutrients.VitaminB3_Niacin.getNutrientName())
-        .measurement(AllowedNutrients.VitaminB3_Niacin.getNutrientUnit())
-        .dailyConsumed(BigDecimal.ZERO).build();
+  private static void fillVitaminB3(
+      Map<String, NutritionIntakeView> map, Gender gender, Integer age) {
+    NutritionIntakeView vitamin =
+        NutritionIntakeView.builder()
+            .name(AllowedNutrients.VitaminB3_Niacin.getNutrientName())
+            .measurement(AllowedNutrients.VitaminB3_Niacin.getNutrientUnit())
+            .dailyConsumed(BigDecimal.ZERO)
+            .build();
 
     BigDecimal dailyIntake = BigDecimal.ZERO;
 
@@ -325,12 +340,14 @@ public class VitaminCreator {
     map.put(vitamin.getName(), vitamin);
   }
 
-  private static void fillVitaminB6(Map<String, NutritionIntakeView> map, Gender gender, Integer age) {
-    NutritionIntakeView vitamin = NutritionIntakeView
-        .builder()
-        .name(AllowedNutrients.VitaminB6.getNutrientName())
-        .measurement(AllowedNutrients.VitaminB6.getNutrientUnit())
-        .dailyConsumed(BigDecimal.ZERO).build();
+  private static void fillVitaminB6(
+      Map<String, NutritionIntakeView> map, Gender gender, Integer age) {
+    NutritionIntakeView vitamin =
+        NutritionIntakeView.builder()
+            .name(AllowedNutrients.VitaminB6.getNutrientName())
+            .measurement(AllowedNutrients.VitaminB6.getNutrientUnit())
+            .dailyConsumed(BigDecimal.ZERO)
+            .build();
 
     BigDecimal dailyIntake = BigDecimal.ZERO;
 
@@ -366,12 +383,14 @@ public class VitaminCreator {
     map.put(vitamin.getName(), vitamin);
   }
 
-  private static void fillVitaminB9(Map<String, NutritionIntakeView> map, Gender gender, Integer age) {
-    NutritionIntakeView vitamin = NutritionIntakeView
-        .builder()
-        .name(AllowedNutrients.VitaminB9_Folate.getNutrientName())
-        .measurement(AllowedNutrients.VitaminB9_Folate.getNutrientUnit())
-        .dailyConsumed(BigDecimal.ZERO).build();
+  private static void fillVitaminB9(
+      Map<String, NutritionIntakeView> map, Gender gender, Integer age) {
+    NutritionIntakeView vitamin =
+        NutritionIntakeView.builder()
+            .name(AllowedNutrients.VitaminB9_Folate.getNutrientName())
+            .measurement(AllowedNutrients.VitaminB9_Folate.getNutrientUnit())
+            .dailyConsumed(BigDecimal.ZERO)
+            .build();
 
     BigDecimal dailyIntake = BigDecimal.ZERO;
 
@@ -394,12 +413,14 @@ public class VitaminCreator {
     map.put(vitamin.getName(), vitamin);
   }
 
-  private static void fillVitaminB12(Map<String, NutritionIntakeView> map, Gender gender, Integer age) {
-    NutritionIntakeView vitamin = NutritionIntakeView
-        .builder()
-        .name(AllowedNutrients.VitaminB12.getNutrientName())
-        .measurement(AllowedNutrients.VitaminB12.getNutrientUnit())
-        .dailyConsumed(BigDecimal.ZERO).build();
+  private static void fillVitaminB12(
+      Map<String, NutritionIntakeView> map, Gender gender, Integer age) {
+    NutritionIntakeView vitamin =
+        NutritionIntakeView.builder()
+            .name(AllowedNutrients.VitaminB12.getNutrientName())
+            .measurement(AllowedNutrients.VitaminB12.getNutrientUnit())
+            .dailyConsumed(BigDecimal.ZERO)
+            .build();
 
     BigDecimal dailyIntake = BigDecimal.ZERO;
 
@@ -422,12 +443,14 @@ public class VitaminCreator {
     map.put(vitamin.getName(), vitamin);
   }
 
-  private static void fillPantothenicAcid(Map<String, NutritionIntakeView> map, Gender gender, Integer age) {
-    NutritionIntakeView vitamin = NutritionIntakeView
-        .builder()
-        .name(AllowedNutrients.VitaminB5_PantothenicAcid.getNutrientName())
-        .measurement(AllowedNutrients.VitaminB5_PantothenicAcid.getNutrientUnit())
-        .dailyConsumed(BigDecimal.ZERO).build();
+  private static void fillPantothenicAcid(
+      Map<String, NutritionIntakeView> map, Gender gender, Integer age) {
+    NutritionIntakeView vitamin =
+        NutritionIntakeView.builder()
+            .name(AllowedNutrients.VitaminB5_PantothenicAcid.getNutrientName())
+            .measurement(AllowedNutrients.VitaminB5_PantothenicAcid.getNutrientUnit())
+            .dailyConsumed(BigDecimal.ZERO)
+            .build();
 
     BigDecimal dailyIntake = BigDecimal.ZERO;
 
@@ -450,12 +473,14 @@ public class VitaminCreator {
     map.put(vitamin.getName(), vitamin);
   }
 
-  private static void fillVitaminB7(Map<String, NutritionIntakeView> map, Gender gender, Integer age) {
-    NutritionIntakeView vitamin = NutritionIntakeView
-        .builder()
-        .name(AllowedNutrients.VitaminB7_Biotin.getNutrientName())
-        .measurement(AllowedNutrients.VitaminB7_Biotin.getNutrientUnit())
-        .dailyConsumed(BigDecimal.ZERO).build();
+  private static void fillVitaminB7(
+      Map<String, NutritionIntakeView> map, Gender gender, Integer age) {
+    NutritionIntakeView vitamin =
+        NutritionIntakeView.builder()
+            .name(AllowedNutrients.VitaminB7_Biotin.getNutrientName())
+            .measurement(AllowedNutrients.VitaminB7_Biotin.getNutrientUnit())
+            .dailyConsumed(BigDecimal.ZERO)
+            .build();
 
     BigDecimal dailyIntake = BigDecimal.ZERO;
 
@@ -480,12 +505,14 @@ public class VitaminCreator {
     map.put(vitamin.getName(), vitamin);
   }
 
-  private static void fillCholine(Map<String, NutritionIntakeView> map, Gender gender, Integer age) {
-    NutritionIntakeView vitamin = NutritionIntakeView
-        .builder()
-        .name(AllowedNutrients.Choline.getNutrientName())
-        .measurement(AllowedNutrients.Choline.getNutrientUnit())
-        .dailyConsumed(BigDecimal.ZERO).build();
+  private static void fillCholine(
+      Map<String, NutritionIntakeView> map, Gender gender, Integer age) {
+    NutritionIntakeView vitamin =
+        NutritionIntakeView.builder()
+            .name(AllowedNutrients.Choline.getNutrientName())
+            .measurement(AllowedNutrients.Choline.getNutrientUnit())
+            .dailyConsumed(BigDecimal.ZERO)
+            .build();
 
     BigDecimal dailyIntake = BigDecimal.ZERO;
 
@@ -520,5 +547,4 @@ public class VitaminCreator {
   private static boolean ageBetween(Integer minAge, Integer maxAge, Integer age) {
     return (age >= minAge && age <= maxAge);
   }
-
 }

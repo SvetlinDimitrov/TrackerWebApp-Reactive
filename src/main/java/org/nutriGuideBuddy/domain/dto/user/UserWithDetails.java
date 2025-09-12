@@ -15,7 +15,4 @@ public class UserWithDetails {
 
   private UserEntity user;
   private UserDetails details;
-
-
-
 }

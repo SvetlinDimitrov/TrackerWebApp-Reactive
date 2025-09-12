@@ -8,7 +8,4 @@ public record InsertFoodDto(
     ServingView mainServing,
     FoodInfoView foodDetails,
     List<ServingView> otherServing,
-    List<NutritionView> nutrients
-) {
-
-}
+    List<NutritionView> nutrients) {}

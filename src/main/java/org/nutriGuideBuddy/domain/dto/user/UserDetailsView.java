@@ -11,16 +11,14 @@ public record UserDetailsView(
     BigDecimal height,
     Integer age,
     WorkoutState workoutState,
-    Gender gender
-) {
+    Gender gender) {
 
   public static UserDetailsView toView(UserDetails entity) {
-    return
-        new UserDetailsView(
-            entity.getKilograms(),
-            entity.getHeight(),
-            entity.getAge(),
-            entity.getWorkoutState(),
-            entity.getGender());
+    return new UserDetailsView(
+        entity.getKilograms(),
+        entity.getHeight(),
+        entity.getAge(),
+        entity.getWorkoutState(),
+        entity.getGender());
   }
 }

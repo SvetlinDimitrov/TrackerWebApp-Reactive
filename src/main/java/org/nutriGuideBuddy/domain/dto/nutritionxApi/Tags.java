@@ -12,12 +12,14 @@ public class Tags {
 
   private String item;
   private String measure;
+
   @JsonProperty("food_group")
   private String foodGroup;
+
   @JsonProperty("tag_id")
   private String tagId;
 }
-//"item": "chia seed",
+// "item": "chia seed",
 //    "measure": null,
 //    "quantity": "1.0",
 //    "food_group": 0,

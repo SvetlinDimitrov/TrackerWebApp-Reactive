@@ -31,12 +31,16 @@ import java.util.Map;
 public class NutritionixApiService {
 
   private static final int BUFFER_SIZE = 64 * 1024 * 1024;
+
   @Value("${api.url}")
   public String BASE_URL;
+
   @Value("${api.id}")
   public String X_API_ID;
+
   @Value("${api.key}")
   public String X_API_KEY;
+
   private WebClient webClient;
 
   @PostConstruct
@@ -73,9 +77,7 @@ public class NutritionixApiService {
         .onStatus(HttpStatusCode::is5xxServerError, this::handle500Response)
         .bodyToMono(GetFoodsResponse.class)
         .map(GetFoodsResponse::getFoods)
-        .map(list -> list.stream()
-            .map(this::toView)
-            .toList());
+        .map(list -> list.stream().map(this::toView).toList());
   }
 
   public Mono<List<InsertFoodDto>> getBrandedFoodById(String id) {
@@ -86,17 +88,14 @@ public class NutritionixApiService {
 
     return webClient
         .get()
-        .uri(uriBuilder -> uriBuilder.path("/v2/search/item")
-            .queryParam("nix_item_id" , id).build())
+        .uri(uriBuilder -> uriBuilder.path("/v2/search/item").queryParam("nix_item_id", id).build())
         .acceptCharset(StandardCharsets.UTF_8)
         .retrieve()
         .onStatus(HttpStatusCode::is4xxClientError, this::handle400Response)
         .onStatus(HttpStatusCode::is5xxServerError, this::handle500Response)
         .bodyToMono(GetFoodsResponse.class)
         .map(GetFoodsResponse::getFoods)
-        .map(list -> list.stream()
-            .map(this::toView)
-            .toList());
+        .map(list -> list.stream().map(this::toView).toList());
   }
 
   public Mono<ListFoodsResponse> getAllFoodsByFoodName(String foodName) {
@@ -107,8 +106,9 @@ public class NutritionixApiService {
 
     return webClient
         .get()
-        .uri(uriBuilder -> uriBuilder.path("/v2/search/instant/")
-            .queryParam("query" , foodName).build())
+        .uri(
+            uriBuilder ->
+                uriBuilder.path("/v2/search/instant/").queryParam("query", foodName).build())
         .acceptCharset(StandardCharsets.UTF_8)
         .retrieve()
         .onStatus(HttpStatusCode::is4xxClientError, this::handle400Response)
@@ -117,25 +117,28 @@ public class NutritionixApiService {
   }
 
   private InsertFoodDto toView(FoodItem item) {
-    CalorieView calorieView = new CalorieView(BigDecimal.valueOf(item.getNfCalories()), AllowedCalorieUnits.CALORIE.getSymbol());
+    CalorieView calorieView =
+        new CalorieView(
+            BigDecimal.valueOf(item.getNfCalories()), AllowedCalorieUnits.CALORIE.getSymbol());
     FoodInfoView foodInfoView = FoodInfoMapperUtils.generateFoodInfo(item);
     List<NutritionView> nutrients = NutrientMapperUtils.getNutrients(item);
     List<ServingView> servings = ServingMapperUtils.getServings(item);
     ServingView mainServing = ServingMapperUtils.getMainServing(item);
-    return new InsertFoodDto(item.getFoodName(), calorieView, mainServing, foodInfoView, servings, nutrients);
+    return new InsertFoodDto(
+        item.getFoodName(), calorieView, mainServing, foodInfoView, servings, nutrients);
   }
+
   private Mono<? extends Throwable> handle400Response(ClientResponse response) {
-    if(response.statusCode().equals(HttpStatusCode.valueOf(404))){
+    if (response.statusCode().equals(HttpStatusCode.valueOf(404))) {
       return Mono.error(new BadRequestException("Not found"));
     }
     if (response.statusCode().equals(HttpStatusCode.valueOf(401))) {
       return Mono.error(new ResponseStatusException(HttpStatusCode.valueOf(429)));
     }
-    return response.bodyToMono(BadRequestException.class)
-        .flatMap(Mono::error);
+    return response.bodyToMono(BadRequestException.class).flatMap(Mono::error);
   }
+
   private Mono<? extends Throwable> handle500Response(ClientResponse response) {
-    return response.bodyToMono(BadRequestException.class)
-        .flatMap(Mono::error);
+    return response.bodyToMono(BadRequestException.class).flatMap(Mono::error);
   }
 }

@@ -10,7 +10,4 @@ public record UserDetailsDto(
     BigDecimal height,
     Integer age,
     WorkoutState workoutState,
-    Gender gender
-) {
-
-}
+    Gender gender) {}

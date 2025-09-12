@@ -37,18 +37,16 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 @Testcontainers
 class UserDetailsControllerIntegrationTest {
 
-  @Autowired
-  private WebTestClient webTestClient;
-  @Autowired
-  private UserRepository userRepository;
-  @Autowired
-  private JWTUtilEmailValidation jwtUtilEmailValidation;
+  @Autowired private WebTestClient webTestClient;
+  @Autowired private UserRepository userRepository;
+  @Autowired private JWTUtilEmailValidation jwtUtilEmailValidation;
 
   @Container
-  public static GenericContainer<?> mysqlContainer = new GenericContainer<>("mysql:latest")
-      .withExposedPorts(3306)
-      .withEnv("MYSQL_ROOT_PASSWORD", "12345")
-      .withEnv("MYSQL_DATABASE", "reactiveDB");
+  public static GenericContainer<?> mysqlContainer =
+      new GenericContainer<>("mysql:latest")
+          .withExposedPorts(3306)
+          .withEnv("MYSQL_ROOT_PASSWORD", "12345")
+          .withEnv("MYSQL_DATABASE", "reactiveDB");
 
   @BeforeAll
   static void beforeAll() {
@@ -61,15 +59,30 @@ class UserDetailsControllerIntegrationTest {
   }
 
   private Mono<Void> cleanupDatabase() {
-    return userRepository.findAllUsers()
+    return userRepository
+        .findAllUsers()
         .flatMap(user -> userRepository.deleteUserById(user.getId()))
         .then();
   }
 
   @DynamicPropertySource
   static void setDatasourceProperties(DynamicPropertyRegistry registry) {
-    registry.add("spring.r2dbc.url", () -> "r2dbc:mysql://" + mysqlContainer.getHost() + ":" + mysqlContainer.getFirstMappedPort() + "/reactiveDB");
-    registry.add("spring.liquibase.url", () -> "jdbc:mysql://" + mysqlContainer.getHost() + ":" + mysqlContainer.getFirstMappedPort() + "/reactiveDB");
+    registry.add(
+        "spring.r2dbc.url",
+        () ->
+            "r2dbc:mysql://"
+                + mysqlContainer.getHost()
+                + ":"
+                + mysqlContainer.getFirstMappedPort()
+                + "/reactiveDB");
+    registry.add(
+        "spring.liquibase.url",
+        () ->
+            "jdbc:mysql://"
+                + mysqlContainer.getHost()
+                + ":"
+                + mysqlContainer.getFirstMappedPort()
+                + "/reactiveDB");
   }
 
   @Test
@@ -77,11 +90,13 @@ class UserDetailsControllerIntegrationTest {
 
     Header authHeader = setUpUserAndReturnAuthHeader();
 
-    webTestClient.get()
+    webTestClient
+        .get()
         .uri("/api/user/details")
         .header(authHeader.getName(), authHeader.getValues().get(0))
         .exchange()
-        .expectStatus().isOk()
+        .expectStatus()
+        .isOk()
         .expectBody(UserDetailsView.class)
         .value(detailsView -> assertNull(detailsView.age()))
         .value(detailsView -> assertNull(detailsView.height()))
@@ -93,83 +108,113 @@ class UserDetailsControllerIntegrationTest {
   @Test
   void givenNoAuth_whenGetUserDetails_thenServerShouldReturn401() {
 
-    webTestClient.get()
-        .uri("/api/user/details")
-        .exchange()
-        .expectStatus().isUnauthorized();
-
+    webTestClient.get().uri("/api/user/details").exchange().expectStatus().isUnauthorized();
   }
 
   @Test
   void givenNoAuth_whenModifyUserDetails_thenServerShouldReturn401() {
 
-    UserDetailsDto validDetails = createDetails(
-        new BigDecimal(Credentials.VALID_DETAIL_KILOGRAMS.getValue()),
-        new BigDecimal(Credentials.VALID_DETAIL_HEIGHT.getValue()),
-        Integer.valueOf(Credentials.VALID_DETAIL_AGE.getValue()),
-        WorkoutState.valueOf(Credentials.VALID_DETAIL_WORKOUT.getValue()),
-        Gender.valueOf(Credentials.VALID_DETAIL_GENDER.getValue())
-    );
+    UserDetailsDto validDetails =
+        createDetails(
+            new BigDecimal(Credentials.VALID_DETAIL_KILOGRAMS.getValue()),
+            new BigDecimal(Credentials.VALID_DETAIL_HEIGHT.getValue()),
+            Integer.valueOf(Credentials.VALID_DETAIL_AGE.getValue()),
+            WorkoutState.valueOf(Credentials.VALID_DETAIL_WORKOUT.getValue()),
+            Gender.valueOf(Credentials.VALID_DETAIL_GENDER.getValue()));
 
-    webTestClient.patch()
+    webTestClient
+        .patch()
         .uri("/api/user/details")
         .bodyValue(validDetails)
         .exchange()
-        .expectStatus().isUnauthorized();
+        .expectStatus()
+        .isUnauthorized();
   }
 
   @Test
-  void givenValidAuth_whenModifyUserDetailsWithValidCredentials_thenServerShouldReturnUserDetailsAndStatusOk() {
+  void
+      givenValidAuth_whenModifyUserDetailsWithValidCredentials_thenServerShouldReturnUserDetailsAndStatusOk() {
 
     Header authHeader = setUpUserAndReturnAuthHeader();
 
-    UserDetailsDto validDetails = createDetails(
-        new BigDecimal(Credentials.VALID_DETAIL_KILOGRAMS.getValue()),
-        new BigDecimal(Credentials.VALID_DETAIL_HEIGHT.getValue()),
-        Integer.valueOf(Credentials.VALID_DETAIL_AGE.getValue()),
-        WorkoutState.valueOf(Credentials.VALID_DETAIL_WORKOUT.getValue()),
-        Gender.valueOf(Credentials.VALID_DETAIL_GENDER.getValue())
-    );
+    UserDetailsDto validDetails =
+        createDetails(
+            new BigDecimal(Credentials.VALID_DETAIL_KILOGRAMS.getValue()),
+            new BigDecimal(Credentials.VALID_DETAIL_HEIGHT.getValue()),
+            Integer.valueOf(Credentials.VALID_DETAIL_AGE.getValue()),
+            WorkoutState.valueOf(Credentials.VALID_DETAIL_WORKOUT.getValue()),
+            Gender.valueOf(Credentials.VALID_DETAIL_GENDER.getValue()));
 
-    webTestClient.patch()
+    webTestClient
+        .patch()
         .uri("/api/user/details")
         .header(authHeader.getName(), authHeader.getValues().get(0))
         .bodyValue(validDetails)
         .exchange()
-        .expectStatus().isOk()
+        .expectStatus()
+        .isOk()
         .expectBody(JwtResponse.class)
-        .value(detailsView -> assertEquals(validDetails.gender(), detailsView.userView().userDetails().gender()))
-        .value(detailsView -> assertEquals(0, validDetails.height().compareTo(detailsView.userView().userDetails().height())))
-        .value(detailsView -> assertEquals(0, validDetails.kilograms().compareTo(detailsView.userView().userDetails().kilograms())))
-        .value(detailsView -> assertEquals(validDetails.age(), detailsView.userView().userDetails().age()))
-        .value(detailsView -> assertEquals(validDetails.workoutState(), detailsView.userView().userDetails().workoutState()));
+        .value(
+            detailsView ->
+                assertEquals(validDetails.gender(), detailsView.userView().userDetails().gender()))
+        .value(
+            detailsView ->
+                assertEquals(
+                    0,
+                    validDetails.height().compareTo(detailsView.userView().userDetails().height())))
+        .value(
+            detailsView ->
+                assertEquals(
+                    0,
+                    validDetails
+                        .kilograms()
+                        .compareTo(detailsView.userView().userDetails().kilograms())))
+        .value(
+            detailsView ->
+                assertEquals(validDetails.age(), detailsView.userView().userDetails().age()))
+        .value(
+            detailsView ->
+                assertEquals(
+                    validDetails.workoutState(),
+                    detailsView.userView().userDetails().workoutState()));
   }
 
   @Test
-  void givenValidAuth_whenModifyPartOfUserDetailsWithValidCredentials_thenServerShouldReturnUserDetailsAndStatusOk() {
+  void
+      givenValidAuth_whenModifyPartOfUserDetailsWithValidCredentials_thenServerShouldReturnUserDetailsAndStatusOk() {
 
     Header authHeader = setUpUserAndReturnAuthHeader();
 
-    UserDetailsDto validDetails = createDetails(
-        new BigDecimal(Credentials.VALID_DETAIL_KILOGRAMS.getValue()),
-        null,
-        Integer.valueOf(Credentials.VALID_DETAIL_AGE.getValue()),
-        null,
-        null
-    );
+    UserDetailsDto validDetails =
+        createDetails(
+            new BigDecimal(Credentials.VALID_DETAIL_KILOGRAMS.getValue()),
+            null,
+            Integer.valueOf(Credentials.VALID_DETAIL_AGE.getValue()),
+            null,
+            null);
 
-    webTestClient.patch()
+    webTestClient
+        .patch()
         .uri("/api/user/details")
         .header(authHeader.getName(), authHeader.getValues().get(0))
         .bodyValue(validDetails)
         .exchange()
-        .expectStatus().isOk()
+        .expectStatus()
+        .isOk()
         .expectBody(JwtResponse.class)
         .value(detailsView -> assertNull(detailsView.userView().userDetails().gender()))
         .value(detailsView -> assertNull(detailsView.userView().userDetails().workoutState()))
         .value(detailsView -> assertNull(detailsView.userView().userDetails().height()))
-        .value(detailsView -> assertEquals(0, validDetails.kilograms().compareTo(detailsView.userView().userDetails().kilograms())))
-        .value(detailsView -> assertEquals(validDetails.age(), detailsView.userView().userDetails().age()));
+        .value(
+            detailsView ->
+                assertEquals(
+                    0,
+                    validDetails
+                        .kilograms()
+                        .compareTo(detailsView.userView().userDetails().kilograms())))
+        .value(
+            detailsView ->
+                assertEquals(validDetails.age(), detailsView.userView().userDetails().age()));
   }
 
   @Test
@@ -177,27 +222,25 @@ class UserDetailsControllerIntegrationTest {
 
     Header authHeader = setUpUserAndReturnAuthHeader();
 
-    List<String> INVALID_KILOGRAMS = List.of(
-        "-1",
-        "0",
-        "-2313"
-    );
+    List<String> INVALID_KILOGRAMS = List.of("-1", "0", "-2313");
 
     for (String invalidKilogram : INVALID_KILOGRAMS) {
-      UserDetailsDto validDetails = createDetails(
-          new BigDecimal(invalidKilogram),
-          new BigDecimal(Credentials.VALID_DETAIL_HEIGHT.getValue()),
-          Integer.valueOf(Credentials.VALID_DETAIL_AGE.getValue()),
-          WorkoutState.valueOf(Credentials.VALID_DETAIL_WORKOUT.getValue()),
-          Gender.valueOf(Credentials.VALID_DETAIL_GENDER.getValue())
-      );
+      UserDetailsDto validDetails =
+          createDetails(
+              new BigDecimal(invalidKilogram),
+              new BigDecimal(Credentials.VALID_DETAIL_HEIGHT.getValue()),
+              Integer.valueOf(Credentials.VALID_DETAIL_AGE.getValue()),
+              WorkoutState.valueOf(Credentials.VALID_DETAIL_WORKOUT.getValue()),
+              Gender.valueOf(Credentials.VALID_DETAIL_GENDER.getValue()));
 
-      webTestClient.patch()
+      webTestClient
+          .patch()
           .uri("/api/user/details")
           .header(authHeader.getName(), authHeader.getValues().get(0))
           .bodyValue(validDetails)
           .exchange()
-          .expectStatus().isBadRequest();
+          .expectStatus()
+          .isBadRequest();
     }
   }
 
@@ -206,60 +249,54 @@ class UserDetailsControllerIntegrationTest {
 
     Header authHeader = setUpUserAndReturnAuthHeader();
 
-    List<String> INVALID_HEIGHT = List.of(
-        "-1",
-        "0",
-        "-2313",
-        "0.99",
-        "11.1",
-        "19.9"
-    );
+    List<String> INVALID_HEIGHT = List.of("-1", "0", "-2313", "0.99", "11.1", "19.9");
 
     for (String invalidHeight : INVALID_HEIGHT) {
-      UserDetailsDto validDetails = createDetails(
-          new BigDecimal(Credentials.VALID_DETAIL_KILOGRAMS.getValue()),
-          new BigDecimal(invalidHeight),
-          Integer.valueOf(Credentials.VALID_DETAIL_AGE.getValue()),
-          WorkoutState.valueOf(Credentials.VALID_DETAIL_WORKOUT.getValue()),
-          Gender.valueOf(Credentials.VALID_DETAIL_GENDER.getValue())
-      );
+      UserDetailsDto validDetails =
+          createDetails(
+              new BigDecimal(Credentials.VALID_DETAIL_KILOGRAMS.getValue()),
+              new BigDecimal(invalidHeight),
+              Integer.valueOf(Credentials.VALID_DETAIL_AGE.getValue()),
+              WorkoutState.valueOf(Credentials.VALID_DETAIL_WORKOUT.getValue()),
+              Gender.valueOf(Credentials.VALID_DETAIL_GENDER.getValue()));
 
-      webTestClient.patch()
+      webTestClient
+          .patch()
           .uri("/api/user/details")
           .header(authHeader.getName(), authHeader.getValues().get(0))
           .bodyValue(validDetails)
           .exchange()
-          .expectStatus().isBadRequest();
+          .expectStatus()
+          .isBadRequest();
     }
   }
 
   @Test
-  void givenValidAuth_whenModifyUserDetailsWithInvalidAge_thenServerShouldReturnBadRequest() throws InterruptedException {
+  void givenValidAuth_whenModifyUserDetailsWithInvalidAge_thenServerShouldReturnBadRequest()
+      throws InterruptedException {
 
     Header authHeader = setUpUserAndReturnAuthHeader();
     System.out.println(authHeader.getName());
     System.out.println(authHeader.getValues().get(0));
-    List<String> INVALID_AGES = List.of(
-        "-1",
-        "0",
-        "-2313"
-    );
+    List<String> INVALID_AGES = List.of("-1", "0", "-2313");
 
     for (String invalidAge : INVALID_AGES) {
-      UserDetailsDto validDetails = createDetails(
-          new BigDecimal(Credentials.VALID_DETAIL_KILOGRAMS.getValue()),
-          new BigDecimal(Credentials.VALID_DETAIL_HEIGHT.getValue()),
-          Integer.valueOf(invalidAge),
-          WorkoutState.valueOf(Credentials.VALID_DETAIL_WORKOUT.getValue()),
-          Gender.valueOf(Credentials.VALID_DETAIL_GENDER.getValue())
-      );
+      UserDetailsDto validDetails =
+          createDetails(
+              new BigDecimal(Credentials.VALID_DETAIL_KILOGRAMS.getValue()),
+              new BigDecimal(Credentials.VALID_DETAIL_HEIGHT.getValue()),
+              Integer.valueOf(invalidAge),
+              WorkoutState.valueOf(Credentials.VALID_DETAIL_WORKOUT.getValue()),
+              Gender.valueOf(Credentials.VALID_DETAIL_GENDER.getValue()));
 
-      webTestClient.patch()
+      webTestClient
+          .patch()
           .uri("/api/user/details")
           .header(authHeader.getName(), authHeader.getValues().get(0))
           .bodyValue(validDetails)
           .exchange()
-          .expectStatus().isBadRequest();
+          .expectStatus()
+          .isBadRequest();
     }
   }
 
@@ -269,20 +306,22 @@ class UserDetailsControllerIntegrationTest {
     Header authHeader = setUpUserAndReturnAuthHeader();
 
     for (Gender gender : Gender.values()) {
-      UserDetailsDto validDetails = createDetails(
-          new BigDecimal(Credentials.VALID_DETAIL_KILOGRAMS.getValue()),
-          new BigDecimal(Credentials.VALID_DETAIL_HEIGHT.getValue()),
-          Integer.valueOf(Credentials.VALID_DETAIL_AGE.getValue()),
-          WorkoutState.valueOf(Credentials.VALID_DETAIL_WORKOUT.getValue()),
-          gender
-      );
+      UserDetailsDto validDetails =
+          createDetails(
+              new BigDecimal(Credentials.VALID_DETAIL_KILOGRAMS.getValue()),
+              new BigDecimal(Credentials.VALID_DETAIL_HEIGHT.getValue()),
+              Integer.valueOf(Credentials.VALID_DETAIL_AGE.getValue()),
+              WorkoutState.valueOf(Credentials.VALID_DETAIL_WORKOUT.getValue()),
+              gender);
 
-      webTestClient.patch()
+      webTestClient
+          .patch()
           .uri("/api/user/details")
           .header(authHeader.getName(), authHeader.getValues().get(0))
           .bodyValue(validDetails)
           .exchange()
-          .expectStatus().isOk()
+          .expectStatus()
+          .isOk()
           .expectBody(JwtResponse.class)
           .returnResult();
     }
@@ -294,20 +333,22 @@ class UserDetailsControllerIntegrationTest {
     Header authHeader = setUpUserAndReturnAuthHeader();
 
     for (WorkoutState workoutState : WorkoutState.values()) {
-      UserDetailsDto validDetails = createDetails(
-          new BigDecimal(Credentials.VALID_DETAIL_KILOGRAMS.getValue()),
-          new BigDecimal(Credentials.VALID_DETAIL_HEIGHT.getValue()),
-          Integer.valueOf(Credentials.VALID_DETAIL_AGE.getValue()),
-          workoutState,
-          Gender.valueOf(Credentials.VALID_DETAIL_GENDER.getValue())
-      );
+      UserDetailsDto validDetails =
+          createDetails(
+              new BigDecimal(Credentials.VALID_DETAIL_KILOGRAMS.getValue()),
+              new BigDecimal(Credentials.VALID_DETAIL_HEIGHT.getValue()),
+              Integer.valueOf(Credentials.VALID_DETAIL_AGE.getValue()),
+              workoutState,
+              Gender.valueOf(Credentials.VALID_DETAIL_GENDER.getValue()));
 
-      webTestClient.patch()
+      webTestClient
+          .patch()
           .uri("/api/user/details")
           .header(authHeader.getName(), authHeader.getValues().get(0))
           .bodyValue(validDetails)
           .exchange()
-          .expectStatus().isOk()
+          .expectStatus()
+          .isOk()
           .expectBody(JwtResponse.class)
           .returnResult();
     }
@@ -318,19 +359,21 @@ class UserDetailsControllerIntegrationTest {
 
     Header authHeader = setUpUserAndReturnAuthHeader();
 
-    UserDetailsDto validDetails = createDetails(
-        new BigDecimal(Credentials.VALID_DETAIL_KILOGRAMS.getValue()),
-        new BigDecimal(Credentials.VALID_DETAIL_HEIGHT.getValue()),
-        Integer.valueOf(Credentials.VALID_DETAIL_AGE.getValue()),
-        WorkoutState.valueOf(Credentials.VALID_DETAIL_WORKOUT.getValue()),
-        Gender.valueOf(Credentials.VALID_DETAIL_GENDER.getValue())
-    );
+    UserDetailsDto validDetails =
+        createDetails(
+            new BigDecimal(Credentials.VALID_DETAIL_KILOGRAMS.getValue()),
+            new BigDecimal(Credentials.VALID_DETAIL_HEIGHT.getValue()),
+            Integer.valueOf(Credentials.VALID_DETAIL_AGE.getValue()),
+            WorkoutState.valueOf(Credentials.VALID_DETAIL_WORKOUT.getValue()),
+            Gender.valueOf(Credentials.VALID_DETAIL_GENDER.getValue()));
 
-    webTestClient.get()
+    webTestClient
+        .get()
         .uri("/api/user/details")
         .header(authHeader.getName(), authHeader.getValues().get(0))
         .exchange()
-        .expectStatus().isOk()
+        .expectStatus()
+        .isOk()
         .expectBody(UserDetailsView.class)
         .value(detailsView -> assertNull(detailsView.age()))
         .value(detailsView -> assertNull(detailsView.workoutState()))
@@ -338,52 +381,66 @@ class UserDetailsControllerIntegrationTest {
         .value(detailsView -> assertNull(detailsView.height()))
         .returnResult();
 
-    webTestClient.patch()
+    webTestClient
+        .patch()
         .uri("/api/user/details")
         .header(authHeader.getName(), authHeader.getValues().get(0))
         .bodyValue(validDetails)
         .exchange()
-        .expectStatus().isOk()
+        .expectStatus()
+        .isOk()
         .expectBody()
         .returnResult();
 
-    webTestClient.get()
+    webTestClient
+        .get()
         .uri("/api/user/details")
         .header(authHeader.getName(), authHeader.getValues().get(0))
         .exchange()
-        .expectStatus().isOk()
+        .expectStatus()
+        .isOk()
         .expectBody(UserDetailsView.class)
         .value(detailsView -> assertEquals(validDetails.gender(), detailsView.gender()))
-        .value(detailsView -> assertEquals(0, validDetails.height().compareTo(detailsView.height())))
-        .value(detailsView -> assertEquals(0, validDetails.kilograms().compareTo(detailsView.kilograms())))
+        .value(
+            detailsView -> assertEquals(0, validDetails.height().compareTo(detailsView.height())))
+        .value(
+            detailsView ->
+                assertEquals(0, validDetails.kilograms().compareTo(detailsView.kilograms())))
         .value(detailsView -> assertEquals(validDetails.age(), detailsView.age()))
         .value(detailsView -> assertEquals(validDetails.workoutState(), detailsView.workoutState()))
         .returnResult();
   }
 
-
-  private UserDetailsDto createDetails(BigDecimal kilograms, BigDecimal height, Integer age, WorkoutState workoutState, Gender gender) {
+  private UserDetailsDto createDetails(
+      BigDecimal kilograms,
+      BigDecimal height,
+      Integer age,
+      WorkoutState workoutState,
+      Gender gender) {
     return new UserDetailsDto(kilograms, height, age, workoutState, gender);
   }
 
   private Header setUpUserAndReturnAuthHeader() {
     String token = jwtUtilEmailValidation.generateToken(Credentials.VALID_EMAIL.getValue());
 
-    UserCreate newUser = createUser(
-        Credentials.VALID_USERNAME.getValue(),
-        Credentials.VALID_EMAIL.getValue(),
-        Credentials.VALID_PASSWORD.getValue(),
-        token
-    );
+    UserCreate newUser =
+        createUser(
+            Credentials.VALID_USERNAME.getValue(),
+            Credentials.VALID_EMAIL.getValue(),
+            Credentials.VALID_PASSWORD.getValue(),
+            token);
 
-    JwtResponse responseBody = webTestClient.post()
-        .uri("/api/user")
-        .bodyValue(newUser)
-        .exchange()
-        .expectStatus().isCreated()
-        .expectBody(JwtResponse.class)
-        .returnResult()
-        .getResponseBody();
+    JwtResponse responseBody =
+        webTestClient
+            .post()
+            .uri("/api/user")
+            .bodyValue(newUser)
+            .exchange()
+            .expectStatus()
+            .isCreated()
+            .expectBody(JwtResponse.class)
+            .returnResult()
+            .getResponseBody();
 
     assert responseBody != null;
     return new Header("Authorization", "Bearer " + responseBody.accessToken().value());

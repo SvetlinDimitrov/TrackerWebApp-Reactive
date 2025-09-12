@@ -12,12 +12,14 @@ import java.util.UUID;
 @Data
 public class FoodEntity {
 
-  @Id
-  private String id;
+  @Id private String id;
+
   @Column("name")
   private String name;
+
   @Column("meal_id")
   private String mealId;
+
   @Column("user_id")
   private String userId;
 

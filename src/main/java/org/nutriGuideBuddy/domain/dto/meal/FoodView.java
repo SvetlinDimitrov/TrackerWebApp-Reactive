@@ -15,14 +15,14 @@ public record FoodView(
     CalorieView calorie,
     List<NutritionView> nutritionList) {
 
-  public static FoodView toView(FoodEntity entity, List<NutritionView> nutritionList, CalorieView calorie, List<ServingView> servings, ServingView mainServing, FoodInfoView info) {
+  public static FoodView toView(
+      FoodEntity entity,
+      List<NutritionView> nutritionList,
+      CalorieView calorie,
+      List<ServingView> servings,
+      ServingView mainServing,
+      FoodInfoView info) {
     return new FoodView(
-        entity.getId(),
-        entity.getName(),
-        info,
-        mainServing,
-        servings,
-        calorie,
-        nutritionList);
+        entity.getId(), entity.getName(), info, mainServing, servings, calorie, nutritionList);
   }
 }

@@ -20,21 +20,26 @@ public class CustomNutritionsValidator {
     }
 
     Set<String> allAvailableNames =
-        Arrays.stream(AllowedNutrients.values()).map(AllowedNutrients::getNutrientName)
+        Arrays.stream(AllowedNutrients.values())
+            .map(AllowedNutrients::getNutrientName)
             .collect(Collectors.toSet());
 
     for (NutritionView NutritionView : nutritionViews) {
       if (!allAvailableNames.contains(NutritionView.name())) {
-        return Mono.error(new BadRequestException("Custom nutrition name: " + NutritionView.name() + " is not available"));
+        return Mono.error(
+            new BadRequestException(
+                "Custom nutrition name: " + NutritionView.name() + " is not available"));
       }
       if (NutritionView.recommendedIntake().compareTo(BigDecimal.ZERO) < 0) {
-        return Mono.error(new BadRequestException("Custom nutrition recommended intake: " + NutritionView.recommendedIntake() +
-            " for " + NutritionView.name() +
-            " cannot be less than 0"));
-
+        return Mono.error(
+            new BadRequestException(
+                "Custom nutrition recommended intake: "
+                    + NutritionView.recommendedIntake()
+                    + " for "
+                    + NutritionView.name()
+                    + " cannot be less than 0"));
       }
     }
     return Mono.just(nutritionViews);
   }
-
 }
