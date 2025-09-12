@@ -1,0 +1,5 @@
+CREATE TABLE meals (
+  id VARCHAR(36) PRIMARY KEY,
+  name VARCHAR(100),
+  user_id VARCHAR(36) NOT NULL
+);
