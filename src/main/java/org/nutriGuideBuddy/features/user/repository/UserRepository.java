@@ -5,6 +5,8 @@ import static org.springframework.data.relational.core.query.Query.query;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import org.nutriGuideBuddy.features.user.entity.User;
 import org.springframework.data.r2dbc.core.R2dbcEntityTemplate;
@@ -12,6 +14,7 @@ import org.springframework.data.r2dbc.repository.Modifying;
 import org.springframework.data.relational.core.query.Update;
 import org.springframework.data.relational.core.sql.SqlIdentifier;
 import org.springframework.stereotype.Repository;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @Repository
@@ -56,5 +59,11 @@ public class UserRepository {
         .selectOne(query(where("email").is(email)), User.class)
         .map(user -> true)
         .defaultIfEmpty(false);
+  }
+
+  public Flux<User> findByEmails(Set<String> emails) {
+    return Flux.fromIterable(emails)
+        .flatMap(email -> entityTemplate.selectOne(query(where("email").is(email)), User.class))
+        .filter(Objects::nonNull);
   }
 }

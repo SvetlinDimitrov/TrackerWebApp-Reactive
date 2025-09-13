@@ -2,14 +2,14 @@ package org.nutriGuideBuddy.web;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.nutriGuideBuddy.infrastructure.security.dto.ResetPasswordRequest;
+import org.nutriGuideBuddy.features.user.service.UserService;
+import org.nutriGuideBuddy.infrastructure.brevo_api.EmailVerificationService;
 import org.nutriGuideBuddy.infrastructure.security.dto.AuthenticationRequest;
 import org.nutriGuideBuddy.infrastructure.security.dto.AuthenticationResponse;
 import org.nutriGuideBuddy.infrastructure.security.dto.ChangePasswordRequest;
 import org.nutriGuideBuddy.infrastructure.security.dto.EmailValidationRequest;
+import org.nutriGuideBuddy.infrastructure.security.dto.ResetPasswordRequest;
 import org.nutriGuideBuddy.infrastructure.security.service.AuthenticationService;
-import org.nutriGuideBuddy.infrastructure.brevo_api.EmailVerificationService;
-import org.nutriGuideBuddy.features.user.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;

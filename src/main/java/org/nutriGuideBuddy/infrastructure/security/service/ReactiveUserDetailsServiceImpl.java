@@ -1,10 +1,10 @@
 package org.nutriGuideBuddy.infrastructure.security.service;
 
-import org.nutriGuideBuddy.infrastructure.security.config.UserPrincipal;
+import org.nutriGuideBuddy.features.user.service.UserService;
+import org.nutriGuideBuddy.features.user_details.service.UserDetailsService;
 import org.nutriGuideBuddy.infrastructure.exceptions.ExceptionMessages;
 import org.nutriGuideBuddy.infrastructure.exceptions.NotFoundException;
-import org.nutriGuideBuddy.features.user_details.service.UserDetailsService;
-import org.nutriGuideBuddy.features.user.service.UserService;
+import org.nutriGuideBuddy.infrastructure.security.config.UserPrincipal;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

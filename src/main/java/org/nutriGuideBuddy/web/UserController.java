@@ -27,14 +27,14 @@ public class UserController {
   }
 
   @GetMapping("/{id}")
-  @PreAuthorize("@userAccessValidator.hasAccess(#id)")
+  @PreAuthorize("hasRole('ADMIN') || @userAccessValidator.hasAccess(#id)")
   @ResponseStatus(HttpStatus.OK)
   public Mono<UserView> getById(@PathVariable String id) {
     return service.getById(id);
   }
 
   @GetMapping("/{id}/with-details")
-  @PreAuthorize("@userAccessValidator.hasAccess(#id)")
+  @PreAuthorize("hasRole('ADMIN') || @userAccessValidator.hasAccess(#id)")
   @ResponseStatus(HttpStatus.OK)
   public Mono<UserWithDetailsView> getByIdWithDetails(@PathVariable String id) {
     return service.getByIdWithDetails(id);
@@ -53,7 +53,7 @@ public class UserController {
   }
 
   @PatchMapping("/{id}")
-  @PreAuthorize("@userAccessValidator.hasAccess(#id)")
+  @PreAuthorize("hasRole('ADMIN') || @userAccessValidator.hasAccess(#id)")
   @ResponseStatus(HttpStatus.OK)
   public Mono<UserView> update(
       @RequestBody @Valid UserUpdateRequest userDto, @PathVariable String id) {
@@ -61,7 +61,7 @@ public class UserController {
   }
 
   @DeleteMapping("/{id}")
-  @PreAuthorize("@userAccessValidator.hasAccess(#id)")
+  @PreAuthorize("hasRole('ADMIN') || @userAccessValidator.hasAccess(#id)")
   @ResponseStatus(HttpStatus.NO_CONTENT)
   public Mono<Void> delete(@PathVariable String id) {
     return service.delete(id);

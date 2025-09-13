@@ -42,4 +42,20 @@ public class UserDetailsRepository {
                 .set("gender", updatedEntity.getGender()))
         .then(findById(id));
   }
+
+  public Mono<Boolean> existsByUserId(String userId) {
+    return entityTemplate
+        .selectOne(query(where("userId").is(userId)), UserDetails.class)
+        .map(userDetails -> true)
+        .defaultIfEmpty(false);
+  }
+
+  @Modifying
+  public Mono<Void> deleteByUserId(String userId) {
+    return entityTemplate
+        .delete(UserDetails.class)
+        .matching(query(where("userId").is(userId)))
+        .all()
+        .then();
+  }
 }

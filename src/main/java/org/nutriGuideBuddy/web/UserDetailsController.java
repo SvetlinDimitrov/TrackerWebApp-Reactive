@@ -18,7 +18,7 @@ public class UserDetailsController {
   private final UserDetailsService service;
 
   @GetMapping("/{id}")
-  @PreAuthorize("@userDetailsAccessValidator.hasAccess(#id)")
+  @PreAuthorize("hasRole('ADMIN') || @userDetailsAccessValidator.hasAccess(#id)")
   @ResponseStatus(HttpStatus.OK)
   public Mono<UserDetailsView> getById(@PathVariable String id) {
     return service.getById(id);
@@ -31,7 +31,7 @@ public class UserDetailsController {
   }
 
   @PatchMapping("/{id}")
-  @PreAuthorize("@userDetailsAccessValidator.hasAccess(#id)")
+  @PreAuthorize("hasRole('ADMIN') || @userDetailsAccessValidator.hasAccess(#id)")
   @ResponseStatus(HttpStatus.OK)
   public Mono<UserDetailsView> update(
       @RequestBody @Valid UserDetailsRequest userDto, @PathVariable String id) {
