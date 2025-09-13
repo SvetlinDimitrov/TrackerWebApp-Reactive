@@ -6,6 +6,7 @@ import org.nutriGuideBuddy.domain.dto.user_details.UserDetailsRequest;
 import org.nutriGuideBuddy.domain.dto.user_details.UserDetailsView;
 import org.nutriGuideBuddy.service.UserDetailsService;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 
@@ -16,8 +17,8 @@ public class UserDetailsController {
 
   private final UserDetailsService service;
 
-  // TODO::VALIDATOR
   @GetMapping("/{id}")
+  @PreAuthorize("@userDetailsAccessValidator.hasAccess(#id)")
   @ResponseStatus(HttpStatus.OK)
   public Mono<UserDetailsView> getById(@PathVariable String id) {
     return service.getById(id);
@@ -29,8 +30,8 @@ public class UserDetailsController {
     return service.me();
   }
 
-  // TODO::VALIDATOR
   @PatchMapping("/{id}")
+  @PreAuthorize("@userDetailsAccessValidator.hasAccess(#id)")
   @ResponseStatus(HttpStatus.OK)
   public Mono<UserDetailsView> update(
       @RequestBody @Valid UserDetailsRequest userDto, @PathVariable String id) {
