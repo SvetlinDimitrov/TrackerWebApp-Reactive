@@ -2,7 +2,7 @@ package org.nutriGuideBuddy.infrastructure.mappers;
 
 import org.nutriGuideBuddy.infrastructure.security.dto.ChangePasswordRequest;
 import org.nutriGuideBuddy.features.user.dto.UserCreateRequest;
-import org.nutriGuideBuddy.features.user.entity.UserEntity;
+import org.nutriGuideBuddy.features.user.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
@@ -24,14 +24,14 @@ public abstract class UserMapperDecorator implements UserMapper {
   }
 
   @Override
-  public UserEntity toEntity(UserCreateRequest dto , String email) {
-    UserEntity user = delegate.toEntity(dto , email);
+  public User toEntity(UserCreateRequest dto , String email) {
+    User user = delegate.toEntity(dto , email);
     user.setPassword(passwordEncoder.encode(user.getPassword()));
     return user;
   }
 
   @Override
-  public void update(ChangePasswordRequest dto, UserEntity entity) {
+  public void update(ChangePasswordRequest dto, User entity) {
     delegate.update(dto, entity);
     entity.setPassword(passwordEncoder.encode(dto.newPassword()));
   }

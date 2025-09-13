@@ -4,7 +4,7 @@ import org.nutriGuideBuddy.infrastructure.security.dto.AuthenticationResponse;
 import org.nutriGuideBuddy.infrastructure.security.dto.JwtToken;
 import org.nutriGuideBuddy.features.user.dto.UserWithDetailsView;
 import org.nutriGuideBuddy.features.user_details.entity.UserDetails;
-import org.nutriGuideBuddy.features.user.entity.UserEntity;
+import org.nutriGuideBuddy.features.user.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -32,7 +32,7 @@ public abstract class AuthenticationMapperDecorator implements AuthenticationMap
 
   @Override
   public AuthenticationResponse toDto(
-      UserEntity user, UserDetails userDetails, JwtToken accessToken) {
+      User user, UserDetails userDetails, JwtToken accessToken) {
     UserWithDetailsView userWithDetailsView =
         new UserWithDetailsView(userMapper.toView(user), userDetailsMapper.toView(userDetails));
     AuthenticationResponse dto = delegate.toDto(user, userDetails, accessToken);

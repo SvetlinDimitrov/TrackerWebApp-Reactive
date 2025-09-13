@@ -1,7 +1,7 @@
 package org.nutriGuideBuddy.features.meal.utils;
 
 import org.nutriGuideBuddy.infrastructure.exceptions.BadRequestException;
-import org.nutriGuideBuddy.features.food.entity.ServingEntity;
+import org.nutriGuideBuddy.features.food.entity.Serving;
 import org.nutriGuideBuddy.features.food.dto.ServingView;
 import org.nutriGuideBuddy.infrastructure.exceptions.ExceptionMessagesToRemove;
 import org.nutriGuideBuddy.features.food.utils.Validator;
@@ -14,8 +14,8 @@ import java.util.stream.Collectors;
 
 public class ServingModifier {
 
-  public static Mono<ServingEntity> validateAndUpdateMainEntity(ServingView dto, String foodId) {
-    return validateAndUpdateAmount(new ServingEntity(), dto)
+  public static Mono<Serving> validateAndUpdateMainEntity(ServingView dto, String foodId) {
+    return validateAndUpdateAmount(new Serving(), dto)
         .flatMap(data -> validateAndUpdateWeight(data, dto))
         .flatMap(data -> validateAndUpdateMetric(data, dto))
         .map(
@@ -26,16 +26,16 @@ public class ServingModifier {
             });
   }
 
-  public static Mono<List<ServingEntity>> validateAndUpdateListOfEntities(
+  public static Mono<List<Serving>> validateAndUpdateListOfEntities(
       List<ServingView> dto, String foodId) {
     if (dto == null) {
       return Mono.error(new BadRequestException("alternative servings cannot be null"));
     }
-    List<Mono<ServingEntity>> monoList =
+    List<Mono<Serving>> monoList =
         dto.stream()
             .map(
                 view ->
-                    validateAndUpdateAmount(new ServingEntity(), view)
+                    validateAndUpdateAmount(new Serving(), view)
                         .flatMap(data -> validateAndUpdateWeight(data, view))
                         .flatMap(data -> validateAndUpdateMetric(data, view))
                         .map(
@@ -49,8 +49,8 @@ public class ServingModifier {
     return Flux.fromIterable(monoList).flatMap(mono -> mono).collectList();
   }
 
-  private static Mono<ServingEntity> validateAndUpdateMetric(
-      ServingEntity entity, ServingView dto) {
+  private static Mono<Serving> validateAndUpdateMetric(
+      Serving entity, ServingView dto) {
     return Mono.just(entity)
         .filter(u -> Validator.validateString(dto.metric(), 1, 255))
         .flatMap(
@@ -65,8 +65,8 @@ public class ServingModifier {
                         + "for food metric.")));
   }
 
-  private static Mono<ServingEntity> validateAndUpdateWeight(
-      ServingEntity entity, ServingView dto) {
+  private static Mono<Serving> validateAndUpdateWeight(
+      Serving entity, ServingView dto) {
     return Mono.just(entity)
         .filter(u -> Validator.validateBigDecimal(dto.servingWeight(), BigDecimal.ZERO))
         .flatMap(
@@ -81,8 +81,8 @@ public class ServingModifier {
                         + "for food size weight , must be greater then 0")));
   }
 
-  private static Mono<ServingEntity> validateAndUpdateAmount(
-      ServingEntity entity, ServingView dto) {
+  private static Mono<Serving> validateAndUpdateAmount(
+      Serving entity, ServingView dto) {
     return Mono.just(entity)
         .filter(u -> Validator.validateBigDecimal(dto.amount(), BigDecimal.ZERO))
         .flatMap(

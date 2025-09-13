@@ -1,10 +1,10 @@
 package org.nutriGuideBuddy.features.food.dto;
 
-import org.nutriGuideBuddy.features.food.entity.FoodInfoEntity;
+import org.nutriGuideBuddy.features.food.entity.FoodInfo;
 
 public record FoodInfoView(String info, String largeInfo, String picture) {
 
-  public static FoodInfoView toView(FoodInfoEntity foodInfoView) {
+  public static FoodInfoView toView(FoodInfo foodInfoView) {
     return new FoodInfoView(
         foodInfoView.getInfo(), foodInfoView.getLargeInfo(), foodInfoView.getPicture());
   }

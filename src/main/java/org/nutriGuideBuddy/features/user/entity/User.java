@@ -1,4 +1,4 @@
-package org.nutriGuideBuddy.features.food.entity;
+package org.nutriGuideBuddy.features.user.entity;
 
 import java.util.UUID;
 import lombok.AllArgsConstructor;
@@ -11,20 +11,17 @@ import org.springframework.data.relational.core.mapping.Table;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "info_foods")
-public class FoodInfoEntity {
+@Table(name = "users")
+public class User {
 
   @Id private String id = UUID.randomUUID().toString();
 
-  @Column("info")
-  private String info;
+  @Column("username")
+  private String username;
 
-  @Column("large_info")
-  private String largeInfo;
+  @Column("email")
+  private String email;
 
-  @Column("picture")
-  private String picture;
-
-  @Column("food_id")
-  private String foodId;
+  @Column("password")
+  private String password;
 }

@@ -4,13 +4,13 @@ import java.math.BigDecimal;
 import java.util.List;
 
 import org.nutriGuideBuddy.infrastructure.security.service.ReactiveUserDetailsServiceImpl;
-import org.nutriGuideBuddy.features.food.entity.CalorieEntity;
+import org.nutriGuideBuddy.features.food.entity.Calorie;
 import org.nutriGuideBuddy.features.food.dto.CreateMeal;
 import org.nutriGuideBuddy.features.food.dto.FoodView;
 import org.nutriGuideBuddy.features.food.dto.ShortenFood;
 import org.nutriGuideBuddy.features.meal.dto.MealShortView;
 import org.nutriGuideBuddy.features.meal.dto.MealView;
-import org.nutriGuideBuddy.features.meal.entity.MealEntity;
+import org.nutriGuideBuddy.features.meal.entity.Meal;
 import org.nutriGuideBuddy.infrastructure.exceptions.BadRequestException;
 import org.nutriGuideBuddy.features.food.repository.FoodRepository;
 import org.nutriGuideBuddy.features.meal.repository.MealRepository;
@@ -88,13 +88,13 @@ public class MealService extends AbstractFoodService {
         .flatMap(entity -> mealRepository.deleteMealById(entity.getId()));
   }
 
-  private Mono<MealEntity> getMealEntityMono(String mealId) {
+  private Mono<Meal> getMealEntityMono(String mealId) {
     return ReactiveUserDetailsServiceImpl.getPrincipalId()
         .flatMap(userId -> mealRepository.findMealByIdAndUserId(mealId, userId))
         .switchIfEmpty(Mono.error(new BadRequestException("No meal found with id: " + mealId)));
   }
 
-  private Mono<MealView> fetchMealView(MealEntity entity) {
+  private Mono<MealView> fetchMealView(Meal entity) {
     return Mono.just(entity)
         .flatMap(
             mealEntity ->
@@ -108,11 +108,11 @@ public class MealService extends AbstractFoodService {
                     tuple.getT1(),
                     tuple.getT2(),
                     tuple.getT3().stream()
-                        .map(CalorieEntity::getAmount)
+                        .map(Calorie::getAmount)
                         .reduce(BigDecimal.ZERO, BigDecimal::add)));
   }
 
-  private Mono<MealShortView> fetchShortenMealView(MealEntity entity) {
+  private Mono<MealShortView> fetchShortenMealView(Meal entity) {
     return Mono.just(entity)
         .flatMap(
             mealEntity ->
@@ -126,7 +126,7 @@ public class MealService extends AbstractFoodService {
                     tuple.getT1(),
                     tuple.getT2(),
                     tuple.getT3().stream()
-                        .map(CalorieEntity::getAmount)
+                        .map(Calorie::getAmount)
                         .reduce(BigDecimal.ZERO, BigDecimal::add)));
   }
 

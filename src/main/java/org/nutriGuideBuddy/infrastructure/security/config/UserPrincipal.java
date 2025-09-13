@@ -3,11 +3,11 @@ package org.nutriGuideBuddy.infrastructure.security.config;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
-import org.nutriGuideBuddy.features.user.entity.UserEntity;
+import org.nutriGuideBuddy.features.user.entity.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-public record UserPrincipal(UserEntity user, org.nutriGuideBuddy.features.user_details.entity.UserDetails details)
+public record UserPrincipal(User user, org.nutriGuideBuddy.features.user_details.entity.UserDetails details)
     implements UserDetails {
 
   @Override

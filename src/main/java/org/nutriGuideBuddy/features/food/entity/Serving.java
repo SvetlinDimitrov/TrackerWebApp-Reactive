@@ -13,7 +13,7 @@ import org.springframework.data.relational.core.mapping.Table;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "servings")
-public class ServingEntity {
+public class Serving {
 
   @Id private String id = UUID.randomUUID().toString();
 

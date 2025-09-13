@@ -2,23 +2,23 @@ package org.nutriGuideBuddy.features.meal.utils;
 
 import org.nutriGuideBuddy.infrastructure.exceptions.BadRequestException;
 import org.nutriGuideBuddy.features.food.dto.FoodInfoView;
-import org.nutriGuideBuddy.features.food.entity.FoodInfoEntity;
+import org.nutriGuideBuddy.features.food.entity.FoodInfo;
 import org.nutriGuideBuddy.infrastructure.exceptions.ExceptionMessagesToRemove;
 import org.nutriGuideBuddy.features.food.utils.Validator;
 import reactor.core.publisher.Mono;
 
 public class FoodInfoModifier {
 
-  public static Mono<FoodInfoEntity> validateAndUpdateEntity(
-      FoodInfoEntity entity, FoodInfoView dto) {
+  public static Mono<FoodInfo> validateAndUpdateEntity(
+      FoodInfo entity, FoodInfoView dto) {
     return Mono.just(entity)
         .flatMap(data -> validateAndUpdateInfo(data, dto))
         .flatMap(data -> validateAndUpdateAdditionInfo(data, dto))
         .flatMap(data -> validateAndUpdatePicture(data, dto));
   }
 
-  private static Mono<FoodInfoEntity> validateAndUpdateInfo(
-      FoodInfoEntity entity, FoodInfoView dto) {
+  private static Mono<FoodInfo> validateAndUpdateInfo(
+      FoodInfo entity, FoodInfoView dto) {
     if (dto == null || dto.info() == null) {
       return Mono.just(entity);
     }
@@ -36,8 +36,8 @@ public class FoodInfoModifier {
                         + "for info size.")));
   }
 
-  private static Mono<FoodInfoEntity> validateAndUpdateAdditionInfo(
-      FoodInfoEntity entity, FoodInfoView dto) {
+  private static Mono<FoodInfo> validateAndUpdateAdditionInfo(
+      FoodInfo entity, FoodInfoView dto) {
     if (dto == null || dto.largeInfo() == null) {
       return Mono.just(entity);
     }
@@ -55,8 +55,8 @@ public class FoodInfoModifier {
                         + "for largeInfo.")));
   }
 
-  private static Mono<FoodInfoEntity> validateAndUpdatePicture(
-      FoodInfoEntity entity, FoodInfoView dto) {
+  private static Mono<FoodInfo> validateAndUpdatePicture(
+      FoodInfo entity, FoodInfoView dto) {
     if (dto == null || dto.picture() == null) {
       return Mono.just(entity);
     }

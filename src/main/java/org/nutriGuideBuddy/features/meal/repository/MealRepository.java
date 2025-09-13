@@ -1,9 +1,9 @@
 package org.nutriGuideBuddy.features.meal.repository;
 
 import lombok.RequiredArgsConstructor;
-import org.nutriGuideBuddy.features.food.entity.CalorieEntity;
-import org.nutriGuideBuddy.features.meal.entity.MealEntity;
-import org.nutriGuideBuddy.features.user.entity.UserEntity;
+import org.nutriGuideBuddy.features.food.entity.Calorie;
+import org.nutriGuideBuddy.features.meal.entity.Meal;
+import org.nutriGuideBuddy.features.user.entity.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -23,44 +23,44 @@ public class MealRepository {
 
   private final R2dbcEntityTemplate entityTemplate;
 
-  public Mono<MealEntity> saveMeal(MealEntity entity) {
+  public Mono<Meal> saveMeal(Meal entity) {
     return entityTemplate.insert(entity);
   }
 
-  public Mono<Page<MealEntity>> findAllMealsByUserId(String userId, Pageable pageable) {
+  public Mono<Page<Meal>> findAllMealsByUserId(String userId, Pageable pageable) {
     return entityTemplate
-        .select(MealEntity.class)
+        .select(Meal.class)
         .matching(query(where("userId").is(userId)))
         .all()
         .collectList()
         .map(list -> new PageImpl<>(list, pageable, list.size()));
   }
 
-  public Mono<MealEntity> findMealByIdAndUserId(String id, String userId) {
+  public Mono<Meal> findMealByIdAndUserId(String id, String userId) {
     return entityTemplate.selectOne(
-        query(where("userId").is(userId).and("id").is(id)), MealEntity.class);
+        query(where("userId").is(userId).and("id").is(id)), Meal.class);
   }
 
   @Modifying
   public Mono<Void> deleteMealById(String id) {
-    return entityTemplate.delete(MealEntity.class).matching(query(where("id").is(id))).all().then();
+    return entityTemplate.delete(Meal.class).matching(query(where("id").is(id))).all().then();
   }
 
   @Modifying
   public Mono<Void> updateMealNameByIdAndUserId(
-      String id, String userId, MealEntity updatedEntity) {
+      String id, String userId, Meal updatedEntity) {
     return entityTemplate
-        .update(MealEntity.class)
+        .update(Meal.class)
         .matching(query(where("id").is(id).and("userId").is(userId)))
         .apply(Update.update("name", updatedEntity.getName()))
         .then();
   }
 
-  public Flux<CalorieEntity> findCalorieByMealId(String mealId) {
-    return entityTemplate.select(query(where("mealId").is(mealId)), CalorieEntity.class);
+  public Flux<Calorie> findCalorieByMealId(String mealId) {
+    return entityTemplate.select(query(where("mealId").is(mealId)), Calorie.class);
   }
 
-  public Mono<UserEntity> findUserById(String id) {
-    return entityTemplate.selectOne(query(where("id").is(id)), UserEntity.class);
+  public Mono<User> findUserById(String id) {
+    return entityTemplate.selectOne(query(where("id").is(id)), User.class);
   }
 }

@@ -11,17 +11,20 @@ import org.springframework.data.relational.core.mapping.Table;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "inserted_foods")
-public class FoodEntity {
+@Table(name = "info_foods")
+public class FoodInfo {
 
   @Id private String id = UUID.randomUUID().toString();
 
-  @Column("name")
-  private String name;
+  @Column("info")
+  private String info;
 
-  @Column("meal_id")
-  private String mealId;
+  @Column("large_info")
+  private String largeInfo;
 
-  @Column("user_id")
-  private String userId;
+  @Column("picture")
+  private String picture;
+
+  @Column("food_id")
+  private String foodId;
 }

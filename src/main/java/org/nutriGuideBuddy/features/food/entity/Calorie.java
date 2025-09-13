@@ -12,19 +12,19 @@ import org.springframework.data.relational.core.mapping.Table;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "nutritions")
-public class NutritionEntity {
+@Table(name = "calories")
+public class Calorie {
 
   @Id private String id = UUID.randomUUID().toString();
 
-  @Column("name")
-  private String name;
+  @Column("amount")
+  private BigDecimal amount;
 
   @Column("unit")
   private String unit;
 
-  @Column("amount")
-  private BigDecimal amount;
+  @Column("meal_id")
+  private String mealId;
 
   @Column("food_id")
   private String foodId;

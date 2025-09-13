@@ -8,7 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.nutriGuideBuddy.infrastructure.security.service.JwtEmailVerificationService;
 import org.nutriGuideBuddy.infrastructure.security.service.ReactiveUserDetailsServiceImpl;
 import org.nutriGuideBuddy.infrastructure.security.dto.ChangePasswordRequest;
-import org.nutriGuideBuddy.features.user.entity.UserEntity;
+import org.nutriGuideBuddy.features.user.entity.User;
 import org.nutriGuideBuddy.infrastructure.exceptions.NotFoundException;
 import org.nutriGuideBuddy.infrastructure.exceptions.ValidationException;
 import org.nutriGuideBuddy.features.user.dto.UserCreateRequest;
@@ -110,14 +110,14 @@ public class UserService {
                     .then());
   }
 
-  public Mono<UserEntity> findByEmailOrThrow(String email) {
+  public Mono<User> findByEmailOrThrow(String email) {
     return repository
         .findByEmail(email)
         .switchIfEmpty(
             Mono.error(new NotFoundException(String.format(USER_NOT_FOUND_BY_EMAIL, email))));
   }
 
-  public Mono<UserEntity> findByIOrThrow(String id) {
+  public Mono<User> findByIOrThrow(String id) {
     return repository
         .findById(id)
         .switchIfEmpty(Mono.error(new NotFoundException(String.format(USER_NOT_FOUND_BY_ID, id))));

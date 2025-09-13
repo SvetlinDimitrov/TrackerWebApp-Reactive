@@ -2,7 +2,7 @@ package org.nutriGuideBuddy.features.meal.utils;
 
 import org.nutriGuideBuddy.infrastructure.exceptions.BadRequestException;
 import org.nutriGuideBuddy.features.food.dto.CreateMeal;
-import org.nutriGuideBuddy.features.meal.entity.MealEntity;
+import org.nutriGuideBuddy.features.meal.entity.Meal;
 import org.nutriGuideBuddy.features.food.utils.Validator;
 import reactor.core.publisher.Mono;
 
@@ -10,17 +10,17 @@ import static org.nutriGuideBuddy.infrastructure.exceptions.ExceptionMessagesToR
 
 public class MealModifier {
 
-  public static Mono<MealEntity> validateAndUpdateEntity(CreateMeal dto, String userId) {
-    MealEntity entity = new MealEntity();
+  public static Mono<Meal> validateAndUpdateEntity(CreateMeal dto, String userId) {
+    Meal entity = new Meal();
     entity.setUserId(userId);
     return validateAndUpdateName(entity, dto);
   }
 
-  public static Mono<MealEntity> validateAndUpdateEntity(MealEntity entity, CreateMeal dto) {
+  public static Mono<Meal> validateAndUpdateEntity(Meal entity, CreateMeal dto) {
     return validateAndUpdateName(entity, dto);
   }
 
-  private static Mono<MealEntity> validateAndUpdateName(MealEntity entity, CreateMeal dto) {
+  private static Mono<Meal> validateAndUpdateName(Meal entity, CreateMeal dto) {
     return Mono.just(entity)
         .filter(u -> dto.name() != null)
         .flatMap(

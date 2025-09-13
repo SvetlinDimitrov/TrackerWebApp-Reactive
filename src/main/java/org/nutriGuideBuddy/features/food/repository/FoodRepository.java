@@ -2,7 +2,7 @@ package org.nutriGuideBuddy.features.food.repository;
 
 import lombok.RequiredArgsConstructor;
 import org.nutriGuideBuddy.features.food.entity.*;
-import org.nutriGuideBuddy.features.meal.entity.MealEntity;
+import org.nutriGuideBuddy.features.meal.entity.Meal;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -24,7 +24,7 @@ public class FoodRepository {
 
   private final R2dbcEntityTemplate entityTemplate;
 
-  public Mono<FoodEntity> findFoodByIdAndMealIdAndUserId(
+  public Mono<Food> findFoodByIdAndMealIdAndUserId(
       String foodId, String mealId, String userId) {
 
     return Optional.ofNullable(mealId)
@@ -32,45 +32,45 @@ public class FoodRepository {
             id ->
                 entityTemplate.selectOne(
                     query(where("id").is(foodId).and("mealId").is(id).and("userId").is(userId)),
-                    FoodEntity.class))
+                    Food.class))
         .orElse(
             entityTemplate.selectOne(
                 query(where("id").is(foodId).and("mealId").isNull().and("userId").is(userId)),
-                FoodEntity.class));
+                Food.class));
   }
 
-  public Flux<FoodEntity> findAllFoodsByMealId(String mealId) {
-    return entityTemplate.select(query(where("mealId").is(mealId)), FoodEntity.class);
+  public Flux<Food> findAllFoodsByMealId(String mealId) {
+    return entityTemplate.select(query(where("mealId").is(mealId)), Food.class);
   }
 
-  public Flux<FoodEntity> findAllByFoodsByUserIdAndMealId(String userId, String mealId) {
+  public Flux<Food> findAllByFoodsByUserIdAndMealId(String userId, String mealId) {
     return Optional.ofNullable(mealId)
         .map(
             id ->
                 entityTemplate.select(
-                    query(where("userId").is(userId).and("mealId").is(mealId)), FoodEntity.class))
+                    query(where("userId").is(userId).and("mealId").is(mealId)), Food.class))
         .orElse(
             entityTemplate.select(
-                query(where("userId").is(userId).and("mealId").isNull()), FoodEntity.class));
+                query(where("userId").is(userId).and("mealId").isNull()), Food.class));
   }
 
-  public Mono<Page<FoodEntity>> findAllByFoodsByUserIdAndMealIdPageable(
+  public Mono<Page<Food>> findAllByFoodsByUserIdAndMealIdPageable(
       String userId, String mealId, Pageable pageable) {
     return Optional.ofNullable(mealId)
         .map(
             id ->
                 entityTemplate.select(
-                    query(where("userId").is(userId).and("mealId").is(mealId)), FoodEntity.class))
+                    query(where("userId").is(userId).and("mealId").is(mealId)), Food.class))
         .orElse(
             entityTemplate.select(
-                query(where("userId").is(userId).and("mealId").isNull()), FoodEntity.class))
+                query(where("userId").is(userId).and("mealId").isNull()), Food.class))
         .skip(pageable.getOffset())
         .take(pageable.getPageSize())
         .collectList()
         .flatMap(
             foodEntities ->
                 entityTemplate
-                    .count(query(where("userId").is(userId)), FoodEntity.class)
+                    .count(query(where("userId").is(userId)), Food.class)
                     .map(count -> new PageImpl<>(foodEntities, pageable, count)));
   }
 
@@ -81,63 +81,63 @@ public class FoodRepository {
         .map(
             id ->
                 entityTemplate
-                    .delete(FoodEntity.class)
+                    .delete(Food.class)
                     .matching(query(where("id").is(foodId).and("mealId").is(id)))
                     .all()
                     .then())
         .orElse(
             entityTemplate
-                .delete(FoodEntity.class)
+                .delete(Food.class)
                 .matching(query(where("id").is(foodId)))
                 .all()
                 .then());
   }
 
-  public Mono<FoodEntity> saveFood(FoodEntity entity) {
+  public Mono<Food> saveFood(Food entity) {
     return entityTemplate.insert(entity);
   }
 
-  public Mono<CalorieEntity> saveCalorie(CalorieEntity entity) {
+  public Mono<Calorie> saveCalorie(Calorie entity) {
     return entityTemplate.insert(entity);
   }
 
-  public Mono<CalorieEntity> findCalorieByFoodId(String foodId, String mealId) {
+  public Mono<Calorie> findCalorieByFoodId(String foodId, String mealId) {
     return Optional.ofNullable(mealId)
         .map(
             id ->
                 entityTemplate.selectOne(
-                    query(where("foodId").is(foodId).and("mealId").is(id)), CalorieEntity.class))
+                    query(where("foodId").is(foodId).and("mealId").is(id)), Calorie.class))
         .orElse(
             entityTemplate.selectOne(
-                query(where("foodId").is(foodId).and("mealId").isNull()), CalorieEntity.class));
+                query(where("foodId").is(foodId).and("mealId").isNull()), Calorie.class));
   }
 
-  public Mono<FoodInfoEntity> saveFoodInfo(FoodInfoEntity entity) {
+  public Mono<FoodInfo> saveFoodInfo(FoodInfo entity) {
     return entityTemplate.insert(entity);
   }
 
-  public Mono<FoodInfoEntity> findFoodInfoByFoodId(String foodId) {
-    return entityTemplate.selectOne(query(where("foodId").is(foodId)), FoodInfoEntity.class);
+  public Mono<FoodInfo> findFoodInfoByFoodId(String foodId) {
+    return entityTemplate.selectOne(query(where("foodId").is(foodId)), FoodInfo.class);
   }
 
-  public Flux<NutritionEntity> saveAllNutritions(List<NutritionEntity> entities) {
+  public Flux<Nutrition> saveAllNutritions(List<Nutrition> entities) {
     return Flux.fromIterable(entities).flatMapSequential(entityTemplate::insert);
   }
 
-  public Flux<NutritionEntity> findAllNutritionsByFoodId(String foodId) {
-    return entityTemplate.select(query(where("foodId").is(foodId)), NutritionEntity.class);
+  public Flux<Nutrition> findAllNutritionsByFoodId(String foodId) {
+    return entityTemplate.select(query(where("foodId").is(foodId)), Nutrition.class);
   }
 
-  public Flux<ServingEntity> findAllServingsByFoodId(String foodId) {
-    return entityTemplate.select(query(where("foodId").is(foodId)), ServingEntity.class);
+  public Flux<Serving> findAllServingsByFoodId(String foodId) {
+    return entityTemplate.select(query(where("foodId").is(foodId)), Serving.class);
   }
 
-  public Flux<ServingEntity> saveAllServings(List<ServingEntity> entities) {
+  public Flux<Serving> saveAllServings(List<Serving> entities) {
     return Flux.fromIterable(entities).flatMapSequential(entityTemplate::insert);
   }
 
-  public Mono<MealEntity> findMealByIdAndUserId(String id, String userId) {
+  public Mono<Meal> findMealByIdAndUserId(String id, String userId) {
     return entityTemplate.selectOne(
-        query(where("userId").is(userId).and("id").is(id)), MealEntity.class);
+        query(where("userId").is(userId).and("id").is(id)), Meal.class);
   }
 }

@@ -1,7 +1,7 @@
 package org.nutriGuideBuddy.features.meal.utils;
 
 import org.nutriGuideBuddy.infrastructure.exceptions.BadRequestException;
-import org.nutriGuideBuddy.features.food.entity.CalorieEntity;
+import org.nutriGuideBuddy.features.food.entity.Calorie;
 import org.nutriGuideBuddy.features.food.dto.CalorieView;
 import org.nutriGuideBuddy.features.food.enums.AllowedCalorieUnits;
 import org.nutriGuideBuddy.infrastructure.exceptions.ExceptionMessagesToRemove;
@@ -12,13 +12,13 @@ import java.math.BigDecimal;
 
 public class CalorieModifier {
 
-  public static Mono<CalorieEntity> validateAndUpdateEntity(CalorieEntity entity, CalorieView dto) {
+  public static Mono<Calorie> validateAndUpdateEntity(Calorie entity, CalorieView dto) {
     return Mono.just(entity)
         .flatMap(data -> validateAndUpdateSize(data, dto))
         .flatMap(data -> validateAndUpdateUnit(data, dto));
   }
 
-  private static Mono<CalorieEntity> validateAndUpdateUnit(CalorieEntity entity, CalorieView dto) {
+  private static Mono<Calorie> validateAndUpdateUnit(Calorie entity, CalorieView dto) {
     return Mono.just(entity)
         .filter(
             u ->
@@ -36,7 +36,7 @@ public class CalorieModifier {
                         + AllowedCalorieUnits.CALORIE.getSymbol())));
   }
 
-  private static Mono<CalorieEntity> validateAndUpdateSize(CalorieEntity entity, CalorieView dto) {
+  private static Mono<Calorie> validateAndUpdateSize(Calorie entity, CalorieView dto) {
     return Mono.just(entity)
         .filter(u -> Validator.validateBigDecimal(dto.amount(), BigDecimal.ZERO))
         .flatMap(

@@ -2,7 +2,7 @@ package org.nutriGuideBuddy.features.meal.utils;
 
 import org.nutriGuideBuddy.infrastructure.exceptions.BadRequestException;
 import org.nutriGuideBuddy.features.food.dto.InsertFoodDto;
-import org.nutriGuideBuddy.features.food.entity.FoodEntity;
+import org.nutriGuideBuddy.features.food.entity.Food;
 import org.nutriGuideBuddy.features.food.utils.Validator;
 import reactor.core.publisher.Mono;
 
@@ -10,11 +10,11 @@ import static org.nutriGuideBuddy.infrastructure.exceptions.ExceptionMessagesToR
 
 public class FoodModifier {
 
-  public static Mono<FoodEntity> validateAndUpdateEntity(FoodEntity entity, InsertFoodDto dto) {
+  public static Mono<Food> validateAndUpdateEntity(Food entity, InsertFoodDto dto) {
     return validateAndUpdateName(entity, dto);
   }
 
-  private static Mono<FoodEntity> validateAndUpdateName(FoodEntity entity, InsertFoodDto dto) {
+  private static Mono<Food> validateAndUpdateName(Food entity, InsertFoodDto dto) {
     return Mono.just(entity)
         .filter(u -> Validator.validateString(dto.name(), 1, 255))
         .flatMap(

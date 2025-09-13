@@ -2,7 +2,7 @@ package org.nutriGuideBuddy.features.meal.utils;
 
 import org.nutriGuideBuddy.infrastructure.exceptions.BadRequestException;
 import org.nutriGuideBuddy.features.food.dto.NutritionView;
-import org.nutriGuideBuddy.features.food.entity.NutritionEntity;
+import org.nutriGuideBuddy.features.food.entity.Nutrition;
 import org.nutriGuideBuddy.features.food.enums.AllowedNutrients;
 import org.nutriGuideBuddy.infrastructure.exceptions.ExceptionMessagesToRemove;
 import org.nutriGuideBuddy.features.food.utils.Validator;
@@ -13,10 +13,10 @@ import java.util.Arrays;
 
 public class NutritionModifier {
 
-  public static Mono<NutritionEntity> validateAndUpdateEntity(
+  public static Mono<Nutrition> validateAndUpdateEntity(
       NutritionView dto, String foodId, String userId) {
 
-    NutritionEntity entity = new NutritionEntity();
+    Nutrition entity = new Nutrition();
     entity.setUserId(userId);
     entity.setFoodId(foodId);
 
@@ -26,8 +26,8 @@ public class NutritionModifier {
         .flatMap(data -> validateAndUpdateAmount(data, dto));
   }
 
-  private static Mono<NutritionEntity> validateAndUpdateName(
-      NutritionEntity entity, NutritionView dto) {
+  private static Mono<Nutrition> validateAndUpdateName(
+      Nutrition entity, NutritionView dto) {
     return Mono.just(entity)
         .filter(
             u ->
@@ -44,8 +44,8 @@ public class NutritionModifier {
             Mono.error(new BadRequestException("Invalid nutrition name: " + dto.name())));
   }
 
-  private static Mono<NutritionEntity> validateAndUpdateUnit(
-      NutritionEntity entity, NutritionView dto) {
+  private static Mono<Nutrition> validateAndUpdateUnit(
+      Nutrition entity, NutritionView dto) {
     return Mono.just(entity)
         .filter(
             u ->
@@ -67,8 +67,8 @@ public class NutritionModifier {
                     "Invalid nutrition unit: " + dto.unit() + " for name : " + dto.name())));
   }
 
-  private static Mono<NutritionEntity> validateAndUpdateAmount(
-      NutritionEntity entity, NutritionView dto) {
+  private static Mono<Nutrition> validateAndUpdateAmount(
+      Nutrition entity, NutritionView dto) {
     return Mono.just(entity)
         .filter(data -> Validator.validateBigDecimal(dto.amount(), BigDecimal.ZERO))
         .flatMap(

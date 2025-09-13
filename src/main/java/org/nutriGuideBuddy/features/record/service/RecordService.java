@@ -15,7 +15,7 @@ import org.nutriGuideBuddy.features.record.dto.CreateRecord;
 import org.nutriGuideBuddy.features.record.dto.DistributedMacros;
 import org.nutriGuideBuddy.features.record.dto.NutritionView;
 import org.nutriGuideBuddy.features.record.dto.RecordView;
-import org.nutriGuideBuddy.features.food.entity.CalorieEntity;
+import org.nutriGuideBuddy.features.food.entity.Calorie;
 import org.nutriGuideBuddy.features.user_details.entity.UserDetails;
 import org.nutriGuideBuddy.features.record.enums.Goals;
 import org.nutriGuideBuddy.features.record.repository.RecordRepository;
@@ -76,7 +76,7 @@ public class RecordService {
                     .map(
                         list ->
                             list.stream()
-                                .map(CalorieEntity::getAmount)
+                                .map(Calorie::getAmount)
                                 .reduce(BigDecimal.ZERO, BigDecimal::add)
                                 .setScale(0, RoundingMode.DOWN))
                     .map(

@@ -1,6 +1,5 @@
 package org.nutriGuideBuddy.features.food.entity;
 
-import java.math.BigDecimal;
 import java.util.UUID;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -12,22 +11,16 @@ import org.springframework.data.relational.core.mapping.Table;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "calories")
-public class CalorieEntity {
+@Table(name = "inserted_foods")
+public class Food {
 
   @Id private String id = UUID.randomUUID().toString();
 
-  @Column("amount")
-  private BigDecimal amount;
-
-  @Column("unit")
-  private String unit;
+  @Column("name")
+  private String name;
 
   @Column("meal_id")
   private String mealId;
-
-  @Column("food_id")
-  private String foodId;
 
   @Column("user_id")
   private String userId;

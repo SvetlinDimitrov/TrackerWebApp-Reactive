@@ -1,5 +1,6 @@
-package org.nutriGuideBuddy.features.user.entity;
+package org.nutriGuideBuddy.features.food.entity;
 
+import java.math.BigDecimal;
 import java.util.UUID;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -11,17 +12,23 @@ import org.springframework.data.relational.core.mapping.Table;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "users")
-public class UserEntity {
+@Table(name = "nutritions")
+public class Nutrition {
 
   @Id private String id = UUID.randomUUID().toString();
 
-  @Column("username")
-  private String username;
+  @Column("name")
+  private String name;
 
-  @Column("email")
-  private String email;
+  @Column("unit")
+  private String unit;
 
-  @Column("password")
-  private String password;
+  @Column("amount")
+  private BigDecimal amount;
+
+  @Column("food_id")
+  private String foodId;
+
+  @Column("user_id")
+  private String userId;
 }

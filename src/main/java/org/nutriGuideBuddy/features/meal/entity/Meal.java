@@ -12,7 +12,7 @@ import org.springframework.data.relational.core.mapping.Table;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "meals")
-public class MealEntity {
+public class Meal {
 
   @Id private String id = UUID.randomUUID().toString();
 

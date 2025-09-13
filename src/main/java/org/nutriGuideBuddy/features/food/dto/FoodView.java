@@ -1,7 +1,7 @@
 package org.nutriGuideBuddy.features.food.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.nutriGuideBuddy.features.food.entity.FoodEntity;
+import org.nutriGuideBuddy.features.food.entity.Food;
 
 import java.util.List;
 
@@ -16,7 +16,7 @@ public record FoodView(
     List<NutritionView> nutritionList) {
 
   public static FoodView toView(
-      FoodEntity entity,
+      Food entity,
       List<NutritionView> nutritionList,
       CalorieView calorie,
       List<ServingView> servings,
