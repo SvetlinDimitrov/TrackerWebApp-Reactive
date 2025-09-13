@@ -1,8 +1,8 @@
 package org.nutriGuideBuddy.enums;
 
 import lombok.Getter;
-import org.nutriGuideBuddy.domain.enums.Gender;
-import org.nutriGuideBuddy.domain.enums.WorkoutState;
+import org.nutriGuideBuddy.features.user_details.enums.Gender;
+import org.nutriGuideBuddy.features.user_details.enums.WorkoutState;
 
 @Getter
 public enum Credentials {

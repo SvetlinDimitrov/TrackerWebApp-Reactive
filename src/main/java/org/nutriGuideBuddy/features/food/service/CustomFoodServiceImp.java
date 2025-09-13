@@ -1,0 +1,99 @@
+package org.nutriGuideBuddy.features.food.service;
+
+import org.nutriGuideBuddy.infrastructure.security.service.ReactiveUserDetailsServiceImpl;
+import org.nutriGuideBuddy.features.food.dto.FoodView;
+import org.nutriGuideBuddy.features.food.dto.InsertFoodDto;
+import org.nutriGuideBuddy.features.food.dto.ShortenFood;
+import org.nutriGuideBuddy.features.food.repository.FoodRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+
+@Service
+public class CustomFoodServiceImp extends AbstractFoodService {
+
+  public CustomFoodServiceImp(FoodRepository repository) {
+    super(repository);
+  }
+
+  public Mono<Page<FoodView>> getAllFoods(Pageable pageable) {
+    return ReactiveUserDetailsServiceImpl.getPrincipalId()
+        .flatMap(
+            userId ->
+                repository
+                    .findAllByFoodsByUserIdAndMealIdPageable(userId, null, pageable)
+                    .flatMap(
+                        page ->
+                            Flux.fromIterable(page)
+                                .flatMap(food -> toFoodView(food, null))
+                                .collectList()
+                                .map(
+                                    foodViews ->
+                                        new PageImpl<>(
+                                            foodViews, pageable, page.getTotalElements()))));
+  }
+
+  public Mono<Page<ShortenFood>> getAllFoodsShort(Pageable pageable) {
+    return ReactiveUserDetailsServiceImpl.getPrincipalId()
+        .flatMap(
+            userId ->
+                repository
+                    .findAllByFoodsByUserIdAndMealIdPageable(userId, null, pageable)
+                    .flatMap(
+                        page ->
+                            Flux.fromIterable(page)
+                                .flatMap(
+                                    food ->
+                                        repository
+                                            .findCalorieByFoodId(food.getId(), food.getMealId())
+                                            .map(
+                                                calorie ->
+                                                    new ShortenFood(
+                                                        food.getId(),
+                                                        food.getName(),
+                                                        calorie.getAmount())))
+                                .collectList()
+                                .map(
+                                    foodViews ->
+                                        new PageImpl<>(
+                                            foodViews, pageable, page.getTotalElements()))));
+  }
+
+  public Mono<FoodView> getById(String foodId) {
+    return ReactiveUserDetailsServiceImpl.getPrincipalId()
+        .flatMap(userId -> getFoodEntityByIdMealIdUserId(foodId, null, userId))
+        .flatMap(foodEntity -> toFoodView(foodEntity, null));
+  }
+
+  public Mono<Void> deleteFood(String foodId) {
+    return ReactiveUserDetailsServiceImpl.getPrincipalId()
+        .flatMap(userId -> getFoodEntityByIdMealIdUserId(foodId, null, userId))
+        .flatMap(entity -> repository.deleteFoodById(entity.getId(), null));
+  }
+
+  public Mono<Void> createFood(InsertFoodDto dto) {
+    return ReactiveUserDetailsServiceImpl.getPrincipalId()
+        .flatMap(userId -> createAndGetFood(userId, dto, null))
+        .flatMap(
+            data ->
+                saveFoodEntity(
+                    data.getT1(), data.getT2(), data.getT3(), data.getT4(), data.getT5()));
+  }
+
+  public Mono<FoodView> changeFood(String foodId, InsertFoodDto dto) {
+    return ReactiveUserDetailsServiceImpl.getPrincipalId()
+        .flatMap(userId -> getFoodEntityByIdMealIdUserId(foodId, null, userId))
+        .flatMap(food -> createAndGetFood(food.getUserId(), dto, null))
+        .flatMap(
+            data ->
+                repository
+                    .deleteFoodById(foodId, null)
+                    .then(
+                        saveFoodEntity(
+                            data.getT1(), data.getT2(), data.getT3(), data.getT4(), data.getT5()))
+                    .then(getById(data.getT1().getId())));
+  }
+}

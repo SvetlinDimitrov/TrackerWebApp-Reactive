@@ -1,9 +1,9 @@
 package org.nutriGuideBuddy.utils;
 
-import org.nutriGuideBuddy.domain.dto.meal.*;
-import org.nutriGuideBuddy.domain.enums.AllowedCalorieUnits;
-import org.nutriGuideBuddy.domain.enums.AllowedNutrients;
+import org.nutriGuideBuddy.features.food.enums.AllowedCalorieUnits;
+import org.nutriGuideBuddy.features.food.enums.AllowedNutrients;
 import org.nutriGuideBuddy.enums.Credentials;
+import org.nutriGuideBuddy.features.food.dto.*;
 
 import java.math.BigDecimal;
 import java.util.Arrays;
