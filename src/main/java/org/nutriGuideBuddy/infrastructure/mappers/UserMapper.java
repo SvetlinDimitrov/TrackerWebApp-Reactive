@@ -2,6 +2,7 @@ package org.nutriGuideBuddy.infrastructure.mappers;
 
 import org.mapstruct.DecoratedWith;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 import org.nutriGuideBuddy.infrastructure.security.dto.ChangePasswordRequest;
 import org.nutriGuideBuddy.features.user_details.dto.UserDetailsView;
@@ -19,6 +20,7 @@ public interface UserMapper {
 
   UserView toView(User entity);
 
+  @Mapping(target = "details" , source = "userDetails")
   UserWithDetailsView toViewWithDetails(UserView user, UserDetailsView userDetails);
 
   User toEntity(UserCreateRequest dto, String email);

@@ -13,7 +13,7 @@ public record UserPrincipal(
 
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {
-    return Optional.ofNullable(user.getUserRole())
+    return Optional.ofNullable(user.getRole())
         .map(role -> List.of((GrantedAuthority) () -> "ROLE_" + role))
         .orElse(List.of());
   }
