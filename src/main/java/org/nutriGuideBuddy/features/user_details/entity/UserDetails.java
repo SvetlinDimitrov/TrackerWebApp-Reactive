@@ -6,7 +6,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.nutriGuideBuddy.features.user_details.enums.Gender;
-import org.nutriGuideBuddy.infrastructure.security.enums.UserRoles;
 import org.nutriGuideBuddy.features.user_details.enums.WorkoutState;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Column;
@@ -37,14 +36,4 @@ public class UserDetails {
 
   @Column("user_id")
   private String userId;
-
-  public String getRole() {
-    return (age != null
-            && height != null
-            && kilograms != null
-            && gender != null
-            && workoutState != null)
-        ? UserRoles.FULLY_REGISTERED.name()
-        : UserRoles.NOT_FULLY_REGISTERED.name();
-  }
 }

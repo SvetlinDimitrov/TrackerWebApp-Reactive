@@ -4,6 +4,7 @@ import java.util.UUID;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.nutriGuideBuddy.features.user.enums.UserRole;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
@@ -24,4 +25,7 @@ public class User {
 
   @Column("password")
   private String password;
+
+  @Column("user_role")
+  private UserRole userRole = UserRole.USER;
 }

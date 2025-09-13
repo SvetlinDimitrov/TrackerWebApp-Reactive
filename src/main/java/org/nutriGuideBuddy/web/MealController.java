@@ -18,7 +18,7 @@ import reactor.core.publisher.Mono;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/meals")
-@PreAuthorize("hasRole('FULLY_REGISTERED')")
+@PreAuthorize("@userDetailsAccessValidator.isFullyRegistered()")
 public class MealController {
 
   private final MealService service;
