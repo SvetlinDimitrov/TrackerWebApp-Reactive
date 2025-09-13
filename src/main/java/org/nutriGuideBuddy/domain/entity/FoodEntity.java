@@ -1,18 +1,20 @@
 package org.nutriGuideBuddy.domain.entity;
 
+import java.util.UUID;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
 
-import java.math.BigDecimal;
-import java.util.UUID;
-
-@Table(name = "inserted_foods")
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Table(name = "inserted_foods")
 public class FoodEntity {
 
-  @Id private String id;
+  @Id private String id = UUID.randomUUID().toString();
 
   @Column("name")
   private String name;
@@ -22,8 +24,4 @@ public class FoodEntity {
 
   @Column("user_id")
   private String userId;
-
-  public FoodEntity() {
-    this.id = UUID.randomUUID().toString();
-  }
 }

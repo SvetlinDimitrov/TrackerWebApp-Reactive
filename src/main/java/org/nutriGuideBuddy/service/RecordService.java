@@ -1,6 +1,14 @@
 package org.nutriGuideBuddy.service;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import org.nutriGuideBuddy.config.security.service.ReactiveUserDetailsServiceImpl;
 import org.nutriGuideBuddy.domain.dto.NutritionIntakeView;
 import org.nutriGuideBuddy.domain.dto.record.CreateRecord;
 import org.nutriGuideBuddy.domain.dto.record.DistributedMacros;
@@ -13,30 +21,19 @@ import org.nutriGuideBuddy.repository.RecordRepository;
 import org.nutriGuideBuddy.utils.BMRCalc;
 import org.nutriGuideBuddy.utils.DailyCaloriesCalculator;
 import org.nutriGuideBuddy.utils.record.*;
-import org.nutriGuideBuddy.utils.user.UserHelperFinder;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 import reactor.core.publisher.Mono;
-
-import java.math.BigDecimal;
-import java.math.RoundingMode;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class RecordService {
 
   private final RecordRepository repository;
-  private final UserHelperFinder userHelper;
 
   public Mono<RecordView> viewRecord(CreateRecord dto) {
-    return userHelper
-        .getUserId()
+    return ReactiveUserDetailsServiceImpl.getPrincipalId()
         .flatMap(repository::findUserDetailsByUserId)
         .switchIfEmpty(Mono.error(new ResponseStatusException(HttpStatus.UNAUTHORIZED)))
         .flatMap(

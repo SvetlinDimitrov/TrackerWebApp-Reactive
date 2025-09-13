@@ -1,4 +1,4 @@
-package org.nutriGuideBuddy.domain.dto.user;
+package org.nutriGuideBuddy.domain.dto.auth;
 
 import java.time.LocalDateTime;
 

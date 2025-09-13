@@ -1,21 +1,18 @@
 package org.nutriGuideBuddy.repository;
 
+import static org.springframework.data.relational.core.query.Criteria.where;
+import static org.springframework.data.relational.core.query.Query.query;
+
+import java.util.HashMap;
+import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.nutriGuideBuddy.domain.entity.UserEntity;
 import org.springframework.data.r2dbc.core.R2dbcEntityTemplate;
 import org.springframework.data.r2dbc.repository.Modifying;
-import org.springframework.data.relational.core.query.Criteria;
-import org.springframework.data.relational.core.query.Query;
 import org.springframework.data.relational.core.query.Update;
+import org.springframework.data.relational.core.sql.SqlIdentifier;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
-import org.nutriGuideBuddy.domain.dto.user.UserWithDetails;
-import org.nutriGuideBuddy.domain.entity.UserDetails;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-
-import static org.springframework.data.relational.core.query.Criteria.where;
-import static org.springframework.data.relational.core.query.Query.query;
 
 @Repository
 @RequiredArgsConstructor
@@ -27,16 +24,25 @@ public class UserRepository {
     return entityTemplate.insert(entity);
   }
 
-  public Mono<UserEntity> findUserById(String id) {
+  @Modifying
+  public Mono<UserEntity> update(UserEntity updatedEntity) {
+    Map<SqlIdentifier, Object> fieldMap = new HashMap<>();
+    fieldMap.put(SqlIdentifier.unquoted("username"), updatedEntity.getUsername());
+    fieldMap.put(SqlIdentifier.unquoted("email"), updatedEntity.getEmail());
+    fieldMap.put(SqlIdentifier.unquoted("password"), updatedEntity.getPassword());
+
+    return entityTemplate
+        .update(UserEntity.class)
+        .matching(query(where("id").is(updatedEntity.getId())))
+        .apply(Update.from(fieldMap))
+        .then(findById(updatedEntity.getId()));
+  }
+
+  public Mono<UserEntity> findById(String id) {
     return entityTemplate.selectOne(query(where("id").is(id)), UserEntity.class);
   }
 
-  public Flux<UserEntity> findAllUsers() {
-    return entityTemplate.select(UserEntity.class).all();
-  }
-
-  public Mono<UserEntity> findUserByEmail(String email) {
-
+  public Mono<UserEntity> findByEmail(String email) {
     return entityTemplate.selectOne(query(where("email").is(email)), UserEntity.class);
   }
 
@@ -45,29 +51,10 @@ public class UserRepository {
     return entityTemplate.delete(UserEntity.class).matching(query(where("id").is(id))).all().then();
   }
 
-  @Modifying
-  public Mono<UserEntity> updateUsernameAndPassword(String id, UserEntity updatedEntity) {
+  public Mono<Boolean> existsByEmail(String email) {
     return entityTemplate
-        .update(UserEntity.class)
-        .matching(query(where("id").is(id)))
-        .apply(
-            Update.update("username", updatedEntity.getUsername())
-                .set("password", updatedEntity.getPassword()))
-        .then(findUserById(id));
-  }
-
-  @Transactional(readOnly = true)
-  public Mono<UserWithDetails> getUserWithDetailsByEmail(String email) {
-    return entityTemplate
-        .select(UserEntity.class)
-        .matching(Query.query(Criteria.where("email").is(email)))
-        .one()
-        .flatMap(
-            userEntity ->
-                entityTemplate
-                    .select(UserDetails.class)
-                    .matching(Query.query(Criteria.where("userId").is(userEntity.getId())))
-                    .one()
-                    .map(userDetails -> new UserWithDetails(userEntity, userDetails)));
+        .selectOne(query(where("email").is(email)), UserEntity.class)
+        .map(user -> true)
+        .defaultIfEmpty(false);
   }
 }

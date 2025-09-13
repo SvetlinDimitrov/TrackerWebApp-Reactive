@@ -1,11 +1,16 @@
 package org.nutriGuideBuddy.config.security;
 
+import java.util.Arrays;
+import java.util.Collections;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import org.nutriGuideBuddy.config.security.filter.JwtTokenAuthenticationFilter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.config.annotation.method.configuration.EnableReactiveMethodSecurity;
 import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity;
 import org.springframework.security.config.web.server.SecurityWebFiltersOrder;
 import org.springframework.security.config.web.server.ServerHttpSecurity;
@@ -13,17 +18,14 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.server.SecurityWebFilterChain;
 import org.springframework.security.web.server.context.NoOpServerSecurityContextRepository;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.reactive.CorsWebFilter;
+import org.springframework.web.cors.reactive.UrlBasedCorsConfigurationSource;
 
-import java.util.Arrays;
-import java.util.Collections;
-
-@EnableWebFluxSecurity
-@Configuration
 @RequiredArgsConstructor
-@Slf4j
+@Configuration
+@EnableWebFluxSecurity
+@EnableReactiveMethodSecurity
 public class SecurityConfig {
 
   private final JwtTokenAuthenticationFilter jwtAuthenticationFilter;
@@ -35,52 +37,46 @@ public class SecurityConfig {
   public SecurityWebFilterChain securityFilterChain(ServerHttpSecurity http) {
     return http.csrf(ServerHttpSecurity.CsrfSpec::disable)
         .httpBasic(ServerHttpSecurity.HttpBasicSpec::disable)
-        .cors(
-            cors ->
-                cors.configurationSource(
-                    request -> {
-                      CorsConfiguration corsConfiguration = new CorsConfiguration();
-                      corsConfiguration.setAllowedOriginPatterns(
-                          Collections.singletonList(allowedOrigins));
-                      corsConfiguration.setAllowedMethods(
-                          Arrays.asList("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"));
-                      corsConfiguration.setAllowedHeaders(
-                          Arrays.asList(
-                              "Authorization",
-                              "Content-Type",
-                              "Accept",
-                              "Origin",
-                              "DNT",
-                              "X-CustomHeader",
-                              "Keep-Alive",
-                              "User-Agent",
-                              "X-Requested-With",
-                              "If-Modified-Since",
-                              "Cache-Control",
-                              "Content-Range",
-                              "Range"));
-                      corsConfiguration.setAllowCredentials(true);
-                      corsConfiguration.setMaxAge(1728000L);
-                      return corsConfiguration;
-                    }))
-        .securityContextRepository(NoOpServerSecurityContextRepository.getInstance())
         .authorizeExchange(
-            request ->
-                request
-                    .pathMatchers(HttpMethod.POST, "/api/user", "/api/user/login")
+            exchanges ->
+                exchanges
+                    .pathMatchers(HttpMethod.POST, "/api/v1/user")
                     .permitAll()
-                    .pathMatchers("/api/user/reset-password")
+                    .pathMatchers("/api/v1/auth/**")
                     .permitAll()
-                    .pathMatchers("/api/verify/**")
-                    .permitAll()
-                    .pathMatchers("/api/meals/**")
-                    .hasRole("FULLY_REGISTERED")
-                    .pathMatchers("/api/record/**")
-                    .hasRole("FULLY_REGISTERED")
                     .anyExchange()
                     .authenticated())
-        .addFilterAt(jwtAuthenticationFilter, SecurityWebFiltersOrder.AUTHENTICATION)
+        .securityContextRepository(NoOpServerSecurityContextRepository.getInstance())
+        .addFilterAfter(jwtAuthenticationFilter, SecurityWebFiltersOrder.AUTHENTICATION)
         .build();
+  }
+
+  @Bean
+  @Order(Ordered.HIGHEST_PRECEDENCE)
+  public CorsWebFilter corsWebFilter() {
+    CorsConfiguration corsConfig = new CorsConfiguration();
+    corsConfig.setAllowedOriginPatterns(Collections.singletonList(allowedOrigins));
+    corsConfig.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"));
+    corsConfig.setAllowedHeaders(
+        Arrays.asList(
+            "Authorization",
+            "Content-Type",
+            "Accept",
+            "Origin",
+            "DNT",
+            "X-CustomHeader",
+            "Keep-Alive",
+            "User-Agent",
+            "X-Requested-With",
+            "If-Modified-Since",
+            "Cache-Control",
+            "Content-Range",
+            "Range"));
+    corsConfig.setAllowCredentials(true);
+    corsConfig.setMaxAge(1728000L);
+    UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+    source.registerCorsConfiguration("/**", corsConfig);
+    return new CorsWebFilter(source);
   }
 
   @Bean

@@ -1,4 +1,4 @@
-package org.nutriGuideBuddy.domain.dto;
+package org.nutriGuideBuddy.exceptions;
 
 import lombok.Getter;
 

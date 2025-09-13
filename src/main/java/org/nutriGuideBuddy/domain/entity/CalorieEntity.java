@@ -1,18 +1,21 @@
 package org.nutriGuideBuddy.domain.entity;
 
+import java.math.BigDecimal;
+import java.util.UUID;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
 
-import java.math.BigDecimal;
-import java.util.UUID;
-
-@Table(name = "calories")
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Table(name = "calories")
 public class CalorieEntity {
 
-  @Id private String id;
+  @Id private String id = UUID.randomUUID().toString();
 
   @Column("amount")
   private BigDecimal amount;
@@ -28,8 +31,4 @@ public class CalorieEntity {
 
   @Column("user_id")
   private String userId;
-
-  public CalorieEntity() {
-    this.id = UUID.randomUUID().toString();
-  }
 }

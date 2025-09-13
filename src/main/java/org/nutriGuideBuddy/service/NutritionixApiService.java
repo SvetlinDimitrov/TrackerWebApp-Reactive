@@ -1,7 +1,7 @@
 package org.nutriGuideBuddy.service;
 
 import jakarta.annotation.PostConstruct;
-import org.nutriGuideBuddy.domain.dto.BadRequestException;
+import org.nutriGuideBuddy.exceptions.BadRequestException;
 import org.nutriGuideBuddy.domain.dto.meal.*;
 import org.nutriGuideBuddy.domain.dto.nutritionxApi.FoodItem;
 import org.nutriGuideBuddy.domain.dto.nutritionxApi.ListFoodsResponse;

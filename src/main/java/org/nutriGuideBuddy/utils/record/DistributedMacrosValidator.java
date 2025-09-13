@@ -1,6 +1,6 @@
 package org.nutriGuideBuddy.utils.record;
 
-import org.nutriGuideBuddy.domain.dto.BadRequestException;
+import org.nutriGuideBuddy.exceptions.BadRequestException;
 import org.nutriGuideBuddy.domain.dto.record.DistributedMacros;
 import reactor.core.publisher.Mono;
 

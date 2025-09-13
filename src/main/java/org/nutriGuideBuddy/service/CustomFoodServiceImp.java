@@ -1,10 +1,10 @@
 package org.nutriGuideBuddy.service;
 
+import org.nutriGuideBuddy.config.security.service.ReactiveUserDetailsServiceImpl;
 import org.nutriGuideBuddy.domain.dto.meal.FoodView;
 import org.nutriGuideBuddy.domain.dto.meal.InsertFoodDto;
 import org.nutriGuideBuddy.domain.dto.meal.ShortenFood;
 import org.nutriGuideBuddy.repository.FoodRepository;
-import org.nutriGuideBuddy.utils.user.UserHelperFinder;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -15,13 +15,12 @@ import reactor.core.publisher.Mono;
 @Service
 public class CustomFoodServiceImp extends AbstractFoodService {
 
-  public CustomFoodServiceImp(FoodRepository repository, UserHelperFinder userHelper) {
-    super(repository, userHelper);
+  public CustomFoodServiceImp(FoodRepository repository) {
+    super(repository);
   }
 
   public Mono<Page<FoodView>> getAllFoods(Pageable pageable) {
-    return userHelper
-        .getUserId()
+    return ReactiveUserDetailsServiceImpl.getPrincipalId()
         .flatMap(
             userId ->
                 repository
@@ -38,8 +37,7 @@ public class CustomFoodServiceImp extends AbstractFoodService {
   }
 
   public Mono<Page<ShortenFood>> getAllFoodsShort(Pageable pageable) {
-    return userHelper
-        .getUserId()
+    return ReactiveUserDetailsServiceImpl.getPrincipalId()
         .flatMap(
             userId ->
                 repository
@@ -65,22 +63,19 @@ public class CustomFoodServiceImp extends AbstractFoodService {
   }
 
   public Mono<FoodView> getById(String foodId) {
-    return userHelper
-        .getUserId()
+    return ReactiveUserDetailsServiceImpl.getPrincipalId()
         .flatMap(userId -> getFoodEntityByIdMealIdUserId(foodId, null, userId))
         .flatMap(foodEntity -> toFoodView(foodEntity, null));
   }
 
   public Mono<Void> deleteFood(String foodId) {
-    return userHelper
-        .getUserId()
+    return ReactiveUserDetailsServiceImpl.getPrincipalId()
         .flatMap(userId -> getFoodEntityByIdMealIdUserId(foodId, null, userId))
         .flatMap(entity -> repository.deleteFoodById(entity.getId(), null));
   }
 
   public Mono<Void> createFood(InsertFoodDto dto) {
-    return userHelper
-        .getUserId()
+    return ReactiveUserDetailsServiceImpl.getPrincipalId()
         .flatMap(userId -> createAndGetFood(userId, dto, null))
         .flatMap(
             data ->
@@ -89,8 +84,7 @@ public class CustomFoodServiceImp extends AbstractFoodService {
   }
 
   public Mono<FoodView> changeFood(String foodId, InsertFoodDto dto) {
-    return userHelper
-        .getUserId()
+    return ReactiveUserDetailsServiceImpl.getPrincipalId()
         .flatMap(userId -> getFoodEntityByIdMealIdUserId(foodId, null, userId))
         .flatMap(food -> createAndGetFood(food.getUserId(), dto, null))
         .flatMap(

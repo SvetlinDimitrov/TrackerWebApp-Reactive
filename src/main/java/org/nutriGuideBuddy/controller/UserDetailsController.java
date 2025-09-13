@@ -1,38 +1,45 @@
 package org.nutriGuideBuddy.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.nutriGuideBuddy.domain.dto.BadRequestException;
-import org.nutriGuideBuddy.domain.dto.ExceptionResponse;
-import org.nutriGuideBuddy.domain.dto.user.JwtResponse;
+import org.nutriGuideBuddy.domain.dto.user_details.UserDetailsRequest;
+import org.nutriGuideBuddy.domain.dto.user_details.UserDetailsView;
+import org.nutriGuideBuddy.service.UserDetailsService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import org.nutriGuideBuddy.domain.dto.user.UserDetailsDto;
-import org.nutriGuideBuddy.domain.dto.user.UserDetailsView;
-import org.nutriGuideBuddy.service.UserDetailsService;
 import reactor.core.publisher.Mono;
 
 @RestController
-@RequestMapping("/api/user/details")
+@RequestMapping("/api/v1/user-details")
 @RequiredArgsConstructor
 public class UserDetailsController {
 
   private final UserDetailsService service;
 
-  @GetMapping
+  // TODO::VALIDATOR
+  @GetMapping("/{id}")
   @ResponseStatus(HttpStatus.OK)
-  public Mono<UserDetailsView> getUserDetails() throws BadRequestException {
-    return service.getByUserId();
+  public Mono<UserDetailsView> getById(@PathVariable String id) {
+    return service.getById(id);
   }
 
-  @PatchMapping
+  @GetMapping("/me")
   @ResponseStatus(HttpStatus.OK)
-  public Mono<JwtResponse> modifyUserDetails(@RequestBody UserDetailsDto userDto) {
-    return service.modifyUserDetails(userDto);
+  public Mono<UserDetailsView> me() {
+    return service.me();
   }
 
-  @ExceptionHandler(BadRequestException.class)
-  @ResponseStatus(HttpStatus.BAD_REQUEST)
-  public Mono<ExceptionResponse> catchUserNotFound(BadRequestException e) {
-    return Mono.just(new ExceptionResponse(e.getMessage()));
+  // TODO::VALIDATOR
+  @PatchMapping("/{id}")
+  @ResponseStatus(HttpStatus.OK)
+  public Mono<UserDetailsView> update(
+      @RequestBody @Valid UserDetailsRequest userDto, @PathVariable String id) {
+    return service.update(userDto, id);
+  }
+
+  @PatchMapping("/me")
+  @ResponseStatus(HttpStatus.OK)
+  public Mono<UserDetailsView> updateMyDetails(@RequestBody @Valid UserDetailsRequest userDto) {
+    return service.update(userDto);
   }
 }

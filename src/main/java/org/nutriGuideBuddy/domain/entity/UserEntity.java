@@ -1,17 +1,20 @@
 package org.nutriGuideBuddy.domain.entity;
 
+import java.util.UUID;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
 
-import java.util.UUID;
-
-@Table(name = "users")
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Table(name = "users")
 public class UserEntity {
 
-  @Id private String id;
+  @Id private String id = UUID.randomUUID().toString();
 
   @Column("username")
   private String username;
@@ -21,8 +24,4 @@ public class UserEntity {
 
   @Column("password")
   private String password;
-
-  public UserEntity() {
-    this.id = UUID.randomUUID().toString();
-  }
 }

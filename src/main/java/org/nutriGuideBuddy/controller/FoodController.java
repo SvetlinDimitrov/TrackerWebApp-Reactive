@@ -1,7 +1,7 @@
 package org.nutriGuideBuddy.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.nutriGuideBuddy.domain.dto.BadRequestException;
+import org.nutriGuideBuddy.exceptions.BadRequestException;
 import org.nutriGuideBuddy.domain.dto.ExceptionResponse;
 import org.nutriGuideBuddy.service.FoodServiceImp;
 import org.springframework.http.HttpStatus;

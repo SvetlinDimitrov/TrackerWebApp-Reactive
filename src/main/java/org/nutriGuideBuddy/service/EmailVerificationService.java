@@ -1,12 +1,14 @@
 package org.nutriGuideBuddy.service;
 
+import java.util.List;
+import java.util.Map;
 import lombok.RequiredArgsConstructor;
-import org.nutriGuideBuddy.domain.dto.BadRequestException;
-import org.nutriGuideBuddy.domain.dto.user.UserEmailValidationCreate;
-import org.nutriGuideBuddy.domain.entity.UserEntity;
+import org.nutriGuideBuddy.config.security.service.JwtEmailVerificationService;
+import org.nutriGuideBuddy.domain.dto.auth.EmailValidationRequest;
+import org.nutriGuideBuddy.exceptions.ExceptionMessages;
+import org.nutriGuideBuddy.exceptions.NotFoundException;
+import org.nutriGuideBuddy.exceptions.ValidationException;
 import org.nutriGuideBuddy.repository.UserRepository;
-import org.nutriGuideBuddy.utils.JWTUtilEmailValidation;
-import org.nutriGuideBuddy.utils.user.UserModifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -20,8 +22,6 @@ import sibApi.TransactionalEmailsApi;
 import sibModel.SendSmtpEmail;
 import sibModel.SendSmtpEmailSender;
 import sibModel.SendSmtpEmailTo;
-
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -37,17 +37,15 @@ public class EmailVerificationService {
   private String emailSender;
 
   private final UserRepository userRepository;
-  private final JWTUtilEmailValidation JWTUtil;
+  private final JwtEmailVerificationService jwtUtil;
 
-  public Mono<Void> validateUserAndSendVerificationEmail(UserEmailValidationCreate dto) {
-    return UserModifier.validateAndModifyUserCreation(new UserEntity(), dto)
-        .map(UserEntity::getEmail)
-        .flatMap(userRepository::findUserByEmail)
-        .hasElement()
+  public Mono<Void> validateUserAndSendVerificationEmail(EmailValidationRequest dto) {
+    return userRepository
+        .existsByEmail(dto.email())
         .flatMap(
-            userExists -> {
-              if (userExists) {
-                return Mono.error(new BadRequestException("User already exists"));
+            exists -> {
+              if (exists) {
+                return Mono.error(new ValidationException(Map.of("email", "User already exists")));
               } else {
                 ApiClient defaultClient = Configuration.getDefaultApiClient();
                 ApiKeyAuth apiKey = (ApiKeyAuth) defaultClient.getAuthentication("api-key");
@@ -55,7 +53,7 @@ public class EmailVerificationService {
 
                 TransactionalEmailsApi apiInstance = new TransactionalEmailsApi();
                 String verificationUrl =
-                    frontendUrl + "/email-verification?token=" + JWTUtil.generateToken(dto.email());
+                    frontendUrl + "/email-verification?token=" + jwtUtil.generateToken(dto.email());
                 SendSmtpEmail email =
                     getSendSmtpEmail(
                         dto.email(),
@@ -74,22 +72,22 @@ public class EmailVerificationService {
 
   public Mono<Void> sendForgotPasswordEmail(String email) {
     return userRepository
-        .findUserByEmail(email)
-        .switchIfEmpty(Mono.error(new BadRequestException("User not found")))
+        .existsByEmail(email)
         .flatMap(
-            user -> {
+            exists -> {
+              if (!exists) {
+                return Mono.error(new NotFoundException(ExceptionMessages.USER_NOT_FOUND));
+              }
               ApiClient defaultClient = Configuration.getDefaultApiClient();
               ApiKeyAuth apiKey = (ApiKeyAuth) defaultClient.getAuthentication("api-key");
               apiKey.setApiKey(sendinblueApiKey);
 
               TransactionalEmailsApi apiInstance = new TransactionalEmailsApi();
               String verificationUrl =
-                  frontendUrl
-                      + "/recreate-password?token="
-                      + JWTUtil.generateToken(user.getEmail());
+                  frontendUrl + "/recreate-password?token=" + jwtUtil.generateToken(email);
               SendSmtpEmail emailSend =
                   getSendSmtpEmail(
-                      user.getEmail(),
+                      email,
                       verificationUrl,
                       "Reset Password",
                       "Please reset your password by clicking the link below: ");

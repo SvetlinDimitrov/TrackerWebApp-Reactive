@@ -1,12 +1,16 @@
 package org.nutriGuideBuddy.service;
 
+import static org.nutriGuideBuddy.exceptions.ExceptionMessages.*;
+
 import lombok.RequiredArgsConstructor;
-import org.nutriGuideBuddy.domain.dto.BadRequestException;
-import org.nutriGuideBuddy.domain.dto.user.*;
+import org.nutriGuideBuddy.config.security.UserPrincipal;
+import org.nutriGuideBuddy.config.security.service.ReactiveUserDetailsServiceImpl;
+import org.nutriGuideBuddy.domain.dto.user_details.UserDetailsRequest;
+import org.nutriGuideBuddy.domain.dto.user_details.UserDetailsView;
+import org.nutriGuideBuddy.domain.entity.UserDetails;
+import org.nutriGuideBuddy.exceptions.NotFoundException;
+import org.nutriGuideBuddy.mapper.UserDetailsMapper;
 import org.nutriGuideBuddy.repository.UserDetailsRepository;
-import org.nutriGuideBuddy.utils.JWTUtil;
-import org.nutriGuideBuddy.utils.user.UserDetailsModifier;
-import org.nutriGuideBuddy.utils.user.UserHelperFinder;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Mono;
 
@@ -15,43 +19,56 @@ import reactor.core.publisher.Mono;
 public class UserDetailsService {
 
   private final UserDetailsRepository repository;
-  private final UserHelperFinder userHelper;
-  private final JWTUtil jwtUtil;
+  private final UserDetailsMapper mapper;
 
-  public Mono<JwtResponse> modifyUserDetails(UserDetailsDto updateDto) {
-
-    if (updateDto == null) {
-      return Mono.error(new BadRequestException("Body cannot be empty"));
-    }
-
-    return userHelper
-        .getUser()
-        .flatMap(
-            user ->
-                repository
-                    .findUserDetailsByUserId(user.getId())
-                    .switchIfEmpty(Mono.error(new BadRequestException("No userDetails found")))
-                    .flatMap(entity -> UserDetailsModifier.ageModify(entity, updateDto))
-                    .flatMap(entity -> UserDetailsModifier.genderModify(entity, updateDto))
-                    .flatMap(entity -> UserDetailsModifier.heightModify(entity, updateDto))
-                    .flatMap(entity -> UserDetailsModifier.kilogramsModify(entity, updateDto))
-                    .flatMap(entity -> UserDetailsModifier.workoutStateModify(entity, updateDto))
-                    .flatMap(entity -> repository.updateUserDetails(entity.getId(), entity))
-                    .zipWith(Mono.just(user)))
-        .map(
-            tuple ->
-                new JwtResponse(
-                    new UserWithDetailsView(
-                        UserView.toView(tuple.getT2()), UserDetailsView.toView(tuple.getT1())),
-                    jwtUtil.generateToken(tuple.getT1())));
+  public Mono<UserDetailsView> create(String userId) {
+    UserDetails entity = new UserDetails();
+    entity.setUserId(userId);
+    return repository.save(entity).map(mapper::toView);
   }
 
-  public Mono<UserDetailsView> getByUserId() throws BadRequestException {
+  public Mono<UserDetailsView> getById(String id) {
+    return findByIdOrThrow(id).map(mapper::toView);
+  }
 
-    return userHelper
-        .getUserId()
-        .flatMap(repository::findUserDetailsByUserId)
-        .switchIfEmpty(Mono.error(new BadRequestException("No userDetails found")))
-        .map(UserDetailsView::toView);
+  public Mono<UserDetailsView> getByUserId(String userId) {
+    return findByUserIdOrThrow(userId).map(mapper::toView);
+  }
+
+  public Mono<UserDetailsView> me() {
+    return ReactiveUserDetailsServiceImpl.getPrincipal()
+        .map(UserPrincipal::details)
+        .map(mapper::toView);
+  }
+
+  public Mono<UserDetailsView> update(UserDetailsRequest updateDto, String id) {
+    return findByIdOrThrow(id)
+        .flatMap(
+            entity -> {
+              mapper.update(updateDto, entity);
+              return repository.update(entity.getId(), entity).thenReturn(entity);
+            })
+        .map(mapper::toView);
+  }
+
+  public Mono<UserDetailsView> update(UserDetailsRequest updateDto) {
+    return ReactiveUserDetailsServiceImpl.getPrincipal()
+        .map(principal -> principal.details().getId())
+        .flatMap(userDetailsId -> update(updateDto, userDetailsId));
+  }
+
+  public Mono<UserDetails> findByUserIdOrThrow(String userId) {
+    return repository
+        .findByUserId(userId)
+        .switchIfEmpty(
+            Mono.error(
+                new NotFoundException(String.format(USER_DETAILS_NOT_FOUND_FOR_USER_ID, userId))));
+  }
+
+  private Mono<UserDetails> findByIdOrThrow(String id) {
+    return repository
+        .findById(id)
+        .switchIfEmpty(
+            Mono.error(new NotFoundException(String.format(USER_DETAILS_NOT_FOUND_BY_ID, id))));
   }
 }

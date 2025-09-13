@@ -1,28 +1,25 @@
 package org.nutriGuideBuddy.service;
 
-import lombok.RequiredArgsConstructor;
-import org.nutriGuideBuddy.domain.dto.BadRequestException;
-import org.nutriGuideBuddy.domain.dto.meal.*;
-import org.nutriGuideBuddy.domain.entity.*;
-import org.nutriGuideBuddy.repository.FoodRepository;
-import org.nutriGuideBuddy.utils.meals.*;
-import org.nutriGuideBuddy.utils.user.UserHelperFinder;
-import org.springframework.stereotype.Service;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
-import reactor.util.function.Tuple5;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import lombok.RequiredArgsConstructor;
+import org.nutriGuideBuddy.domain.dto.meal.*;
+import org.nutriGuideBuddy.domain.entity.*;
+import org.nutriGuideBuddy.exceptions.BadRequestException;
+import org.nutriGuideBuddy.repository.FoodRepository;
+import org.nutriGuideBuddy.utils.meals.*;
+import org.springframework.stereotype.Service;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+import reactor.util.function.Tuple5;
 
 @Service
 @RequiredArgsConstructor
 public abstract class AbstractFoodService {
 
   protected final FoodRepository repository;
-  protected final UserHelperFinder userHelper;
 
   protected Mono<FoodView> toFoodView(FoodEntity entity, String mealId) {
     return Mono.zip(

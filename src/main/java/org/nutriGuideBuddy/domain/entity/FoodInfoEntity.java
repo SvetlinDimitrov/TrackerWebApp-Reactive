@@ -1,17 +1,20 @@
 package org.nutriGuideBuddy.domain.entity;
 
+import java.util.UUID;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
 
-import java.util.UUID;
-
-@Table(name = "info_foods")
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Table(name = "info_foods")
 public class FoodInfoEntity {
 
-  @Id private String id;
+  @Id private String id = UUID.randomUUID().toString();
 
   @Column("info")
   private String info;
@@ -24,8 +27,4 @@ public class FoodInfoEntity {
 
   @Column("food_id")
   private String foodId;
-
-  public FoodInfoEntity() {
-    this.id = UUID.randomUUID().toString();
-  }
 }

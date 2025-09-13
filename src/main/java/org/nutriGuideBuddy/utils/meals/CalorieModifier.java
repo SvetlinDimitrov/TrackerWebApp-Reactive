@@ -1,6 +1,6 @@
 package org.nutriGuideBuddy.utils.meals;
 
-import org.nutriGuideBuddy.domain.dto.BadRequestException;
+import org.nutriGuideBuddy.exceptions.BadRequestException;
 import org.nutriGuideBuddy.domain.entity.CalorieEntity;
 import org.nutriGuideBuddy.domain.dto.meal.CalorieView;
 import org.nutriGuideBuddy.domain.enums.AllowedCalorieUnits;

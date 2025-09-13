@@ -1,22 +1,24 @@
 package org.nutriGuideBuddy.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.nutriGuideBuddy.domain.dto.BadRequestException;
 import org.nutriGuideBuddy.domain.dto.ExceptionResponse;
 import org.nutriGuideBuddy.domain.dto.meal.CreateMeal;
 import org.nutriGuideBuddy.domain.dto.meal.MealShortView;
 import org.nutriGuideBuddy.domain.dto.meal.MealView;
+import org.nutriGuideBuddy.exceptions.BadRequestException;
 import org.nutriGuideBuddy.service.MealService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/meals")
+@PreAuthorize("hasRole('FULLY_REGISTERED')")
 public class MealController {
 
   private final MealService service;

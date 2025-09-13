@@ -1,13 +1,16 @@
 package org.nutriGuideBuddy.service;
 
-import org.nutriGuideBuddy.domain.dto.BadRequestException;
+import java.math.BigDecimal;
+import java.util.List;
+
+import org.nutriGuideBuddy.config.security.service.ReactiveUserDetailsServiceImpl;
 import org.nutriGuideBuddy.domain.dto.meal.*;
 import org.nutriGuideBuddy.domain.entity.CalorieEntity;
 import org.nutriGuideBuddy.domain.entity.MealEntity;
+import org.nutriGuideBuddy.exceptions.BadRequestException;
 import org.nutriGuideBuddy.repository.FoodRepository;
 import org.nutriGuideBuddy.repository.MealRepository;
 import org.nutriGuideBuddy.utils.meals.MealModifier;
-import org.nutriGuideBuddy.utils.user.UserHelperFinder;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -17,23 +20,18 @@ import org.springframework.web.server.ResponseStatusException;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.math.BigDecimal;
-import java.util.List;
-
 @Service
 public class MealService extends AbstractFoodService {
 
   private final MealRepository mealRepository;
 
-  public MealService(
-      FoodRepository repository, UserHelperFinder userHelper, MealRepository mealRepository) {
-    super(repository, userHelper);
+  public MealService(FoodRepository repository, MealRepository mealRepository) {
+    super(repository);
     this.mealRepository = mealRepository;
   }
 
   public Mono<Page<MealView>> getAllByUserId(Pageable pageable) {
-    return userHelper
-        .getUserId()
+    return ReactiveUserDetailsServiceImpl.getPrincipalId()
         .flatMap(userId -> mealRepository.findAllMealsByUserId(userId, pageable))
         .flatMap(
             page ->
@@ -44,8 +42,7 @@ public class MealService extends AbstractFoodService {
   }
 
   public Mono<Page<MealShortView>> getAllByUserIdShorten(Pageable pageable) {
-    return userHelper
-        .getUserId()
+    return ReactiveUserDetailsServiceImpl.getPrincipalId()
         .flatMap(userId -> mealRepository.findAllMealsByUserId(userId, pageable))
         .flatMap(
             page ->
@@ -60,8 +57,7 @@ public class MealService extends AbstractFoodService {
   }
 
   public Mono<MealView> createMeal(CreateMeal dto) {
-    return userHelper
-        .getUserId()
+    return ReactiveUserDetailsServiceImpl.getPrincipalId()
         .flatMap(mealRepository::findUserById)
         .switchIfEmpty(Mono.error(new ResponseStatusException(HttpStatusCode.valueOf(401))))
         .flatMap(entity -> MealModifier.validateAndUpdateEntity(dto, entity.getId()))
@@ -88,8 +84,7 @@ public class MealService extends AbstractFoodService {
   }
 
   private Mono<MealEntity> getMealEntityMono(String mealId) {
-    return userHelper
-        .getUserId()
+    return ReactiveUserDetailsServiceImpl.getPrincipalId()
         .flatMap(userId -> mealRepository.findMealByIdAndUserId(mealId, userId))
         .switchIfEmpty(Mono.error(new BadRequestException("No meal found with id: " + mealId)));
   }

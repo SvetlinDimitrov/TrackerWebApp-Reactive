@@ -2,7 +2,7 @@ package org.nutriGuideBuddy.controller;
 
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.nutriGuideBuddy.domain.dto.BadRequestException;
+import org.nutriGuideBuddy.exceptions.BadRequestException;
 import org.nutriGuideBuddy.domain.dto.ExceptionResponse;
 import org.nutriGuideBuddy.domain.dto.meal.InsertFoodDto;
 import org.nutriGuideBuddy.domain.dto.nutritionxApi.ListFoodsResponse;
