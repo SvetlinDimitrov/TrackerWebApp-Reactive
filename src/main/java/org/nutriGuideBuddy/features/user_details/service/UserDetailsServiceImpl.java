@@ -21,26 +21,31 @@ public class UserDetailsServiceImpl implements UserDetailsService {
   private final UserDetailsRepository repository;
   private final UserDetailsMapper mapper;
 
+  @Override
   public Mono<UserDetailsView> create(String userId) {
     UserDetails entity = new UserDetails();
     entity.setUserId(userId);
     return repository.save(entity).map(mapper::toView);
   }
 
+  @Override
   public Mono<UserDetailsView> getById(String id) {
     return findByIdOrThrow(id).map(mapper::toView);
   }
 
+  @Override
   public Mono<UserDetailsView> getByUserId(String userId) {
     return findByUserIdOrThrow(userId).map(mapper::toView);
   }
 
+  @Override
   public Mono<UserDetailsView> me() {
     return ReactiveUserDetailsServiceImpl.getPrincipal()
         .map(UserPrincipal::details)
         .map(mapper::toView);
   }
 
+  @Override
   public Mono<UserDetailsView> update(UserDetailsRequest updateDto, String id) {
     return findByIdOrThrow(id)
         .flatMap(
@@ -51,12 +56,14 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         .map(mapper::toView);
   }
 
+  @Override
   public Mono<UserDetailsView> update(UserDetailsRequest updateDto) {
     return ReactiveUserDetailsServiceImpl.getPrincipal()
         .map(principal -> principal.details().getId())
         .flatMap(userDetailsId -> update(updateDto, userDetailsId));
   }
 
+  @Override
   public Mono<UserDetails> findByUserIdOrThrow(String userId) {
     return repository
         .findByUserId(userId)
@@ -65,6 +72,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
                 new NotFoundException(String.format(USER_DETAILS_NOT_FOUND_FOR_USER_ID, userId))));
   }
 
+  @Override
   public Mono<Void> deleteByUserId(String userId) {
     return repository.deleteByUserId(userId);
   }

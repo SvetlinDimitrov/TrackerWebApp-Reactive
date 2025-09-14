@@ -25,10 +25,15 @@ public class UserController {
   }
 
   @PostMapping("/get/all")
-  @PreAuthorize("hasRole('ADMIN')")
   @ResponseStatus(HttpStatus.OK)
   public Flux<UserView> getAll(@RequestBody @Valid UserFilter filter) {
     return service.getAll(filter);
+  }
+
+  @PostMapping("/get/count")
+  @ResponseStatus(HttpStatus.OK)
+  public Mono<Long> count(@RequestBody @Valid UserFilter filter) {
+    return service.countByFilter(filter);
   }
 
   @GetMapping("/{id}")

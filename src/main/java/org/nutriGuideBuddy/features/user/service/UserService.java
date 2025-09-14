@@ -29,4 +29,6 @@ public interface UserService {
   Mono<User> findByEmailOrThrow(String email);
 
   Mono<User> findByIOrThrow(String id);
+
+  Mono<Long> countByFilter(UserFilter filter);
 }

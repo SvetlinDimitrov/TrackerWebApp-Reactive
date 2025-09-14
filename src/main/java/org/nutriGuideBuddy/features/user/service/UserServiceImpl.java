@@ -33,21 +33,25 @@ public class UserServiceImpl implements UserService {
     return repository.findAllByFilter(filter).map(userMapper::toView);
   }
 
+  @Override
   public Mono<UserView> getById(String id) {
     return findByIOrThrow(id).map(userMapper::toView);
   }
 
+  @Override
   public Mono<UserWithDetailsView> getByIdWithDetails(String id) {
     return getById(id)
         .zipWith(userDetailsService.getByUserId(id))
         .map(tuple -> userMapper.toViewWithDetails(tuple.getT1(), tuple.getT2()));
   }
 
+  @Override
   public Mono<UserView> me() {
     return ReactiveUserDetailsServiceImpl.getPrincipal()
         .map(userPrincipal -> userMapper.toView(userPrincipal.user()));
   }
 
+  @Override
   public Mono<UserWithDetailsView> meWithDetails() {
     return ReactiveUserDetailsServiceImpl.getPrincipal()
         .flatMap(
@@ -60,6 +64,7 @@ public class UserServiceImpl implements UserService {
                                 userMapper.toView(principal.user()), details)));
   }
 
+  @Override
   public Mono<UserView> create(UserCreateRequest dto, String token) {
     return emailVerificationService
         .validateToken(token)
@@ -71,6 +76,7 @@ public class UserServiceImpl implements UserService {
         .map(userMapper::toView);
   }
 
+  @Override
   public Mono<UserView> update(UserUpdateRequest userDto, String id) {
     return findByIOrThrow(id)
         .flatMap(
@@ -95,10 +101,12 @@ public class UserServiceImpl implements UserService {
                 .map(userMapper::toView));
   }
 
+  @Override
   public Mono<Void> delete(String id) {
     return repository.deleteUserById(id).then(userDetailsService.deleteByUserId(id));
   }
 
+  @Override
   public Mono<Void> modifyPassword(ChangePasswordRequest dto, String token) {
     return emailVerificationService
         .validateToken(token)
@@ -113,6 +121,7 @@ public class UserServiceImpl implements UserService {
                     .then());
   }
 
+  @Override
   public Mono<User> findByEmailOrThrow(String email) {
     return repository
         .findByEmail(email)
@@ -120,9 +129,15 @@ public class UserServiceImpl implements UserService {
             Mono.error(new NotFoundException(String.format(USER_NOT_FOUND_BY_EMAIL, email))));
   }
 
+  @Override
   public Mono<User> findByIOrThrow(String id) {
     return repository
         .findById(id)
         .switchIfEmpty(Mono.error(new NotFoundException(String.format(USER_NOT_FOUND_BY_ID, id))));
+  }
+
+  @Override
+  public Mono<Long> countByFilter(UserFilter filter) {
+    return repository.countByFilter(filter);
   }
 }

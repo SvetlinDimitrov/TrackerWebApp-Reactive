@@ -77,6 +77,32 @@ public class UserRepository {
         .take(pageable.getPageSize());
   }
 
+  public Mono<Long> countByFilter(UserFilter filter) {
+    var criteria = Criteria.empty();
+
+    if (filter.getUsername() != null && !filter.getUsername().isBlank()) {
+      criteria = criteria.and(where("username").like("%" + filter.getUsername() + "%"));
+    }
+
+    if (filter.getEmail() != null && !filter.getEmail().isBlank()) {
+      criteria = criteria.and(where("email").like("%" + filter.getEmail() + "%"));
+    }
+
+    if (filter.getRole() != null && !filter.getRole().isBlank()) {
+      criteria = criteria.and(where("user_role").is(filter.getRole()));
+    }
+
+    if (filter.getIdsIn() != null && !filter.getIdsIn().isEmpty()) {
+      criteria = criteria.and(where("id").in(filter.getIdsIn()));
+    }
+
+    if (filter.getIdsNotIn() != null && !filter.getIdsNotIn().isEmpty()) {
+      criteria = criteria.and(where("id").notIn(filter.getIdsNotIn()));
+    }
+
+    return entityTemplate.count(query(criteria), User.class);
+  }
+
   @Modifying
   public Mono<User> update(User updatedEntity) {
     Map<SqlIdentifier, Object> fieldMap = new HashMap<>();
