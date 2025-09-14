@@ -1,4 +1,4 @@
-package org.nutriGuideBuddy.web;
+package org.nutriGuideBuddy.infrastructure.nutritionx_api.web;
 
 import java.util.List;
 import lombok.RequiredArgsConstructor;

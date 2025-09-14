@@ -1,4 +1,4 @@
-package org.nutriGuideBuddy.web;
+package org.nutriGuideBuddy.infrastructure.security.web;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
