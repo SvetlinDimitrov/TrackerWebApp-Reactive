@@ -1,38 +1,38 @@
-//package org.nutriGuideBuddy.controller;
+// package org.nutriGuideBuddy.controller;
 //
-//import org.junit.jupiter.api.AfterEach;
-//import org.junit.jupiter.api.BeforeAll;
-//import org.junit.jupiter.api.Test;
-//import org.nutriGuideBuddy.domain.dto.user.*;
-//import org.nutriGuideBuddy.enums.Credentials;
-//import org.nutriGuideBuddy.features.user.repository.UserRepository;
-//import org.nutriGuideBuddy.config.security.JWTUtilEmailValidation;
-//import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
-//import org.springframework.boot.test.context.SpringBootTest;
-//import org.springframework.security.web.header.Header;
-//import org.springframework.test.context.ActiveProfiles;
-//import org.springframework.test.context.DynamicPropertyRegistry;
-//import org.springframework.test.context.DynamicPropertySource;
-//import org.springframework.test.web.reactive.server.WebTestClient;
-//import org.testcontainers.containers.GenericContainer;
-//import org.testcontainers.junit.jupiter.Container;
-//import org.testcontainers.junit.jupiter.Testcontainers;
-//import reactor.core.publisher.Mono;
+// import org.junit.jupiter.api.AfterEach;
+// import org.junit.jupiter.api.BeforeAll;
+// import org.junit.jupiter.api.Test;
+// import org.nutriGuideBuddy.domain.dto.user.*;
+// import org.nutriGuideBuddy.enums.Credentials;
+// import org.nutriGuideBuddy.features.user.repository.UserRepository;
+// import org.nutriGuideBuddy.config.security.JWTUtilEmailValidation;
+// import org.springframework.beans.factory.annotation.Autowired;
+// import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
+// import org.springframework.boot.test.context.SpringBootTest;
+// import org.springframework.security.web.header.Header;
+// import org.springframework.test.context.ActiveProfiles;
+// import org.springframework.test.context.DynamicPropertyRegistry;
+// import org.springframework.test.context.DynamicPropertySource;
+// import org.springframework.test.web.reactive.server.WebTestClient;
+// import org.testcontainers.containers.GenericContainer;
+// import org.testcontainers.junit.jupiter.Container;
+// import org.testcontainers.junit.jupiter.Testcontainers;
+// import reactor.core.publisher.Mono;
 //
-//import java.util.List;
+// import java.util.List;
 //
-//import static org.junit.jupiter.api.Assertions.*;
+// import static org.junit.jupiter.api.Assertions.*;
 //
-///**
+/// **
 // * Naming convention follows the Given-When-Then structure, which is commonly used in
 // * behavior-driven development (BDD) to make tests more descriptive and easier to understand.
 // */
-//@SpringBootTest
-//@AutoConfigureWebTestClient
-//@ActiveProfiles("secret")
-//@Testcontainers
-//class UserControllerIntegrationTest {
+// @SpringBootTest
+// @AutoConfigureWebTestClient
+// @ActiveProfiles("secret")
+// @Testcontainers
+// class UserControllerIntegrationTest {
 //
 //  @Autowired private WebTestClient webTestClient;
 //  @Autowired private UserRepository userRepository;
@@ -114,7 +114,10 @@
 //        List.of(
 //            "",
 //            "        ",
-//            "Antidisestablishmentarianism's beauty may never be fully comprehended by the uninitiated, but those who delve deep into its labyrinthine depths will find themselves ensnared by its seductive allure, forever lost in a kaleidoscope of convoluted concepts and intricate ideologies that dance upon the precipice of comprehension.");
+//            "Antidisestablishmentarianism's beauty may never be fully comprehended by the
+// uninitiated, but those who delve deep into its labyrinthine depths will find themselves ensnared
+// by its seductive allure, forever lost in a kaleidoscope of convoluted concepts and intricate
+// ideologies that dance upon the precipice of comprehension.");
 //
 //    for (String username : INVALID_USERNAMES) {
 //      webTestClient
@@ -167,7 +170,10 @@
 //
 //    List<String> INVALID_PASSWORDS =
 //        List.of(
-//            "Antidisestablishmentarianism's beauty may never be fully comprehended by the uninitiated, but those who delve deep into its labyrinthine depths will find themselves ensnared by its seductive allure, forever lost in a kaleidoscope of convoluted concepts and intricate ideologies that dance upon the precipice of comprehension.",
+//            "Antidisestablishmentarianism's beauty may never be fully comprehended by the
+// uninitiated, but those who delve deep into its labyrinthine depths will find themselves ensnared
+// by its seductive allure, forever lost in a kaleidoscope of convoluted concepts and intricate
+// ideologies that dance upon the precipice of comprehension.",
 //            "        ",
 //            "     .      ",
 //            "123",
@@ -246,7 +252,8 @@
 //  }
 //
 //  @Test
-//  void givenTwoUserWithTheSameUsername_whenTestingCreateUser_thenShouldBeAllSuccessfullyCreated() {
+//  void givenTwoUserWithTheSameUsername_whenTestingCreateUser_thenShouldBeAllSuccessfullyCreated()
+// {
 //
 //    webTestClient
 //        .post()
@@ -281,7 +288,8 @@
 //
 //  @Test
 //  void
-//      givenProvidingBasicAuth_whenTestingGetUserView_thenServerShouldReturnStatusOkWithTheCorrectCredentials() {
+//
+// givenProvidingBasicAuth_whenTestingGetUserView_thenServerShouldReturnStatusOkWithTheCorrectCredentials() {
 //
 //    UserRequest newUser =
 //        createUser(
@@ -323,7 +331,8 @@
 //
 //  @Test
 //  void
-//      givenValidUserCredentials_whenDeletingUser_thenServerShouldRemoveTheUserFromAuthAndDbReturning204() {
+//
+// givenValidUserCredentials_whenDeletingUser_thenServerShouldRemoveTheUserFromAuthAndDbReturning204() {
 //
 //    UserRequest newUser =
 //        createUser(
@@ -392,7 +401,8 @@
 //
 //  @Test
 //  void
-//      givenValidUserCredentials_whenDeletingUserMultipleTimesInARowWithTheSameCredentials_thenServerShouldRemoveTheUserFromAuthAndDbReturning204AndThen401() {
+//
+// givenValidUserCredentials_whenDeletingUserMultipleTimesInARowWithTheSameCredentials_thenServerShouldRemoveTheUserFromAuthAndDbReturning204AndThen401() {
 //
 //    UserRequest newUser =
 //        createUser(
@@ -468,7 +478,8 @@
 //            user ->
 //                assertEquals(
 //                    validUserUpdateCredentials.username(), user.userView().user().username()))
-//        .value(user -> assertNotEquals(authHeader.getValues().get(0), user.accessToken().value()));
+//        .value(user -> assertNotEquals(authHeader.getValues().get(0),
+// user.accessToken().value()));
 //  }
 //
 //  @Test
@@ -536,4 +547,4 @@
 //  private UserRequest createUser(String username, String email, String password, String token) {
 //    return new UserRequest(username, email, password, token);
 //  }
-//}
+// }

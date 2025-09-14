@@ -63,28 +63,20 @@ public abstract class AbstractFoodService {
         .map(calories -> new ShortenFood(entity.getId(), entity.getName(), calories.getAmount()));
   }
 
-  protected Mono<Food> getFoodEntityByIdMealIdUserId(
-      String foodId, String mealId, String userId) {
+  protected Mono<Food> getFoodEntityByIdMealIdUserId(String foodId, String mealId, String userId) {
     return repository
         .findFoodByIdAndMealIdAndUserId(foodId, mealId, userId)
         .switchIfEmpty(Mono.error(new BadRequestException("No food found with id: " + foodId)));
   }
 
-  protected Mono<
-          Tuple5<
-              Food,
-              List<Serving>,
-              Calorie,
-              List<Nutrition>,
-              FoodInfo>>
-      createAndGetFood(String userId, InsertFoodDto dto, String mealId) {
+  protected Mono<Tuple5<Food, List<Serving>, Calorie, List<Nutrition>, FoodInfo>> createAndGetFood(
+      String userId, InsertFoodDto dto, String mealId) {
     return createAndFillFoodEntity(dto, userId, mealId)
         .flatMap(
             food ->
                 Mono.zip(
                     Mono.just(food),
-                    createAndFillServings(
-                        dto.mainServing(), dto.otherServing(), food.getId()),
+                    createAndFillServings(dto.mainServing(), dto.otherServing(), food.getId()),
                     createAndFillCalorieEntity(
                         dto.calories(),
                         food.getId(),
@@ -112,8 +104,7 @@ public abstract class AbstractFoodService {
         .then();
   }
 
-  private Mono<Food> createAndFillFoodEntity(
-      InsertFoodDto dto, String userId, String mealId) {
+  private Mono<Food> createAndFillFoodEntity(InsertFoodDto dto, String userId, String mealId) {
     if (dto == null) {
       return Mono.error(new BadRequestException("food cannot be null"));
     }

@@ -34,7 +34,7 @@ public class JwtTokenServiceImpl implements JwtTokenService {
   }
 
   @Override
-  public JwtToken generateToken( String email) {
+  public JwtToken generateToken(String email) {
     Date expireAt = new Date(System.currentTimeMillis() + tokenExpirationSeconds * 1000);
     return new JwtToken(
         Jwts.builder()

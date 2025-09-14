@@ -31,8 +31,7 @@ public abstract class AuthenticationMapperDecorator implements AuthenticationMap
   }
 
   @Override
-  public AuthenticationResponse toDto(
-      User user, UserDetails userDetails, JwtToken accessToken) {
+  public AuthenticationResponse toDto(User user, UserDetails userDetails, JwtToken accessToken) {
     UserWithDetailsView userWithDetailsView =
         new UserWithDetailsView(userMapper.toView(user), userDetailsMapper.toView(userDetails));
     AuthenticationResponse dto = delegate.toDto(user, userDetails, accessToken);

@@ -37,8 +37,7 @@ public class MealRepository {
   }
 
   public Mono<Meal> findMealByIdAndUserId(String id, String userId) {
-    return entityTemplate.selectOne(
-        query(where("userId").is(userId).and("id").is(id)), Meal.class);
+    return entityTemplate.selectOne(query(where("userId").is(userId).and("id").is(id)), Meal.class);
   }
 
   @Modifying
@@ -47,8 +46,7 @@ public class MealRepository {
   }
 
   @Modifying
-  public Mono<Void> updateMealNameByIdAndUserId(
-      String id, String userId, Meal updatedEntity) {
+  public Mono<Void> updateMealNameByIdAndUserId(String id, String userId, Meal updatedEntity) {
     return entityTemplate
         .update(Meal.class)
         .matching(query(where("id").is(id).and("userId").is(userId)))

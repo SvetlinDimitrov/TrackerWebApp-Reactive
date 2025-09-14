@@ -1,14 +1,14 @@
 package org.nutriGuideBuddy.features.user.service;
 
-import org.nutriGuideBuddy.features.user.dto.UserCreateRequest;
-import org.nutriGuideBuddy.features.user.dto.UserUpdateRequest;
-import org.nutriGuideBuddy.features.user.dto.UserView;
-import org.nutriGuideBuddy.features.user.dto.UserWithDetailsView;
+import org.nutriGuideBuddy.features.user.dto.*;
 import org.nutriGuideBuddy.features.user.entity.User;
 import org.nutriGuideBuddy.infrastructure.security.dto.ChangePasswordRequest;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public interface UserService {
+
+  Flux<UserView> getAll(UserFilter filter);
 
   Mono<UserView> getById(String id);
 

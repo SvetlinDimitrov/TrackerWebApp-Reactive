@@ -2,14 +2,12 @@ package org.nutriGuideBuddy.web;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.nutriGuideBuddy.features.user.dto.UserCreateRequest;
-import org.nutriGuideBuddy.features.user.dto.UserUpdateRequest;
-import org.nutriGuideBuddy.features.user.dto.UserView;
-import org.nutriGuideBuddy.features.user.dto.UserWithDetailsView;
+import org.nutriGuideBuddy.features.user.dto.*;
 import org.nutriGuideBuddy.features.user.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @RestController
@@ -24,6 +22,13 @@ public class UserController {
   public Mono<UserView> create(
       @RequestBody @Valid UserCreateRequest userDto, @RequestParam String token) {
     return service.create(userDto, token);
+  }
+
+  @PostMapping("/get/all")
+  @PreAuthorize("hasRole('ADMIN')")
+  @ResponseStatus(HttpStatus.OK)
+  public Flux<UserView> getAll(@RequestBody @Valid UserFilter filter) {
+    return service.getAll(filter);
   }
 
   @GetMapping("/{id}")

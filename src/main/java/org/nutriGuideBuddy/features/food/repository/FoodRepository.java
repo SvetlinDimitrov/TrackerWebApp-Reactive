@@ -24,8 +24,7 @@ public class FoodRepository {
 
   private final R2dbcEntityTemplate entityTemplate;
 
-  public Mono<Food> findFoodByIdAndMealIdAndUserId(
-      String foodId, String mealId, String userId) {
+  public Mono<Food> findFoodByIdAndMealIdAndUserId(String foodId, String mealId, String userId) {
 
     return Optional.ofNullable(mealId)
         .map(
@@ -86,11 +85,7 @@ public class FoodRepository {
                     .all()
                     .then())
         .orElse(
-            entityTemplate
-                .delete(Food.class)
-                .matching(query(where("id").is(foodId)))
-                .all()
-                .then());
+            entityTemplate.delete(Food.class).matching(query(where("id").is(foodId))).all().then());
   }
 
   public Mono<Food> saveFood(Food entity) {
@@ -137,7 +132,6 @@ public class FoodRepository {
   }
 
   public Mono<Meal> findMealByIdAndUserId(String id, String userId) {
-    return entityTemplate.selectOne(
-        query(where("userId").is(userId).and("id").is(id)), Meal.class);
+    return entityTemplate.selectOne(query(where("userId").is(userId).and("id").is(id)), Meal.class);
   }
 }

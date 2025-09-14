@@ -8,8 +8,7 @@ import java.util.List;
 
 public record MealView(String id, String name, BigDecimal consumedCalories, List<FoodView> foods) {
 
-  public static MealView toView(
-      Meal entity, List<FoodView> foodView, BigDecimal caloriesConsumed) {
+  public static MealView toView(Meal entity, List<FoodView> foodView, BigDecimal caloriesConsumed) {
     return new MealView(entity.getId(), entity.getName(), caloriesConsumed, foodView);
   }
 }

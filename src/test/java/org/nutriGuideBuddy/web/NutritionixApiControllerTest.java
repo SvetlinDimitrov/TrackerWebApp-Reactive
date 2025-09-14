@@ -1,34 +1,34 @@
-//package org.nutriGuideBuddy.controller;
+// package org.nutriGuideBuddy.controller;
 //
-//import org.junit.jupiter.api.AfterEach;
-//import org.junit.jupiter.api.BeforeAll;
-//import org.junit.jupiter.api.Test;
-//import org.nutriGuideBuddy.features.food.dto.InsertFoodDto;
-//import org.nutriGuideBuddy.domain.dto.user.JwtResponse;
-//import org.nutriGuideBuddy.domain.dto.user.UserRequest;
-//import org.nutriGuideBuddy.enums.Credentials;
-//import org.nutriGuideBuddy.features.user.repository.UserRepository;
-//import org.nutriGuideBuddy.config.security.JWTUtilEmailValidation;
-//import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
-//import org.springframework.boot.test.context.SpringBootTest;
-//import org.springframework.security.web.header.Header;
-//import org.springframework.test.context.ActiveProfiles;
-//import org.springframework.test.context.DynamicPropertyRegistry;
-//import org.springframework.test.context.DynamicPropertySource;
-//import org.springframework.test.web.reactive.server.WebTestClient;
-//import org.springframework.web.util.UriComponentsBuilder;
-//import org.testcontainers.containers.GenericContainer;
-//import org.testcontainers.junit.jupiter.Testcontainers;
-//import reactor.core.publisher.Mono;
+// import org.junit.jupiter.api.AfterEach;
+// import org.junit.jupiter.api.BeforeAll;
+// import org.junit.jupiter.api.Test;
+// import org.nutriGuideBuddy.features.food.dto.InsertFoodDto;
+// import org.nutriGuideBuddy.domain.dto.user.JwtResponse;
+// import org.nutriGuideBuddy.domain.dto.user.UserRequest;
+// import org.nutriGuideBuddy.enums.Credentials;
+// import org.nutriGuideBuddy.features.user.repository.UserRepository;
+// import org.nutriGuideBuddy.config.security.JWTUtilEmailValidation;
+// import org.springframework.beans.factory.annotation.Autowired;
+// import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
+// import org.springframework.boot.test.context.SpringBootTest;
+// import org.springframework.security.web.header.Header;
+// import org.springframework.test.context.ActiveProfiles;
+// import org.springframework.test.context.DynamicPropertyRegistry;
+// import org.springframework.test.context.DynamicPropertySource;
+// import org.springframework.test.web.reactive.server.WebTestClient;
+// import org.springframework.web.util.UriComponentsBuilder;
+// import org.testcontainers.containers.GenericContainer;
+// import org.testcontainers.junit.jupiter.Testcontainers;
+// import reactor.core.publisher.Mono;
 //
-//import java.util.Objects;
+// import java.util.Objects;
 //
-//@SpringBootTest
-//@AutoConfigureWebTestClient
-//@ActiveProfiles("secret")
-//@Testcontainers
-//class NutritionixApiControllerTest {
+// @SpringBootTest
+// @AutoConfigureWebTestClient
+// @ActiveProfiles("secret")
+// @Testcontainers
+// class NutritionixApiControllerTest {
 //
 //  @Autowired private WebTestClient webTestClient;
 //  @Autowired private UserRepository userRepository;
@@ -104,7 +104,8 @@
 //
 //  @Test
 //  void
-//      givenValidAuth_whenTestingGetFoodBySearchCriteriaAndThenInsertingItIntoUserCustomFoods_thenServerMustReturnOkAndCreated() {
+//
+// givenValidAuth_whenTestingGetFoodBySearchCriteriaAndThenInsertingItIntoUserCustomFoods_thenServerMustReturnOkAndCreated() {
 //
 //    Header authHeader = setUpUserAndReturnAuthHeader();
 //
@@ -162,7 +163,8 @@
 //
 //  @Test
 //  void
-//      givenValidAuth_whenTestingGetBrandedFoodByIdAndThenInsertingItIntoUserCustomFoods_thenServerMustReturnOkAndCreated() {
+//
+// givenValidAuth_whenTestingGetBrandedFoodByIdAndThenInsertingItIntoUserCustomFoods_thenServerMustReturnOkAndCreated() {
 //
 //    Header authHeader = setUpUserAndReturnAuthHeader();
 //
@@ -219,7 +221,8 @@
 //
 //  //  @Test
 //  //  void
-//  // givenValidAuth_whenTestingGetMultipleFoodsByNameThenByBrandedIdAndCommonNameAndAddingThenToTheClient_thenServerMustReturnOk() {
+//  //
+// givenValidAuth_whenTestingGetMultipleFoodsByNameThenByBrandedIdAndCommonNameAndAddingThenToTheClient_thenServerMustReturnOk() {
 //  //
 //  //    Header authHeader = setUpUserAndReturnAuthHeader();
 //  //    List<String> commonFoods = new ArrayList<>();
@@ -240,9 +243,11 @@
 //  //
 //  //          assert allFoods != null;
 //  //
-//  // commonFoods.addAll(allFoods.getCommon().stream().map(CommandFoodShortenDto::getFoodName).toList());
 //  //
-//  // brandedFoods.addAll(allFoods.getBranded().stream().map(BrandedFoodShortenDto::getItemId).toList());
+// commonFoods.addAll(allFoods.getCommon().stream().map(CommandFoodShortenDto::getFoodName).toList());
+//  //
+//  //
+// brandedFoods.addAll(allFoods.getBranded().stream().map(BrandedFoodShortenDto::getItemId).toList());
 //  //        });
 //  //
 //  //    List<InsertFoodDto> insertFoodDtos = new ArrayList<>();
@@ -325,4 +330,4 @@
 //  private UserRequest createUser(String username, String email, String password, String token) {
 //    return new UserRequest(username, email, password, token);
 //  }
-//}
+// }

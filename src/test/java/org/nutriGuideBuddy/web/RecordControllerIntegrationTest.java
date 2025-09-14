@@ -1,55 +1,56 @@
-//package org.nutriGuideBuddy.controller;
+// package org.nutriGuideBuddy.controller;
 //
-//import org.junit.jupiter.api.AfterEach;
-//import org.junit.jupiter.api.BeforeAll;
-//import org.junit.jupiter.api.Test;
-//import org.nutriGuideBuddy.features.food.dto.NutritionIntakeView;
-//import org.nutriGuideBuddy.features.food.dto.CreateMeal;
-//import org.nutriGuideBuddy.features.food.dto.InsertFoodDto;
-//import org.nutriGuideBuddy.features.meal.dto.MealView;
-//import org.nutriGuideBuddy.features.record.dto.CreateRecord;
-//import org.nutriGuideBuddy.features.record.dto.DistributedMacros;
-//import org.nutriGuideBuddy.features.record.dto.NutritionView;
-//import org.nutriGuideBuddy.features.record.dto.RecordView;
-//import org.nutriGuideBuddy.domain.dto.user.JwtResponse;
-//import org.nutriGuideBuddy.domain.dto.user.UserRequest;
-//import org.nutriGuideBuddy.domain.dto.user.UserDetailsDto;
-//import org.nutriGuideBuddy.features.user_details.dto.UserDetailsView;
-//import org.nutriGuideBuddy.features.food.enums.AllowedNutrients;
-//import org.nutriGuideBuddy.features.user_details.enums.Gender;
-//import org.nutriGuideBuddy.features.record.enums.Goals;
-//import org.nutriGuideBuddy.features.user_details.enums.WorkoutState;
-//import org.nutriGuideBuddy.enums.Credentials;
-//import org.nutriGuideBuddy.features.user.repository.UserRepository;
-//import org.nutriGuideBuddy.config.security.JWTUtilEmailValidation;
-//import org.nutriGuideBuddy.features.record.utils.MacronutrientCreator;
-//import org.nutriGuideBuddy.features.record.utils.MineralCreator;
-//import org.nutriGuideBuddy.features.record.utils.VitaminCreator;
-//import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
-//import org.springframework.boot.test.context.SpringBootTest;
-//import org.springframework.security.web.header.Header;
-//import org.springframework.test.context.ActiveProfiles;
-//import org.springframework.test.context.DynamicPropertyRegistry;
-//import org.springframework.test.context.DynamicPropertySource;
-//import org.springframework.test.web.reactive.server.WebTestClient;
-//import org.testcontainers.containers.GenericContainer;
-//import org.testcontainers.junit.jupiter.Container;
-//import org.testcontainers.junit.jupiter.Testcontainers;
-//import reactor.core.publisher.Mono;
+// import org.junit.jupiter.api.AfterEach;
+// import org.junit.jupiter.api.BeforeAll;
+// import org.junit.jupiter.api.Test;
+// import org.nutriGuideBuddy.features.food.dto.NutritionIntakeView;
+// import org.nutriGuideBuddy.features.food.dto.CreateMeal;
+// import org.nutriGuideBuddy.features.food.dto.InsertFoodDto;
+// import org.nutriGuideBuddy.features.meal.dto.MealView;
+// import org.nutriGuideBuddy.features.record.dto.CreateRecord;
+// import org.nutriGuideBuddy.features.record.dto.DistributedMacros;
+// import org.nutriGuideBuddy.features.record.dto.NutritionView;
+// import org.nutriGuideBuddy.features.record.dto.RecordView;
+// import org.nutriGuideBuddy.domain.dto.user.JwtResponse;
+// import org.nutriGuideBuddy.domain.dto.user.UserRequest;
+// import org.nutriGuideBuddy.domain.dto.user.UserDetailsDto;
+// import org.nutriGuideBuddy.features.user_details.dto.UserDetailsView;
+// import org.nutriGuideBuddy.features.food.enums.AllowedNutrients;
+// import org.nutriGuideBuddy.features.user_details.enums.Gender;
+// import org.nutriGuideBuddy.features.record.enums.Goals;
+// import org.nutriGuideBuddy.features.user_details.enums.WorkoutState;
+// import org.nutriGuideBuddy.enums.Credentials;
+// import org.nutriGuideBuddy.features.user.repository.UserRepository;
+// import org.nutriGuideBuddy.config.security.JWTUtilEmailValidation;
+// import org.nutriGuideBuddy.features.record.utils.MacronutrientCreator;
+// import org.nutriGuideBuddy.features.record.utils.MineralCreator;
+// import org.nutriGuideBuddy.features.record.utils.VitaminCreator;
+// import org.springframework.beans.factory.annotation.Autowired;
+// import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
+// import org.springframework.boot.test.context.SpringBootTest;
+// import org.springframework.security.web.header.Header;
+// import org.springframework.test.context.ActiveProfiles;
+// import org.springframework.test.context.DynamicPropertyRegistry;
+// import org.springframework.test.context.DynamicPropertySource;
+// import org.springframework.test.web.reactive.server.WebTestClient;
+// import org.testcontainers.containers.GenericContainer;
+// import org.testcontainers.junit.jupiter.Container;
+// import org.testcontainers.junit.jupiter.Testcontainers;
+// import reactor.core.publisher.Mono;
 //
-//import java.math.BigDecimal;
-//import java.util.*;
-//import java.util.stream.Collectors;
+// import java.math.BigDecimal;
+// import java.util.*;
+// import java.util.stream.Collectors;
 //
-//import static org.junit.jupiter.api.Assertions.*;
-//import static org.nutriGuideBuddy.utils.FoodUtils.createValidInsertedFoodWithEveryPossibleNutrientView;
+// import static org.junit.jupiter.api.Assertions.*;
+// import static
+// org.nutriGuideBuddy.utils.FoodUtils.createValidInsertedFoodWithEveryPossibleNutrientView;
 //
-//@SpringBootTest
-//@AutoConfigureWebTestClient
-//@ActiveProfiles("secret")
-//@Testcontainers
-//class RecordControllerIntegrationTest {
+// @SpringBootTest
+// @AutoConfigureWebTestClient
+// @ActiveProfiles("secret")
+// @Testcontainers
+// class RecordControllerIntegrationTest {
 //
 //  @Autowired private WebTestClient webTestClient;
 //  @Autowired private UserRepository userRepository;
@@ -107,7 +108,9 @@
 //
 //  @Test
 //  void
-//      givenValidAuthButNotCompletedUserDetails_whenTestingViewRecord_thenServerShouldReturnForbidden() {
+//
+// givenValidAuthButNotCompletedUserDetails_whenTestingViewRecord_thenServerShouldReturnForbidden()
+// {
 //
 //    Header header = setUpUserAndReturnAuthHeader();
 //
@@ -134,13 +137,15 @@
 //
 //  @Test
 //  void
-//      givenValidAuthButNotCompletedUserDetailsUntilTheyAreCompleted_whenTestingViewRecord_thenServerShouldReturnOk() {
+//
+// givenValidAuthButNotCompletedUserDetailsUntilTheyAreCompleted_whenTestingViewRecord_thenServerShouldReturnOk() {
 //
 //    Header header = setUpUserAndReturnAuthHeader();
 //
 //    UserDetailsDto validDetailsForKilograms =
 //        createDetails(
-//            new BigDecimal(Credentials.VALID_DETAIL_KILOGRAMS.getValue()), null, null, null, null);
+//            new BigDecimal(Credentials.VALID_DETAIL_KILOGRAMS.getValue()), null, null, null,
+// null);
 //
 //    JwtResponse responseBody =
 //        webTestClient
@@ -374,7 +379,8 @@
 //
 //  @Test
 //  void
-//      givenValidAuthAndFullUserDetailsWithGoal_whenTestingViewRecord_thenServerShouldReturnTheCorrectViewAndStatusOk() {
+//
+// givenValidAuthAndFullUserDetailsWithGoal_whenTestingViewRecord_thenServerShouldReturnTheCorrectViewAndStatusOk() {
 //
 //    Header authHeader = setUpUserWithFullUserDetailsAndReturnAuthHeader();
 //
@@ -456,7 +462,8 @@
 //
 //  @Test
 //  void
-//      givenValidAuthAndFullUserDetailsWithInvalidDistributedMacros_whenTestingViewRecord_thenServerShouldReturnBadRequest() {
+//
+// givenValidAuthAndFullUserDetailsWithInvalidDistributedMacros_whenTestingViewRecord_thenServerShouldReturnBadRequest() {
 //
 //    Header authHeader = setUpUserWithFullUserDetailsAndReturnAuthHeader();
 //    DistributedMacros INVALID_DISTRIBUTED_MACROS_1 =
@@ -490,7 +497,8 @@
 //
 //  @Test
 //  void
-//      givenValidAuthAndFullUserDetails_whenTestingViewRecord_thenServerShouldReturnCorrectVitaminNutrientViewsAndStatusOk() {
+//
+// givenValidAuthAndFullUserDetails_whenTestingViewRecord_thenServerShouldReturnCorrectVitaminNutrientViewsAndStatusOk() {
 //
 //    Header authHeader = setUpUserWithFullUserDetailsAndReturnAuthHeader();
 //    // Calculating based on
@@ -528,7 +536,8 @@
 //
 //  @Test
 //  void
-//      givenValidAuthAndFullUserDetails_whenTestingViewRecord_thenServerShouldReturnCorrectMineralsNutrientViewsAndStatusOk() {
+//
+// givenValidAuthAndFullUserDetails_whenTestingViewRecord_thenServerShouldReturnCorrectMineralsNutrientViewsAndStatusOk() {
 //
 //    Header authHeader = setUpUserWithFullUserDetailsAndReturnAuthHeader();
 //    // Calculating based on
@@ -566,7 +575,8 @@
 //
 //  @Test
 //  void
-//      givenValidAuthAndFullUserDetails_whenTestingViewRecord_thenServerShouldReturnCorrectMacronutrientsViewsAndStatusOk() {
+//
+// givenValidAuthAndFullUserDetails_whenTestingViewRecord_thenServerShouldReturnCorrectMacronutrientsViewsAndStatusOk() {
 //
 //    Header authHeader = setUpUserWithFullUserDetailsAndReturnAuthHeader();
 //
@@ -588,7 +598,8 @@
 //
 //  @Test
 //  void
-//      givenValidAuthAndFullUserDetails_whenTestingViewRecord_thenServerShouldReturnCorrectAllowedNutrientsAmountAndStatusOk() {
+//
+// givenValidAuthAndFullUserDetails_whenTestingViewRecord_thenServerShouldReturnCorrectAllowedNutrientsAmountAndStatusOk() {
 //
 //    Header authHeader = setUpUserWithFullUserDetailsAndReturnAuthHeader();
 //
@@ -612,7 +623,8 @@
 //
 //  @Test
 //  void
-//      givenValidAuthAndFullUserDetailsAndSingleValidCustomNutrientValue_whenTestingViewRecord_thenServerShouldReturnCorrectNutrientsViewsAndStatusOk() {
+//
+// givenValidAuthAndFullUserDetailsAndSingleValidCustomNutrientValue_whenTestingViewRecord_thenServerShouldReturnCorrectNutrientsViewsAndStatusOk() {
 //
 //    Header authHeader = setUpUserWithFullUserDetailsAndReturnAuthHeader();
 //    NutritionView NutritionView =
@@ -640,7 +652,8 @@
 //
 //  @Test
 //  void
-//      givenValidAuthAndFullUserDetailsAndInvalidCustomNutrientValue_whenTestingViewRecord_thenServerShouldReturnBadRequest() {
+//
+// givenValidAuthAndFullUserDetailsAndInvalidCustomNutrientValue_whenTestingViewRecord_thenServerShouldReturnBadRequest() {
 //
 //    Header authHeader = setUpUserWithFullUserDetailsAndReturnAuthHeader();
 //    NutritionView NutritionView =
@@ -663,7 +676,8 @@
 //
 //  @Test
 //  void
-//      givenValidAuthAndFullUserDetailsAndSingleFood_whenTestingViewRecord_thenServerShouldReturnCorrectRecordViewAndStatusOk() {
+//
+// givenValidAuthAndFullUserDetailsAndSingleFood_whenTestingViewRecord_thenServerShouldReturnCorrectRecordViewAndStatusOk() {
 //
 //    Header authHeader = setUpUserWithFullUserDetailsAndReturnAuthHeader();
 //    String VALID_MEAL_ID = obtainValidMealId(authHeader);
@@ -734,7 +748,8 @@
 //
 //  @Test
 //  void
-//      givenValidAuthAndFullUserDetailsAndMultipleFood_whenTestingViewRecord_thenServerShouldReturnCorrectRecordViewAndStatusOk() {
+//
+// givenValidAuthAndFullUserDetailsAndMultipleFood_whenTestingViewRecord_thenServerShouldReturnCorrectRecordViewAndStatusOk() {
 //
 //    Header authHeader = setUpUserWithFullUserDetailsAndReturnAuthHeader();
 //    String VALID_MEAL_ID = obtainValidMealId(authHeader);
@@ -818,7 +833,8 @@
 //
 //  @Test
 //  void
-//      givenValidAuthAndFullUserDetailsAndSingleFoodInMultipleMeals_whenTestingViewRecord_thenServerShouldReturnCorrectRecordViewAndStatusOk() {
+//
+// givenValidAuthAndFullUserDetailsAndSingleFoodInMultipleMeals_whenTestingViewRecord_thenServerShouldReturnCorrectRecordViewAndStatusOk() {
 //
 //    Header authHeader = setUpUserWithFullUserDetailsAndReturnAuthHeader();
 //    int NUMBER_OF_MEALS_CRATED = 3;
@@ -868,7 +884,8 @@
 //                                      nutritionViewMap
 //                                          .get(mineral.getName())
 //                                          .amount()
-//                                          .multiply(BigDecimal.valueOf(NUMBER_OF_MEALS_CRATED)))));
+//
+// .multiply(BigDecimal.valueOf(NUMBER_OF_MEALS_CRATED)))));
 //            })
 //        .value(
 //            recordView -> {
@@ -884,7 +901,8 @@
 //                                      nutritionViewMap
 //                                          .get(vitamin.getName())
 //                                          .amount()
-//                                          .multiply(BigDecimal.valueOf(NUMBER_OF_MEALS_CRATED)))));
+//
+// .multiply(BigDecimal.valueOf(NUMBER_OF_MEALS_CRATED)))));
 //            })
 //        .value(
 //            recordView -> {
@@ -900,13 +918,15 @@
 //                                      nutritionViewMap
 //                                          .get(macro.getName())
 //                                          .amount()
-//                                          .multiply(BigDecimal.valueOf(NUMBER_OF_MEALS_CRATED)))));
+//
+// .multiply(BigDecimal.valueOf(NUMBER_OF_MEALS_CRATED)))));
 //            });
 //  }
 //
 //  @Test
 //  void
-//      givenValidAuthAndFullUserDetailsAndMultipleFoodsInMultipleMeals_whenTestingViewRecord_thenServerShouldReturnCorrectRecordViewAndStatusOk() {
+//
+// givenValidAuthAndFullUserDetailsAndMultipleFoodsInMultipleMeals_whenTestingViewRecord_thenServerShouldReturnCorrectRecordViewAndStatusOk() {
 //
 //    Header authHeader = setUpUserWithFullUserDetailsAndReturnAuthHeader();
 //    int NUMBER_OF_MEALS_CRATED = 3;
@@ -1346,4 +1366,4 @@
 //                .getResponseBody())
 //        .id();
 //  }
-//}
+// }

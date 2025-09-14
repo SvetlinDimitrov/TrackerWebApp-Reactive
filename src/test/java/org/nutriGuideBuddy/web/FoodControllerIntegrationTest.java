@@ -1,43 +1,43 @@
-//package org.nutriGuideBuddy.controller;
+// package org.nutriGuideBuddy.controller;
 //
-//import org.junit.jupiter.api.AfterEach;
-//import org.junit.jupiter.api.BeforeAll;
-//import org.junit.jupiter.api.Test;
-//import org.nutriGuideBuddy.domain.dto.meal.*;
-//import org.nutriGuideBuddy.domain.dto.user.JwtResponse;
-//import org.nutriGuideBuddy.domain.dto.user.UserRequest;
-//import org.nutriGuideBuddy.domain.dto.user.UserDetailsDto;
-//import org.nutriGuideBuddy.features.user_details.enums.Gender;
-//import org.nutriGuideBuddy.features.user_details.enums.WorkoutState;
-//import org.nutriGuideBuddy.enums.Credentials;
-//import org.nutriGuideBuddy.features.user.repository.UserRepository;
-//import org.nutriGuideBuddy.config.security.JWTUtilEmailValidation;
-//import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
-//import org.springframework.boot.test.context.SpringBootTest;
-//import org.springframework.security.web.header.Header;
-//import org.springframework.test.context.ActiveProfiles;
-//import org.springframework.test.context.DynamicPropertyRegistry;
-//import org.springframework.test.context.DynamicPropertySource;
-//import org.springframework.test.web.reactive.server.WebTestClient;
-//import org.testcontainers.containers.GenericContainer;
-//import org.testcontainers.junit.jupiter.Container;
-//import org.testcontainers.junit.jupiter.Testcontainers;
-//import reactor.core.publisher.Mono;
+// import org.junit.jupiter.api.AfterEach;
+// import org.junit.jupiter.api.BeforeAll;
+// import org.junit.jupiter.api.Test;
+// import org.nutriGuideBuddy.domain.dto.meal.*;
+// import org.nutriGuideBuddy.domain.dto.user.JwtResponse;
+// import org.nutriGuideBuddy.domain.dto.user.UserRequest;
+// import org.nutriGuideBuddy.domain.dto.user.UserDetailsDto;
+// import org.nutriGuideBuddy.features.user_details.enums.Gender;
+// import org.nutriGuideBuddy.features.user_details.enums.WorkoutState;
+// import org.nutriGuideBuddy.enums.Credentials;
+// import org.nutriGuideBuddy.features.user.repository.UserRepository;
+// import org.nutriGuideBuddy.config.security.JWTUtilEmailValidation;
+// import org.springframework.beans.factory.annotation.Autowired;
+// import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
+// import org.springframework.boot.test.context.SpringBootTest;
+// import org.springframework.security.web.header.Header;
+// import org.springframework.test.context.ActiveProfiles;
+// import org.springframework.test.context.DynamicPropertyRegistry;
+// import org.springframework.test.context.DynamicPropertySource;
+// import org.springframework.test.web.reactive.server.WebTestClient;
+// import org.testcontainers.containers.GenericContainer;
+// import org.testcontainers.junit.jupiter.Container;
+// import org.testcontainers.junit.jupiter.Testcontainers;
+// import reactor.core.publisher.Mono;
 //
-//import java.math.BigDecimal;
-//import java.util.*;
-//import java.util.stream.Collectors;
+// import java.math.BigDecimal;
+// import java.util.*;
+// import java.util.stream.Collectors;
 //
-//import static org.junit.jupiter.api.Assertions.assertEquals;
-//import static org.junit.jupiter.api.Assertions.assertNotEquals;
-//import static org.nutriGuideBuddy.utils.FoodUtils.*;
+// import static org.junit.jupiter.api.Assertions.assertEquals;
+// import static org.junit.jupiter.api.Assertions.assertNotEquals;
+// import static org.nutriGuideBuddy.utils.FoodUtils.*;
 //
-//@SpringBootTest
-//@AutoConfigureWebTestClient
-//@ActiveProfiles("secret")
-//@Testcontainers
-//class FoodControllerIntegrationTest {
+// @SpringBootTest
+// @AutoConfigureWebTestClient
+// @ActiveProfiles("secret")
+// @Testcontainers
+// class FoodControllerIntegrationTest {
 //
 //  @Autowired private WebTestClient webTestClient;
 //  @Autowired private UserRepository userRepository;
@@ -119,7 +119,8 @@
 //
 //  @Test
 //  void
-//      givenValidAuthAndFullUserDetailsAndInvalidMealId_whenTestingAddFood_thenServerMustReturnBadRequest() {
+//
+// givenValidAuthAndFullUserDetailsAndInvalidMealId_whenTestingAddFood_thenServerMustReturnBadRequest() {
 //
 //    String INVALID_MEAL_ID = UUID.randomUUID().toString();
 //    Header authHeader = setUpUserWithFullUserDetailsAndReturnAuthHeader();
@@ -136,7 +137,8 @@
 //
 //  @Test
 //  void
-//      givenValidAuthAndFullUserDetailsAndValidMealIdAndInvalidFoodName_whenTestingAddFood_thenServerMustReturnBadRequest() {
+//
+// givenValidAuthAndFullUserDetailsAndValidMealIdAndInvalidFoodName_whenTestingAddFood_thenServerMustReturnBadRequest() {
 //
 //    Header authHeader = setUpUserWithFullUserDetailsAndReturnAuthHeader();
 //    String VALID_MEAL_ID = obtainValidMealId(authHeader);
@@ -164,7 +166,8 @@
 //
 //  @Test
 //  void
-//      givenValidAuthAndFullUserDetailsAndValidMealIdAndInvalidFoodCalories_whenTestingAddFood_thenServerMustReturnBadRequest() {
+//
+// givenValidAuthAndFullUserDetailsAndValidMealIdAndInvalidFoodCalories_whenTestingAddFood_thenServerMustReturnBadRequest() {
 //
 //    Header authHeader = setUpUserWithFullUserDetailsAndReturnAuthHeader();
 //    String VALID_MEAL_ID = obtainValidMealId(authHeader);
@@ -211,7 +214,8 @@
 //
 //  @Test
 //  void
-//      givenValidAuthAndFullUserDetailsAndValidMealIdAndInvalidServing_whenTestingAddFood_thenServerMustReturnBadRequest() {
+//
+// givenValidAuthAndFullUserDetailsAndValidMealIdAndInvalidServing_whenTestingAddFood_thenServerMustReturnBadRequest() {
 //
 //    Header authHeader = setUpUserWithFullUserDetailsAndReturnAuthHeader();
 //    String VALID_MEAL_ID = obtainValidMealId(authHeader);
@@ -255,7 +259,8 @@
 //
 //  @Test
 //  void
-//      givenValidAuthAndFullUserDetailsAndValidMealIdAndInvalidListServings_whenTestingAddFood_thenServerMustReturnBadRequest() {
+//
+// givenValidAuthAndFullUserDetailsAndValidMealIdAndInvalidListServings_whenTestingAddFood_thenServerMustReturnBadRequest() {
 //
 //    Header authHeader = setUpUserWithFullUserDetailsAndReturnAuthHeader();
 //    String VALID_MEAL_ID = obtainValidMealId(authHeader);
@@ -299,7 +304,8 @@
 //
 //  @Test
 //  void
-//      givenValidAuthAndFullUserDetailsAndValidMealIdAndInvalidFoodInfo_whenTestingAddFood_thenServerMustReturnBadRequest() {
+//
+// givenValidAuthAndFullUserDetailsAndValidMealIdAndInvalidFoodInfo_whenTestingAddFood_thenServerMustReturnBadRequest() {
 //
 //    Header authHeader = setUpUserWithFullUserDetailsAndReturnAuthHeader();
 //    String VALID_MEAL_ID = obtainValidMealId(authHeader);
@@ -327,7 +333,8 @@
 //
 //  @Test
 //  void
-//      givenValidAuthAndFullUserDetailsAndValidMealIdAndNullFoodInfo_whenTestingAddFood_thenServerMustReturnOk() {
+//
+// givenValidAuthAndFullUserDetailsAndValidMealIdAndNullFoodInfo_whenTestingAddFood_thenServerMustReturnOk() {
 //
 //    Header authHeader = setUpUserWithFullUserDetailsAndReturnAuthHeader();
 //    String VALID_MEAL_ID = obtainValidMealId(authHeader);
@@ -351,7 +358,8 @@
 //
 //  @Test
 //  void
-//      givenValidAuthAndFullUserDetailsAndValidMealIdAndNullNutrients_whenTestingAddFood_thenServerMustReturnBadRequest() {
+//
+// givenValidAuthAndFullUserDetailsAndValidMealIdAndNullNutrients_whenTestingAddFood_thenServerMustReturnBadRequest() {
 //
 //    Header authHeader = setUpUserWithFullUserDetailsAndReturnAuthHeader();
 //    String VALID_MEAL_ID = obtainValidMealId(authHeader);
@@ -376,7 +384,8 @@
 //
 //  @Test
 //  void
-//      givenValidAuthAndFullUserDetailsAndValidMealIdAndValidBody_whenTestingAddFood_thenServerMustReturnOk() {
+//
+// givenValidAuthAndFullUserDetailsAndValidMealIdAndValidBody_whenTestingAddFood_thenServerMustReturnOk() {
 //
 //    Header authHeader = setUpUserWithFullUserDetailsAndReturnAuthHeader();
 //    String VALID_MEAL_ID = obtainValidMealId(authHeader);
@@ -393,7 +402,8 @@
 //
 //  @Test
 //  void
-//      givenValidAuthAndFullUserDetailsAndValidMealIdAndInvalidNutrientViews_whenTestingAddFood_thenServerMustReturnBadRequest() {
+//
+// givenValidAuthAndFullUserDetailsAndValidMealIdAndInvalidNutrientViews_whenTestingAddFood_thenServerMustReturnBadRequest() {
 //
 //    Header authHeader = setUpUserWithFullUserDetailsAndReturnAuthHeader();
 //    String VALID_MEAL_ID = obtainValidMealId(authHeader);
@@ -421,7 +431,8 @@
 //
 //  @Test
 //  void
-//      givenValidAuthAndFullUserDetailsAndValidMealIdAndValidBody_whenTestingAddFoodWithAllPossibleNutrientViews_thenServerMustReturnOk() {
+//
+// givenValidAuthAndFullUserDetailsAndValidMealIdAndValidBody_whenTestingAddFoodWithAllPossibleNutrientViews_thenServerMustReturnOk() {
 //
 //    Header authHeader = setUpUserWithFullUserDetailsAndReturnAuthHeader();
 //    String VALID_MEAL_ID = obtainValidMealId(authHeader);
@@ -470,7 +481,8 @@
 //
 //  @Test
 //  void
-//      givenValidAuthAndFullUserDetailsAndInvalidMealId_whenTestingChangeFood_thenServerMustReturnBadRequest() {
+//
+// givenValidAuthAndFullUserDetailsAndInvalidMealId_whenTestingChangeFood_thenServerMustReturnBadRequest() {
 //
 //    Header authHeader = setUpUserWithFullUserDetailsAndReturnAuthHeader();
 //    String INVALID_MEAL_ID = UUID.randomUUID().toString();
@@ -488,7 +500,8 @@
 //
 //  @Test
 //  void
-//      givenValidAuthAndFullUserDetailsAndValidMealIdAndInvalidFoodId_whenTestingChangeFood_thenServerMustReturnBadRequest() {
+//
+// givenValidAuthAndFullUserDetailsAndValidMealIdAndInvalidFoodId_whenTestingChangeFood_thenServerMustReturnBadRequest() {
 //
 //    Header authHeader = setUpUserWithFullUserDetailsAndReturnAuthHeader();
 //    String VALID_MEAL_ID = obtainValidMealId(authHeader);
@@ -506,7 +519,8 @@
 //
 //  @Test
 //  void
-//      givenValidAuthAndFullUserDetailsAndValidMealIdAndValidFoodIdAndEmptyBody_whenTestingChangeFood_thenServerMustReturnBadRequest() {
+//
+// givenValidAuthAndFullUserDetailsAndValidMealIdAndValidFoodIdAndEmptyBody_whenTestingChangeFood_thenServerMustReturnBadRequest() {
 //
 //    Header authHeader = setUpUserWithFullUserDetailsAndReturnAuthHeader();
 //    String VALID_MEAL_ID = obtainValidMealId(authHeader);
@@ -524,7 +538,8 @@
 //
 //  @Test
 //  void
-//      givenValidAuthAndFullUserDetailsAndValidMealIdAndValidFoodIdAndInvalidFoodName_whenTestingChangeFood_thenServerMustReturnBadRequest() {
+//
+// givenValidAuthAndFullUserDetailsAndValidMealIdAndValidFoodIdAndInvalidFoodName_whenTestingChangeFood_thenServerMustReturnBadRequest() {
 //
 //    Header authHeader = setUpUserWithFullUserDetailsAndReturnAuthHeader();
 //    String VALID_MEAL_ID = obtainValidMealId(authHeader);
@@ -570,7 +585,8 @@
 //
 //  @Test
 //  void
-//      givenValidAuthAndFullUserDetailsAndValidMealIdAndValidFoodIdAndInvalidFoodCalories_whenTestingChangeFood_thenServerMustReturnBadRequest() {
+//
+// givenValidAuthAndFullUserDetailsAndValidMealIdAndValidFoodIdAndInvalidFoodCalories_whenTestingChangeFood_thenServerMustReturnBadRequest() {
 //
 //    Header authHeader = setUpUserWithFullUserDetailsAndReturnAuthHeader();
 //    String VALID_MEAL_ID = obtainValidMealId(authHeader);
@@ -618,7 +634,8 @@
 //
 //  @Test
 //  void
-//      givenValidAuthAndFullUserDetailsAndValidMealIdAndValidFoodIdAndInvalidServing_whenTestingChangeFood_thenServerMustReturnBadRequest() {
+//
+// givenValidAuthAndFullUserDetailsAndValidMealIdAndValidFoodIdAndInvalidServing_whenTestingChangeFood_thenServerMustReturnBadRequest() {
 //
 //    Header authHeader = setUpUserWithFullUserDetailsAndReturnAuthHeader();
 //    String VALID_MEAL_ID = obtainValidMealId(authHeader);
@@ -663,7 +680,8 @@
 //
 //  @Test
 //  void
-//      givenValidAuthAndFullUserDetailsAndValidMealIdAndValidFoodIdAndInvalidListServings_whenTestingChangeFood_thenServerMustReturnBadRequest() {
+//
+// givenValidAuthAndFullUserDetailsAndValidMealIdAndValidFoodIdAndInvalidListServings_whenTestingChangeFood_thenServerMustReturnBadRequest() {
 //
 //    Header authHeader = setUpUserWithFullUserDetailsAndReturnAuthHeader();
 //    String VALID_MEAL_ID = obtainValidMealId(authHeader);
@@ -708,7 +726,8 @@
 //
 //  @Test
 //  void
-//      givenValidAuthAndFullUserDetailsAndValidMealIdAndInvalidFoodInfo_whenTestingChangeFood_thenServerMustReturnBadRequest() {
+//
+// givenValidAuthAndFullUserDetailsAndValidMealIdAndInvalidFoodInfo_whenTestingChangeFood_thenServerMustReturnBadRequest() {
 //
 //    Header authHeader = setUpUserWithFullUserDetailsAndReturnAuthHeader();
 //    String VALID_MEAL_ID = obtainValidMealId(authHeader);
@@ -737,7 +756,8 @@
 //
 //  @Test
 //  void
-//      givenValidAuthAndFullUserDetailsAndValidMealIdAndNullFoodInfo_whenTestingChangeFood_thenServerMustReturnCreated() {
+//
+// givenValidAuthAndFullUserDetailsAndValidMealIdAndNullFoodInfo_whenTestingChangeFood_thenServerMustReturnCreated() {
 //
 //    Header authHeader = setUpUserWithFullUserDetailsAndReturnAuthHeader();
 //    String VALID_MEAL_ID = obtainValidMealId(authHeader);
@@ -762,7 +782,8 @@
 //
 //  @Test
 //  void
-//      givenValidAuthAndFullUserDetailsAndValidMealIdAndValidFoodIdAndNullNutrients_whenTestingChangeFood_thenServerMustReturnBadRequest() {
+//
+// givenValidAuthAndFullUserDetailsAndValidMealIdAndValidFoodIdAndNullNutrients_whenTestingChangeFood_thenServerMustReturnBadRequest() {
 //
 //    Header authHeader = setUpUserWithFullUserDetailsAndReturnAuthHeader();
 //    String VALID_MEAL_ID = obtainValidMealId(authHeader);
@@ -787,7 +808,8 @@
 //
 //  @Test
 //  void
-//      givenValidAuthAndFullUserDetailsAndValidMealIdAndValidFoodIdAndValidBody_whenTestingChangeFood_thenServerMustReturnOk() {
+//
+// givenValidAuthAndFullUserDetailsAndValidMealIdAndValidFoodIdAndValidBody_whenTestingChangeFood_thenServerMustReturnOk() {
 //
 //    Header authHeader = setUpUserWithFullUserDetailsAndReturnAuthHeader();
 //    String VALID_MEAL_ID = obtainValidMealId(authHeader);
@@ -805,7 +827,8 @@
 //
 //  @Test
 //  void
-//      givenValidAuthAndFullUserDetailsAndValidMealIdAndValidFoodIdAndInvalidNutrientViews_whenTestingChangeFood_thenServerMustReturnBadRequest() {
+//
+// givenValidAuthAndFullUserDetailsAndValidMealIdAndValidFoodIdAndInvalidNutrientViews_whenTestingChangeFood_thenServerMustReturnBadRequest() {
 //
 //    Header authHeader = setUpUserWithFullUserDetailsAndReturnAuthHeader();
 //    String VALID_MEAL_ID = obtainValidMealId(authHeader);
@@ -850,7 +873,8 @@
 //
 //  @Test
 //  void
-//      givenValidAuthAndFullUserDetailsAndValidMealIdAndValidBody_whenTestingChangeFoodWithAllPossibleNutrientViews_thenServerMustReturnOk() {
+//
+// givenValidAuthAndFullUserDetailsAndValidMealIdAndValidBody_whenTestingChangeFoodWithAllPossibleNutrientViews_thenServerMustReturnOk() {
 //
 //    Header authHeader = setUpUserWithFullUserDetailsAndReturnAuthHeader();
 //    String VALID_MEAL_ID = obtainValidMealId(authHeader);
@@ -868,7 +892,8 @@
 //
 //  @Test
 //  void
-//      givenValidAuthAndFullUserDetailsAndValidMealIdAndValidBody_whenTestingChangeFoodWith_thenServerMustReturnOkAndRemovePreviousFood() {
+//
+// givenValidAuthAndFullUserDetailsAndValidMealIdAndValidBody_whenTestingChangeFoodWith_thenServerMustReturnOkAndRemovePreviousFood() {
 //
 //    Header authHeader = setUpUserWithFullUserDetailsAndReturnAuthHeader();
 //    String VALID_MEAL_ID = obtainValidMealId(authHeader);
@@ -906,7 +931,8 @@
 //
 //  @Test
 //  void
-//      givenValidAuthAndFullUserDetailsAndValidMealIdAndValidBody_whenTestingChangeFood_thenServerMustReturnOkAndRemovePreviousFoodAndTheCurrentFoodShouldMatch() {
+//
+// givenValidAuthAndFullUserDetailsAndValidMealIdAndValidBody_whenTestingChangeFood_thenServerMustReturnOkAndRemovePreviousFoodAndTheCurrentFoodShouldMatch() {
 //
 //    Header authHeader = setUpUserWithFullUserDetailsAndReturnAuthHeader();
 //    String VALID_MEAL_ID = obtainValidMealId(authHeader);
@@ -937,12 +963,14 @@
 //        //        .value(meal -> assertEquals(foodBody.measurement(),
 //        // meal.foods().get(0).measurement()))
 //        .value(
-//            meal -> assertEquals(foodBody.calories().unit(), meal.foods().get(0).calorie().unit()))
+//            meal -> assertEquals(foodBody.calories().unit(),
+// meal.foods().get(0).calorie().unit()))
 //        .value(
 //            meal ->
 //                assertEquals(
 //                    0,
-//                    foodBody.calories().amount().compareTo(meal.foods().get(0).calorie().amount())))
+//
+// foodBody.calories().amount().compareTo(meal.foods().get(0).calorie().amount())))
 //        .value(
 //            meal -> {
 //              Map<String, NutritionView> map =
@@ -977,7 +1005,9 @@
 //
 //  @Test
 //  void
-//      givenValidAuthAndNotFullUserDetails_whenTestingDeleteFoodFromMeal_thenServerMustReturnForbidden() {
+//
+// givenValidAuthAndNotFullUserDetails_whenTestingDeleteFoodFromMeal_thenServerMustReturnForbidden()
+// {
 //
 //    Header authHeader = setUpUserAndReturnAuthHeader();
 //    String MEAL_ID = UUID.randomUUID().toString();
@@ -994,7 +1024,8 @@
 //
 //  @Test
 //  void
-//      givenValidAuthAndFullUserDetailsAndInvalidMealId_whenTestingDeleteFoodFromMeal_thenServerMustReturnBadRequest() {
+//
+// givenValidAuthAndFullUserDetailsAndInvalidMealId_whenTestingDeleteFoodFromMeal_thenServerMustReturnBadRequest() {
 //
 //    Header authHeader = setUpUserWithFullUserDetailsAndReturnAuthHeader();
 //    String INVALID_MEAL_ID = UUID.randomUUID().toString();
@@ -1011,7 +1042,8 @@
 //
 //  @Test
 //  void
-//      givenValidAuthAndFullUserDetailsAndValidMealIdAndInvalidFoodId_whenTestingDeleteFoodFromMeal_thenServerMustReturnBadRequest() {
+//
+// givenValidAuthAndFullUserDetailsAndValidMealIdAndInvalidFoodId_whenTestingDeleteFoodFromMeal_thenServerMustReturnBadRequest() {
 //
 //    Header authHeader = setUpUserWithFullUserDetailsAndReturnAuthHeader();
 //    String VALID_MEAL_ID = obtainValidMealId(authHeader);
@@ -1028,7 +1060,8 @@
 //
 //  @Test
 //  void
-//      givenValidAuthAndFullUserDetailsAndValidMealIdAndValidFoodId_whenTestingDeleteFoodFromMeal_thenServerMustReturnNoContent() {
+//
+// givenValidAuthAndFullUserDetailsAndValidMealIdAndValidFoodId_whenTestingDeleteFoodFromMeal_thenServerMustReturnNoContent() {
 //
 //    Header authHeader = setUpUserWithFullUserDetailsAndReturnAuthHeader();
 //    String VALID_MEAL_ID = obtainValidMealId(authHeader);
@@ -1045,7 +1078,8 @@
 //
 //  @Test
 //  void
-//      givenValidAuthAndFullUserDetailsAndValidMealIdAndValidFoodId_whenTestingDeleteFoodFromMealMultipleTimes_thenServerMustReturnNoContentAndBadRequests() {
+//
+// givenValidAuthAndFullUserDetailsAndValidMealIdAndValidFoodId_whenTestingDeleteFoodFromMealMultipleTimes_thenServerMustReturnNoContentAndBadRequests() {
 //
 //    Header authHeader = setUpUserWithFullUserDetailsAndReturnAuthHeader();
 //    String VALID_MEAL_ID = obtainValidMealId(authHeader);
@@ -1078,7 +1112,8 @@
 //
 //  @Test
 //  void
-//      givenValidAuthAndFullUserDetailsAndValidMealIdAndValidFoodId_whenTestingDeleteFoodFromMeal_thenServerMustReturnNoContentAndRemoveTheFood() {
+//
+// givenValidAuthAndFullUserDetailsAndValidMealIdAndValidFoodId_whenTestingDeleteFoodFromMeal_thenServerMustReturnNoContentAndRemoveTheFood() {
 //
 //    Header authHeader = setUpUserWithFullUserDetailsAndReturnAuthHeader();
 //    String VALID_MEAL_ID = obtainValidMealId(authHeader);
@@ -1215,4 +1250,4 @@
 //        .get(0)
 //        .id();
 //  }
-//}
+// }

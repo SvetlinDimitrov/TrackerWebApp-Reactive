@@ -26,8 +26,7 @@ public class NutritionModifier {
         .flatMap(data -> validateAndUpdateAmount(data, dto));
   }
 
-  private static Mono<Nutrition> validateAndUpdateName(
-      Nutrition entity, NutritionView dto) {
+  private static Mono<Nutrition> validateAndUpdateName(Nutrition entity, NutritionView dto) {
     return Mono.just(entity)
         .filter(
             u ->
@@ -44,8 +43,7 @@ public class NutritionModifier {
             Mono.error(new BadRequestException("Invalid nutrition name: " + dto.name())));
   }
 
-  private static Mono<Nutrition> validateAndUpdateUnit(
-      Nutrition entity, NutritionView dto) {
+  private static Mono<Nutrition> validateAndUpdateUnit(Nutrition entity, NutritionView dto) {
     return Mono.just(entity)
         .filter(
             u ->
@@ -67,8 +65,7 @@ public class NutritionModifier {
                     "Invalid nutrition unit: " + dto.unit() + " for name : " + dto.name())));
   }
 
-  private static Mono<Nutrition> validateAndUpdateAmount(
-      Nutrition entity, NutritionView dto) {
+  private static Mono<Nutrition> validateAndUpdateAmount(Nutrition entity, NutritionView dto) {
     return Mono.just(entity)
         .filter(data -> Validator.validateBigDecimal(dto.amount(), BigDecimal.ZERO))
         .flatMap(

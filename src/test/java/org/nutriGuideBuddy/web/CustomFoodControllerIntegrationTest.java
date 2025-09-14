@@ -1,48 +1,48 @@
-//package org.nutriGuideBuddy.controller;
+// package org.nutriGuideBuddy.controller;
 //
-//import com.fasterxml.jackson.core.JsonProcessingException;
-//import com.fasterxml.jackson.databind.JsonNode;
-//import com.fasterxml.jackson.databind.ObjectMapper;
-//import org.junit.jupiter.api.AfterEach;
-//import org.junit.jupiter.api.BeforeAll;
-//import org.junit.jupiter.api.Test;
-//import org.nutriGuideBuddy.features.food.dto.CalorieView;
-//import org.nutriGuideBuddy.features.food.dto.FoodView;
-//import org.nutriGuideBuddy.features.food.dto.InsertFoodDto;
-//import org.nutriGuideBuddy.features.food.dto.NutritionView;
-//import org.nutriGuideBuddy.domain.dto.user.JwtResponse;
-//import org.nutriGuideBuddy.domain.dto.user.UserRequest;
-//import org.nutriGuideBuddy.features.food.enums.AllowedCalorieUnits;
-//import org.nutriGuideBuddy.enums.Credentials;
-//import org.nutriGuideBuddy.features.user.repository.UserRepository;
-//import org.nutriGuideBuddy.config.security.JWTUtilEmailValidation;
-//import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
-//import org.springframework.boot.test.context.SpringBootTest;
-//import org.springframework.security.web.header.Header;
-//import org.springframework.test.context.ActiveProfiles;
-//import org.springframework.test.context.DynamicPropertyRegistry;
-//import org.springframework.test.context.DynamicPropertySource;
-//import org.springframework.test.web.reactive.server.WebTestClient;
-//import org.testcontainers.containers.GenericContainer;
-//import org.testcontainers.junit.jupiter.Container;
-//import org.testcontainers.junit.jupiter.Testcontainers;
-//import reactor.core.publisher.Mono;
+// import com.fasterxml.jackson.core.JsonProcessingException;
+// import com.fasterxml.jackson.databind.JsonNode;
+// import com.fasterxml.jackson.databind.ObjectMapper;
+// import org.junit.jupiter.api.AfterEach;
+// import org.junit.jupiter.api.BeforeAll;
+// import org.junit.jupiter.api.Test;
+// import org.nutriGuideBuddy.features.food.dto.CalorieView;
+// import org.nutriGuideBuddy.features.food.dto.FoodView;
+// import org.nutriGuideBuddy.features.food.dto.InsertFoodDto;
+// import org.nutriGuideBuddy.features.food.dto.NutritionView;
+// import org.nutriGuideBuddy.domain.dto.user.JwtResponse;
+// import org.nutriGuideBuddy.domain.dto.user.UserRequest;
+// import org.nutriGuideBuddy.features.food.enums.AllowedCalorieUnits;
+// import org.nutriGuideBuddy.enums.Credentials;
+// import org.nutriGuideBuddy.features.user.repository.UserRepository;
+// import org.nutriGuideBuddy.config.security.JWTUtilEmailValidation;
+// import org.springframework.beans.factory.annotation.Autowired;
+// import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
+// import org.springframework.boot.test.context.SpringBootTest;
+// import org.springframework.security.web.header.Header;
+// import org.springframework.test.context.ActiveProfiles;
+// import org.springframework.test.context.DynamicPropertyRegistry;
+// import org.springframework.test.context.DynamicPropertySource;
+// import org.springframework.test.web.reactive.server.WebTestClient;
+// import org.testcontainers.containers.GenericContainer;
+// import org.testcontainers.junit.jupiter.Container;
+// import org.testcontainers.junit.jupiter.Testcontainers;
+// import reactor.core.publisher.Mono;
 //
-//import java.util.ArrayList;
-//import java.util.List;
-//import java.util.Map;
-//import java.util.UUID;
-//import java.util.stream.Collectors;
+// import java.util.ArrayList;
+// import java.util.List;
+// import java.util.Map;
+// import java.util.UUID;
+// import java.util.stream.Collectors;
 //
-//import static org.junit.jupiter.api.Assertions.*;
-//import static org.nutriGuideBuddy.utils.FoodUtils.*;
+// import static org.junit.jupiter.api.Assertions.*;
+// import static org.nutriGuideBuddy.utils.FoodUtils.*;
 //
-//@SpringBootTest
-//@AutoConfigureWebTestClient
-//@ActiveProfiles("secret")
-//@Testcontainers
-//class CustomFoodControllerIntegrationTest {
+// @SpringBootTest
+// @AutoConfigureWebTestClient
+// @ActiveProfiles("secret")
+// @Testcontainers
+// class CustomFoodControllerIntegrationTest {
 //
 //  @Autowired private WebTestClient webTestClient;
 //  @Autowired private UserRepository userRepository;
@@ -128,7 +128,9 @@
 //
 //  @Test
 //  void
-//      givenAuth_whenTestingGetAllCustomFoodsWithSpecificValues_thenServerMustReturnOkWithNotEmptyList() {
+//
+// givenAuth_whenTestingGetAllCustomFoodsWithSpecificValues_thenServerMustReturnOkWithNotEmptyList()
+// {
 //
 //    int COUNT_CUSTOM_FOOD = 15;
 //    Header authHeader = setUpUserAndReturnAuthHeader();
@@ -205,7 +207,8 @@
 //        .isOk()
 //        .expectBody(FoodView.class)
 //        .value(food -> assertEquals(VALID_FOOD_ID, food.id()))
-//        //        .value(food -> assertEquals(validInsertedFood.measurement(), food.measurement()))
+//        //        .value(food -> assertEquals(validInsertedFood.measurement(),
+// food.measurement()))
 //        .value(food -> assertEquals(validInsertedFood.name(), food.name()))
 //        //        .value(food -> assertEquals(0, validInsertedFood.size().compareTo(food.size())))
 //        .value(
@@ -332,7 +335,8 @@
 //                  .bodyValue(
 //                      createInsertedFood(
 //                          Credentials.VALID_MEAL_NAME.getValue(),
-//                          new CalorieView(INVALID_CALORIE, AllowedCalorieUnits.CALORIE.getSymbol()),
+//                          new CalorieView(INVALID_CALORIE,
+// AllowedCalorieUnits.CALORIE.getSymbol()),
 //                          createValidServingView(),
 //                          createValidFoodInfoView(),
 //                          List.of(),
@@ -535,7 +539,8 @@
 //
 //  @Test
 //  void
-//      givenAuthValidBodyWithEverySingleNutrientInserted_whenTestingAddFood_thenServerMustReturnCreated() {
+//
+// givenAuthValidBodyWithEverySingleNutrientInserted_whenTestingAddFood_thenServerMustReturnCreated() {
 //
 //    Header authHeader = setUpUserAndReturnAuthHeader();
 //
@@ -609,7 +614,8 @@
 //
 //  @Test
 //  void
-//      givenAuthValidFoodIdValidBody_whenTestingChangeFoodWithTheSameNames_thenServerMustReturnOk() {
+//      givenAuthValidFoodIdValidBody_whenTestingChangeFoodWithTheSameNames_thenServerMustReturnOk()
+// {
 //
 //    Header authHeader = setUpUserAndReturnAuthHeader();
 //    InsertFoodDto foodDto = createValidInsertedFoodWithEmptyNutritions();
@@ -906,7 +912,9 @@
 //
 //  @Test
 //  void
-//      givenAuthValidBodyWithEverySingleNutrientInserted_whenTestingChangeFood_thenServerMustReturnOk() {
+//
+// givenAuthValidBodyWithEverySingleNutrientInserted_whenTestingChangeFood_thenServerMustReturnOk()
+// {
 //
 //    Header authHeader = setUpUserAndReturnAuthHeader();
 //    insertCustomFood(authHeader, createValidInsertedFoodWithEmptyNutritions());
@@ -993,7 +1001,9 @@
 //
 //  @Test
 //  void
-//      givenAuthAndValidFoodId_whenTestingDeleteFood2Times_thenServerMustReturnNoContentAndBadRequest() {
+//
+// givenAuthAndValidFoodId_whenTestingDeleteFood2Times_thenServerMustReturnNoContentAndBadRequest()
+// {
 //
 //    Header authHeader = setUpUserAndReturnAuthHeader();
 //    insertCustomFood(authHeader, createValidInsertedFoodWithEmptyNutritions());
@@ -1020,7 +1030,8 @@
 //  }
 //
 //  @Test
-//  void givenAuthAndValidFoodId_whenTestingDeleteFood3_thenServerMustReturnNoContentAndBadRequest() {
+//  void givenAuthAndValidFoodId_whenTestingDeleteFood3_thenServerMustReturnNoContentAndBadRequest()
+// {
 //
 //    Header authHeader = setUpUserAndReturnAuthHeader();
 //    int NUMBER_FOOD_TO_INSERT = 5;
@@ -1161,4 +1172,4 @@
 //  private UserRequest createUser(String username, String email, String password, String token) {
 //    return new UserRequest(username, email, password, token);
 //  }
-//}
+// }

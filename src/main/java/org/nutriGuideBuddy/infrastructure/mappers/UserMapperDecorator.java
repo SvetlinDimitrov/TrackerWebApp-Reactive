@@ -24,8 +24,8 @@ public abstract class UserMapperDecorator implements UserMapper {
   }
 
   @Override
-  public User toEntity(UserCreateRequest dto , String email) {
-    User user = delegate.toEntity(dto , email);
+  public User toEntity(UserCreateRequest dto, String email) {
+    User user = delegate.toEntity(dto, email);
     user.setPassword(passwordEncoder.encode(user.getPassword()));
     return user;
   }

@@ -1,22 +1,23 @@
-package org.nutriGuideBuddy.features.user_details.annotaions;
+package org.nutriGuideBuddy.features.user.annotations;
 
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
-import org.nutriGuideBuddy.features.user_details.enums.WorkoutState;
+import org.nutriGuideBuddy.features.user.enums.UserRole;
 
-public class WorkoutStateValidator implements ConstraintValidator<ValidWorkoutState, String> {
+public class ValidUserRoleValidator implements ConstraintValidator<ValidUserRole, String> {
+
   @Override
   public boolean isValid(String value, ConstraintValidatorContext context) {
     if (value == null || value.isBlank()) return true;
 
     try {
-      WorkoutState.valueOf(value.toUpperCase());
+      UserRole.valueOf(value.toUpperCase());
       return true;
     } catch (IllegalArgumentException e) {
       context.disableDefaultConstraintViolation();
       context
           .buildConstraintViolationWithTemplate(
-              "Invalid workout state. Valid options are: " + WorkoutState.validValues())
+              "invalid user role: " + value + ". Valid options are: " + UserRole.validValues())
           .addConstraintViolation();
       return false;
     }

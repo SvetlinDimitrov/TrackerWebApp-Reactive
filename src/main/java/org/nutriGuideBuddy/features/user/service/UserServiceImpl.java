@@ -5,10 +5,7 @@ import static org.nutriGuideBuddy.infrastructure.exceptions.ExceptionMessages.US
 
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
-import org.nutriGuideBuddy.features.user.dto.UserCreateRequest;
-import org.nutriGuideBuddy.features.user.dto.UserUpdateRequest;
-import org.nutriGuideBuddy.features.user.dto.UserView;
-import org.nutriGuideBuddy.features.user.dto.UserWithDetailsView;
+import org.nutriGuideBuddy.features.user.dto.*;
 import org.nutriGuideBuddy.features.user.entity.User;
 import org.nutriGuideBuddy.features.user.repository.UserRepository;
 import org.nutriGuideBuddy.features.user_details.service.UserDetailsService;
@@ -19,6 +16,7 @@ import org.nutriGuideBuddy.infrastructure.security.dto.ChangePasswordRequest;
 import org.nutriGuideBuddy.infrastructure.security.service.JwtEmailVerificationService;
 import org.nutriGuideBuddy.infrastructure.security.service.ReactiveUserDetailsServiceImpl;
 import org.springframework.stereotype.Component;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @Component
@@ -29,6 +27,11 @@ public class UserServiceImpl implements UserService {
   private final UserDetailsService userDetailsService;
   private final UserRepository repository;
   private final UserMapper userMapper;
+
+  @Override
+  public Flux<UserView> getAll(UserFilter filter) {
+    return repository.findAllByFilter(filter).map(userMapper::toView);
+  }
 
   public Mono<UserView> getById(String id) {
     return findByIOrThrow(id).map(userMapper::toView);

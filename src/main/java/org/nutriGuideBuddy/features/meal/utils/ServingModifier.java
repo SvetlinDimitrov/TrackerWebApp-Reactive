@@ -49,8 +49,7 @@ public class ServingModifier {
     return Flux.fromIterable(monoList).flatMap(mono -> mono).collectList();
   }
 
-  private static Mono<Serving> validateAndUpdateMetric(
-      Serving entity, ServingView dto) {
+  private static Mono<Serving> validateAndUpdateMetric(Serving entity, ServingView dto) {
     return Mono.just(entity)
         .filter(u -> Validator.validateString(dto.metric(), 1, 255))
         .flatMap(
@@ -65,8 +64,7 @@ public class ServingModifier {
                         + "for food metric.")));
   }
 
-  private static Mono<Serving> validateAndUpdateWeight(
-      Serving entity, ServingView dto) {
+  private static Mono<Serving> validateAndUpdateWeight(Serving entity, ServingView dto) {
     return Mono.just(entity)
         .filter(u -> Validator.validateBigDecimal(dto.servingWeight(), BigDecimal.ZERO))
         .flatMap(
@@ -81,8 +79,7 @@ public class ServingModifier {
                         + "for food size weight , must be greater then 0")));
   }
 
-  private static Mono<Serving> validateAndUpdateAmount(
-      Serving entity, ServingView dto) {
+  private static Mono<Serving> validateAndUpdateAmount(Serving entity, ServingView dto) {
     return Mono.just(entity)
         .filter(u -> Validator.validateBigDecimal(dto.amount(), BigDecimal.ZERO))
         .flatMap(

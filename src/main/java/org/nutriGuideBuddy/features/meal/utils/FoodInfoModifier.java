@@ -9,16 +9,14 @@ import reactor.core.publisher.Mono;
 
 public class FoodInfoModifier {
 
-  public static Mono<FoodInfo> validateAndUpdateEntity(
-      FoodInfo entity, FoodInfoView dto) {
+  public static Mono<FoodInfo> validateAndUpdateEntity(FoodInfo entity, FoodInfoView dto) {
     return Mono.just(entity)
         .flatMap(data -> validateAndUpdateInfo(data, dto))
         .flatMap(data -> validateAndUpdateAdditionInfo(data, dto))
         .flatMap(data -> validateAndUpdatePicture(data, dto));
   }
 
-  private static Mono<FoodInfo> validateAndUpdateInfo(
-      FoodInfo entity, FoodInfoView dto) {
+  private static Mono<FoodInfo> validateAndUpdateInfo(FoodInfo entity, FoodInfoView dto) {
     if (dto == null || dto.info() == null) {
       return Mono.just(entity);
     }
@@ -36,8 +34,7 @@ public class FoodInfoModifier {
                         + "for info size.")));
   }
 
-  private static Mono<FoodInfo> validateAndUpdateAdditionInfo(
-      FoodInfo entity, FoodInfoView dto) {
+  private static Mono<FoodInfo> validateAndUpdateAdditionInfo(FoodInfo entity, FoodInfoView dto) {
     if (dto == null || dto.largeInfo() == null) {
       return Mono.just(entity);
     }
@@ -55,8 +52,7 @@ public class FoodInfoModifier {
                         + "for largeInfo.")));
   }
 
-  private static Mono<FoodInfo> validateAndUpdatePicture(
-      FoodInfo entity, FoodInfoView dto) {
+  private static Mono<FoodInfo> validateAndUpdatePicture(FoodInfo entity, FoodInfoView dto) {
     if (dto == null || dto.picture() == null) {
       return Mono.just(entity);
     }

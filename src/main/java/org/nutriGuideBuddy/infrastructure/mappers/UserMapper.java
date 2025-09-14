@@ -20,7 +20,7 @@ public interface UserMapper {
 
   UserView toView(User entity);
 
-  @Mapping(target = "details" , source = "userDetails")
+  @Mapping(target = "details", source = "userDetails")
   UserWithDetailsView toViewWithDetails(UserView user, UserDetailsView userDetails);
 
   User toEntity(UserCreateRequest dto, String email);

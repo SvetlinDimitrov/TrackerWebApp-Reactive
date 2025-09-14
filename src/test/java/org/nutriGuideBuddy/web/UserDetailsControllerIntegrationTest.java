@@ -1,41 +1,41 @@
-//package org.nutriGuideBuddy.controller;
+// package org.nutriGuideBuddy.controller;
 //
-//import org.junit.jupiter.api.AfterEach;
-//import org.junit.jupiter.api.BeforeAll;
-//import org.junit.jupiter.api.Test;
-//import org.nutriGuideBuddy.domain.dto.user.JwtResponse;
-//import org.nutriGuideBuddy.domain.dto.user.UserRequest;
-//import org.nutriGuideBuddy.domain.dto.user.UserDetailsDto;
-//import org.nutriGuideBuddy.features.user_details.dto.UserDetailsView;
-//import org.nutriGuideBuddy.features.user_details.enums.Gender;
-//import org.nutriGuideBuddy.features.user_details.enums.WorkoutState;
-//import org.nutriGuideBuddy.enums.Credentials;
-//import org.nutriGuideBuddy.features.user.repository.UserRepository;
-//import org.nutriGuideBuddy.config.security.JWTUtilEmailValidation;
-//import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
-//import org.springframework.boot.test.context.SpringBootTest;
-//import org.springframework.security.web.header.Header;
-//import org.springframework.test.context.ActiveProfiles;
-//import org.springframework.test.context.DynamicPropertyRegistry;
-//import org.springframework.test.context.DynamicPropertySource;
-//import org.springframework.test.web.reactive.server.WebTestClient;
-//import org.testcontainers.containers.GenericContainer;
-//import org.testcontainers.junit.jupiter.Container;
-//import org.testcontainers.junit.jupiter.Testcontainers;
-//import reactor.core.publisher.Mono;
+// import org.junit.jupiter.api.AfterEach;
+// import org.junit.jupiter.api.BeforeAll;
+// import org.junit.jupiter.api.Test;
+// import org.nutriGuideBuddy.domain.dto.user.JwtResponse;
+// import org.nutriGuideBuddy.domain.dto.user.UserRequest;
+// import org.nutriGuideBuddy.domain.dto.user.UserDetailsDto;
+// import org.nutriGuideBuddy.features.user_details.dto.UserDetailsView;
+// import org.nutriGuideBuddy.features.user_details.enums.Gender;
+// import org.nutriGuideBuddy.features.user_details.enums.WorkoutState;
+// import org.nutriGuideBuddy.enums.Credentials;
+// import org.nutriGuideBuddy.features.user.repository.UserRepository;
+// import org.nutriGuideBuddy.config.security.JWTUtilEmailValidation;
+// import org.springframework.beans.factory.annotation.Autowired;
+// import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
+// import org.springframework.boot.test.context.SpringBootTest;
+// import org.springframework.security.web.header.Header;
+// import org.springframework.test.context.ActiveProfiles;
+// import org.springframework.test.context.DynamicPropertyRegistry;
+// import org.springframework.test.context.DynamicPropertySource;
+// import org.springframework.test.web.reactive.server.WebTestClient;
+// import org.testcontainers.containers.GenericContainer;
+// import org.testcontainers.junit.jupiter.Container;
+// import org.testcontainers.junit.jupiter.Testcontainers;
+// import reactor.core.publisher.Mono;
 //
-//import java.math.BigDecimal;
-//import java.util.List;
+// import java.math.BigDecimal;
+// import java.util.List;
 //
-//import static org.junit.jupiter.api.Assertions.assertEquals;
-//import static org.junit.jupiter.api.Assertions.assertNull;
+// import static org.junit.jupiter.api.Assertions.assertEquals;
+// import static org.junit.jupiter.api.Assertions.assertNull;
 //
-//@SpringBootTest
-//@AutoConfigureWebTestClient
-//@ActiveProfiles("secret")
-//@Testcontainers
-//class UserDetailsControllerIntegrationTest {
+// @SpringBootTest
+// @AutoConfigureWebTestClient
+// @ActiveProfiles("secret")
+// @Testcontainers
+// class UserDetailsControllerIntegrationTest {
 //
 //  @Autowired private WebTestClient webTestClient;
 //  @Autowired private UserRepository userRepository;
@@ -133,7 +133,8 @@
 //
 //  @Test
 //  void
-//      givenValidAuth_whenModifyUserDetailsWithValidCredentials_thenServerShouldReturnUserDetailsAndStatusOk() {
+//
+// givenValidAuth_whenModifyUserDetailsWithValidCredentials_thenServerShouldReturnUserDetailsAndStatusOk() {
 //
 //    Header authHeader = setUpUserAndReturnAuthHeader();
 //
@@ -156,12 +157,14 @@
 //        .expectBody(JwtResponse.class)
 //        .value(
 //            detailsView ->
-//                assertEquals(validDetails.gender(), detailsView.userView().userDetails().gender()))
+//                assertEquals(validDetails.gender(),
+// detailsView.userView().userDetails().gender()))
 //        .value(
 //            detailsView ->
 //                assertEquals(
 //                    0,
-//                    validDetails.height().compareTo(detailsView.userView().userDetails().height())))
+//
+// validDetails.height().compareTo(detailsView.userView().userDetails().height())))
 //        .value(
 //            detailsView ->
 //                assertEquals(
@@ -181,7 +184,8 @@
 //
 //  @Test
 //  void
-//      givenValidAuth_whenModifyPartOfUserDetailsWithValidCredentials_thenServerShouldReturnUserDetailsAndStatusOk() {
+//
+// givenValidAuth_whenModifyPartOfUserDetailsWithValidCredentials_thenServerShouldReturnUserDetailsAndStatusOk() {
 //
 //    Header authHeader = setUpUserAndReturnAuthHeader();
 //
@@ -218,7 +222,8 @@
 //  }
 //
 //  @Test
-//  void givenValidAuth_whenModifyUserDetailsWithInvalidKilograms_thenServerShouldReturnBadRequest() {
+//  void givenValidAuth_whenModifyUserDetailsWithInvalidKilograms_thenServerShouldReturnBadRequest()
+// {
 //
 //    Header authHeader = setUpUserAndReturnAuthHeader();
 //
@@ -328,7 +333,8 @@
 //  }
 //
 //  @Test
-//  void givenValidAuth_whenModifyUserDetailsWithAllPossibleWorkoutTypes_thenServerShouldReturnOk() {
+//  void givenValidAuth_whenModifyUserDetailsWithAllPossibleWorkoutTypes_thenServerShouldReturnOk()
+// {
 //
 //    Header authHeader = setUpUserAndReturnAuthHeader();
 //
@@ -355,7 +361,8 @@
 //  }
 //
 //  @Test
-//  void givenValidAuth_whenModifyUserDetailsAndGettingWithChangedValues_thenServerShouldReturnOk() {
+//  void givenValidAuth_whenModifyUserDetailsAndGettingWithChangedValues_thenServerShouldReturnOk()
+// {
 //
 //    Header authHeader = setUpUserAndReturnAuthHeader();
 //
@@ -407,7 +414,8 @@
 //            detailsView ->
 //                assertEquals(0, validDetails.kilograms().compareTo(detailsView.kilograms())))
 //        .value(detailsView -> assertEquals(validDetails.age(), detailsView.age()))
-//        .value(detailsView -> assertEquals(validDetails.workoutState(), detailsView.workoutState()))
+//        .value(detailsView -> assertEquals(validDetails.workoutState(),
+// detailsView.workoutState()))
 //        .returnResult();
 //  }
 //
@@ -449,4 +457,4 @@
 //  private UserRequest createUser(String username, String email, String password, String token) {
 //    return new UserRequest(username, email, password, token);
 //  }
-//}
+// }

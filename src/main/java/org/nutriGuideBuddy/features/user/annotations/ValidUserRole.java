@@ -1,15 +1,15 @@
-package org.nutriGuideBuddy.features.user_details.annotaions;
+package org.nutriGuideBuddy.features.user.annotations;
 
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
 import java.lang.annotation.*;
 
 @Documented
-@Constraint(validatedBy = ValidWorkoutStateValidator.class)
+@Constraint(validatedBy = ValidUserRoleValidator.class)
 @Target({ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME)
-public @interface ValidWorkoutState {
-  String message() default "Invalid workout state";
+public @interface ValidUserRole {
+  String message() default "Invalid user role";
 
   Class<?>[] groups() default {};
 

@@ -6,5 +6,5 @@ import lombok.Getter;
 public enum Goals {
   MaintainWeight,
   LoseWeight,
-  GainWeight;
+  GainWeight
 }
