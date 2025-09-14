@@ -8,19 +8,21 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
-import org.nutriGuideBuddy.features.record.utils.*;
-import org.nutriGuideBuddy.infrastructure.security.service.ReactiveUserDetailsServiceImpl;
 import org.nutriGuideBuddy.features.food.dto.NutritionIntakeView;
+import org.nutriGuideBuddy.features.food.entity.Calorie;
+import org.nutriGuideBuddy.features.food.repository.CalorieRepository;
+import org.nutriGuideBuddy.features.food.repository.NutrientRepository;
 import org.nutriGuideBuddy.features.record.dto.CreateRecord;
 import org.nutriGuideBuddy.features.record.dto.DistributedMacros;
 import org.nutriGuideBuddy.features.record.dto.NutritionView;
 import org.nutriGuideBuddy.features.record.dto.RecordView;
-import org.nutriGuideBuddy.features.food.entity.Calorie;
-import org.nutriGuideBuddy.features.user_details.entity.UserDetails;
 import org.nutriGuideBuddy.features.record.enums.Goals;
-import org.nutriGuideBuddy.features.record.repository.RecordRepository;
+import org.nutriGuideBuddy.features.record.utils.*;
 import org.nutriGuideBuddy.features.record.utils.BMRCalc;
 import org.nutriGuideBuddy.features.record.utils.DailyCaloriesCalculator;
+import org.nutriGuideBuddy.features.user_details.entity.UserDetails;
+import org.nutriGuideBuddy.features.user_details.repository.UserDetailsRepository;
+import org.nutriGuideBuddy.infrastructure.security.service.ReactiveUserDetailsServiceImpl;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -30,11 +32,13 @@ import reactor.core.publisher.Mono;
 @RequiredArgsConstructor
 public class RecordService {
 
-  private final RecordRepository repository;
+  private final NutrientRepository nutrientRepository;
+  private final UserDetailsRepository userDetailsRepository;
+  private final CalorieRepository calorieRepository;
 
   public Mono<RecordView> viewRecord(CreateRecord dto) {
     return ReactiveUserDetailsServiceImpl.getPrincipalId()
-        .flatMap(repository::findUserDetailsByUserId)
+        .flatMap(userDetailsRepository::findByUserId)
         .switchIfEmpty(Mono.error(new ResponseStatusException(HttpStatus.UNAUTHORIZED)))
         .flatMap(
             details ->
@@ -70,8 +74,8 @@ public class RecordService {
             })
         .flatMap(
             data ->
-                repository
-                    .findCalorieByUserId(data.getT1().getUserId())
+                calorieRepository
+                    .findAllByUserId(data.getT1().getUserId())
                     .collectList()
                     .map(
                         list ->
@@ -109,7 +113,7 @@ public class RecordService {
                                   details.getAge());
                               return map;
                             }),
-                    repository.findAllNutritionsByUserId(details.getUserId()).collectList()))
+                    nutrientRepository.findAllByUserId(details.getUserId()).collectList()))
         .map(
             data -> {
               Map<String, NutritionIntakeView> nutritions = data.getT2();

@@ -1,21 +1,19 @@
 package org.nutriGuideBuddy.features.user.entity;
 
-import java.util.UUID;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.nutriGuideBuddy.features.shared.entity.BaseEntity;
 import org.nutriGuideBuddy.features.user.enums.UserRole;
-import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
 
-@Data
+@Table("users")
+@Getter
+@Setter
+@ToString(callSuper = true)
+@EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "users")
-public class User {
-
-  @Id private String id = UUID.randomUUID().toString();
+public class User extends BaseEntity {
 
   @Column("username")
   private String username;
@@ -26,6 +24,6 @@ public class User {
   @Column("password")
   private String password;
 
-  @Column("user_role")
+  @Column("role")
   private UserRole role = UserRole.USER;
 }

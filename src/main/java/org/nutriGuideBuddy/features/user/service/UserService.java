@@ -10,9 +10,9 @@ public interface UserService {
 
   Flux<UserView> getAll(UserFilter filter);
 
-  Mono<UserView> getById(String id);
+  Mono<UserView> getById(Long id);
 
-  Mono<UserWithDetailsView> getByIdWithDetails(String id);
+  Mono<UserWithDetailsView> getByIdWithDetails(Long id);
 
   Mono<UserView> me();
 
@@ -20,15 +20,17 @@ public interface UserService {
 
   Mono<UserView> create(UserCreateRequest dto, String token);
 
-  Mono<UserView> update(UserUpdateRequest userDto, String id);
+  Mono<UserView> update(UserUpdateRequest userDto, Long id);
 
-  Mono<Void> delete(String id);
+  Mono<Void> delete(Long id);
 
   Mono<Void> modifyPassword(ChangePasswordRequest dto, String token);
 
   Mono<User> findByEmailOrThrow(String email);
 
-  Mono<User> findByIOrThrow(String id);
+  Mono<User> findByIOrThrow(Long id);
 
   Mono<Long> countByFilter(UserFilter filter);
+
+  Mono<Boolean> existsByEmail(String email);
 }

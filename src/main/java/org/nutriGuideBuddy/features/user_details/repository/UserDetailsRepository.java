@@ -1,61 +1,12 @@
 package org.nutriGuideBuddy.features.user_details.repository;
 
-import static org.springframework.data.relational.core.query.Criteria.where;
-import static org.springframework.data.relational.core.query.Query.query;
-
-import lombok.RequiredArgsConstructor;
 import org.nutriGuideBuddy.features.user_details.entity.UserDetails;
-import org.springframework.data.r2dbc.core.R2dbcEntityTemplate;
-import org.springframework.data.r2dbc.repository.Modifying;
-import org.springframework.data.relational.core.query.Update;
-import org.springframework.stereotype.Repository;
+import org.springframework.data.r2dbc.repository.R2dbcRepository;
 import reactor.core.publisher.Mono;
 
-@Repository
-@RequiredArgsConstructor
-public class UserDetailsRepository {
+public interface UserDetailsRepository extends R2dbcRepository<UserDetails, Long> {
 
-  private final R2dbcEntityTemplate entityTemplate;
+  Mono<UserDetails> findByUserId(Long userId);
 
-  public Mono<UserDetails> save(UserDetails entity) {
-    return entityTemplate.insert(entity);
-  }
-
-  public Mono<UserDetails> findByUserId(String userId) {
-    return entityTemplate.selectOne(query(where("userId").is(userId)), UserDetails.class);
-  }
-
-  public Mono<UserDetails> findById(String id) {
-    return entityTemplate.selectOne(query(where("id").is(id)), UserDetails.class);
-  }
-
-  @Modifying
-  public Mono<UserDetails> update(String id, UserDetails updatedEntity) {
-    return entityTemplate
-        .update(UserDetails.class)
-        .matching(query(where("id").is(id)))
-        .apply(
-            Update.update("kilograms", updatedEntity.getKilograms())
-                .set("height", updatedEntity.getHeight())
-                .set("age", updatedEntity.getAge())
-                .set("workoutState", updatedEntity.getWorkoutState())
-                .set("gender", updatedEntity.getGender()))
-        .then(findById(id));
-  }
-
-  public Mono<Boolean> existsByUserId(String userId) {
-    return entityTemplate
-        .selectOne(query(where("userId").is(userId)), UserDetails.class)
-        .map(userDetails -> true)
-        .defaultIfEmpty(false);
-  }
-
-  @Modifying
-  public Mono<Void> deleteByUserId(String userId) {
-    return entityTemplate
-        .delete(UserDetails.class)
-        .matching(query(where("userId").is(userId)))
-        .all()
-        .then();
-  }
+  Mono<Boolean> existsByUserId(Long userId);
 }

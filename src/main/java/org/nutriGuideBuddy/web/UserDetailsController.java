@@ -2,11 +2,13 @@ package org.nutriGuideBuddy.web;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.nutriGuideBuddy.features.user.enums.UserRole;
 import org.nutriGuideBuddy.features.user_details.dto.UserDetailsRequest;
 import org.nutriGuideBuddy.features.user_details.dto.UserDetailsView;
 import org.nutriGuideBuddy.features.user_details.service.UserDetailsService;
+import org.nutriGuideBuddy.infrastructure.security.access_validator.UserAccessValidator;
+import org.nutriGuideBuddy.infrastructure.security.access_validator.UserDetailsAccessValidator;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 
@@ -16,12 +18,16 @@ import reactor.core.publisher.Mono;
 public class UserDetailsController {
 
   private final UserDetailsService service;
+  private final UserDetailsAccessValidator accessValidator;
+  private final UserAccessValidator userAccessValidator;
 
   @GetMapping("/{id}")
-  @PreAuthorize("hasRole('ADMIN') || @userDetailsAccessValidator.hasAccess(#id)")
   @ResponseStatus(HttpStatus.OK)
-  public Mono<UserDetailsView> getById(@PathVariable String id) {
-    return service.getById(id);
+  public Mono<UserDetailsView> getById(@PathVariable Long id) {
+    return userAccessValidator
+        .hasRole(UserRole.ADMIN)
+        .flatMap(isAdmin -> isAdmin ? Mono.empty() : accessValidator.validateAccess(id))
+        .then(service.getById(id));
   }
 
   @GetMapping("/me")
@@ -31,11 +37,13 @@ public class UserDetailsController {
   }
 
   @PatchMapping("/{id}")
-  @PreAuthorize("hasRole('ADMIN') || @userDetailsAccessValidator.hasAccess(#id)")
   @ResponseStatus(HttpStatus.OK)
   public Mono<UserDetailsView> update(
-      @RequestBody @Valid UserDetailsRequest userDto, @PathVariable String id) {
-    return service.update(userDto, id);
+      @RequestBody @Valid UserDetailsRequest userDto, @PathVariable Long id) {
+    return userAccessValidator
+        .hasRole(UserRole.ADMIN)
+        .flatMap(isAdmin -> isAdmin ? Mono.empty() : accessValidator.validateAccess(id))
+        .then(service.update(userDto, id));
   }
 
   @PatchMapping("/me")

@@ -1,24 +1,22 @@
 package org.nutriGuideBuddy.features.meal.entity;
 
-import java.util.UUID;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.Id;
+import lombok.*;
+import org.nutriGuideBuddy.features.shared.entity.BaseEntity;
 import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
 
-@Data
+@Table(name = "meals")
+@Getter
+@Setter
+@ToString(callSuper = true)
+@EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "meals")
-public class Meal {
-
-  @Id private String id = UUID.randomUUID().toString();
+public class Meal extends BaseEntity {
 
   @Column("name")
   private String name;
 
   @Column("user_id")
-  private String userId;
+  private Long userId;
 }

@@ -7,6 +7,7 @@ import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.nutriGuideBuddy.features.user.dto.*;
 import org.nutriGuideBuddy.features.user.entity.User;
+import org.nutriGuideBuddy.features.user.repository.UserCustomRepository;
 import org.nutriGuideBuddy.features.user.repository.UserRepository;
 import org.nutriGuideBuddy.features.user_details.service.UserDetailsService;
 import org.nutriGuideBuddy.infrastructure.exceptions.NotFoundException;
@@ -26,20 +27,31 @@ public class UserServiceImpl implements UserService {
   private final JwtEmailVerificationService emailVerificationService;
   private final UserDetailsService userDetailsService;
   private final UserRepository repository;
+  private final UserCustomRepository customRepository;
   private final UserMapper userMapper;
 
   @Override
   public Flux<UserView> getAll(UserFilter filter) {
-    return repository.findAllByFilter(filter).map(userMapper::toView);
+    return customRepository.findAllByFilter(filter).map(userMapper::toView);
   }
 
   @Override
-  public Mono<UserView> getById(String id) {
+  public Mono<Long> countByFilter(UserFilter filter) {
+    return customRepository.countByFilter(filter);
+  }
+
+  @Override
+  public Mono<Boolean> existsByEmail(String email) {
+    return repository.existsByEmail(email);
+  }
+
+  @Override
+  public Mono<UserView> getById(Long id) {
     return findByIOrThrow(id).map(userMapper::toView);
   }
 
   @Override
-  public Mono<UserWithDetailsView> getByIdWithDetails(String id) {
+  public Mono<UserWithDetailsView> getByIdWithDetails(Long id) {
     return getById(id)
         .zipWith(userDetailsService.getByUserId(id))
         .map(tuple -> userMapper.toViewWithDetails(tuple.getT1(), tuple.getT2()));
@@ -72,12 +84,14 @@ public class UserServiceImpl implements UserService {
             email ->
                 repository
                     .save(userMapper.toEntity(dto, email))
-                    .flatMap(user -> userDetailsService.create(user.getId()).thenReturn(user)))
+                    .flatMap(
+                        user ->
+                            userDetailsService.create(user.getId()).thenReturn(user)))
         .map(userMapper::toView);
   }
 
   @Override
-  public Mono<UserView> update(UserUpdateRequest userDto, String id) {
+  public Mono<UserView> update(UserUpdateRequest userDto, Long id) {
     return findByIOrThrow(id)
         .flatMap(
             existingUser -> {
@@ -86,24 +100,15 @@ public class UserServiceImpl implements UserService {
                   return Mono.error(new ValidationException(Map.of("email", "already in use.")));
                 }
                 userMapper.update(userDto, existingUser);
-                return repository.update(existingUser).map(userMapper::toView);
+                return repository.save(existingUser).map(userMapper::toView);
               }
               return Mono.empty();
-            })
-        .switchIfEmpty(
-            repository
-                .findById(id)
-                .flatMap(
-                    user -> {
-                      userMapper.update(userDto, user);
-                      return repository.update(user);
-                    })
-                .map(userMapper::toView));
+            });
   }
 
   @Override
-  public Mono<Void> delete(String id) {
-    return repository.deleteUserById(id).then(userDetailsService.deleteByUserId(id));
+  public Mono<Void> delete(Long id) {
+    return repository.deleteById(id);
   }
 
   @Override
@@ -130,14 +135,9 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override
-  public Mono<User> findByIOrThrow(String id) {
+  public Mono<User> findByIOrThrow(Long id) {
     return repository
         .findById(id)
         .switchIfEmpty(Mono.error(new NotFoundException(String.format(USER_NOT_FOUND_BY_ID, id))));
-  }
-
-  @Override
-  public Mono<Long> countByFilter(UserFilter filter) {
-    return repository.countByFilter(filter);
   }
 }

@@ -3,7 +3,7 @@ package org.nutriGuideBuddy.infrastructure.brevo_api;
 import java.util.List;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
-import org.nutriGuideBuddy.features.user.repository.UserRepository;
+import org.nutriGuideBuddy.features.user.service.UserService;
 import org.nutriGuideBuddy.infrastructure.exceptions.ExceptionMessages;
 import org.nutriGuideBuddy.infrastructure.exceptions.NotFoundException;
 import org.nutriGuideBuddy.infrastructure.exceptions.ValidationException;
@@ -36,11 +36,11 @@ public class EmailVerificationServiceImpl implements EmailVerificationService {
   @Value("${api.email.sender}")
   private String emailSender;
 
-  private final UserRepository userRepository;
+  private final UserService userService;
   private final JwtEmailVerificationService jwtUtil;
 
   public Mono<Void> validateUserAndSendVerificationEmail(EmailValidationRequest dto) {
-    return userRepository
+    return userService
         .existsByEmail(dto.email())
         .flatMap(
             exists -> {
@@ -71,7 +71,7 @@ public class EmailVerificationServiceImpl implements EmailVerificationService {
   }
 
   public Mono<Void> sendForgotPasswordEmail(String email) {
-    return userRepository
+    return userService
         .existsByEmail(email)
         .flatMap(
             exists -> {

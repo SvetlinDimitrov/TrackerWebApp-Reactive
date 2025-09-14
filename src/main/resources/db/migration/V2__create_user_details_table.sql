@@ -1,9 +1,12 @@
 CREATE TABLE user_details (
-  id VARCHAR(36) PRIMARY KEY,
-  kilograms DECIMAL(10,2),
-  height DECIMAL(10,2),
-  age INT,
-  workout_state VARCHAR(50),
-  gender VARCHAR(10),
-  user_id VARCHAR(36) NOT NULL
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    kilograms DECIMAL(10,2),
+    height DECIMAL(10,2),
+    age INT,
+    workout_state VARCHAR(50),
+    gender VARCHAR(10),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    user_id BIGINT NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );

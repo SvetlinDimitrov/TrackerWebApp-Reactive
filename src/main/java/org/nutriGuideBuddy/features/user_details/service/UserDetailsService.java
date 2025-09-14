@@ -7,19 +7,17 @@ import reactor.core.publisher.Mono;
 
 public interface UserDetailsService {
 
-  Mono<UserDetailsView> create(String userId);
+  Mono<UserDetailsView> create(Long userId);
 
-  Mono<UserDetailsView> getById(String id);
+  Mono<UserDetailsView> getById(Long id);
 
-  Mono<UserDetailsView> getByUserId(String userId);
+  Mono<UserDetailsView> getByUserId(Long userId);
 
   Mono<UserDetailsView> me();
 
-  Mono<UserDetailsView> update(UserDetailsRequest updateDto, String id);
+  Mono<UserDetailsView> update(UserDetailsRequest updateDto, Long id);
 
   Mono<UserDetailsView> update(UserDetailsRequest updateDto);
 
-  Mono<UserDetails> findByUserIdOrThrow(String userId);
-
-  Mono<Void> deleteByUserId(String userId);
+  Mono<UserDetails> findByUserIdOrThrow(Long userId);
 }

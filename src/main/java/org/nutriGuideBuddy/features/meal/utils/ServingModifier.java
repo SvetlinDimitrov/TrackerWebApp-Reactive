@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 
 public class ServingModifier {
 
-  public static Mono<Serving> validateAndUpdateMainEntity(ServingView dto, String foodId) {
+  public static Mono<Serving> validateAndUpdateMainEntity(ServingView dto, Long foodId) {
     return validateAndUpdateAmount(new Serving(), dto)
         .flatMap(data -> validateAndUpdateWeight(data, dto))
         .flatMap(data -> validateAndUpdateMetric(data, dto))
@@ -27,7 +27,7 @@ public class ServingModifier {
   }
 
   public static Mono<List<Serving>> validateAndUpdateListOfEntities(
-      List<ServingView> dto, String foodId) {
+      List<ServingView> dto, Long foodId) {
     if (dto == null) {
       return Mono.error(new BadRequestException("alternative servings cannot be null"));
     }

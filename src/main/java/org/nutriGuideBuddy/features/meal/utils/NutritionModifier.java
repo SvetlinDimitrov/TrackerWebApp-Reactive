@@ -14,7 +14,7 @@ import java.util.Arrays;
 public class NutritionModifier {
 
   public static Mono<Nutrition> validateAndUpdateEntity(
-      NutritionView dto, String foodId, String userId) {
+      NutritionView dto, Long foodId, Long userId) {
 
     Nutrition entity = new Nutrition();
     entity.setUserId(userId);

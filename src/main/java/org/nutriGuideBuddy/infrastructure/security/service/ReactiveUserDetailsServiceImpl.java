@@ -45,7 +45,7 @@ public class ReactiveUserDetailsServiceImpl implements ReactiveUserDetailsServic
             });
   }
 
-  public static Mono<String> getPrincipalId() {
+  public static Mono<Long> getPrincipalId() {
     return getPrincipal().map(userPrincipal -> userPrincipal.user().getId());
   }
 

@@ -1,23 +1,21 @@
 package org.nutriGuideBuddy.features.user_details.entity;
 
 import java.math.BigDecimal;
-import java.util.UUID;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.nutriGuideBuddy.features.shared.entity.BaseEntity;
 import org.nutriGuideBuddy.features.user_details.enums.Gender;
 import org.nutriGuideBuddy.features.user_details.enums.WorkoutState;
-import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
 
-@Data
+@Getter
+@Setter
+@ToString(callSuper = true)
+@EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "user_details")
-public class UserDetails {
-
-  @Id private String id = UUID.randomUUID().toString();
+public class UserDetails extends BaseEntity {
 
   @Column("kilograms")
   private BigDecimal kilograms;
@@ -35,5 +33,5 @@ public class UserDetails {
   private Gender gender;
 
   @Column("user_id")
-  private String userId;
+  private Long userId;
 }

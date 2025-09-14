@@ -2,6 +2,7 @@ package org.nutriGuideBuddy.infrastructure.exceptions;
 
 public class ExceptionMessages {
   public static final String USER_NOT_FOUND = "User not found with the provided email.";
+  public static final String NOT_FOUND_BY_ID = "%s not found with id: %s";
   public static final String USER_NOT_FOUND_BY_ID = "User not found with id: %s";
   public static final String USER_NOT_FOUND_BY_EMAIL = "User not found with email: %s";
   public static final String USER_DETAILS_NOT_FOUND_BY_ID = "User details not found with id: %s";

@@ -3,9 +3,10 @@ package org.nutriGuideBuddy.web;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.nutriGuideBuddy.features.user.dto.*;
+import org.nutriGuideBuddy.features.user.enums.UserRole;
 import org.nutriGuideBuddy.features.user.service.UserService;
+import org.nutriGuideBuddy.infrastructure.security.access_validator.UserAccessValidator;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -16,6 +17,7 @@ import reactor.core.publisher.Mono;
 public class UserController {
 
   private final UserService service;
+  private final UserAccessValidator accessValidator;
 
   @PostMapping
   @ResponseStatus(HttpStatus.CREATED)
@@ -37,17 +39,21 @@ public class UserController {
   }
 
   @GetMapping("/{id}")
-  @PreAuthorize("hasRole('ADMIN') || @userAccessValidator.hasAccess(#id)")
   @ResponseStatus(HttpStatus.OK)
-  public Mono<UserView> getById(@PathVariable String id) {
-    return service.getById(id);
+  public Mono<UserView> getById(@PathVariable Long id) {
+    return accessValidator
+        .hasRole(UserRole.ADMIN)
+        .flatMap(isAdmin -> isAdmin ? Mono.empty() : accessValidator.validateAccess(id))
+        .then(service.getById(id));
   }
 
   @GetMapping("/{id}/with-details")
-  @PreAuthorize("hasRole('ADMIN') || @userAccessValidator.hasAccess(#id)")
   @ResponseStatus(HttpStatus.OK)
-  public Mono<UserWithDetailsView> getByIdWithDetails(@PathVariable String id) {
-    return service.getByIdWithDetails(id);
+  public Mono<UserWithDetailsView> getByIdWithDetails(@PathVariable Long id) {
+    return accessValidator
+        .hasRole(UserRole.ADMIN)
+        .flatMap(isAdmin -> isAdmin ? Mono.empty() : accessValidator.validateAccess(id))
+        .then(service.getByIdWithDetails(id));
   }
 
   @GetMapping("/me")
@@ -63,17 +69,21 @@ public class UserController {
   }
 
   @PatchMapping("/{id}")
-  @PreAuthorize("hasRole('ADMIN') || @userAccessValidator.hasAccess(#id)")
   @ResponseStatus(HttpStatus.OK)
   public Mono<UserView> update(
-      @RequestBody @Valid UserUpdateRequest userDto, @PathVariable String id) {
-    return service.update(userDto, id);
+      @RequestBody @Valid UserUpdateRequest userDto, @PathVariable Long id) {
+    return accessValidator
+        .hasRole(UserRole.ADMIN)
+        .flatMap(isAdmin -> isAdmin ? Mono.empty() : accessValidator.validateAccess(id))
+        .then(service.update(userDto, id));
   }
 
   @DeleteMapping("/{id}")
-  @PreAuthorize("hasRole('ADMIN') || @userAccessValidator.hasAccess(#id)")
   @ResponseStatus(HttpStatus.NO_CONTENT)
-  public Mono<Void> delete(@PathVariable String id) {
-    return service.delete(id);
+  public Mono<Void> delete(@PathVariable Long id) {
+    return accessValidator
+        .hasRole(UserRole.ADMIN)
+        .flatMap(isAdmin -> isAdmin ? Mono.empty() : accessValidator.validateAccess(id))
+        .then(service.delete(id));
   }
 }

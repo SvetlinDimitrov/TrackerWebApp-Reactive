@@ -22,25 +22,26 @@ public class UserSeederService {
 
   public Mono<Void> seed() {
     log.info("Starting user seeding...");
+
     return Flux.fromArray(EmailEnum.values())
         .flatMap(
             emailEnum ->
                 userRepository
                     .existsByEmail(emailEnum.getEmail())
-                    .filter(exists -> !exists)
                     .flatMap(
                         exists -> {
-                          var user = new User();
+                          if (exists) return Mono.empty();
+
+                          User user = new User();
                           user.setUsername(emailEnum.name().toLowerCase());
                           user.setEmail(emailEnum.getEmail());
                           user.setPassword(passwordEncoder.encode(DEFAULT_PASSWORD));
                           user.setRole(UserRole.USER);
-                          log.info("Seeding user: {}", user.getEmail());
+
                           return userRepository
                               .save(user)
-                              .doOnSuccess(u -> log.debug("User seeded: {}", u));
+                              .doOnSuccess(u -> log.info("User seeded successfully: {}", u));
                         }))
-        .then() // Return Mono<Void> after seeding is complete
-        .doOnTerminate(() -> log.info("User seeding completed."));
+        .then(Mono.fromRunnable(() -> log.info("User seeding completed.")));
   }
 }

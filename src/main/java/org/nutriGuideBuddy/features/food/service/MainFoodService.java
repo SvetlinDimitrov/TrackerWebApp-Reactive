@@ -5,11 +5,11 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
-import org.nutriGuideBuddy.features.meal.utils.*;
-import org.nutriGuideBuddy.infrastructure.exceptions.BadRequestException;
 import org.nutriGuideBuddy.features.food.dto.*;
 import org.nutriGuideBuddy.features.food.entity.*;
-import org.nutriGuideBuddy.features.food.repository.FoodRepository;
+import org.nutriGuideBuddy.features.food.repository.*;
+import org.nutriGuideBuddy.features.meal.utils.*;
+import org.nutriGuideBuddy.infrastructure.exceptions.BadRequestException;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -17,16 +17,20 @@ import reactor.util.function.Tuple5;
 
 @Service
 @RequiredArgsConstructor
-public abstract class AbstractFoodService {
+public class MainFoodService {
 
-  protected final FoodRepository repository;
+  private final CalorieRepository calorieRepository;
+  private final FoodInfoRepository foodInfoRepository;
+  private final ServingRepository servingRepository;
+  private final NutrientRepository nutrientRepository;
+  private final FoodRepository foodRepository;
 
-  protected Mono<FoodView> toFoodView(Food entity, String mealId) {
+  public Mono<FoodView> toFoodView(Food entity, Long mealId) {
     return Mono.zip(
-            repository.findCalorieByFoodId(entity.getId(), mealId),
-            repository.findAllNutritionsByFoodId(entity.getId()).collectList(),
-            repository.findAllServingsByFoodId(entity.getId()).collectList(),
-            repository.findFoodInfoByFoodId(entity.getId()))
+            calorieRepository.findByFoodIdAndMealId(entity.getId(), mealId),
+            nutrientRepository.findAllByFoodId(entity.getId()).collectList(),
+            servingRepository.findAllByFoodId(entity.getId()).collectList(),
+            foodInfoRepository.findByFoodId(entity.getId()))
         .flatMap(
             tuple ->
                 Mono.zip(
@@ -57,20 +61,20 @@ public abstract class AbstractFoodService {
                     tuple.getT2()));
   }
 
-  protected Mono<ShortenFood> toShortenFoodView(Food entity, String mealId) {
-    return repository
-        .findCalorieByFoodId(entity.getId(), mealId)
-        .map(calories -> new ShortenFood(entity.getId(), entity.getName(), calories.getAmount()));
+  public Mono<FoodShortView> toShortenFoodView(Food entity, Long mealId) {
+    return calorieRepository
+        .findByFoodIdAndMealId(entity.getId(), mealId)
+        .map(calories -> new FoodShortView(entity.getId(), entity.getName(), calories.getAmount()));
   }
 
-  protected Mono<Food> getFoodEntityByIdMealIdUserId(String foodId, String mealId, String userId) {
-    return repository
-        .findFoodByIdAndMealIdAndUserId(foodId, mealId, userId)
+  public Mono<Food> getFoodEntityByIdMealIdUserId(Long foodId, Long mealId, Long userId) {
+    return foodRepository
+        .findByIdAndMealIdAndUserId(foodId, mealId, userId)
         .switchIfEmpty(Mono.error(new BadRequestException("No food found with id: " + foodId)));
   }
 
-  protected Mono<Tuple5<Food, List<Serving>, Calorie, List<Nutrition>, FoodInfo>> createAndGetFood(
-      String userId, InsertFoodDto dto, String mealId) {
+  public Mono<Tuple5<Food, List<Serving>, Calorie, List<Nutrition>, FoodInfo>> createAndGetFood(
+      Long userId, InsertFoodDto dto, Long mealId) {
     return createAndFillFoodEntity(dto, userId, mealId)
         .flatMap(
             food ->
@@ -89,22 +93,22 @@ public abstract class AbstractFoodService {
                     createAndFillFoodInfoEntity(dto.foodDetails(), food.getId())));
   }
 
-  protected Mono<Void> saveFoodEntity(
+  public Mono<Void> saveFoodEntity(
       Food food,
       List<Serving> servingEntities,
       Calorie calorie,
       List<Nutrition> nutritionEntities,
       FoodInfo foodInfo) {
-    return repository
-        .saveFood(food)
-        .then(repository.saveCalorie(calorie))
-        .thenMany(repository.saveAllServings(servingEntities))
-        .thenMany(repository.saveAllNutritions(nutritionEntities))
-        .then(repository.saveFoodInfo(foodInfo))
+    return foodRepository
+        .save(food)
+        .then(calorieRepository.save(calorie))
+        .thenMany(servingRepository.saveAll(servingEntities))
+        .thenMany(nutrientRepository.saveAll(nutritionEntities))
+        .then(foodInfoRepository.save(foodInfo))
         .then();
   }
 
-  private Mono<Food> createAndFillFoodEntity(InsertFoodDto dto, String userId, String mealId) {
+  private Mono<Food> createAndFillFoodEntity(InsertFoodDto dto, Long userId, Long mealId) {
     if (dto == null) {
       return Mono.error(new BadRequestException("food cannot be null"));
     }
@@ -119,7 +123,7 @@ public abstract class AbstractFoodService {
   }
 
   private Mono<List<Serving>> createAndFillServings(
-      ServingView mainServing, List<ServingView> others, String foodId) {
+      ServingView mainServing, List<ServingView> others, Long foodId) {
     if (mainServing == null) {
       return Mono.error(new BadRequestException("Main serving cannot be null"));
     }
@@ -135,7 +139,7 @@ public abstract class AbstractFoodService {
   }
 
   private Mono<Calorie> createAndFillCalorieEntity(
-      CalorieView dto, String foodId, String mealId, String userId) {
+      CalorieView dto, Long foodId, Long mealId, Long userId) {
     if (dto == null) {
       return Mono.error(new BadRequestException("calorie cannot be null"));
     }
@@ -150,7 +154,7 @@ public abstract class AbstractFoodService {
         .flatMap(calorieEntity -> CalorieModifier.validateAndUpdateEntity(calorieEntity, dto));
   }
 
-  private Mono<FoodInfo> createAndFillFoodInfoEntity(FoodInfoView dto, String foodId) {
+  private Mono<FoodInfo> createAndFillFoodInfoEntity(FoodInfoView dto, Long foodId) {
     FoodInfo newEntity = new FoodInfo();
     newEntity.setFoodId(foodId);
 
@@ -167,7 +171,7 @@ public abstract class AbstractFoodService {
   }
 
   private Mono<List<Nutrition>> createAndFillNutritions(
-      List<NutritionView> dtoList, String foodId, String userId) {
+      List<NutritionView> dtoList, Long foodId, Long userId) {
     if (dtoList == null) {
       return Mono.error(new BadRequestException("nutrients cannot be null"));
     }

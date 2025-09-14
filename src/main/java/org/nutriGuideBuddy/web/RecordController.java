@@ -23,10 +23,4 @@ public class RecordController {
   public Mono<RecordView> viewRecord(@RequestBody CreateRecord dto) {
     return service.viewRecord(dto);
   }
-
-  @ExceptionHandler(BadRequestException.class)
-  @ResponseStatus(HttpStatus.BAD_REQUEST)
-  public Mono<ExceptionResponse> catchUserNotFound(BadRequestException e) {
-    return Mono.just(new ExceptionResponse(e.getMessage()));
-  }
 }

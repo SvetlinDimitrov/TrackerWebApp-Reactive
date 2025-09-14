@@ -1,21 +1,21 @@
 package org.nutriGuideBuddy.features.food.entity;
 
 import java.math.BigDecimal;
-import java.util.UUID;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
 
-@Data
+@Getter
+@Setter
+@ToString
+@EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "nutritions")
 public class Nutrition {
 
-  @Id private String id = UUID.randomUUID().toString();
+  @Id private Long id;
 
   @Column("name")
   private String name;
@@ -27,8 +27,8 @@ public class Nutrition {
   private BigDecimal amount;
 
   @Column("food_id")
-  private String foodId;
+  private Long foodId;
 
   @Column("user_id")
-  private String userId;
+  private Long userId;
 }

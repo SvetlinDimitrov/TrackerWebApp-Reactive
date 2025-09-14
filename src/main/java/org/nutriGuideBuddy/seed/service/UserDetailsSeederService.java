@@ -33,7 +33,7 @@ public class UserDetailsSeederService {
         Set.of(EmailEnum.values()).stream().map(EmailEnum::getEmail).collect(Collectors.toSet());
 
     return userRepository
-        .findByEmails(emails)
+        .findAllByEmailIn(emails)
         .flatMap(
             user ->
                 userDetailsRepository
@@ -41,7 +41,6 @@ public class UserDetailsSeederService {
                     .filter(exists -> !exists) // Proceed only if they do not exist
                     .flatMap(
                         exists -> {
-                          log.info("Seeding details for user: {}", user.getEmail());
                           UserDetails userDetails = new UserDetails();
                           userDetails.setUserId(user.getId());
                           userDetails.setKilograms(
@@ -57,9 +56,9 @@ public class UserDetailsSeederService {
                           userDetails.setGender(genders[random.nextInt(genders.length)]);
 
                           log.debug("UserDetails created: {}", userDetails);
-                          return userDetailsRepository.save(userDetails); // Save UserDetails
+                          return userDetailsRepository.save(userDetails);
                         }))
         .doOnComplete(() -> log.info("UserDetails seeding completed."))
-        .then(); // Return Mono<Void> to indicate completion
+        .then();
   }
 }

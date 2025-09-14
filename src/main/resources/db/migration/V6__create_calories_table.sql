@@ -1,0 +1,13 @@
+CREATE TABLE calories (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    amount DECIMAL(10,2),
+    unit VARCHAR(20),
+    meal_id BIGINT NOT NULL,
+    food_id BIGINT NOT NULL,
+    user_id BIGINT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    CONSTRAINT fk_calories_meal FOREIGN KEY (meal_id) REFERENCES meals(id) ON DELETE CASCADE,
+    CONSTRAINT fk_calories_food FOREIGN KEY (food_id) REFERENCES inserted_foods(id) ON DELETE CASCADE,
+    CONSTRAINT fk_calories_user FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+);

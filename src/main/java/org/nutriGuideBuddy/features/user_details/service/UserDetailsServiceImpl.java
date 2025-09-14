@@ -22,19 +22,19 @@ public class UserDetailsServiceImpl implements UserDetailsService {
   private final UserDetailsMapper mapper;
 
   @Override
-  public Mono<UserDetailsView> create(String userId) {
+  public Mono<UserDetailsView> create(Long userId) {
     UserDetails entity = new UserDetails();
     entity.setUserId(userId);
     return repository.save(entity).map(mapper::toView);
   }
 
   @Override
-  public Mono<UserDetailsView> getById(String id) {
+  public Mono<UserDetailsView> getById(Long id) {
     return findByIdOrThrow(id).map(mapper::toView);
   }
 
   @Override
-  public Mono<UserDetailsView> getByUserId(String userId) {
+  public Mono<UserDetailsView> getByUserId(Long userId) {
     return findByUserIdOrThrow(userId).map(mapper::toView);
   }
 
@@ -46,12 +46,12 @@ public class UserDetailsServiceImpl implements UserDetailsService {
   }
 
   @Override
-  public Mono<UserDetailsView> update(UserDetailsRequest updateDto, String id) {
+  public Mono<UserDetailsView> update(UserDetailsRequest updateDto, Long id) {
     return findByIdOrThrow(id)
         .flatMap(
             entity -> {
               mapper.update(updateDto, entity);
-              return repository.update(entity.getId(), entity).thenReturn(entity);
+              return repository.save(entity);
             })
         .map(mapper::toView);
   }
@@ -64,7 +64,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
   }
 
   @Override
-  public Mono<UserDetails> findByUserIdOrThrow(String userId) {
+  public Mono<UserDetails> findByUserIdOrThrow(Long userId) {
     return repository
         .findByUserId(userId)
         .switchIfEmpty(
@@ -72,12 +72,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
                 new NotFoundException(String.format(USER_DETAILS_NOT_FOUND_FOR_USER_ID, userId))));
   }
 
-  @Override
-  public Mono<Void> deleteByUserId(String userId) {
-    return repository.deleteByUserId(userId);
-  }
-
-  private Mono<UserDetails> findByIdOrThrow(String id) {
+  private Mono<UserDetails> findByIdOrThrow(Long id) {
     return repository
         .findById(id)
         .switchIfEmpty(
