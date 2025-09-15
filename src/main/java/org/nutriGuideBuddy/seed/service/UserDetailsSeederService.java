@@ -1,6 +1,5 @@
 package org.nutriGuideBuddy.seed.service;
 
-import java.math.BigDecimal;
 import java.util.Random;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -43,10 +42,8 @@ public class UserDetailsSeederService {
                         exists -> {
                           UserDetails userDetails = new UserDetails();
                           userDetails.setUserId(user.getId());
-                          userDetails.setKilograms(
-                              BigDecimal.valueOf(50.0 + random.nextDouble() * 70.0));
-                          userDetails.setHeight(
-                              BigDecimal.valueOf(150.0 + random.nextDouble() * 50.0));
+                          userDetails.setKilograms(50.0 + random.nextDouble() * 70.0);
+                          userDetails.setHeight(150.0 + random.nextDouble() * 50.0);
                           userDetails.setAge(random.nextInt(56) + 25);
 
                           WorkoutState[] workoutStates = WorkoutState.values();
@@ -55,8 +52,10 @@ public class UserDetailsSeederService {
                               workoutStates[random.nextInt(workoutStates.length)]);
                           userDetails.setGender(genders[random.nextInt(genders.length)]);
 
-                          log.debug("UserDetails created: {}", userDetails);
-                          return userDetailsRepository.save(userDetails);
+                          return userDetailsRepository
+                              .save(userDetails)
+                              .doOnSuccess(
+                                  saved -> log.info("UserDetails seeded successfully: {}", saved));
                         }))
         .doOnComplete(() -> log.info("UserDetails seeding completed."))
         .then();

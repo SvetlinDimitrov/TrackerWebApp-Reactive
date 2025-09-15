@@ -1,6 +1,5 @@
 package org.nutriGuideBuddy.features.user_details.entity;
 
-import java.math.BigDecimal;
 import lombok.*;
 import org.nutriGuideBuddy.features.shared.entity.BaseEntity;
 import org.nutriGuideBuddy.features.user_details.enums.Gender;
@@ -18,10 +17,10 @@ import org.springframework.data.relational.core.mapping.Table;
 public class UserDetails extends BaseEntity {
 
   @Column("kilograms")
-  private BigDecimal kilograms;
+  private Double kilograms;
 
   @Column("height")
-  private BigDecimal height;
+  private Double height;
 
   @Column("age")
   private Integer age;

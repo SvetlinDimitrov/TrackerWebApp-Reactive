@@ -1,7 +1,7 @@
 CREATE TABLE user_details (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
-    kilograms DECIMAL(10,2),
-    height DECIMAL(10,2),
+    kilograms DOUBLE,
+    height DOUBLE,
     age INT,
     workout_state VARCHAR(50),
     gender VARCHAR(10),

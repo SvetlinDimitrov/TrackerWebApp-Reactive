@@ -64,8 +64,8 @@ public class RecordService {
                   DailyCaloriesCalculator.getCaloriesPerDay(
                           BMRCalc.calculateBMR(
                               userDetails.getGender(),
-                              userDetails.getKilograms(),
-                              userDetails.getHeight(),
+                              BigDecimal.valueOf(userDetails.getKilograms()),
+                              BigDecimal.valueOf(userDetails.getHeight()),
                               userDetails.getAge()),
                           userDetails.getWorkoutState(),
                           Optional.ofNullable(goal).orElse(Goals.MaintainWeight))
