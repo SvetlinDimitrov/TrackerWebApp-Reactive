@@ -2,20 +2,22 @@ package org.nutriGuideBuddy.features.user_details.entity;
 
 import java.math.BigDecimal;
 import lombok.*;
-import org.nutriGuideBuddy.features.shared.entity.BaseEntity;
 import org.nutriGuideBuddy.features.user_details.enums.Gender;
 import org.nutriGuideBuddy.features.user_details.enums.WorkoutState;
+import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
 
 @Getter
 @Setter
-@ToString(callSuper = true)
-@EqualsAndHashCode(callSuper = true)
+@ToString
+@EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "user_details")
-public class UserDetails extends BaseEntity {
+public class UserDetails {
+
+  @Id private Long id;
 
   @Column("kilograms")
   private BigDecimal kilograms;

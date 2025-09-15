@@ -4,13 +4,13 @@ import org.mapstruct.DecoratedWith;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
-import org.nutriGuideBuddy.infrastructure.security.dto.ChangePasswordRequest;
-import org.nutriGuideBuddy.features.user_details.dto.UserDetailsView;
-import org.nutriGuideBuddy.features.user.entity.User;
 import org.nutriGuideBuddy.features.user.dto.UserCreateRequest;
 import org.nutriGuideBuddy.features.user.dto.UserUpdateRequest;
 import org.nutriGuideBuddy.features.user.dto.UserView;
 import org.nutriGuideBuddy.features.user.dto.UserWithDetailsView;
+import org.nutriGuideBuddy.features.user.entity.User;
+import org.nutriGuideBuddy.features.user_details.dto.UserDetailsView;
+import org.nutriGuideBuddy.infrastructure.security.dto.ChangePasswordRequest;
 
 @Mapper(
     componentModel = "spring",
@@ -18,6 +18,8 @@ import org.nutriGuideBuddy.features.user.dto.UserWithDetailsView;
 @DecoratedWith(UserMapperDecorator.class)
 public interface UserMapper {
 
+  @Mapping(target = "createdAt", ignore = true)
+  @Mapping(target = "updatedAt", ignore = true)
   UserView toView(User entity);
 
   @Mapping(target = "details", source = "userDetails")

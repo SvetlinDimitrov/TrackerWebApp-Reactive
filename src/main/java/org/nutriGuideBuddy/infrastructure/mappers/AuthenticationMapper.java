@@ -3,12 +3,14 @@ package org.nutriGuideBuddy.infrastructure.mappers;
 import org.mapstruct.DecoratedWith;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.nutriGuideBuddy.features.user.entity.User;
+import org.nutriGuideBuddy.features.user_details.entity.UserDetails;
 import org.nutriGuideBuddy.infrastructure.security.dto.AuthenticationResponse;
 import org.nutriGuideBuddy.infrastructure.security.dto.JwtToken;
-import org.nutriGuideBuddy.features.user_details.entity.UserDetails;
-import org.nutriGuideBuddy.features.user.entity.User;
 
-@Mapper(componentModel = "spring")
+@Mapper(
+    componentModel = "spring",
+    uses = {UserMapper.class})
 @DecoratedWith(AuthenticationMapperDecorator.class)
 public interface AuthenticationMapper {
 
