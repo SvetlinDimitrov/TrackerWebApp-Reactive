@@ -23,6 +23,8 @@ public interface MealMapper {
   MealDetailedView toView(MealDetailedProjection projection);
 
   @Mapping(target = "consumedCalories", ignore = true)
+  @Mapping(target = "createdAt", ignore = true)
+  @Mapping(target = "updateAt", ignore = true)
   MealView toView(MealProjection projection);
 
   void update(MealUpdateRequest dto, @MappingTarget Meal entity);
