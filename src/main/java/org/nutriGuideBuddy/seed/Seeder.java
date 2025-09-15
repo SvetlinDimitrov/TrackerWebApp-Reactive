@@ -2,6 +2,7 @@ package org.nutriGuideBuddy.seed;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.nutriGuideBuddy.seed.service.MealSeederService;
 import org.nutriGuideBuddy.seed.service.UserDetailsSeederService;
 import org.nutriGuideBuddy.seed.service.UserSeederService;
 import org.springframework.boot.CommandLineRunner;
@@ -16,6 +17,7 @@ public class Seeder implements CommandLineRunner {
 
   private final UserSeederService userSeederService;
   private final UserDetailsSeederService userDetailsSeederService;
+  private final MealSeederService mealSeederService;
 
   @Override
   public void run(String... args) {
@@ -24,6 +26,7 @@ public class Seeder implements CommandLineRunner {
     userSeederService
         .seed()
         .then(userDetailsSeederService.seed())
+        .then(mealSeederService.seed())
         .doOnTerminate(() -> log.info("Data seeding completed."))
         .subscribe();
   }

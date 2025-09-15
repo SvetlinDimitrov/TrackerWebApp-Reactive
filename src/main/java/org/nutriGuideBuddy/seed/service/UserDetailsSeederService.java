@@ -11,12 +11,10 @@ import org.nutriGuideBuddy.features.user_details.enums.Gender;
 import org.nutriGuideBuddy.features.user_details.enums.WorkoutState;
 import org.nutriGuideBuddy.features.user_details.repository.UserDetailsRepository;
 import org.nutriGuideBuddy.seed.enums.EmailEnum;
-import org.springframework.context.annotation.Profile;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
-@Component
-@Profile("dev")
+@Service
 @Slf4j
 @RequiredArgsConstructor
 public class UserDetailsSeederService {

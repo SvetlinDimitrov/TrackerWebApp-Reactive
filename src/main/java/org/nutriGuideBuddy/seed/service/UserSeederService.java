@@ -7,11 +7,11 @@ import org.nutriGuideBuddy.features.user.enums.UserRole;
 import org.nutriGuideBuddy.features.user.repository.UserRepository;
 import org.nutriGuideBuddy.seed.enums.EmailEnum;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-@Component
+@Service
 @Slf4j
 @RequiredArgsConstructor
 public class UserSeederService {
@@ -21,7 +21,7 @@ public class UserSeederService {
   private static final String DEFAULT_PASSWORD = "12345";
 
   public Mono<Void> seed() {
-    log.info("Starting user seeding...");
+    log.info("Starting User seeding...");
 
     return Flux.fromArray(EmailEnum.values())
         .flatMap(
