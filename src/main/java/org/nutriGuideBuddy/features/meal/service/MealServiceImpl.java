@@ -5,6 +5,7 @@ import static org.nutriGuideBuddy.infrastructure.exceptions.ExceptionMessages.NO
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.nutriGuideBuddy.features.meal.dto.MealCreateRequest;
+import org.nutriGuideBuddy.features.meal.dto.MealFilter;
 import org.nutriGuideBuddy.features.meal.dto.MealUpdateRequest;
 import org.nutriGuideBuddy.features.meal.dto.MealView;
 import org.nutriGuideBuddy.features.meal.entity.Meal;
@@ -26,8 +27,16 @@ public class MealServiceImpl {
   private final MealRepository repository;
   private final MealMapper mealMapper;
 
-  public Flux<MealView> getAll() {
-    return customRepository.findAllMealsWithShortFoodDetails().map(mealMapper::toView);
+  public Flux<MealView> getAll(MealFilter filter) {
+    return ReactiveUserDetailsServiceImpl.getPrincipalId()
+        .flatMapMany(
+            userId -> customRepository.findAllWithFoodDetailsByFilterAndUserId(filter, userId))
+        .map(mealMapper::toView);
+  }
+
+  public Mono<Long> count(MealFilter filter) {
+    return ReactiveUserDetailsServiceImpl.getPrincipalId()
+        .flatMap(userId -> customRepository.countByFilterAndUserId(filter, userId));
   }
 
   public Mono<MealView> getById(Long id) {

@@ -18,8 +18,7 @@ public class ValidSortFieldsValidator
   @Override
   public void initialize(ValidSortFields constraintAnnotation) {
     this.entityClass = constraintAnnotation.entity();
-    this.excludedFields =
-        Set.of(constraintAnnotation.excludeFields());
+    this.excludedFields = Set.of(constraintAnnotation.excludeFields());
   }
 
   @Override
@@ -49,6 +48,8 @@ public class ValidSortFieldsValidator
         fields.add(field.getAnnotation(Column.class).value());
       }
     }
+    fields.add("id");
+
     return fields;
   }
 }

@@ -3,6 +3,7 @@ package org.nutriGuideBuddy.web;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.nutriGuideBuddy.features.meal.dto.MealCreateRequest;
+import org.nutriGuideBuddy.features.meal.dto.MealFilter;
 import org.nutriGuideBuddy.features.meal.dto.MealUpdateRequest;
 import org.nutriGuideBuddy.features.meal.dto.MealView;
 import org.nutriGuideBuddy.features.meal.service.MealServiceImpl;
@@ -25,9 +26,14 @@ public class MealController {
   private final UserDetailsAccessValidator userDetailsAccessValidator;
   private final UserAccessValidator userAccessValidator;
 
-  @GetMapping
-  public Flux<MealView> getAll() {
-    return userDetailsAccessValidator.validateFullyRegistered().thenMany(service.getAll());
+  @PostMapping("/get-all")
+  public Flux<MealView> getAll(@RequestBody @Valid MealFilter filter) {
+    return userDetailsAccessValidator.validateFullyRegistered().thenMany(service.getAll(filter));
+  }
+
+  @PostMapping("/get-all/count")
+  public Mono<Long> count(@RequestBody @Valid MealFilter filter) {
+    return userDetailsAccessValidator.validateFullyRegistered().then(service.count(filter));
   }
 
   @GetMapping("/{id}")
