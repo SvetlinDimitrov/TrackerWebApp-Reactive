@@ -1,15 +1,14 @@
 package org.nutriGuideBuddy.infrastructure.nutritionx_api.utils;
 
-import org.nutriGuideBuddy.features.food.dto.NutritionView;
-import org.nutriGuideBuddy.infrastructure.nutritionx_api.dto.FoodItem;
-import org.nutriGuideBuddy.infrastructure.nutritionx_api.dto.FullNutrient;
-import org.nutriGuideBuddy.features.food.enums.AllowedNutrients;
-
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import org.nutriGuideBuddy.features.food.dto.NutritionView;
+import org.nutriGuideBuddy.features.food.enums.AllowedNutrients;
+import org.nutriGuideBuddy.infrastructure.nutritionx_api.dto.FoodItem;
+import org.nutriGuideBuddy.infrastructure.nutritionx_api.dto.FullNutrient;
 
 public class NutrientMapperUtils {
 

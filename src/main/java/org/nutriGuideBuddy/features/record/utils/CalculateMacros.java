@@ -1,9 +1,8 @@
 package org.nutriGuideBuddy.features.record.utils;
 
-import org.nutriGuideBuddy.features.food.enums.AllowedNutrients;
-
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import org.nutriGuideBuddy.features.food.enums.AllowedNutrients;
 
 public class CalculateMacros {
 

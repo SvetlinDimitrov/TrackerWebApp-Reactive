@@ -1,9 +1,8 @@
 package org.nutriGuideBuddy.features.food.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.nutriGuideBuddy.features.food.entity.Food;
-
 import java.util.List;
+import org.nutriGuideBuddy.features.food.entity.Food;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public record FoodView(

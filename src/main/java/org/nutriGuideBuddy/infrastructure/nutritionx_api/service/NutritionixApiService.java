@@ -1,11 +1,16 @@
 package org.nutriGuideBuddy.infrastructure.nutritionx_api.service;
 
 import jakarta.annotation.PostConstruct;
+import java.math.BigDecimal;
+import java.nio.charset.StandardCharsets;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import org.nutriGuideBuddy.features.food.dto.*;
+import org.nutriGuideBuddy.features.food.enums.AllowedCalorieUnits;
 import org.nutriGuideBuddy.infrastructure.exceptions.BadRequestException;
 import org.nutriGuideBuddy.infrastructure.nutritionx_api.dto.FoodItem;
 import org.nutriGuideBuddy.infrastructure.nutritionx_api.dto.ListFoodsResponse;
-import org.nutriGuideBuddy.features.food.enums.AllowedCalorieUnits;
-import org.nutriGuideBuddy.features.food.dto.*;
 import org.nutriGuideBuddy.infrastructure.nutritionx_api.utils.FoodInfoMapperUtils;
 import org.nutriGuideBuddy.infrastructure.nutritionx_api.utils.GetFoodsResponse;
 import org.nutriGuideBuddy.infrastructure.nutritionx_api.utils.NutrientMapperUtils;
@@ -20,12 +25,6 @@ import org.springframework.web.reactive.function.client.ExchangeStrategies;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.server.ResponseStatusException;
 import reactor.core.publisher.Mono;
-
-import java.math.BigDecimal;
-import java.nio.charset.StandardCharsets;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 @Service
 public class NutritionixApiService {

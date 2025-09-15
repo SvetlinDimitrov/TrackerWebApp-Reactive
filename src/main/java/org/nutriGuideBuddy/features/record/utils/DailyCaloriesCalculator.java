@@ -1,9 +1,8 @@
 package org.nutriGuideBuddy.features.record.utils;
 
+import java.math.BigDecimal;
 import org.nutriGuideBuddy.features.record.enums.Goals;
 import org.nutriGuideBuddy.features.user_details.enums.WorkoutState;
-
-import java.math.BigDecimal;
 
 public class DailyCaloriesCalculator {
 

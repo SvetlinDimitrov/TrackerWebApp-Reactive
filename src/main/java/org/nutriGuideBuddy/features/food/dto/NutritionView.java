@@ -1,8 +1,7 @@
 package org.nutriGuideBuddy.features.food.dto;
 
-import org.nutriGuideBuddy.features.food.entity.Nutrition;
-
 import java.math.BigDecimal;
+import org.nutriGuideBuddy.features.food.entity.Nutrition;
 
 public record NutritionView(String name, String unit, BigDecimal amount) {
 

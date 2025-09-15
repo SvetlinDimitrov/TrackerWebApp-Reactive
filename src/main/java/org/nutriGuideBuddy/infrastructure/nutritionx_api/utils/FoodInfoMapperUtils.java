@@ -1,11 +1,10 @@
 package org.nutriGuideBuddy.infrastructure.nutritionx_api.utils;
 
+import java.util.Optional;
 import org.nutriGuideBuddy.features.food.dto.FoodInfoView;
 import org.nutriGuideBuddy.infrastructure.nutritionx_api.dto.FoodItem;
 import org.nutriGuideBuddy.infrastructure.nutritionx_api.dto.Photo;
 import org.nutriGuideBuddy.infrastructure.nutritionx_api.dto.Tags;
-
-import java.util.Optional;
 
 public class FoodInfoMapperUtils {
 

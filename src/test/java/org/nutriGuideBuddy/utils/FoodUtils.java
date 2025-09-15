@@ -1,13 +1,12 @@
 package org.nutriGuideBuddy.utils;
 
-import org.nutriGuideBuddy.features.food.enums.AllowedCalorieUnits;
-import org.nutriGuideBuddy.features.food.enums.AllowedNutrients;
-import org.nutriGuideBuddy.enums.Credentials;
-import org.nutriGuideBuddy.features.food.dto.*;
-
 import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
+import org.nutriGuideBuddy.enums.Credentials;
+import org.nutriGuideBuddy.features.food.dto.*;
+import org.nutriGuideBuddy.features.food.enums.AllowedCalorieUnits;
+import org.nutriGuideBuddy.features.food.enums.AllowedNutrients;
 
 public class FoodUtils {
 

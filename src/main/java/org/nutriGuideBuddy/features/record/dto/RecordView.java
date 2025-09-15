@@ -1,10 +1,9 @@
 package org.nutriGuideBuddy.features.record.dto;
 
-import lombok.Data;
-import org.nutriGuideBuddy.features.food.dto.NutritionIntakeView;
-
 import java.math.BigDecimal;
 import java.util.List;
+import lombok.Data;
+import org.nutriGuideBuddy.features.food.dto.NutritionIntakeView;
 
 @Data
 public class RecordView {

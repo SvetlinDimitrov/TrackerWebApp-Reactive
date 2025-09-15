@@ -1,11 +1,10 @@
 package org.nutriGuideBuddy.infrastructure.nutritionx_api.utils;
 
-import org.nutriGuideBuddy.features.food.dto.ServingView;
-import org.nutriGuideBuddy.infrastructure.nutritionx_api.dto.FoodItem;
-
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
+import org.nutriGuideBuddy.features.food.dto.ServingView;
+import org.nutriGuideBuddy.infrastructure.nutritionx_api.dto.FoodItem;
 
 public class ServingMapperUtils {
 

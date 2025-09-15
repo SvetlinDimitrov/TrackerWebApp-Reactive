@@ -1,8 +1,7 @@
 package org.nutriGuideBuddy.features.record.utils;
 
-import org.nutriGuideBuddy.features.user_details.enums.Gender;
-
 import java.math.BigDecimal;
+import org.nutriGuideBuddy.features.user_details.enums.Gender;
 
 public class BMRCalc {
 

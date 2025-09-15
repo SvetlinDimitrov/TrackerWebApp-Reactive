@@ -84,9 +84,7 @@ public class UserServiceImpl implements UserService {
             email ->
                 repository
                     .save(userMapper.toEntity(dto, email))
-                    .flatMap(
-                        user ->
-                            userDetailsService.create(user.getId()).thenReturn(user)))
+                    .flatMap(user -> userDetailsService.create(user.getId()).thenReturn(user)))
         .map(userMapper::toView);
   }
 

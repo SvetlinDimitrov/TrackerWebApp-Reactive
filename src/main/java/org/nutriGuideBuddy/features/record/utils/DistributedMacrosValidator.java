@@ -1,10 +1,9 @@
 package org.nutriGuideBuddy.features.record.utils;
 
-import org.nutriGuideBuddy.infrastructure.exceptions.BadRequestException;
-import org.nutriGuideBuddy.features.record.dto.DistributedMacros;
-import reactor.core.publisher.Mono;
-
 import java.math.BigDecimal;
+import org.nutriGuideBuddy.features.record.dto.DistributedMacros;
+import org.nutriGuideBuddy.infrastructure.exceptions.BadRequestException;
+import reactor.core.publisher.Mono;
 
 public class DistributedMacrosValidator {
 

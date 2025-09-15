@@ -1,10 +1,9 @@
 package org.nutriGuideBuddy.features.meal.dto;
 
-import org.nutriGuideBuddy.features.food.dto.FoodView;
-import org.nutriGuideBuddy.features.meal.entity.Meal;
-
 import java.math.BigDecimal;
 import java.util.List;
+import org.nutriGuideBuddy.features.food.dto.FoodView;
+import org.nutriGuideBuddy.features.meal.entity.Meal;
 
 public record MealDetailedView(Long id, String name, BigDecimal consumedCalories, List<FoodView> foods) {
 

@@ -2,9 +2,9 @@ package org.nutriGuideBuddy.infrastructure.nutritionx_api.web;
 
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.nutriGuideBuddy.features.food.dto.InsertFoodDto;
 import org.nutriGuideBuddy.infrastructure.exceptions.BadRequestException;
 import org.nutriGuideBuddy.infrastructure.exceptions.ExceptionResponse;
-import org.nutriGuideBuddy.features.food.dto.InsertFoodDto;
 import org.nutriGuideBuddy.infrastructure.nutritionx_api.dto.ListFoodsResponse;
 import org.nutriGuideBuddy.infrastructure.nutritionx_api.service.NutritionixApiService;
 import org.springframework.http.HttpStatus;

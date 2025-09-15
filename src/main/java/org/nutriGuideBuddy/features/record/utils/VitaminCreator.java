@@ -1,12 +1,11 @@
 package org.nutriGuideBuddy.features.record.utils;
 
-import org.nutriGuideBuddy.features.food.dto.NutritionIntakeView;
-import org.nutriGuideBuddy.features.food.enums.AllowedNutrients;
-import org.nutriGuideBuddy.features.user_details.enums.Gender;
-
 import java.math.BigDecimal;
 import java.util.Map;
 import java.util.Set;
+import org.nutriGuideBuddy.features.food.dto.NutritionIntakeView;
+import org.nutriGuideBuddy.features.food.enums.AllowedNutrients;
+import org.nutriGuideBuddy.features.user_details.enums.Gender;
 
 public class VitaminCreator {
   /*

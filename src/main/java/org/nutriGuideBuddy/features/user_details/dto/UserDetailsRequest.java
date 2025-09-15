@@ -3,7 +3,6 @@ package org.nutriGuideBuddy.features.user_details.dto;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.Min;
 import java.math.BigDecimal;
-
 import org.nutriGuideBuddy.features.user_details.annotaions.ValidGender;
 import org.nutriGuideBuddy.features.user_details.annotaions.ValidWorkoutState;
 

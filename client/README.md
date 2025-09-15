@@ -17,34 +17,35 @@ This document provides details about the client application.
 
 2. **Ensure Docker Desktop is Running:**
 
-    Make sure Docker Desktop is running on your machine.
+   Make sure Docker Desktop is running on your machine.
 
 3. **Navigate to the Docker Local Directory:**
-   
+
     ```bash
     cd reactive-version/client/docker_local
     ```
 
 4. **Configure Environment Variables:**
 
-    Open the `.env` file and provide the necessary information. Refer to the [README](../README.md) for guidance on where to obtain this information.
+   Open the `.env` file and provide the necessary information. Refer to the [README](../README.md) for guidance on where
+   to obtain this information.
 
 5. **Start Docker Services:**
 
-    Run the following command to start the database and server:
-    
+   Run the following command to start the database and server:
+
     ```bash
     docker-compose up
     ```
 
 6. **Navigate Back to the Project Directory:**
-   
+
     ```bash
     cd ..
     ```
 
 7. **Install Dependencies:**
-   
+
     ```bash
     npm install
     ```
@@ -57,5 +58,5 @@ This document provides details about the client application.
 
 9. **Access the Application:**
 
-    Open your browser and go to [http://localhost:3000](http://localhost:3000) to view the application.
+   Open your browser and go to [http://localhost:3000](http://localhost:3000) to view the application.
 

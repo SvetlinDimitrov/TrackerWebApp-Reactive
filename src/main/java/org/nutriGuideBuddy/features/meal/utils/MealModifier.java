@@ -1,12 +1,12 @@
 package org.nutriGuideBuddy.features.meal.utils;
 
-import org.nutriGuideBuddy.infrastructure.exceptions.BadRequestException;
+import static org.nutriGuideBuddy.infrastructure.exceptions.ExceptionMessagesToRemove.INVALID_STRING_LENGTH_MESSAGE;
+
+import org.nutriGuideBuddy.features.food.utils.Validator;
 import org.nutriGuideBuddy.features.meal.dto.MealCreateRequest;
 import org.nutriGuideBuddy.features.meal.entity.Meal;
-import org.nutriGuideBuddy.features.food.utils.Validator;
+import org.nutriGuideBuddy.infrastructure.exceptions.BadRequestException;
 import reactor.core.publisher.Mono;
-
-import static org.nutriGuideBuddy.infrastructure.exceptions.ExceptionMessagesToRemove.INVALID_STRING_LENGTH_MESSAGE;
 
 public class MealModifier {
 

@@ -1,9 +1,8 @@
 package org.nutriGuideBuddy.infrastructure.nutritionx_api.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.*;
-
 import java.util.List;
+import lombok.*;
 
 @NoArgsConstructor
 @AllArgsConstructor
