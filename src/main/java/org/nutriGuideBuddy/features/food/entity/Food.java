@@ -1,7 +1,7 @@
 package org.nutriGuideBuddy.features.food.entity;
 
 import lombok.*;
-import org.nutriGuideBuddy.features.shared.entity.BaseEntity;
+import org.nutriGuideBuddy.features.shared.entity.AuditableEntity;
 import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
 
@@ -12,7 +12,7 @@ import org.springframework.data.relational.core.mapping.Table;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "inserted_foods")
-public class Food extends BaseEntity {
+public class Food extends AuditableEntity {
 
   @Column("name")
   private String name;

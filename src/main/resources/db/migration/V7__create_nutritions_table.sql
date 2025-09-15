@@ -5,6 +5,8 @@ CREATE TABLE nutritions (
     amount DECIMAL(10,2),
     food_id BIGINT NOT NULL,
     user_id BIGINT NOT NULL,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     CONSTRAINT fk_nutritions_food FOREIGN KEY (food_id) REFERENCES inserted_foods(id) ON DELETE CASCADE,
     CONSTRAINT fk_nutritions_user FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );

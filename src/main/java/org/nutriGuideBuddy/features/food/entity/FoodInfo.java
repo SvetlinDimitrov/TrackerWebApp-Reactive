@@ -1,20 +1,19 @@
 package org.nutriGuideBuddy.features.food.entity;
 
 import lombok.*;
+import org.nutriGuideBuddy.features.shared.entity.BaseEntity;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
 
 @Getter
 @Setter
-@ToString
-@EqualsAndHashCode
+@ToString(callSuper = true)
+@EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "info_foods")
-public class FoodInfo {
-
-  @Id private Long id;
+public class FoodInfo extends BaseEntity {
 
   @Column("info")
   private String info;

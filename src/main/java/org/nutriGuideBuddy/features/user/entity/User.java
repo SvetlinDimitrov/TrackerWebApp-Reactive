@@ -1,7 +1,7 @@
 package org.nutriGuideBuddy.features.user.entity;
 
 import lombok.*;
-import org.nutriGuideBuddy.features.shared.entity.BaseEntity;
+import org.nutriGuideBuddy.features.shared.entity.AuditableEntity;
 import org.nutriGuideBuddy.features.user.enums.UserRole;
 import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
@@ -13,7 +13,7 @@ import org.springframework.data.relational.core.mapping.Table;
 @EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
 @AllArgsConstructor
-public class User extends BaseEntity {
+public class User extends AuditableEntity {
 
   @Column("username")
   private String username;

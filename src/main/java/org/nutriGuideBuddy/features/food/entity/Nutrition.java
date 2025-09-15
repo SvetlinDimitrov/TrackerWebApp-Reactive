@@ -2,20 +2,18 @@ package org.nutriGuideBuddy.features.food.entity;
 
 import java.math.BigDecimal;
 import lombok.*;
-import org.springframework.data.annotation.Id;
+import org.nutriGuideBuddy.features.shared.entity.AuditableEntity;
 import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
 
 @Getter
 @Setter
-@ToString
-@EqualsAndHashCode
+@ToString(callSuper = true)
+@EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "nutritions")
-public class Nutrition {
-
-  @Id private Long id;
+public class Nutrition extends AuditableEntity {
 
   @Column("name")
   private String name;

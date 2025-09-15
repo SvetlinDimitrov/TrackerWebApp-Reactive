@@ -2,20 +2,18 @@ package org.nutriGuideBuddy.features.food.entity;
 
 import java.math.BigDecimal;
 import lombok.*;
-import org.springframework.data.annotation.Id;
+import org.nutriGuideBuddy.features.shared.entity.BaseEntity;
 import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
 
 @Getter
 @Setter
-@ToString
-@EqualsAndHashCode
+@ToString(callSuper = true)
+@EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "servings")
-public class Serving {
-
-  @Id private Long id;
+public class Serving extends BaseEntity {
 
   @Column("amount")
   private BigDecimal amount;
