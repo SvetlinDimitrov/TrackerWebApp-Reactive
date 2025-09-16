@@ -1,7 +1,6 @@
 package org.nutriGuideBuddy.features.record.service;
 
 import java.math.BigDecimal;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -16,7 +15,6 @@ import org.nutriGuideBuddy.features.record.utils.*;
 import org.nutriGuideBuddy.features.record.utils.BMRCalc;
 import org.nutriGuideBuddy.features.record.utils.DailyCaloriesCalculator;
 import org.nutriGuideBuddy.features.shared.dto.NutritionIntakeView;
-import org.nutriGuideBuddy.features.shared.repository.NutrientRepository;
 import org.nutriGuideBuddy.features.user_details.entity.UserDetails;
 import org.nutriGuideBuddy.features.user_details.repository.UserDetailsRepository;
 import org.nutriGuideBuddy.infrastructure.security.service.ReactiveUserDetailsServiceImpl;
@@ -29,7 +27,6 @@ import reactor.core.publisher.Mono;
 @RequiredArgsConstructor
 public class RecordService {
 
-  private final NutrientRepository nutrientRepository;
   private final UserDetailsRepository userDetailsRepository;
 
   public Mono<RecordView> viewRecord(CreateRecord dto) {

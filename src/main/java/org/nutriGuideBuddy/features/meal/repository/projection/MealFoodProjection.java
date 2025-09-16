@@ -5,8 +5,8 @@ import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.nutriGuideBuddy.features.shared.repository.projetion.NutritionProjection;
-import org.nutriGuideBuddy.features.shared.repository.projetion.ServingProjection;
+import org.nutriGuideBuddy.features.shared.repository.projection.NutritionProjection;
+import org.nutriGuideBuddy.features.shared.repository.projection.ServingProjection;
 
 @Data
 @NoArgsConstructor

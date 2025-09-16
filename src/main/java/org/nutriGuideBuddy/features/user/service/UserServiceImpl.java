@@ -4,6 +4,7 @@ import static org.nutriGuideBuddy.infrastructure.exceptions.ExceptionMessages.*;
 
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
+import org.nutriGuideBuddy.features.meal.service.MealServiceImpl;
 import org.nutriGuideBuddy.features.user.dto.*;
 import org.nutriGuideBuddy.features.user.entity.User;
 import org.nutriGuideBuddy.features.user.repository.UserCustomRepository;
@@ -25,6 +26,7 @@ public class UserServiceImpl implements UserService {
 
   private final JwtEmailVerificationService emailVerificationService;
   private final UserDetailsService userDetailsService;
+  private final MealServiceImpl mealService;
   private final UserRepository repository;
   private final UserCustomRepository customRepository;
   private final UserMapper userMapper;
@@ -105,7 +107,8 @@ public class UserServiceImpl implements UserService {
 
   @Override
   public Mono<Void> delete(Long id) {
-    return repository.deleteById(id);
+    return mealService.deleteAllByUserId(id)
+        .then(repository.deleteById(id));
   }
 
   @Override

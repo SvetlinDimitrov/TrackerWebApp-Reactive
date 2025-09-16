@@ -37,7 +37,6 @@ public interface MealFoodMapper {
 
   FoodShortView toView(MealFoodShortProjection projection);
 
-  @Mapping(target = "mealId", ignore = true)
   MealFood toEntity(MealFoodCreateRequest dto);
 
   @Mapping(target = "id", ignore = true)

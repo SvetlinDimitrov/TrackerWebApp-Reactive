@@ -25,6 +25,7 @@ public class MealController {
   private final UserDetailsAccessValidator userDetailsAccessValidator;
   private final UserAccessValidator userAccessValidator;
 
+  //TODO:: fix the customMealRepo
   @PostMapping("/get-all")
   public Flux<MealView> getAll(@RequestBody @Valid MealFilter filter) {
     return userDetailsAccessValidator.validateFullyRegistered().thenMany(service.getAll(filter));
@@ -33,6 +34,12 @@ public class MealController {
   @PostMapping("/get-all/count")
   public Mono<Long> count(@RequestBody @Valid MealFilter filter) {
     return userDetailsAccessValidator.validateFullyRegistered().then(service.count(filter));
+  }
+
+  @PostMapping
+  @ResponseStatus(HttpStatus.CREATED)
+  public Mono<MealView> create(@RequestBody @Valid MealCreateRequest dto) {
+    return service.create(dto);
   }
 
   @PostMapping("/{mealId}")
@@ -57,11 +64,7 @@ public class MealController {
         .then(service.getById(id));
   }
 
-  @PostMapping
-  @ResponseStatus(HttpStatus.CREATED)
-  public Mono<MealView> create(@RequestBody @Valid MealCreateRequest dto) {
-    return service.create(dto);
-  }
+  //TODO:: GET FOODMEAL BY ID
 
   @PatchMapping("/{id}")
   public Mono<MealView> update(@RequestBody @Valid MealUpdateRequest dto, @PathVariable Long id) {
@@ -75,7 +78,7 @@ public class MealController {
         .then(service.updateById(dto, id));
   }
 
-  @PatchMapping("/meals/{id}/food/{foodId}")
+  @PatchMapping("/{id}/food/{foodId}")
   public Mono<MealFoodView> updateFood(
       @RequestBody @Valid MealFoodUpdateRequest dto,
       @PathVariable Long id,
