@@ -42,7 +42,6 @@ public class MealFoodNutritionServiceImpl {
             });
   }
 
-  //TODO :: THIS WONT RETURN ALL NUTRITIONS IF ONLY FEW ARE UPDATED
   public Flux<NutritionView> update(Set<NutritionUpdateRequest> requests, Long foodId) {
     if (requests == null || requests.isEmpty()) {
       return Flux.empty();
@@ -56,13 +55,16 @@ public class MealFoodNutritionServiceImpl {
         .collectList()
         .flatMapMany(
             existingNutritionIds -> {
-              boolean allBelong = new HashSet<>(existingNutritionIds).containsAll(ids);
+              HashSet<Long> existingNutritionIdsSet = new HashSet<>(existingNutritionIds);
+              boolean allBelong = existingNutritionIdsSet.containsAll(ids);
               if (!allBelong) {
                 return Flux.error(
                     new BadRequestException(
                         String.format(NUTRITION_NOT_BELONG_TO_MEAL_FOOD, ids, foodId)));
               }
-              return nutritionService.update(requests).map(mapper::toView);
+              return nutritionService
+                  .updateAndFetch(requests, existingNutritionIdsSet)
+                  .map(mapper::toView);
             });
   }
 

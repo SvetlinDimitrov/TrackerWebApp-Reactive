@@ -42,7 +42,6 @@ public class MealFoodServingServiceImpl {
             });
   }
 
-  //TODO:: THIS WONT RETURN ALL SERVINGS IF ONLY A FEW ARE UPDATED
   public Flux<ServingView> update(Set<ServingUpdateRequest> requests, Long foodId) {
     if (requests == null || requests.isEmpty()) {
       return Flux.empty();
@@ -56,13 +55,16 @@ public class MealFoodServingServiceImpl {
         .collectList()
         .flatMapMany(
             existingServingIds -> {
-              boolean allBelong = new HashSet<>(existingServingIds).containsAll(ids);
+              HashSet<Long> existingServingIdsSet = new HashSet<>(existingServingIds);
+              boolean allBelong = existingServingIdsSet.containsAll(ids);
               if (!allBelong) {
                 return Flux.error(
                     new BadRequestException(
                         String.format(SERVING_NOT_BELONG_TO_MEAL_FOOD, ids, foodId)));
               }
-              return servingService.update(requests).map(mapper::toView);
+              return servingService
+                  .updateAndFetchAll(requests, existingServingIdsSet)
+                  .map(mapper::toView);
             });
   }
 

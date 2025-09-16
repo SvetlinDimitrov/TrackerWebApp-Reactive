@@ -3,7 +3,6 @@ package org.nutriGuideBuddy.web;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.nutriGuideBuddy.features.meal.dto.*;
-import org.nutriGuideBuddy.features.meal.service.MealFoodServiceImp;
 import org.nutriGuideBuddy.features.meal.service.MealServiceImpl;
 import org.nutriGuideBuddy.features.user.enums.UserRole;
 import org.nutriGuideBuddy.infrastructure.security.access_validator.MealAccessValidator;
@@ -20,18 +19,18 @@ import reactor.core.publisher.Mono;
 public class MealController {
 
   private final MealServiceImpl service;
-  private final MealFoodServiceImp mealFoodService;
   private final MealAccessValidator mealAccessValidator;
   private final UserDetailsAccessValidator userDetailsAccessValidator;
   private final UserAccessValidator userAccessValidator;
 
-  //TODO:: fix the customMealRepo
   @PostMapping("/get-all")
+  @ResponseStatus(HttpStatus.OK)
   public Flux<MealView> getAll(@RequestBody @Valid MealFilter filter) {
     return userDetailsAccessValidator.validateFullyRegistered().thenMany(service.getAll(filter));
   }
 
   @PostMapping("/get-all/count")
+  @ResponseStatus(HttpStatus.OK)
   public Mono<Long> count(@RequestBody @Valid MealFilter filter) {
     return userDetailsAccessValidator.validateFullyRegistered().then(service.count(filter));
   }
@@ -42,17 +41,8 @@ public class MealController {
     return service.create(dto);
   }
 
-  @PostMapping("/{mealId}")
-  @ResponseStatus(HttpStatus.CREATED)
-  public Mono<MealFoodView> createFood(
-      @RequestBody @Valid MealFoodCreateRequest dto, @PathVariable Long mealId) {
-    return userDetailsAccessValidator
-        .validateFullyRegistered()
-        .then(mealAccessValidator.validateAccess(mealId))
-        .then(mealFoodService.create(dto, mealId));
-  }
-
   @GetMapping("/{id}")
+  @ResponseStatus(HttpStatus.OK)
   public Mono<MealView> get(@PathVariable Long id) {
     return userDetailsAccessValidator
         .validateFullyRegistered()
@@ -64,9 +54,8 @@ public class MealController {
         .then(service.getById(id));
   }
 
-  //TODO:: GET FOODMEAL BY ID
-
   @PatchMapping("/{id}")
+  @ResponseStatus(HttpStatus.OK)
   public Mono<MealView> update(@RequestBody @Valid MealUpdateRequest dto, @PathVariable Long id) {
     return userDetailsAccessValidator
         .validateFullyRegistered()
@@ -78,18 +67,8 @@ public class MealController {
         .then(service.updateById(dto, id));
   }
 
-  @PatchMapping("/{id}/food/{foodId}")
-  public Mono<MealFoodView> updateFood(
-      @RequestBody @Valid MealFoodUpdateRequest dto,
-      @PathVariable Long id,
-      @PathVariable Long foodId) {
-    return userDetailsAccessValidator
-        .validateFullyRegistered()
-        .then(mealAccessValidator.validateFood(id, foodId))
-        .then(mealFoodService.update(dto, foodId, id));
-  }
-
   @DeleteMapping("/{id}")
+  @ResponseStatus(HttpStatus.NO_CONTENT)
   public Mono<Void> delete(@PathVariable Long id) {
     return userDetailsAccessValidator
         .validateFullyRegistered()
@@ -99,14 +78,5 @@ public class MealController {
                 .flatMap(
                     isAdmin -> isAdmin ? Mono.empty() : mealAccessValidator.validateAccess(id)))
         .then(service.deleteById(id));
-  }
-
-  @DeleteMapping("/meals/{id}/food/{foodId}")
-  @ResponseStatus(HttpStatus.NO_CONTENT)
-  public Mono<Void> deleteFood(@PathVariable Long id, @PathVariable Long foodId) {
-    return userDetailsAccessValidator
-        .validateFullyRegistered()
-        .then(mealAccessValidator.validateFood(id, foodId))
-        .then(mealFoodService.delete(foodId, id));
   }
 }

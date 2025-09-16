@@ -11,7 +11,7 @@ import org.springframework.data.relational.core.mapping.Table;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "nutritions")
-public class Nutrition extends AuditableEntity {
+public class Nutrition extends BaseEntity {
 
   @Column("name")
   private String name;

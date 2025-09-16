@@ -6,9 +6,11 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.nutriGuideBuddy.features.meal.dto.MealFoodCreateRequest;
+import org.nutriGuideBuddy.features.meal.dto.MealFoodFilter;
 import org.nutriGuideBuddy.features.meal.dto.MealFoodUpdateRequest;
 import org.nutriGuideBuddy.features.meal.dto.MealFoodView;
 import org.nutriGuideBuddy.features.meal.entity.MealFood;
+import org.nutriGuideBuddy.features.meal.repository.CustomMealFoodRepository;
 import org.nutriGuideBuddy.features.meal.repository.MealFoodRepository;
 import org.nutriGuideBuddy.features.shared.dto.NutritionView;
 import org.nutriGuideBuddy.features.shared.dto.ServingView;
@@ -24,6 +26,7 @@ import reactor.core.publisher.Mono;
 public class MealFoodServiceImp {
 
   private final MealFoodRepository mealFoodRepository;
+  private final CustomMealFoodRepository customMealFoodRepository;
   private final MealFoodServingServiceImpl mealFoodServingService;
   private final MealFoodNutritionServiceImpl mealFoodNutritionService;
   private final MealFoodMapper foodMapper;
@@ -58,6 +61,16 @@ public class MealFoodServiceImp {
                                   Set.copyOf(tuple.getT1()),
                                   Set.copyOf(tuple.getT2())));
                 }));
+  }
+
+  public Flux<MealFoodView> getAll(Long mealId, MealFoodFilter filter) {
+    return customMealFoodRepository
+        .findAllByMealIdAndFilter(mealId, filter)
+        .map(foodMapper::toView);
+  }
+
+  public Mono<MealFoodView> getById(Long foodId) {
+    return customMealFoodRepository.findById(foodId).map(foodMapper::toView);
   }
 
   public Mono<Void> delete(Long id, Long mealId) {
@@ -102,7 +115,6 @@ public class MealFoodServiceImp {
                 }));
   }
 
-  //TODO:: UPDATE THIS
   public Mono<MealFoodView> update(MealFoodUpdateRequest dto, Long foodId, Long mealId) {
     return transactionalOperator.transactional(
         findByIdAndMealIdOrThrow(foodId, mealId)
@@ -144,5 +156,9 @@ public class MealFoodServiceImp {
         .findByIdAndMealId(id, mealId)
         .switchIfEmpty(
             Mono.error(new NotFoundException(String.format(NOT_FOUND_BY_ID, "MealFood", id))));
+  }
+
+  public Mono<Long> countByMealIdAndFilter(Long mealId, MealFoodFilter filter) {
+    return customMealFoodRepository.countByMealIdAndFilter(mealId, filter);
   }
 }

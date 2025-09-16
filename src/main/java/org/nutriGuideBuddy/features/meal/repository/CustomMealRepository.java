@@ -2,9 +2,9 @@ package org.nutriGuideBuddy.features.meal.repository;
 
 import io.r2dbc.spi.Row;
 import io.r2dbc.spi.RowMetadata;
-import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.*;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.nutriGuideBuddy.features.meal.dto.CustomPageableMeal;
 import org.nutriGuideBuddy.features.meal.dto.MealFilter;
@@ -37,9 +37,9 @@ public class CustomMealRepository {
                 + "m.updated_at AS updated_at, "
                 + "mf.id AS food_id, "
                 + "mf.name AS food_name, "
-                + "mf.calorie_amount AS calorie_amount, "
-                + "mf.calorie_unit AS calorie_unit "
-                + "FROM meals m "
+                + "mf.amount AS calories "
+                + // assuming calories stored in 'amount' for now
+                "FROM meals m "
                 + "LEFT JOIN meal_foods mf ON mf.meal_id = m.id "
                 + "WHERE 1=1");
 
@@ -61,58 +61,42 @@ public class CustomMealRepository {
     }
 
     if (filter.getIdsIn() != null && !filter.getIdsIn().isEmpty()) {
-      List<String> placeholders = new ArrayList<>();
-      int idx = 0;
-      for (String val : filter.getIdsIn()) {
-        String param = "idsIn" + (idx++);
-        placeholders.add(":" + param);
-        binds.put(param, val);
-      }
-      sql.append(" AND m.id IN (").append(String.join(", ", placeholders)).append(")");
+      sql.append(" AND m.id IN (:idsIn)");
+      binds.put("idsIn", filter.getIdsIn());
     }
 
     if (filter.getIdsNotIn() != null && !filter.getIdsNotIn().isEmpty()) {
-      List<String> placeholders = new ArrayList<>();
-      int idx = 0;
-      for (String val : filter.getIdsNotIn()) {
-        String param = "idsNotIn" + (idx++);
-        placeholders.add(":" + param);
-        binds.put(param, val);
-      }
-      sql.append(" AND m.id NOT IN (").append(String.join(", ", placeholders)).append(")");
+      sql.append(" AND m.id NOT IN (:idsNotIn)");
+      binds.put("idsNotIn", filter.getIdsNotIn());
     }
 
     Map<String, String> sortMap =
         Optional.ofNullable(filter.getPageable().getSort()).orElse(Collections.emptyMap());
-
     if (!sortMap.isEmpty()) {
       sql.append(" ORDER BY ");
-      List<String> orderClauses = new ArrayList<>();
-      for (Map.Entry<String, String> entry : sortMap.entrySet()) {
-        String field = entry.getKey();
-        String dir = "desc".equalsIgnoreCase(entry.getValue()) ? "DESC" : "ASC";
-        orderClauses.add("m." + field + " " + dir);
-      }
-      sql.append(String.join(", ", orderClauses));
+      sql.append(
+          sortMap.entrySet().stream()
+              .map(
+                  e ->
+                      "m."
+                          + e.getKey()
+                          + " "
+                          + ("desc".equalsIgnoreCase(e.getValue()) ? "DESC" : "ASC"))
+              .collect(Collectors.joining(", ")));
     } else {
       sql.append(" ORDER BY m.name ASC");
     }
 
     int pageSize = Optional.ofNullable(filter.getPageable().getPageSize()).orElse(25);
     int pageNumber = Optional.ofNullable(filter.getPageable().getPageNumber()).orElse(0);
-    int limit = Math.max(1, pageSize);
-    int offset = Math.max(0, pageNumber) * limit;
     sql.append(" LIMIT :limit OFFSET :offset");
-    binds.put("limit", limit);
-    binds.put("offset", offset);
+    binds.put("limit", Math.max(1, pageSize));
+    binds.put("offset", Math.max(0, pageNumber) * pageSize);
 
     DatabaseClient.GenericExecuteSpec spec = client.sql(sql.toString());
-    for (Map.Entry<String, Object> e : binds.entrySet()) {
-      spec = spec.bind(e.getKey(), e.getValue());
-    }
+    binds.forEach(spec::bind);
 
-    return spec
-        .map(this::mapRowToArray)
+    return spec.map(this::mapRowToArray)
         .all()
         .collectList()
         .flatMapMany(this::mapRowsToProjections);
@@ -143,31 +127,17 @@ public class CustomMealRepository {
     }
 
     if (filter.getIdsIn() != null && !filter.getIdsIn().isEmpty()) {
-      List<String> placeholders = new ArrayList<>();
-      int idx = 0;
-      for (String val : filter.getIdsIn()) {
-        String param = "idsIn" + (idx++);
-        placeholders.add(":" + param);
-        binds.put(param, val);
-      }
-      sql.append(" AND m.id IN (").append(String.join(", ", placeholders)).append(")");
+      sql.append(" AND m.id IN (:idsIn)");
+      binds.put("idsIn", filter.getIdsIn());
     }
 
     if (filter.getIdsNotIn() != null && !filter.getIdsNotIn().isEmpty()) {
-      List<String> placeholders = new ArrayList<>();
-      int idx = 0;
-      for (String val : filter.getIdsNotIn()) {
-        String param = "idsNotIn" + (idx++);
-        placeholders.add(":" + param);
-        binds.put(param, val);
-      }
-      sql.append(" AND m.id NOT IN (").append(String.join(", ", placeholders)).append(")");
+      sql.append(" AND m.id NOT IN (:idsNotIn)");
+      binds.put("idsNotIn", filter.getIdsNotIn());
     }
 
     DatabaseClient.GenericExecuteSpec spec = client.sql(sql.toString());
-    for (Map.Entry<String, Object> e : binds.entrySet()) {
-      spec = spec.bind(e.getKey(), e.getValue());
-    }
+    binds.forEach(spec::bind);
 
     return spec.map((row, metadata) -> row.get("total_count", Long.class)).one().defaultIfEmpty(0L);
   }
@@ -175,21 +145,20 @@ public class CustomMealRepository {
   public Mono<MealProjection> findById(Long mealId) {
     String sql =
         """
-        SELECT
-            m.id AS meal_id,
-            m.name AS meal_name,
-            m.user_id AS user_id,
-            m.created_at AS created_at,
-            m.updated_at AS updated_at,
-            mf.id AS food_id,
-            mf.name AS food_name,
-            mf.calorie_amount AS calorie_amount,
-            mf.calorie_unit AS calorie_unit
-        FROM meals m
-        LEFT JOIN meal_foods mf ON mf.meal_id = m.id
-        WHERE m.id = :mealId
-        ORDER BY mf.id
-        """;
+            SELECT
+                m.id AS meal_id,
+                m.name AS meal_name,
+                m.user_id AS user_id,
+                m.created_at AS created_at,
+                m.updated_at AS updated_at,
+                mf.id AS food_id,
+                mf.name AS food_name,
+                mf.amount AS calories
+            FROM meals m
+            LEFT JOIN meal_foods mf ON mf.meal_id = m.id
+            WHERE m.id = :mealId
+            ORDER BY mf.id
+            """;
 
     return client
         .sql(sql)
@@ -204,15 +173,28 @@ public class CustomMealRepository {
             });
   }
 
+  private Object[] mapRowToArray(Row row, RowMetadata metadata) {
+    return new Object[] {
+      row.get("meal_id", Long.class),
+      row.get("meal_name", String.class),
+      row.get("user_id", Long.class),
+      row.get("created_at", Instant.class),
+      row.get("updated_at", Instant.class),
+      row.get("food_id", Long.class),
+      row.get("food_name", String.class),
+      row.get("calories", Double.class)
+    };
+  }
+
   private MealProjection mapRowsToSingleProjection(List<Object[]> rows) {
     if (rows.isEmpty()) return null;
 
-    Object[] firstRow = rows.get(0);
-    Long mealId = (Long) firstRow[0];
-    String mealName = (String) firstRow[1];
-    Long userId = (Long) firstRow[2];
-    Instant createdAt = (Instant) firstRow[3];
-    Instant updatedAt = (Instant) firstRow[4];
+    Object[] first = rows.get(0);
+    Long mealId = (Long) first[0];
+    String name = (String) first[1];
+    Long userId = (Long) first[2];
+    Instant createdAt = (Instant) first[3];
+    Instant updatedAt = (Instant) first[4];
 
     List<MealFoodShortProjection> foods = new ArrayList<>();
     double totalCalories = 0.0;
@@ -220,26 +202,17 @@ public class CustomMealRepository {
     for (Object[] r : rows) {
       Long foodId = (Long) r[5];
       String foodName = (String) r[6];
-      Double calorieAmount = r[7] != null ? ((BigDecimal) r[7]).doubleValue() : null;
-      if (foodId != null) {
-        MealFoodShortProjection f =
-            foods.stream()
-                .filter(x -> Objects.equals(x.getId(), foodId))
-                .findFirst()
-                .orElseGet(() -> {
-                  MealFoodShortProjection nf = new MealFoodShortProjection(foodId, foodName, 0.0);
-                  foods.add(nf);
-                  return nf;
-                });
+      Double calories = (Double) r[7];
 
-        if (calorieAmount != null) {
-          f.setCalories(f.getCalories() != null ? f.getCalories() + calorieAmount : calorieAmount);
-          totalCalories += calorieAmount;
-        }
+      if (foodId != null) {
+        MealFoodShortProjection food =
+            new MealFoodShortProjection(foodId, foodName, calories != null ? calories : 0.0);
+        foods.add(food);
+        totalCalories += calories != null ? calories : 0.0;
       }
     }
 
-    return new MealProjection(mealId, userId, mealName, createdAt, updatedAt, totalCalories, foods);
+    return new MealProjection(mealId, userId, name, createdAt, updatedAt, totalCalories, foods);
   }
 
   private Flux<MealProjection> mapRowsToProjections(List<Object[]> rows) {
@@ -253,45 +226,23 @@ public class CustomMealRepository {
       Instant updatedAt = (Instant) r[4];
       Long foodId = (Long) r[5];
       String foodName = (String) r[6];
-      Double calorieAmount = r[7] != null ? ((BigDecimal) r[7]).doubleValue() : null;
+      Double calories = (Double) r[7];
 
       MealProjection meal =
           mealMap.computeIfAbsent(
               mealId,
-              id -> new MealProjection(id, userId, mealName, createdAt, updatedAt, 0.0, new ArrayList<>()));
+              id ->
+                  new MealProjection(
+                      id, userId, mealName, createdAt, updatedAt, 0.0, new ArrayList<>()));
 
       if (foodId != null) {
         MealFoodShortProjection food =
-            meal.getFoods().stream()
-                .filter(f -> Objects.equals(f.getId(), foodId))
-                .findFirst()
-                .orElseGet(() -> {
-                  MealFoodShortProjection f = new MealFoodShortProjection(foodId, foodName, 0.0);
-                  meal.getFoods().add(f);
-                  return f;
-                });
-
-        if (calorieAmount != null) {
-          food.setCalories(food.getCalories() != null ? food.getCalories() + calorieAmount : calorieAmount);
-          meal.setTotalCalories((meal.getTotalCalories() != null ? meal.getTotalCalories() : 0.0) + calorieAmount);
-        }
+            new MealFoodShortProjection(foodId, foodName, calories != null ? calories : 0.0);
+        meal.getFoods().add(food);
+        meal.setTotalCalories(meal.getTotalCalories() + (calories != null ? calories : 0.0));
       }
     }
 
     return Flux.fromIterable(mealMap.values());
-  }
-
-  private Object[] mapRowToArray(Row row, RowMetadata metadata) {
-    return new Object[] {
-        row.get("meal_id", Long.class),
-        row.get("meal_name", String.class),
-        row.get("user_id", Long.class),
-        row.get("created_at", Instant.class),
-        row.get("updated_at", Instant.class),
-        row.get("food_id", Long.class),
-        row.get("food_name", String.class),
-        row.get("calorie_amount", BigDecimal.class),
-        row.get("calorie_unit", String.class)
-    };
   }
 }

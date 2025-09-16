@@ -26,15 +26,16 @@ public class ServingServiceImpl {
         .flatMapMany(repository::saveAll);
   }
 
-  public Flux<Serving> update(Set<ServingUpdateRequest> requests) {
-    if (requests == null || requests.isEmpty()) {
+  public Flux<Serving> updateAndFetchAll(Set<ServingUpdateRequest> requests, Set<Long> fetchIds) {
+    if (requests == null || requests.isEmpty() || fetchIds == null || fetchIds.isEmpty()) {
       return Flux.empty();
     }
 
-    Set<Long> ids = requests.stream().map(ServingUpdateRequest::id).collect(Collectors.toSet());
+    Set<Long> requestIds =
+        requests.stream().map(ServingUpdateRequest::id).collect(Collectors.toSet());
 
     return repository
-        .findAllById(ids)
+        .findAllById(requestIds)
         .collectList()
         .flatMapMany(
             existingEntities -> {
@@ -49,7 +50,9 @@ public class ServingServiceImpl {
                     }
                   });
 
-              return repository.saveAll(existingEntities);
+              return repository
+                  .saveAll(existingEntities)
+                  .thenMany(repository.findAllById(fetchIds));
             });
   }
 

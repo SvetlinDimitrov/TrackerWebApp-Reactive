@@ -26,15 +26,16 @@ public class NutritionServiceImpl {
         .flatMapMany(repository::saveAll);
   }
 
-  public Flux<Nutrition> update(Set<NutritionUpdateRequest> requests) {
-    if (requests == null || requests.isEmpty()) {
+  public Flux<Nutrition> updateAndFetch(Set<NutritionUpdateRequest> requests, Set<Long> fetchIds) {
+    if (requests == null || requests.isEmpty() || fetchIds == null || fetchIds.isEmpty()) {
       return Flux.empty();
     }
 
-    Set<Long> ids = requests.stream().map(NutritionUpdateRequest::id).collect(Collectors.toSet());
+    Set<Long> requestIds =
+        requests.stream().map(NutritionUpdateRequest::id).collect(Collectors.toSet());
 
     return repository
-        .findAllById(ids)
+        .findAllById(requestIds)
         .collectList()
         .flatMapMany(
             existingEntities -> {
@@ -50,7 +51,10 @@ public class NutritionServiceImpl {
                     }
                   });
 
-              return repository.saveAll(existingEntities);
+              // Save updated entities first, then fetch all requested IDs
+              return repository
+                  .saveAll(existingEntities)
+                  .thenMany(repository.findAllById(fetchIds));
             });
   }
 
