@@ -4,8 +4,8 @@ CREATE TABLE meal_foods (
     info VARCHAR(255),
     large_info TEXT,
     picture VARCHAR(255),
-    amount DOUBLE,
-    unit VARCHAR(20),
+    calorie_amount DOUBLE,
+    calorie_unit VARCHAR(20),
     meal_id BIGINT NOT NULL,
     CONSTRAINT fk_meal_foods_meal FOREIGN KEY (meal_id) REFERENCES meals(id) ON DELETE CASCADE
 );

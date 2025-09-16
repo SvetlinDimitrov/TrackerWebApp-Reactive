@@ -5,6 +5,7 @@ import io.r2dbc.spi.RowMetadata;
 import java.time.Instant;
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import lombok.RequiredArgsConstructor;
 import org.nutriGuideBuddy.features.meal.dto.CustomPageableMeal;
 import org.nutriGuideBuddy.features.meal.dto.MealFilter;
@@ -38,8 +39,7 @@ public class CustomMealRepository {
                 + "mf.id AS food_id, "
                 + "mf.name AS food_name, "
                 + "mf.amount AS calories "
-                + // assuming calories stored in 'amount' for now
-                "FROM meals m "
+                + "FROM meals m "
                 + "LEFT JOIN meal_foods mf ON mf.meal_id = m.id "
                 + "WHERE 1=1");
 
@@ -61,15 +61,28 @@ public class CustomMealRepository {
     }
 
     if (filter.getIdsIn() != null && !filter.getIdsIn().isEmpty()) {
-      sql.append(" AND m.id IN (:idsIn)");
-      binds.put("idsIn", filter.getIdsIn());
+      List<String> idsInList = new ArrayList<>(filter.getIdsIn()); // convert Set -> List
+      String inParams = IntStream.range(0, idsInList.size())
+          .mapToObj(i -> ":idIn" + i)
+          .collect(Collectors.joining(", "));
+      sql.append(" AND m.id IN (").append(inParams).append(")");
+      for (int i = 0; i < idsInList.size(); i++) {
+        binds.put("idIn" + i, idsInList.get(i));
+      }
     }
 
     if (filter.getIdsNotIn() != null && !filter.getIdsNotIn().isEmpty()) {
-      sql.append(" AND m.id NOT IN (:idsNotIn)");
-      binds.put("idsNotIn", filter.getIdsNotIn());
+      List<String> idsNotInList = new ArrayList<>(filter.getIdsNotIn());
+      String notInParams = IntStream.range(0, idsNotInList.size())
+          .mapToObj(i -> ":idNotIn" + i)
+          .collect(Collectors.joining(", "));
+      sql.append(" AND m.id NOT IN (").append(notInParams).append(")");
+      for (int i = 0; i < idsNotInList.size(); i++) {
+        binds.put("idNotIn" + i, idsNotInList.get(i));
+      }
     }
 
+    // Sorting
     Map<String, String> sortMap =
         Optional.ofNullable(filter.getPageable().getSort()).orElse(Collections.emptyMap());
     if (!sortMap.isEmpty()) {
@@ -87,14 +100,16 @@ public class CustomMealRepository {
       sql.append(" ORDER BY m.name ASC");
     }
 
+    // Pagination
     int pageSize = Optional.ofNullable(filter.getPageable().getPageSize()).orElse(25);
     int pageNumber = Optional.ofNullable(filter.getPageable().getPageNumber()).orElse(0);
-    sql.append(" LIMIT :limit OFFSET :offset");
-    binds.put("limit", Math.max(1, pageSize));
-    binds.put("offset", Math.max(0, pageNumber) * pageSize);
+    sql.append(" LIMIT ").append(Math.max(1, pageSize));
+    sql.append(" OFFSET ").append(Math.max(0, pageNumber) * pageSize);
 
     DatabaseClient.GenericExecuteSpec spec = client.sql(sql.toString());
-    binds.forEach(spec::bind);
+    for (Map.Entry<String, Object> entry : binds.entrySet()) {
+      spec = spec.bind(entry.getKey(), entry.getValue());
+    }
 
     return spec.map(this::mapRowToArray)
         .all()
@@ -106,9 +121,7 @@ public class CustomMealRepository {
     if (filter == null) filter = new MealFilter();
     if (filter.getPageable() == null) filter.setPageable(new CustomPageableMeal());
 
-    StringBuilder sql =
-        new StringBuilder("SELECT COUNT(m.id) AS total_count FROM meals m WHERE 1=1");
-
+    StringBuilder sql = new StringBuilder("SELECT COUNT(m.id) AS total_count FROM meals m WHERE 1=1");
     Map<String, Object> binds = new LinkedHashMap<>();
 
     if (userId != null) {
@@ -127,19 +140,35 @@ public class CustomMealRepository {
     }
 
     if (filter.getIdsIn() != null && !filter.getIdsIn().isEmpty()) {
-      sql.append(" AND m.id IN (:idsIn)");
-      binds.put("idsIn", filter.getIdsIn());
+      List<String> idsInList = new ArrayList<>(filter.getIdsIn());
+      String inParams = IntStream.range(0, idsInList.size())
+          .mapToObj(i -> ":idIn" + i)
+          .collect(Collectors.joining(", "));
+      sql.append(" AND m.id IN (").append(inParams).append(")");
+      for (int i = 0; i < idsInList.size(); i++) {
+        binds.put("idIn" + i, idsInList.get(i));
+      }
     }
 
     if (filter.getIdsNotIn() != null && !filter.getIdsNotIn().isEmpty()) {
-      sql.append(" AND m.id NOT IN (:idsNotIn)");
-      binds.put("idsNotIn", filter.getIdsNotIn());
+      List<String> idsNotInList = new ArrayList<>(filter.getIdsNotIn());
+      String notInParams = IntStream.range(0, idsNotInList.size())
+          .mapToObj(i -> ":idNotIn" + i)
+          .collect(Collectors.joining(", "));
+      sql.append(" AND m.id NOT IN (").append(notInParams).append(")");
+      for (int i = 0; i < idsNotInList.size(); i++) {
+        binds.put("idNotIn" + i, idsNotInList.get(i));
+      }
     }
 
     DatabaseClient.GenericExecuteSpec spec = client.sql(sql.toString());
-    binds.forEach(spec::bind);
+    for (Map.Entry<String, Object> entry : binds.entrySet()) {
+      spec = spec.bind(entry.getKey(), entry.getValue());
+    }
 
-    return spec.map((row, metadata) -> row.get("total_count", Long.class)).one().defaultIfEmpty(0L);
+    return spec.map((row, metadata) -> row.get("total_count", Long.class))
+        .one()
+        .defaultIfEmpty(0L);
   }
 
   public Mono<MealProjection> findById(Long mealId) {
