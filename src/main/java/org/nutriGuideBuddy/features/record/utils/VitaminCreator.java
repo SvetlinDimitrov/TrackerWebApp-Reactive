@@ -3,8 +3,8 @@ package org.nutriGuideBuddy.features.record.utils;
 import java.math.BigDecimal;
 import java.util.Map;
 import java.util.Set;
-import org.nutriGuideBuddy.features.food.dto.NutritionIntakeView;
-import org.nutriGuideBuddy.features.food.enums.AllowedNutrients;
+import org.nutriGuideBuddy.features.shared.dto.NutritionIntakeView;
+import org.nutriGuideBuddy.features.shared.enums.AllowedNutrients;
 import org.nutriGuideBuddy.features.user_details.enums.Gender;
 
 public class VitaminCreator {
@@ -53,7 +53,7 @@ public class VitaminCreator {
         NutritionIntakeView.builder()
             .name(AllowedNutrients.VitaminA.getNutrientName())
             .measurement(AllowedNutrients.VitaminA.getNutrientUnit())
-            .dailyConsumed(BigDecimal.ZERO)
+            .dailyConsumed(BigDecimal.ZERO.doubleValue())
             .build();
 
     BigDecimal dailyIntake = BigDecimal.ZERO;
@@ -80,7 +80,7 @@ public class VitaminCreator {
         }
       }
     }
-    vitmainA.setRecommendedIntake(dailyIntake);
+    vitmainA.setRecommendedIntake(dailyIntake.doubleValue());
     map.put(vitmainA.getName(), vitmainA);
   }
 
@@ -90,7 +90,7 @@ public class VitaminCreator {
         NutritionIntakeView.builder()
             .name(AllowedNutrients.VitaminC.getNutrientName())
             .measurement(AllowedNutrients.VitaminC.getNutrientUnit())
-            .dailyConsumed(BigDecimal.ZERO)
+            .dailyConsumed(BigDecimal.ZERO.doubleValue())
             .build();
 
     BigDecimal dailyIntake = BigDecimal.ZERO;
@@ -121,7 +121,7 @@ public class VitaminCreator {
         }
       }
     }
-    vitmainC.setRecommendedIntake(dailyIntake);
+    vitmainC.setRecommendedIntake(dailyIntake.doubleValue());
     map.put(vitmainC.getName(), vitmainC);
   }
 
@@ -131,7 +131,7 @@ public class VitaminCreator {
         NutritionIntakeView.builder()
             .name(AllowedNutrients.VitaminD_D2_D3.getNutrientName())
             .measurement(AllowedNutrients.VitaminD_D2_D3.getNutrientUnit())
-            .dailyConsumed(BigDecimal.ZERO)
+            .dailyConsumed(BigDecimal.ZERO.doubleValue())
             .build();
 
     BigDecimal dailyIntake = BigDecimal.ZERO;
@@ -149,7 +149,7 @@ public class VitaminCreator {
         }
       }
     }
-    vitaminD.setRecommendedIntake(dailyIntake);
+    vitaminD.setRecommendedIntake(dailyIntake.doubleValue());
     map.put(vitaminD.getName(), vitaminD);
   }
 
@@ -159,7 +159,7 @@ public class VitaminCreator {
         NutritionIntakeView.builder()
             .name(AllowedNutrients.VitaminE.getNutrientName())
             .measurement(AllowedNutrients.VitaminE.getNutrientUnit())
-            .dailyConsumed(BigDecimal.ZERO)
+            .dailyConsumed(BigDecimal.ZERO.doubleValue())
             .build();
 
     BigDecimal dailyIntake = BigDecimal.ZERO;
@@ -179,7 +179,7 @@ public class VitaminCreator {
         }
       }
     }
-    vitaminE.setRecommendedIntake(dailyIntake);
+    vitaminE.setRecommendedIntake(dailyIntake.doubleValue());
     map.put(vitaminE.getName(), vitaminE);
   }
 
@@ -189,7 +189,7 @@ public class VitaminCreator {
         NutritionIntakeView.builder()
             .name(AllowedNutrients.VitaminK.getNutrientName())
             .measurement(AllowedNutrients.VitaminK.getNutrientUnit())
-            .dailyConsumed(BigDecimal.ZERO)
+            .dailyConsumed(BigDecimal.ZERO.doubleValue())
             .build();
 
     BigDecimal dailyIntake = BigDecimal.ZERO;
@@ -220,7 +220,7 @@ public class VitaminCreator {
         }
       }
     }
-    vitamin.setRecommendedIntake(dailyIntake);
+    vitamin.setRecommendedIntake(dailyIntake.doubleValue());
     map.put(vitamin.getName(), vitamin);
   }
 
@@ -230,7 +230,7 @@ public class VitaminCreator {
         NutritionIntakeView.builder()
             .name(AllowedNutrients.VitaminB1_Thiamin.getNutrientName())
             .measurement(AllowedNutrients.VitaminB1_Thiamin.getNutrientUnit())
-            .dailyConsumed(BigDecimal.ZERO)
+            .dailyConsumed(BigDecimal.ZERO.doubleValue())
             .build();
 
     BigDecimal dailyIntake = BigDecimal.ZERO;
@@ -259,7 +259,7 @@ public class VitaminCreator {
         }
       }
     }
-    vitamin.setRecommendedIntake(dailyIntake);
+    vitamin.setRecommendedIntake(dailyIntake.doubleValue());
     map.put(vitamin.getName(), vitamin);
   }
 
@@ -269,7 +269,7 @@ public class VitaminCreator {
         NutritionIntakeView.builder()
             .name(AllowedNutrients.VitaminB2_Riboflavin.getNutrientName())
             .measurement(AllowedNutrients.VitaminB2_Riboflavin.getNutrientUnit())
-            .dailyConsumed(BigDecimal.ZERO)
+            .dailyConsumed(BigDecimal.ZERO.doubleValue())
             .build();
 
     BigDecimal dailyIntake = BigDecimal.ZERO;
@@ -298,7 +298,7 @@ public class VitaminCreator {
         }
       }
     }
-    vitamin.setRecommendedIntake(dailyIntake);
+    vitamin.setRecommendedIntake(dailyIntake.doubleValue());
     map.put(vitamin.getName(), vitamin);
   }
 
@@ -308,7 +308,7 @@ public class VitaminCreator {
         NutritionIntakeView.builder()
             .name(AllowedNutrients.VitaminB3_Niacin.getNutrientName())
             .measurement(AllowedNutrients.VitaminB3_Niacin.getNutrientUnit())
-            .dailyConsumed(BigDecimal.ZERO)
+            .dailyConsumed(BigDecimal.ZERO.doubleValue())
             .build();
 
     BigDecimal dailyIntake = BigDecimal.ZERO;
@@ -335,7 +335,7 @@ public class VitaminCreator {
         }
       }
     }
-    vitamin.setRecommendedIntake(dailyIntake);
+    vitamin.setRecommendedIntake(dailyIntake.doubleValue());
     map.put(vitamin.getName(), vitamin);
   }
 
@@ -345,7 +345,7 @@ public class VitaminCreator {
         NutritionIntakeView.builder()
             .name(AllowedNutrients.VitaminB6.getNutrientName())
             .measurement(AllowedNutrients.VitaminB6.getNutrientUnit())
-            .dailyConsumed(BigDecimal.ZERO)
+            .dailyConsumed(BigDecimal.ZERO.doubleValue())
             .build();
 
     BigDecimal dailyIntake = BigDecimal.ZERO;
@@ -378,7 +378,7 @@ public class VitaminCreator {
         }
       }
     }
-    vitamin.setRecommendedIntake(dailyIntake);
+    vitamin.setRecommendedIntake(dailyIntake.doubleValue());
     map.put(vitamin.getName(), vitamin);
   }
 
@@ -388,7 +388,7 @@ public class VitaminCreator {
         NutritionIntakeView.builder()
             .name(AllowedNutrients.VitaminB9_Folate.getNutrientName())
             .measurement(AllowedNutrients.VitaminB9_Folate.getNutrientUnit())
-            .dailyConsumed(BigDecimal.ZERO)
+            .dailyConsumed(BigDecimal.ZERO.doubleValue())
             .build();
 
     BigDecimal dailyIntake = BigDecimal.ZERO;
@@ -408,7 +408,7 @@ public class VitaminCreator {
         }
       }
     }
-    vitamin.setRecommendedIntake(dailyIntake);
+    vitamin.setRecommendedIntake(dailyIntake.doubleValue());
     map.put(vitamin.getName(), vitamin);
   }
 
@@ -418,7 +418,7 @@ public class VitaminCreator {
         NutritionIntakeView.builder()
             .name(AllowedNutrients.VitaminB12.getNutrientName())
             .measurement(AllowedNutrients.VitaminB12.getNutrientUnit())
-            .dailyConsumed(BigDecimal.ZERO)
+            .dailyConsumed(BigDecimal.ZERO.doubleValue())
             .build();
 
     BigDecimal dailyIntake = BigDecimal.ZERO;
@@ -438,7 +438,7 @@ public class VitaminCreator {
         }
       }
     }
-    vitamin.setRecommendedIntake(dailyIntake);
+    vitamin.setRecommendedIntake(dailyIntake.doubleValue());
     map.put(vitamin.getName(), vitamin);
   }
 
@@ -448,7 +448,7 @@ public class VitaminCreator {
         NutritionIntakeView.builder()
             .name(AllowedNutrients.VitaminB5_PantothenicAcid.getNutrientName())
             .measurement(AllowedNutrients.VitaminB5_PantothenicAcid.getNutrientUnit())
-            .dailyConsumed(BigDecimal.ZERO)
+            .dailyConsumed(BigDecimal.ZERO.doubleValue())
             .build();
 
     BigDecimal dailyIntake = BigDecimal.ZERO;
@@ -468,7 +468,7 @@ public class VitaminCreator {
         }
       }
     }
-    vitamin.setRecommendedIntake(dailyIntake);
+    vitamin.setRecommendedIntake(dailyIntake.doubleValue());
     map.put(vitamin.getName(), vitamin);
   }
 
@@ -478,7 +478,7 @@ public class VitaminCreator {
         NutritionIntakeView.builder()
             .name(AllowedNutrients.VitaminB7_Biotin.getNutrientName())
             .measurement(AllowedNutrients.VitaminB7_Biotin.getNutrientUnit())
-            .dailyConsumed(BigDecimal.ZERO)
+            .dailyConsumed(BigDecimal.ZERO.doubleValue())
             .build();
 
     BigDecimal dailyIntake = BigDecimal.ZERO;
@@ -500,7 +500,7 @@ public class VitaminCreator {
         }
       }
     }
-    vitamin.setRecommendedIntake(dailyIntake);
+    vitamin.setRecommendedIntake(dailyIntake.doubleValue());
     map.put(vitamin.getName(), vitamin);
   }
 
@@ -510,7 +510,7 @@ public class VitaminCreator {
         NutritionIntakeView.builder()
             .name(AllowedNutrients.Choline.getNutrientName())
             .measurement(AllowedNutrients.Choline.getNutrientUnit())
-            .dailyConsumed(BigDecimal.ZERO)
+            .dailyConsumed(BigDecimal.ZERO.doubleValue())
             .build();
 
     BigDecimal dailyIntake = BigDecimal.ZERO;
@@ -539,7 +539,7 @@ public class VitaminCreator {
         }
       }
     }
-    vitamin.setRecommendedIntake(dailyIntake);
+    vitamin.setRecommendedIntake(dailyIntake.doubleValue());
     map.put(vitamin.getName(), vitamin);
   }
 

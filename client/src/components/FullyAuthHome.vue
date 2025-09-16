@@ -24,10 +24,10 @@
               <span class="text-sm">Calories: {{ meal.consumedCalories }}</span>
               <Avatar icon="pi pi-apple" style="background-color: #FFA500; color: white"
                       @click.stop="$emit('handleCustomFood' , id)"
-                      v-tooltip.top="'Insert custom food'"></Avatar>
+                      v-tooltip.top="'Insert custom mealFood'"></Avatar>
               <Avatar icon="pi pi-apple" style="background-color: #60C921FF; color: white"
                       @click.stop="$emit('handleMealInsertFood' , id)"
-                      v-tooltip.top="'Insert food'"></Avatar>
+                      v-tooltip.top="'Insert mealFood'"></Avatar>
               <Avatar icon="pi pi-trash" style="background-color: #ff4d4d; color: white"
                       @click.stop="$emit('handleMealDeletion' , id)"
                       v-tooltip.top="'Delete meal'"></Avatar>
@@ -38,21 +38,21 @@
           </span>
         </template>
         <div class="overflow-auto max-h-40">
-          <div class="food-item flex justify-between items-center p-2 border-b border-gray-300"
-               v-for="(food, index) in meal.foods" :key="index">
-            <span class="food-name">{{ food.name }}</span>
+          <div class="mealFood-item flex justify-between items-center p-2 border-b border-gray-300"
+               v-for="(mealFood, index) in meal.foods" :key="index">
+            <span class="mealFood-name">{{ mealFood.name }}</span>
             <div class="flex gap-2 items-center">
-              <span class="calorie-amount italic">{{ food.calorie.amount }} {{ food.calorie.unit }}</span>
+              <span class="calorie-amount italic">{{ mealFood.calorie.amount }} {{ mealFood.calorie.unit }}</span>
               <Avatar icon="pi pi-pencil"
                       style="background-color: #4d94ff; color: white"
                       class="cursor-pointer"
-                      @click.stop="$emit('handleChangeFoodById', meal.id , food.id)"
-                      v-tooltip.top="'Modify food'"></Avatar>
+                      @click.stop="$emit('handleChangeFoodById', meal.id , mealFood.id)"
+                      v-tooltip.top="'Modify mealFood'"></Avatar>
               <Avatar icon="pi pi-trash"
                       style="background-color: #ff4d4d; color: white"
                       class="cursor-pointer"
-                      @click.stop="$emit('handleRemoveFoodById',meal.id , food.id)"
-                      v-tooltip.top="'Delete food'"></Avatar>
+                      @click.stop="$emit('handleRemoveFoodById',meal.id , mealFood.id)"
+                      v-tooltip.top="'Delete mealFood'"></Avatar>
             </div>
           </div>
         </div>

@@ -963,14 +963,14 @@
 //        //        .value(meal -> assertEquals(foodBody.measurement(),
 //        // meal.foods().get(0).measurement()))
 //        .value(
-//            meal -> assertEquals(foodBody.calories().unit(),
+//            meal -> assertEquals(foodBody.calorie().unit(),
 // meal.foods().get(0).calorie().unit()))
 //        .value(
 //            meal ->
 //                assertEquals(
 //                    0,
 //
-// foodBody.calories().amount().compareTo(meal.foods().get(0).calorie().amount())))
+// foodBody.calorie().amount().compareTo(meal.foods().get(0).calorie().amount())))
 //        .value(
 //            meal -> {
 //              Map<String, NutritionView> map =

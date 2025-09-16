@@ -23,6 +23,8 @@ import sibModel.SendSmtpEmail;
 import sibModel.SendSmtpEmailSender;
 import sibModel.SendSmtpEmailTo;
 
+import static org.nutriGuideBuddy.infrastructure.exceptions.ExceptionMessages.USER_NOT_FOUND_BY_EMAIL;
+
 @Service
 @RequiredArgsConstructor
 public class EmailVerificationServiceImpl implements EmailVerificationService {
@@ -76,7 +78,7 @@ public class EmailVerificationServiceImpl implements EmailVerificationService {
         .flatMap(
             exists -> {
               if (!exists) {
-                return Mono.error(new NotFoundException(ExceptionMessages.USER_NOT_FOUND));
+                return Mono.error(new NotFoundException(String.format(USER_NOT_FOUND_BY_EMAIL , email)));
               }
               ApiClient defaultClient = Configuration.getDefaultApiClient();
               ApiKeyAuth apiKey = (ApiKeyAuth) defaultClient.getAuthentication("api-key");

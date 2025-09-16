@@ -6,13 +6,13 @@
 // import org.junit.jupiter.api.AfterEach;
 // import org.junit.jupiter.api.BeforeAll;
 // import org.junit.jupiter.api.Test;
-// import org.nutriGuideBuddy.features.food.dto.CalorieView;
+// import org.nutriGuideBuddy.features.shared.dto.CalorieView;
 // import org.nutriGuideBuddy.features.food.dto.FoodView;
 // import org.nutriGuideBuddy.features.food.dto.InsertFoodDto;
-// import org.nutriGuideBuddy.features.food.dto.NutritionView;
+// import org.nutriGuideBuddy.features.shared.dto.NutritionView;
 // import org.nutriGuideBuddy.domain.dto.user.JwtResponse;
 // import org.nutriGuideBuddy.domain.dto.user.UserRequest;
-// import org.nutriGuideBuddy.features.food.enums.AllowedCalorieUnits;
+// import org.nutriGuideBuddy.features.shared.enums.AllowedCalorieUnits;
 // import org.nutriGuideBuddy.enums.Credentials;
 // import org.nutriGuideBuddy.features.user.repository.UserRepository;
 // import org.nutriGuideBuddy.config.security.JWTUtilEmailValidation;
@@ -214,7 +214,7 @@
 //        .value(
 //            food ->
 //                assertEquals(
-//                    0, validInsertedFood.calories().amount().compareTo(food.calorie().amount())))
+//                    0, validInsertedFood.calorie().amount().compareTo(food.calorie().amount())))
 //        .value(food -> assertEquals(0, food.nutritionList().size()));
 //  }
 //
@@ -939,7 +939,7 @@
 //        .value(
 //            food ->
 //                assertEquals(
-//                    0, insertFoodDto.calories().amount().compareTo(food.calorie().amount())))
+//                    0, insertFoodDto.calorie().amount().compareTo(food.calorie().amount())))
 //        .value(
 //            food -> {
 //              Map<String, NutritionView> map =

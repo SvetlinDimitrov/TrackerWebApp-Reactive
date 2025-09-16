@@ -10,7 +10,7 @@
             maxlength="50"
             v-model="form.name"
             class="border p-2 rounded"
-            placeholder="Name of the food : Chicken, Rice, ..."
+            placeholder="Name of the mealFood : Chicken, Rice, ..."
         />
         <InputNumber
             v-model="form.calories"
@@ -68,7 +68,7 @@
               class="inline-block p-1 hover:bg-gray-200 text-sm font-semibold">
           amount: {{ form.mainServing.amount }}
           metric: {{ form.mainServing.metric }} - (weight: {{ form.mainServing.servingWeight }}) </span>
-        <Dialog v-model:visible="visibleInfo" modal header="Information for the food">
+        <Dialog v-model:visible="visibleInfo" modal header="Information for the mealFood">
           <div class="flex flex-col">
             <label for="info" class="mb-2">Short info</label>
             <InputText
@@ -139,9 +139,9 @@
                 label="Add Nutrient">
         </Button>
         <div v-if="form.nutrients.length" class="max-h-[120px] overflow-auto border border-gray-500 rounded p-1">
-          <div class="food-item flex justify-between items-center p-1 border-b border-gray-300"
+          <div class="mealFood-item flex justify-between items-center p-1 border-b border-gray-300"
                v-for="(nutrient, index) in form.nutrients" :key="index">
-            <span class="food-name">{{ nutrient.name }}</span>
+            <span class="mealFood-name">{{ nutrient.name }}</span>
             <div class="flex gap-2 items-center">
               <span class="calorie-amount italic">{{ nutrient.amount }} {{ nutrient.unit }}</span>
               <Avatar icon="pi pi-trash"
@@ -193,7 +193,7 @@
                 label="Add More Servings">
         </Button>
         <div v-if="form.otherServing.length" class="max-h-[120px] overflow-auto border border-gray-500 rounded p-1">
-          <div class="food-item flex justify-between items-center p-1 border-b border-gray-300"
+          <div class="mealFood-item flex justify-between items-center p-1 border-b border-gray-300"
                v-for="(serving, index) in form.otherServing" :key="index">
             <span class="inline-block p-1 hover:bg-gray-200 text-sm font-semibold">
                 amount: {{ serving.amount }} metric: {{ serving.metric }} - (weight: {{ serving.servingWeight }})
@@ -225,22 +225,22 @@ import units from "../../utils/avaibleUnits.js";
 const toast = useToast();
 
 const props = defineProps({
-  food: Object,
+  mealFood: Object,
   header: String
 });
 
 const form = ref({
-  name: props.food?.name ? props.food.name : null,
-  calories: props.food?.calories ? props.food.calories.amount : null,
+  name: props.mealFood?.name ? props.mealFood.name : null,
+  calories: props.mealFood?.calories ? props.mealFood.calories.amount : null,
   mainServing: {
-    amount: props.food?.mainServing ? props.food.mainServing.amount : null,
-    servingWeight: props.food?.mainServing ? props.food.mainServing.servingWeight : null,
-    metric: props.food?.mainServing ? props.food.mainServing.metric : null,
+    amount: props.mealFood?.mainServing ? props.mealFood.mainServing.amount : null,
+    servingWeight: props.mealFood?.mainServing ? props.mealFood.mainServing.servingWeight : null,
+    metric: props.mealFood?.mainServing ? props.mealFood.mainServing.metric : null,
   },
   foodDetails: {
-    info: props.food?.foodDetails ? props.food.foodDetails.info : null,
-    largeInfo: props.food?.foodDetails ? props.food.foodDetails.largeInfo : null,
-    picture: props.food?.foodDetails ? props.food.foodDetails.picture : null,
+    info: props.mealFood?.foodDetails ? props.mealFood.foodDetails.info : null,
+    largeInfo: props.mealFood?.foodDetails ? props.mealFood.foodDetails.largeInfo : null,
+    picture: props.mealFood?.foodDetails ? props.mealFood.foodDetails.picture : null,
   },
   nutrientCreation: {
     name: null,
@@ -251,8 +251,8 @@ const form = ref({
     servingWeight: null,
     metric: null,
   },
-  otherServing: props.food?.otherServing ? props.food.otherServing : [],
-  nutrients: props.food?.nutrients ? props.food.nutrients : [],
+  otherServing: props.mealFood?.otherServing ? props.mealFood.otherServing : [],
+  nutrients: props.mealFood?.nutrients ? props.mealFood.nutrients : [],
 });
 const visible = ref(true);
 const visibleServing = ref(false);
@@ -358,7 +358,7 @@ const closeInfo = () => {
 
 const submit = async () => {
   if (!form.value.name || form.value.name.length < 2) {
-    toast.add({severity: 'error', summary: 'Error', detail: 'Please fill in the name of the food' , life:3000});
+    toast.add({severity: 'error', summary: 'Error', detail: 'Please fill in the name of the mealFood' , life:3000});
     return;
   }
   if (!form.value.mainServing.amount || !form.value.mainServing.servingWeight || !form.value.mainServing.metric) {

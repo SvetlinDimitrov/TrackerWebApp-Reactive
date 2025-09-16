@@ -1,7 +1,7 @@
 <template>
   <div class="about-me flex flex-col justify-center items-center pt-24 max-w-screen-md mx-auto text-gray-700 font-roboto">
     <h1 class="text-3xl font-bold mb-4">About Me</h1>
-    <p class="mb-4">This application is created for everyone like me, who is passionate about health and understands the meaning of the phrase "food is fuel." My goal is to help people easily understand what nutrients are, provide basic knowledge about them, and also enable users to track their intake.</p>
+    <p class="mb-4">This application is created for everyone like me, who is passionate about health and understands the meaning of the phrase "mealFood is fuel." My goal is to help people easily understand what nutrients are, provide basic knowledge about them, and also enable users to track their intake.</p>
     <h2 class="text-2xl font-bold mb-2">Main Functions</h2>
     <ul class="list-disc list-inside mb-4">
       <li>Provide easy-to-understand information about nutrients (please don't take it as 100% accurate, as everyone can make mistakes).</li>

@@ -1,10 +1,9 @@
 package org.nutriGuideBuddy.features.record.utils;
 
-import java.math.BigDecimal;
 import java.util.Map;
 import java.util.Set;
-import org.nutriGuideBuddy.features.food.dto.NutritionIntakeView;
-import org.nutriGuideBuddy.features.food.enums.AllowedNutrients;
+import org.nutriGuideBuddy.features.shared.dto.NutritionIntakeView;
+import org.nutriGuideBuddy.features.shared.enums.AllowedNutrients;
 import org.nutriGuideBuddy.features.record.dto.DistributedMacros;
 import org.nutriGuideBuddy.features.user_details.enums.Gender;
 
@@ -31,10 +30,10 @@ public class MacronutrientCreator {
 
   public static Map<String, NutritionIntakeView> fillMacros(
       Map<String, NutritionIntakeView> nutrientMap,
-      BigDecimal caloriesPerDay,
+      double caloriesPerDay,
       Gender gender,
       DistributedMacros distributedMacros,
-      Integer age) {
+      int age) {
 
     NutritionIntakeView fat =
         NutritionIntakeView.builder()
@@ -45,7 +44,7 @@ public class MacronutrientCreator {
                     AllowedNutrients.Fat.getNutrientName(),
                     caloriesPerDay,
                     distributedMacros.fat()))
-            .dailyConsumed(BigDecimal.ZERO)
+            .dailyConsumed(0.0)
             .build();
     NutritionIntakeView protein =
         NutritionIntakeView.builder()
@@ -56,7 +55,7 @@ public class MacronutrientCreator {
                     AllowedNutrients.Protein.getNutrientName(),
                     caloriesPerDay,
                     distributedMacros.protein()))
-            .dailyConsumed(BigDecimal.ZERO)
+            .dailyConsumed(0.0)
             .build();
     NutritionIntakeView carbs =
         NutritionIntakeView.builder()
@@ -67,7 +66,7 @@ public class MacronutrientCreator {
                     AllowedNutrients.Carbohydrate.getNutrientName(),
                     caloriesPerDay,
                     distributedMacros.carbs()))
-            .dailyConsumed(BigDecimal.ZERO)
+            .dailyConsumed(0.0)
             .build();
     NutritionIntakeView omega6 =
         NutritionIntakeView.builder()
@@ -78,7 +77,7 @@ public class MacronutrientCreator {
                     AllowedNutrients.Omega6.getNutrientName(),
                     caloriesPerDay,
                     distributedMacros.omega6()))
-            .dailyConsumed(BigDecimal.ZERO)
+            .dailyConsumed(0.0)
             .build();
     NutritionIntakeView omega3 =
         NutritionIntakeView.builder()
@@ -89,7 +88,7 @@ public class MacronutrientCreator {
                     AllowedNutrients.Omega3.getNutrientName(),
                     caloriesPerDay,
                     distributedMacros.omega3()))
-            .dailyConsumed(BigDecimal.ZERO)
+            .dailyConsumed(0.0)
             .build();
 
     nutrientMap.put(fat.getName(), fat);
@@ -112,33 +111,33 @@ public class MacronutrientCreator {
         NutritionIntakeView.builder()
             .name(AllowedNutrients.Fiber.getNutrientName())
             .measurement(AllowedNutrients.Fiber.getNutrientUnit())
-            .dailyConsumed(BigDecimal.ZERO)
+            .dailyConsumed(0.0)
             .build();
 
-    BigDecimal dailyIntake = BigDecimal.ZERO;
+    double dailyIntake = 0.0;
 
     if (ageBetween(1, 3, age)) {
-      dailyIntake = BigDecimal.valueOf(19);
+      dailyIntake = 19.0;
     } else if (ageBetween(4, 8, age)) {
-      dailyIntake = BigDecimal.valueOf(25);
+      dailyIntake = 25.0;
     } else {
       switch (gender) {
         case MALE -> {
           if (ageBetween(9, 13, age)) {
-            dailyIntake = BigDecimal.valueOf(31);
+            dailyIntake = 31.0;
           } else if (ageBetween(14, 50, age)) {
-            dailyIntake = BigDecimal.valueOf(38);
+            dailyIntake = 38.0;
           } else {
-            dailyIntake = BigDecimal.valueOf(30);
+            dailyIntake = 30.0;
           }
         }
         case FEMALE -> {
           if (ageBetween(9, 18, age)) {
-            dailyIntake = BigDecimal.valueOf(26);
+            dailyIntake = 26.0;
           } else if (ageBetween(19, 50, age)) {
-            dailyIntake = BigDecimal.valueOf(25);
+            dailyIntake = 25.0;
           } else {
-            dailyIntake = BigDecimal.valueOf(21);
+            dailyIntake = 21.0;
           }
         }
       }
@@ -152,10 +151,10 @@ public class MacronutrientCreator {
         NutritionIntakeView.builder()
             .name(AllowedNutrients.Saturated_Fat.getNutrientName())
             .measurement(AllowedNutrients.Saturated_Fat.getNutrientUnit())
-            .dailyConsumed(BigDecimal.ZERO)
+            .dailyConsumed(0.0)
             .build();
 
-    BigDecimal dailyIntake = BigDecimal.ZERO;
+    double dailyIntake = 0.0;
 
     fat.setRecommendedIntake(dailyIntake);
     nutrientMap.put(fat.getName(), fat);
@@ -166,10 +165,10 @@ public class MacronutrientCreator {
         NutritionIntakeView.builder()
             .name(AllowedNutrients.Trans_Fat.getNutrientName())
             .measurement(AllowedNutrients.Trans_Fat.getNutrientUnit())
-            .dailyConsumed(BigDecimal.ZERO)
+            .dailyConsumed(0.0)
             .build();
 
-    BigDecimal dailyIntake = BigDecimal.ZERO;
+    double dailyIntake = 0.0;
 
     fat.setRecommendedIntake(dailyIntake);
     nutrientMap.put(fat.getName(), fat);
@@ -181,33 +180,33 @@ public class MacronutrientCreator {
         NutritionIntakeView.builder()
             .name(AllowedNutrients.Water.getNutrientName())
             .measurement(AllowedNutrients.Water.getNutrientUnit())
-            .dailyConsumed(BigDecimal.ZERO)
+            .dailyConsumed(0.0)
             .build();
 
-    BigDecimal dailyIntake = BigDecimal.ZERO;
+    double dailyIntake = 0.0;
 
     if (ageBetween(1, 3, age)) {
-      dailyIntake = BigDecimal.valueOf(1.3);
+      dailyIntake = 1.3;
     } else if (ageBetween(4, 8, age)) {
-      dailyIntake = BigDecimal.valueOf(1.7);
+      dailyIntake = 1.7;
     } else {
       switch (gender) {
         case MALE -> {
           if (ageBetween(9, 13, age)) {
-            dailyIntake = BigDecimal.valueOf(2.4);
+            dailyIntake = 2.4;
           } else if (ageBetween(14, 18, age)) {
-            dailyIntake = BigDecimal.valueOf(3.3);
+            dailyIntake = 3.3;
           } else {
-            dailyIntake = BigDecimal.valueOf(3.7);
+            dailyIntake = 3.7;
           }
         }
         case FEMALE -> {
           if (ageBetween(9, 13, age)) {
-            dailyIntake = BigDecimal.valueOf(2.1);
+            dailyIntake = 2.1;
           } else if (ageBetween(14, 18, age)) {
-            dailyIntake = BigDecimal.valueOf(2.3);
+            dailyIntake = 2.3;
           } else {
-            dailyIntake = BigDecimal.valueOf(2.7);
+            dailyIntake = 2.7;
           }
         }
       }
@@ -222,16 +221,18 @@ public class MacronutrientCreator {
         NutritionIntakeView.builder()
             .name(AllowedNutrients.Sugar.getNutrientName())
             .measurement(AllowedNutrients.Sugar.getNutrientUnit())
-            .dailyConsumed(BigDecimal.ZERO)
+            .dailyConsumed(0.0)
             .build();
 
+    double recommendedIntake;
     if (age >= 2 && age <= 18) {
-      sugar.setRecommendedIntake(BigDecimal.valueOf(25));
+      recommendedIntake = 25.0;
     } else if (gender == Gender.FEMALE) {
-      sugar.setRecommendedIntake(BigDecimal.valueOf(25));
+      recommendedIntake = 25.0;
     } else {
-      sugar.setRecommendedIntake(BigDecimal.valueOf(36));
+      recommendedIntake = 36.0;
     }
+    sugar.setRecommendedIntake(recommendedIntake);
 
     nutrientMap.put(sugar.getName(), sugar);
   }
@@ -241,8 +242,8 @@ public class MacronutrientCreator {
         NutritionIntakeView.builder()
             .name(AllowedNutrients.Cholesterol.getNutrientName())
             .measurement(AllowedNutrients.Cholesterol.getNutrientUnit())
-            .recommendedIntake(BigDecimal.valueOf(300))
-            .dailyConsumed(BigDecimal.ZERO)
+            .recommendedIntake(300.0)
+            .dailyConsumed(0.0)
             .build();
 
     nutrientMap.put(cholesterol.getName(), cholesterol);

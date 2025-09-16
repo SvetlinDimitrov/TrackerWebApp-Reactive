@@ -3,6 +3,7 @@ package org.nutriGuideBuddy.features.meal.service;
 import static org.nutriGuideBuddy.infrastructure.exceptions.ExceptionMessages.NOT_FOUND_BY_ID;
 
 import java.util.Map;
+import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import org.nutriGuideBuddy.features.meal.dto.MealCreateRequest;
 import org.nutriGuideBuddy.features.meal.dto.MealFilter;
@@ -16,6 +17,7 @@ import org.nutriGuideBuddy.infrastructure.exceptions.ValidationException;
 import org.nutriGuideBuddy.infrastructure.mappers.MealMapper;
 import org.nutriGuideBuddy.infrastructure.security.service.ReactiveUserDetailsServiceImpl;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.reactive.TransactionalOperator;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -26,6 +28,8 @@ public class MealServiceImpl {
   private final CustomMealRepository customRepository;
   private final MealRepository repository;
   private final MealMapper mealMapper;
+  private final TransactionalOperator transactionalOperator;
+  private final MealFoodServiceImp mealFoodService;
 
   public Flux<MealView> getAll(MealFilter filter) {
     return ReactiveUserDetailsServiceImpl.getPrincipalId()
@@ -44,44 +48,65 @@ public class MealServiceImpl {
   }
 
   public Mono<MealView> create(MealCreateRequest dto) {
-    return ReactiveUserDetailsServiceImpl.getPrincipalId()
-        .flatMap(
-            userId ->
-                repository
-                    .existsByNameAndUserId(dto.name(), userId)
-                    .flatMap(
-                        exists -> {
-                          if (exists) {
-                            Map<String, String> errors = Map.of("name", "name already exists.");
-                            return Mono.error(new ValidationException(errors));
-                          }
-                          Meal meal = mealMapper.toEntity(dto);
-                          meal.setUserId(userId);
-                          return repository.save(meal);
-                        }))
-        .flatMap(meal -> getById(meal.getId()));
+    return transactionalOperator.transactional(
+        ReactiveUserDetailsServiceImpl.getPrincipalId()
+            .flatMap(
+                userId ->
+                    repository
+                        .existsByNameAndUserId(dto.name(), userId)
+                        .flatMap(
+                            exists -> {
+                              if (exists) {
+                                Map<String, String> errors = Map.of("name", "name already exists.");
+                                return Mono.error(new ValidationException(errors));
+                              }
+                              Meal meal = mealMapper.toEntity(dto);
+                              meal.setUserId(userId);
+                              return repository.save(meal);
+                            }))
+            .flatMap(meal -> getById(meal.getId())));
   }
 
   public Mono<MealView> updateById(MealUpdateRequest dto, Long id) {
-    return findByIdOrThrow(id)
-        .flatMap(
-            entity ->
-                repository
-                    .existsByNameAndUserIdAndIdNot(dto.name(), entity.getUserId(), id)
-                    .flatMap(
-                        exists -> {
-                          if (exists) {
-                            Map<String, String> errors = Map.of("name", "name already exists.");
-                            return Mono.error(new ValidationException(errors));
-                          }
-                          mealMapper.update(dto, entity);
-                          return repository.save(entity);
-                        }))
-        .flatMap(meal -> getById(meal.getId()));
+    return transactionalOperator.transactional(
+        findByIdOrThrow(id)
+            .flatMap(
+                entity ->
+                    repository
+                        .existsByNameAndUserIdAndIdNot(dto.name(), entity.getUserId(), id)
+                        .flatMap(
+                            exists -> {
+                              if (exists) {
+                                Map<String, String> errors = Map.of("name", "name already exists.");
+                                return Mono.error(new ValidationException(errors));
+                              }
+                              mealMapper.update(dto, entity);
+                              return repository.save(entity);
+                            }))
+            .flatMap(meal -> getById(meal.getId())));
   }
 
   public Mono<Void> deleteById(Long id) {
-    return repository.deleteById(id);
+    return transactionalOperator.transactional(
+        Mono.when(mealFoodService.deleteAllByMealIdsIn(Set.of(id)))
+            .then(repository.deleteById(id)));
+  }
+
+  // Do not call the repository delete method here.
+  // When a user is deleted, its meals are removed automatically via cascade.
+  public Mono<Void> deleteAllByUserId(Long userId) {
+    return transactionalOperator.transactional(
+        repository
+            .findAllByUserId(userId)
+            .map(Meal::getId)
+            .collectList()
+            .flatMap(
+                mealIds -> {
+                  if (mealIds.isEmpty()) {
+                    return Mono.empty();
+                  }
+                  return mealFoodService.deleteAllByMealIdsIn(Set.copyOf(mealIds));
+                }));
   }
 
   public Mono<Boolean> existsByIdAndUserId(Long id, Long userId) {

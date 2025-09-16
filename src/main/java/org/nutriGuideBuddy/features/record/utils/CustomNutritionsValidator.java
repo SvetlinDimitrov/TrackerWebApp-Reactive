@@ -5,7 +5,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
-import org.nutriGuideBuddy.features.food.enums.AllowedNutrients;
+import org.nutriGuideBuddy.features.shared.enums.AllowedNutrients;
 import org.nutriGuideBuddy.features.record.dto.NutritionView;
 import org.nutriGuideBuddy.infrastructure.exceptions.BadRequestException;
 import reactor.core.publisher.Mono;

@@ -1,6 +1,5 @@
 package org.nutriGuideBuddy.features.record.utils;
 
-import java.math.BigDecimal;
 import org.nutriGuideBuddy.features.record.enums.Goals;
 import org.nutriGuideBuddy.features.user_details.enums.WorkoutState;
 
@@ -22,23 +21,22 @@ public class DailyCaloriesCalculator {
    * Set Goals: Determine whether the person wants to maintain, lose, or gain weight. Adjust their
    * calorie intake accordingly:
    *
-   * <p>To maintain weight: TDEE To lose weight: TDEE - 500 calories/day (for about 1 pound per week
-   * loss) To gain weight: TDEE + 500 calories/day (for about 1 pound per week gain)
+   * <p>To maintain weight: TDEE To lose weight: TDEE - 500 calorie/day (for about 1 pound per week
+   * loss) To gain weight: TDEE + 500 calorie/day (for about 1 pound per week gain)
    */
-  public static BigDecimal getCaloriesPerDay(
-      BigDecimal BMR, WorkoutState workoutState, Goals goal) {
-    BigDecimal calories =
+  public static double getCaloriesPerDay(double BMR, WorkoutState workoutState, Goals goal) {
+    double calories =
         switch (workoutState) {
-          case SEDENTARY -> BMR.multiply(new BigDecimal("1.2"));
-          case LIGHTLY_ACTIVE -> BMR.multiply(new BigDecimal("1.375"));
-          case MODERATELY_ACTIVE -> BMR.multiply(new BigDecimal("1.55"));
-          case VERY_ACTIVE -> BMR.multiply(new BigDecimal("1.725"));
-          case SUPER_ACTIVE -> BMR.multiply(new BigDecimal("1.9"));
+          case SEDENTARY -> BMR * 1.2;
+          case LIGHTLY_ACTIVE -> BMR * 1.375;
+          case MODERATELY_ACTIVE -> BMR * 1.55;
+          case VERY_ACTIVE -> BMR * 1.725;
+          case SUPER_ACTIVE -> BMR * 1.9;
         };
     return switch (goal) {
       case MaintainWeight -> calories;
-      case LoseWeight -> calories.subtract(BigDecimal.valueOf(500));
-      case GainWeight -> calories.add(BigDecimal.valueOf(500));
+      case LoseWeight -> calories - 500;
+      case GainWeight -> calories + 500;
     };
   }
 }

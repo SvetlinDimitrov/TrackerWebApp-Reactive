@@ -95,7 +95,7 @@ const handleMealInsertFood = (id) => {
 };
 
 const handleRemoveFoodById = (mealId, foodId) => {
-  if (window.confirm("Do you want to delete this food?")) {
+  if (window.confirm("Do you want to delete this mealFood?")) {
     router.push({name: 'RemoveFoodById', params: {id: mealId, foodId}})
   }
 };

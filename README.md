@@ -42,9 +42,9 @@ minimum stylings. It is not yet fully responsive.
 ## Features
 
 - **User Authentication:** Secure login and registration functionality.
-- **Food Logging:** Track daily food intake with nutritional information.
+- **Food Logging:** Track daily mealFood intake with nutritional information.
 - **Progress Tracking:** Monitor your progress over time with visual graphs and statistics.
-- **Database Integration:** Store user data and food logs securely.
+- **Database Integration:** Store user data and mealFood logs securely.
 - **Basic Styling:** Minimalistic design focusing on functionality.
 - **Non-responsive Design:** Currently not optimized for mobile devices.
 

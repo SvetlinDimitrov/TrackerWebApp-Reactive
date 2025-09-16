@@ -15,7 +15,7 @@ import router from "../../router/index.js";
 import {useToast} from "primevue/usetoast"
 import {useRoute} from "vue-router";
 import {useStore} from "vuex";
-import SearchBar from "../../components/food/SearchBar.vue";
+import SearchBar from "../../components/mealFood/SearchBar.vue";
 
 const store = useStore();
 const route = useRoute();
@@ -45,12 +45,12 @@ const handleSearch = async () => {
   try{
     const data = await store.dispatch("getFoodsBySearchName" , search.value);
     foods.value = [];
-    data.forEach((food) => {
-      foods.value.push(food);
+    data.forEach((mealFood) => {
+      foods.value.push(mealFood);
     });
 
     if(foods.value.length === 0){
-      toast.add({severity: 'info', summary: 'Info', detail: 'No food found', life: 3000});
+      toast.add({severity: 'info', summary: 'Info', detail: 'No mealFood found', life: 3000});
     }else{
       toast.add({severity: 'success', summary: 'Success', detail: 'Search Successful', life: 3000});
     }
@@ -59,11 +59,11 @@ const handleSearch = async () => {
   }
 };
 
-const handleFoodClick = (food) => {
-  if(food.id){
-    router.push({name: 'BrandedFood', params: {id: mealId.value, foodId: food.id}});
+const handleFoodClick = (mealFood) => {
+  if(mealFood.id){
+    router.push({name: 'BrandedFood', params: {id: mealId.value, foodId: mealFood.id}});
   }else{
-    router.push({name: 'CommonFood', params: {id: mealId.value, name: food.name}});
+    router.push({name: 'CommonFood', params: {id: mealId.value, name: mealFood.name}});
   }
 };
 </script>

@@ -1,6 +1,6 @@
 <template>
-  <Food v-if="food && hardCopyOfCurrentFood"
-        :food="food"
+  <Food v-if="mealFood && hardCopyOfCurrentFood"
+        :mealFood="mealFood"
         :originalFood="hardCopyOfCurrentFood"
         @close="handleClose"
         @submit="handleSubmit"/>
@@ -11,16 +11,16 @@ import {onMounted, ref} from 'vue';
 import router from "../../router/index.js";
 import {useStore} from "vuex";
 import {useRoute} from "vue-router";
-import Food from "../../components/food/Food.vue";
+import Food from "../../components/mealFood/Food.vue";
 import {useToast} from "primevue/usetoast";
-import {generateGeneralFood} from "../../utils/food.js";
+import {generateGeneralFood} from "../../utils/mealFood.js";
 
 const toast = useToast();
 const store = useStore();
 const route = useRoute();
 const mealId = ref(route.params.id);
 const foodId = ref(route.params.foodId);
-const food = ref(null);
+const mealFood = ref(null);
 const hardCopyOfCurrentFood = ref(null);
 
 onMounted(async () => {
@@ -35,12 +35,12 @@ onMounted(async () => {
   currentMeal.foods.forEach((f) => {
     if (f.id === foodId.value) {
 
-      food.value = generateGeneralFood(f);
-      hardCopyOfCurrentFood.value = JSON.parse(JSON.stringify(food.value)); // Deep copy
+      mealFood.value = generateGeneralFood(f);
+      hardCopyOfCurrentFood.value = JSON.parse(JSON.stringify(mealFood.value)); // Deep copy
     }
   });
 
-  if (food.value === null) {
+  if (mealFood.value === null) {
     toast.add({severity: 'error', summary: 'Error', detail: 'Food not found', life: 3000});
     await router.push({name: 'Home'});
   }
@@ -50,9 +50,9 @@ const handleClose = () => {
   router.push({name: 'Home'});
 };
 
-const handleSubmit = async (food) => {
+const handleSubmit = async (mealFood) => {
   try {
-    await store.dispatch("changeFoodById", {mealId: mealId.value, foodId: foodId.value, food});
+    await store.dispatch("changeFoodById", {mealId: mealId.value, foodId: foodId.value, mealFood});
     toast.add({severity: 'success', summary: 'Success', detail: 'Food changed successfully', life: 3000});
     await router.push({name: 'Home'});
   } catch (error) {

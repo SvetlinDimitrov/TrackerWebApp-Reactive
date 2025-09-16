@@ -6,9 +6,9 @@ import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.*;
 import lombok.RequiredArgsConstructor;
-import org.nutriGuideBuddy.features.food.repository.projetion.*;
 import org.nutriGuideBuddy.features.meal.dto.CustomPageableMeal;
 import org.nutriGuideBuddy.features.meal.dto.MealFilter;
+import org.nutriGuideBuddy.features.meal.repository.projection.MealFoodShortProjection;
 import org.nutriGuideBuddy.features.meal.repository.projection.MealProjection;
 import org.springframework.r2dbc.core.DatabaseClient;
 import org.springframework.stereotype.Repository;
@@ -35,13 +35,12 @@ public class CustomMealRepository {
                 + "m.user_id AS user_id, "
                 + "m.created_at AS created_at, "
                 + "m.updated_at AS updated_at, "
-                + "f.id AS food_id, "
-                + "f.name AS food_name, "
-                + "c.amount AS calorie_amount, "
-                + "c.unit AS calorie_unit "
+                + "mf.id AS food_id, "
+                + "mf.name AS food_name, "
+                + "mf.calorie_amount AS calorie_amount, "
+                + "mf.calorie_unit AS calorie_unit "
                 + "FROM meals m "
-                + "LEFT JOIN inserted_foods f ON f.meal_id = m.id "
-                + "LEFT JOIN calories c ON c.meal_id = m.id AND c.food_id = f.id "
+                + "LEFT JOIN meal_foods mf ON mf.meal_id = m.id "
                 + "WHERE 1=1");
 
     Map<String, Object> binds = new LinkedHashMap<>();
@@ -96,7 +95,7 @@ public class CustomMealRepository {
       }
       sql.append(String.join(", ", orderClauses));
     } else {
-      sql.append(" ORDER BY m.name ASC"); // default
+      sql.append(" ORDER BY m.name ASC");
     }
 
     int pageSize = Optional.ofNullable(filter.getPageable().getPageSize()).orElse(25);
@@ -112,7 +111,8 @@ public class CustomMealRepository {
       spec = spec.bind(e.getKey(), e.getValue());
     }
 
-    return spec.map(this::mapRowToArray)
+    return spec
+        .map(this::mapRowToArray)
         .all()
         .collectList()
         .flatMapMany(this::mapRowsToProjections);
@@ -181,15 +181,14 @@ public class CustomMealRepository {
             m.user_id AS user_id,
             m.created_at AS created_at,
             m.updated_at AS updated_at,
-            f.id AS food_id,
-            f.name AS food_name,
-            c.amount AS calorie_amount,
-            c.unit AS calorie_unit
+            mf.id AS food_id,
+            mf.name AS food_name,
+            mf.calorie_amount AS calorie_amount,
+            mf.calorie_unit AS calorie_unit
         FROM meals m
-        LEFT JOIN inserted_foods f ON f.meal_id = m.id
-        LEFT JOIN calories c ON c.meal_id = m.id AND c.food_id = f.id
+        LEFT JOIN meal_foods mf ON mf.meal_id = m.id
         WHERE m.id = :mealId
-        ORDER BY f.id, c.id
+        ORDER BY mf.id
         """;
 
     return client
@@ -215,48 +214,32 @@ public class CustomMealRepository {
     Instant createdAt = (Instant) firstRow[3];
     Instant updatedAt = (Instant) firstRow[4];
 
-    MealProjection meal =
-        new MealProjection(
-            mealId, userId, mealName, createdAt, updatedAt, new ArrayList<>(), new ArrayList<>());
+    List<MealFoodShortProjection> foods = new ArrayList<>();
+    double totalCalories = 0.0;
 
     for (Object[] r : rows) {
       Long foodId = (Long) r[5];
       String foodName = (String) r[6];
-      BigDecimal calorieAmount = (BigDecimal) r[7];
-      String calorieUnit = (String) r[8];
-
+      Double calorieAmount = r[7] != null ? ((BigDecimal) r[7]).doubleValue() : null;
       if (foodId != null) {
-        FoodShortProjection food =
-            meal.getFoods().stream()
-                .filter(f -> Objects.equals(f.getId(), foodId))
+        MealFoodShortProjection f =
+            foods.stream()
+                .filter(x -> Objects.equals(x.getId(), foodId))
                 .findFirst()
-                .orElseGet(
-                    () -> {
-                      FoodShortProjection f =
-                          new FoodShortProjection(foodId, foodName, BigDecimal.ZERO);
-                      meal.getFoods().add(f);
-                      return f;
-                    });
+                .orElseGet(() -> {
+                  MealFoodShortProjection nf = new MealFoodShortProjection(foodId, foodName, 0.0);
+                  foods.add(nf);
+                  return nf;
+                });
 
         if (calorieAmount != null) {
-          food.setCalories(
-              food.getCalories() != null ? food.getCalories().add(calorieAmount) : calorieAmount);
-        }
-
-        if (calorieAmount != null && calorieUnit != null) {
-          CalorieProjection mealCalorie = new CalorieProjection(null, calorieAmount, calorieUnit);
-          boolean alreadyExists =
-              meal.getCalories().stream()
-                  .anyMatch(
-                      c ->
-                          Objects.equals(c.getAmount(), calorieAmount)
-                              && Objects.equals(c.getUnit(), calorieUnit));
-          if (!alreadyExists) meal.getCalories().add(mealCalorie);
+          f.setCalories(f.getCalories() != null ? f.getCalories() + calorieAmount : calorieAmount);
+          totalCalories += calorieAmount;
         }
       }
     }
 
-    return meal;
+    return new MealProjection(mealId, userId, mealName, createdAt, updatedAt, totalCalories, foods);
   }
 
   private Flux<MealProjection> mapRowsToProjections(List<Object[]> rows) {
@@ -270,49 +253,27 @@ public class CustomMealRepository {
       Instant updatedAt = (Instant) r[4];
       Long foodId = (Long) r[5];
       String foodName = (String) r[6];
-      BigDecimal calorieAmount = (BigDecimal) r[7];
-      String calorieUnit = (String) r[8];
+      Double calorieAmount = r[7] != null ? ((BigDecimal) r[7]).doubleValue() : null;
 
       MealProjection meal =
           mealMap.computeIfAbsent(
               mealId,
-              id ->
-                  new MealProjection(
-                      id,
-                      userId,
-                      mealName,
-                      createdAt,
-                      updatedAt,
-                      new ArrayList<>(),
-                      new ArrayList<>()));
+              id -> new MealProjection(id, userId, mealName, createdAt, updatedAt, 0.0, new ArrayList<>()));
 
       if (foodId != null) {
-        FoodShortProjection food =
+        MealFoodShortProjection food =
             meal.getFoods().stream()
                 .filter(f -> Objects.equals(f.getId(), foodId))
                 .findFirst()
-                .orElseGet(
-                    () -> {
-                      FoodShortProjection f =
-                          new FoodShortProjection(foodId, foodName, BigDecimal.ZERO);
-                      meal.getFoods().add(f);
-                      return f;
-                    });
+                .orElseGet(() -> {
+                  MealFoodShortProjection f = new MealFoodShortProjection(foodId, foodName, 0.0);
+                  meal.getFoods().add(f);
+                  return f;
+                });
 
         if (calorieAmount != null) {
-          food.setCalories(
-              food.getCalories() != null ? food.getCalories().add(calorieAmount) : calorieAmount);
-        }
-
-        if (calorieAmount != null && calorieUnit != null) {
-          CalorieProjection mealCalorie = new CalorieProjection(null, calorieAmount, calorieUnit);
-          boolean alreadyExists =
-              meal.getCalories().stream()
-                  .anyMatch(
-                      c ->
-                          Objects.equals(c.getAmount(), calorieAmount)
-                              && Objects.equals(c.getUnit(), calorieUnit));
-          if (!alreadyExists) meal.getCalories().add(mealCalorie);
+          food.setCalories(food.getCalories() != null ? food.getCalories() + calorieAmount : calorieAmount);
+          meal.setTotalCalories((meal.getTotalCalories() != null ? meal.getTotalCalories() : 0.0) + calorieAmount);
         }
       }
     }
@@ -322,15 +283,15 @@ public class CustomMealRepository {
 
   private Object[] mapRowToArray(Row row, RowMetadata metadata) {
     return new Object[] {
-      row.get("meal_id", Long.class),
-      row.get("meal_name", String.class),
-      row.get("user_id", Long.class),
-      row.get("created_at", Instant.class),
-      row.get("updated_at", Instant.class),
-      row.get("food_id", Long.class),
-      row.get("food_name", String.class),
-      row.get("calorie_amount", BigDecimal.class),
-      row.get("calorie_unit", String.class)
+        row.get("meal_id", Long.class),
+        row.get("meal_name", String.class),
+        row.get("user_id", Long.class),
+        row.get("created_at", Instant.class),
+        row.get("updated_at", Instant.class),
+        row.get("food_id", Long.class),
+        row.get("food_name", String.class),
+        row.get("calorie_amount", BigDecimal.class),
+        row.get("calorie_unit", String.class)
     };
   }
 }

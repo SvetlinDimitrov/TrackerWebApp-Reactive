@@ -2,7 +2,7 @@
   <div class="fixed inset-0 flex items-center justify-center backdrop-blur">
     <div class="bg-white border border-gray-300 px-4 py-3 rounded w-1/2 h-1/2">
       <div class="flex justify-between items-center mb-4">
-        <h2 class="text-2xl font-bold">Search for food</h2>
+        <h2 class="text-2xl font-bold">Search for mealFood</h2>
         <Avatar icon="pi pi-times" class="cursor-pointer" @click="emits('close')"/>
       </div>
       <div class="flex items-center gap-2 mb-4">
@@ -16,10 +16,10 @@
 
       <div class="relative h-3/4 overflow-auto border border-gray-300 rounded p-2">
         <ul>
-          <li v-for="(food, index) in props.foods" :key="food.name + index"
+          <li v-for="(mealFood, index) in props.foods" :key="mealFood.name + index"
               class="p-1 mb-2 cursor-pointer hover:bg-gray-200 transition-colors duration-200 border-b border-gray-200 text-lg font-semibold"
-              @click="emits('foodClick', food)">{{ food.name }}
-            <span v-if="food.brand">({{ food.brand }})</span>
+              @click="emits('foodClick', mealFood)">{{ mealFood.name }}
+            <span v-if="mealFood.brand">({{ mealFood.brand }})</span>
           </li>
         </ul>
       </div>

@@ -1,7 +1,5 @@
 package org.nutriGuideBuddy.infrastructure.mappers;
 
-import java.math.BigDecimal;
-import org.nutriGuideBuddy.features.food.repository.projetion.CalorieProjection;
 import org.nutriGuideBuddy.features.meal.dto.MealView;
 import org.nutriGuideBuddy.features.meal.repository.projection.MealProjection;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,9 +24,7 @@ public abstract class MealMapperDecorator implements MealMapper {
         view.name(),
         projection.getCreatedAt().atZone(java.time.ZoneId.systemDefault()).toLocalDate(),
         projection.getUpdatedAt().atZone(java.time.ZoneId.systemDefault()).toLocalDate(),
-        projection.getCalories().stream()
-            .map(CalorieProjection::getAmount)
-            .reduce(BigDecimal.ZERO, BigDecimal::add),
+        view.totalCalories(),
         view.foods());
   }
 }

@@ -10,8 +10,8 @@
 // import org.nutriGuideBuddy.domain.dto.user.JwtResponse;
 // import org.nutriGuideBuddy.domain.dto.user.UserRequest;
 // import org.nutriGuideBuddy.domain.dto.user.UserDetailsDto;
-// import org.nutriGuideBuddy.features.food.enums.AllowedCalorieUnits;
-// import org.nutriGuideBuddy.features.food.enums.AllowedNutrients;
+// import org.nutriGuideBuddy.features.shared.enums.AllowedCalorieUnits;
+// import org.nutriGuideBuddy.features.shared.enums.AllowedNutrients;
 // import org.nutriGuideBuddy.features.user_details.enums.Gender;
 // import org.nutriGuideBuddy.features.user_details.enums.WorkoutState;
 // import org.nutriGuideBuddy.enums.Credentials;

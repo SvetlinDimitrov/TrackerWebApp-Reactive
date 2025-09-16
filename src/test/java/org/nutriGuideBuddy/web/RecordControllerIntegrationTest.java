@@ -3,7 +3,7 @@
 // import org.junit.jupiter.api.AfterEach;
 // import org.junit.jupiter.api.BeforeAll;
 // import org.junit.jupiter.api.Test;
-// import org.nutriGuideBuddy.features.food.dto.NutritionIntakeView;
+// import org.nutriGuideBuddy.features.shared.dto.NutritionIntakeView;
 // import org.nutriGuideBuddy.features.food.dto.CreateMeal;
 // import org.nutriGuideBuddy.features.food.dto.InsertFoodDto;
 // import org.nutriGuideBuddy.features.meal.dto.MealView;
@@ -15,7 +15,7 @@
 // import org.nutriGuideBuddy.domain.dto.user.UserRequest;
 // import org.nutriGuideBuddy.domain.dto.user.UserDetailsDto;
 // import org.nutriGuideBuddy.features.user_details.dto.UserDetailsView;
-// import org.nutriGuideBuddy.features.food.enums.AllowedNutrients;
+// import org.nutriGuideBuddy.features.shared.enums.AllowedNutrients;
 // import org.nutriGuideBuddy.features.user_details.enums.Gender;
 // import org.nutriGuideBuddy.features.record.enums.Goals;
 // import org.nutriGuideBuddy.features.user_details.enums.WorkoutState;
@@ -685,11 +685,11 @@
 //        createValidInsertedFoodWithEveryPossibleNutrientView();
 //    setUpInsertedFood(authHeader, VALID_MEAL_ID, validInsertedFoodWithEveryPossibleNutrient);
 //
-//    Map<String, org.nutriGuideBuddy.features.food.dto.NutritionView> nutritionViewMap =
+//    Map<String, org.nutriGuideBuddy.features.shared.dto.NutritionView> nutritionViewMap =
 //        validInsertedFoodWithEveryPossibleNutrient.nutrients().stream()
 //            .collect(
 //                Collectors.toMap(
-//                    org.nutriGuideBuddy.features.food.dto.NutritionView::name, data -> data));
+//                    org.nutriGuideBuddy.features.shared.dto.NutritionView::name, data -> data));
 //
 //    webTestClient
 //        .post()
@@ -705,7 +705,7 @@
 //                assertEquals(
 //                    0,
 //                    validInsertedFoodWithEveryPossibleNutrient
-//                        .calories()
+//                        .calorie()
 //                        .amount()
 //                        .compareTo(recordView.getDailyCaloriesConsumed())))
 //        .value(
@@ -758,11 +758,11 @@
 //    for (int i = 0; i < FOOD_COUNTER; i++) {
 //      setUpInsertedFood(authHeader, VALID_MEAL_ID, food);
 //    }
-//    Map<String, org.nutriGuideBuddy.features.food.dto.NutritionView> nutritionViewMap =
+//    Map<String, org.nutriGuideBuddy.features.shared.dto.NutritionView> nutritionViewMap =
 //        food.nutrients().stream()
 //            .collect(
 //                Collectors.toMap(
-//                    org.nutriGuideBuddy.features.food.dto.NutritionView::name, data -> data));
+//                    org.nutriGuideBuddy.features.shared.dto.NutritionView::name, data -> data));
 //
 //    webTestClient
 //        .post()
@@ -777,7 +777,7 @@
 //            recordView ->
 //                assertEquals(
 //                    0,
-//                    food.calories()
+//                    food.calorie()
 //                        .amount()
 //                        .multiply(BigDecimal.valueOf(FOOD_COUNTER))
 //                        .compareTo(recordView.getDailyCaloriesConsumed())))
@@ -846,11 +846,11 @@
 //      setUpInsertedFood(authHeader, VALID_MEAL_ID, validInsertedFoodWithEveryPossibleNutrient);
 //    }
 //
-//    Map<String, org.nutriGuideBuddy.features.food.dto.NutritionView> nutritionViewMap =
+//    Map<String, org.nutriGuideBuddy.features.shared.dto.NutritionView> nutritionViewMap =
 //        validInsertedFoodWithEveryPossibleNutrient.nutrients().stream()
 //            .collect(
 //                Collectors.toMap(
-//                    org.nutriGuideBuddy.features.food.dto.NutritionView::name, data -> data));
+//                    org.nutriGuideBuddy.features.shared.dto.NutritionView::name, data -> data));
 //
 //    webTestClient
 //        .post()
@@ -866,7 +866,7 @@
 //                assertEquals(
 //                    0,
 //                    validInsertedFoodWithEveryPossibleNutrient
-//                        .calories()
+//                        .calorie()
 //                        .amount()
 //                        .multiply(BigDecimal.valueOf(NUMBER_OF_MEALS_CRATED))
 //                        .compareTo(recordView.getDailyCaloriesConsumed())))
@@ -942,11 +942,11 @@
 //      }
 //    }
 //
-//    Map<String, org.nutriGuideBuddy.features.food.dto.NutritionView> nutritionViewMap =
+//    Map<String, org.nutriGuideBuddy.features.shared.dto.NutritionView> nutritionViewMap =
 //        validInsertedFoodWithEveryPossibleNutrient.nutrients().stream()
 //            .collect(
 //                Collectors.toMap(
-//                    org.nutriGuideBuddy.features.food.dto.NutritionView::name, data -> data));
+//                    org.nutriGuideBuddy.features.shared.dto.NutritionView::name, data -> data));
 //
 //    webTestClient
 //        .post()
@@ -962,7 +962,7 @@
 //                assertEquals(
 //                    0,
 //                    validInsertedFoodWithEveryPossibleNutrient
-//                        .calories()
+//                        .calorie()
 //                        .amount()
 //                        .multiply(BigDecimal.valueOf(FINAL_MULTIPLAYER))
 //                        .compareTo(recordView.getDailyCaloriesConsumed())))

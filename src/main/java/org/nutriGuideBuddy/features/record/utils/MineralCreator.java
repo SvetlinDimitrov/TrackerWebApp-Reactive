@@ -3,8 +3,8 @@ package org.nutriGuideBuddy.features.record.utils;
 import java.math.BigDecimal;
 import java.util.Map;
 import java.util.Set;
-import org.nutriGuideBuddy.features.food.dto.NutritionIntakeView;
-import org.nutriGuideBuddy.features.food.enums.AllowedNutrients;
+import org.nutriGuideBuddy.features.shared.dto.NutritionIntakeView;
+import org.nutriGuideBuddy.features.shared.enums.AllowedNutrients;
 import org.nutriGuideBuddy.features.user_details.enums.Gender;
 
 public class MineralCreator {
@@ -56,7 +56,7 @@ public class MineralCreator {
         NutritionIntakeView.builder()
             .name(AllowedNutrients.Calcium_Ca.getNutrientName())
             .measurement(AllowedNutrients.Calcium_Ca.getNutrientUnit())
-            .dailyConsumed(BigDecimal.ZERO)
+            .dailyConsumed(0.0)
             .build();
 
     BigDecimal dailyIntake = BigDecimal.ZERO;
@@ -87,7 +87,7 @@ public class MineralCreator {
         }
       }
     }
-    calcium.setRecommendedIntake(dailyIntake);
+    calcium.setRecommendedIntake(dailyIntake.doubleValue());
     map.put(calcium.getName(), calcium);
   }
 
@@ -97,7 +97,7 @@ public class MineralCreator {
         NutritionIntakeView.builder()
             .name(AllowedNutrients.Chromium_Cr.getNutrientName())
             .measurement(AllowedNutrients.Chromium_Cr.getNutrientUnit())
-            .dailyConsumed(BigDecimal.ZERO)
+            .dailyConsumed(0.0)
             .build();
 
     BigDecimal dailyIntake = BigDecimal.ZERO;
@@ -130,7 +130,7 @@ public class MineralCreator {
         }
       }
     }
-    chromium.setRecommendedIntake(dailyIntake);
+    chromium.setRecommendedIntake(dailyIntake.doubleValue());
     map.put(chromium.getName(), chromium);
   }
 
@@ -139,7 +139,7 @@ public class MineralCreator {
         NutritionIntakeView.builder()
             .name(AllowedNutrients.Copper_Cu.getNutrientName())
             .measurement(AllowedNutrients.Copper_Cu.getNutrientUnit())
-            .dailyConsumed(BigDecimal.ZERO)
+            .dailyConsumed(0.0)
             .build();
 
     BigDecimal dailyIntake = BigDecimal.ZERO;
@@ -161,7 +161,7 @@ public class MineralCreator {
         }
       }
     }
-    copper.setRecommendedIntake(dailyIntake);
+    copper.setRecommendedIntake(dailyIntake.doubleValue());
     map.put(copper.getName(), copper);
   }
 
@@ -171,7 +171,7 @@ public class MineralCreator {
         NutritionIntakeView.builder()
             .name(AllowedNutrients.Fluoride.getNutrientName())
             .measurement(AllowedNutrients.Fluoride.getNutrientUnit())
-            .dailyConsumed(BigDecimal.ZERO)
+            .dailyConsumed(0.0)
             .build();
 
     BigDecimal dailyIntake = BigDecimal.ZERO;
@@ -200,7 +200,7 @@ public class MineralCreator {
         }
       }
     }
-    fluoride.setRecommendedIntake(dailyIntake);
+    fluoride.setRecommendedIntake(dailyIntake.doubleValue());
     map.put(fluoride.getName(), fluoride);
   }
 
@@ -209,7 +209,7 @@ public class MineralCreator {
         NutritionIntakeView.builder()
             .name(AllowedNutrients.Iodine_I.getNutrientName())
             .measurement(AllowedNutrients.Iodine_I.getNutrientUnit())
-            .dailyConsumed(BigDecimal.ZERO)
+            .dailyConsumed(0.0)
             .build();
 
     BigDecimal dailyIntake = BigDecimal.ZERO;
@@ -227,7 +227,7 @@ public class MineralCreator {
         }
       }
     }
-    iodine.setRecommendedIntake(dailyIntake);
+    iodine.setRecommendedIntake(dailyIntake.doubleValue());
     map.put(iodine.getName(), iodine);
   }
 
@@ -236,7 +236,7 @@ public class MineralCreator {
         NutritionIntakeView.builder()
             .name(AllowedNutrients.Iron_Fe.getNutrientName())
             .measurement(AllowedNutrients.Iron_Fe.getNutrientUnit())
-            .dailyConsumed(BigDecimal.ZERO)
+            .dailyConsumed(0.0)
             .build();
 
     BigDecimal dailyIntake = BigDecimal.ZERO;
@@ -269,7 +269,7 @@ public class MineralCreator {
         }
       }
     }
-    iron.setRecommendedIntake(dailyIntake);
+    iron.setRecommendedIntake(dailyIntake.doubleValue());
     map.put(iron.getName(), iron);
   }
 
@@ -279,7 +279,7 @@ public class MineralCreator {
         NutritionIntakeView.builder()
             .name(AllowedNutrients.Magnesium_Mg.getNutrientName())
             .measurement(AllowedNutrients.Magnesium_Mg.getNutrientUnit())
-            .dailyConsumed(BigDecimal.ZERO)
+            .dailyConsumed(0.0)
             .build();
 
     BigDecimal dailyIntake = BigDecimal.ZERO;
@@ -314,7 +314,7 @@ public class MineralCreator {
         }
       }
     }
-    magnesium.setRecommendedIntake(dailyIntake);
+    magnesium.setRecommendedIntake(dailyIntake.doubleValue());
     map.put(magnesium.getName(), magnesium);
   }
 
@@ -324,7 +324,7 @@ public class MineralCreator {
         NutritionIntakeView.builder()
             .name(AllowedNutrients.Manganese_Mn.getNutrientName())
             .measurement(AllowedNutrients.Manganese_Mn.getNutrientUnit())
-            .dailyConsumed(BigDecimal.ZERO)
+            .dailyConsumed(0.0)
             .build();
 
     BigDecimal dailyIntake = BigDecimal.ZERO;
@@ -353,7 +353,7 @@ public class MineralCreator {
         }
       }
     }
-    manganese.setRecommendedIntake(dailyIntake);
+    manganese.setRecommendedIntake(dailyIntake.doubleValue());
     map.put(manganese.getName(), manganese);
   }
 
@@ -363,7 +363,7 @@ public class MineralCreator {
         NutritionIntakeView.builder()
             .name(AllowedNutrients.Molybdenum_Mo.getNutrientName())
             .measurement(AllowedNutrients.Molybdenum_Mo.getNutrientUnit())
-            .dailyConsumed(BigDecimal.ZERO)
+            .dailyConsumed(0.0)
             .build();
 
     BigDecimal dailyIntake = BigDecimal.ZERO;
@@ -385,7 +385,7 @@ public class MineralCreator {
         }
       }
     }
-    molybdenum.setRecommendedIntake(dailyIntake);
+    molybdenum.setRecommendedIntake(dailyIntake.doubleValue());
     map.put(molybdenum.getName(), molybdenum);
   }
 
@@ -395,7 +395,7 @@ public class MineralCreator {
         NutritionIntakeView.builder()
             .name(AllowedNutrients.Phosphorus_P.getNutrientName())
             .measurement(AllowedNutrients.Phosphorus_P.getNutrientUnit())
-            .dailyConsumed(BigDecimal.ZERO)
+            .dailyConsumed(0.0)
             .build();
 
     BigDecimal dailyIntake = BigDecimal.ZERO;
@@ -415,7 +415,7 @@ public class MineralCreator {
         }
       }
     }
-    phosphorus.setRecommendedIntake(dailyIntake);
+    phosphorus.setRecommendedIntake(dailyIntake.doubleValue());
     map.put(phosphorus.getName(), phosphorus);
   }
 
@@ -425,7 +425,7 @@ public class MineralCreator {
         NutritionIntakeView.builder()
             .name(AllowedNutrients.Selenium_Se.getNutrientName())
             .measurement(AllowedNutrients.Selenium_Se.getNutrientUnit())
-            .dailyConsumed(BigDecimal.ZERO)
+            .dailyConsumed(0.0)
             .build();
 
     BigDecimal dailyIntake = BigDecimal.ZERO;
@@ -445,7 +445,7 @@ public class MineralCreator {
         }
       }
     }
-    selenium.setRecommendedIntake(dailyIntake);
+    selenium.setRecommendedIntake(dailyIntake.doubleValue());
     map.put(selenium.getName(), selenium);
   }
 
@@ -454,7 +454,7 @@ public class MineralCreator {
         NutritionIntakeView.builder()
             .name(AllowedNutrients.Zinc_Zn.getNutrientName())
             .measurement(AllowedNutrients.Zinc_Zn.getNutrientUnit())
-            .dailyConsumed(BigDecimal.ZERO)
+            .dailyConsumed(0.0)
             .build();
 
     BigDecimal dailyIntake = BigDecimal.ZERO;
@@ -483,7 +483,7 @@ public class MineralCreator {
         }
       }
     }
-    zinc.setRecommendedIntake(dailyIntake);
+    zinc.setRecommendedIntake(dailyIntake.doubleValue());
     map.put(zinc.getName(), zinc);
   }
 
@@ -493,7 +493,7 @@ public class MineralCreator {
         NutritionIntakeView.builder()
             .name(AllowedNutrients.Potassium_K.getNutrientName())
             .measurement(AllowedNutrients.Potassium_K.getNutrientUnit())
-            .dailyConsumed(BigDecimal.ZERO)
+            .dailyConsumed(0.0)
             .build();
 
     BigDecimal dailyIntake = BigDecimal.ZERO;
@@ -522,7 +522,7 @@ public class MineralCreator {
         }
       }
     }
-    potassium.setRecommendedIntake(dailyIntake);
+    potassium.setRecommendedIntake(dailyIntake.doubleValue());
     map.put(potassium.getName(), potassium);
   }
 
@@ -531,7 +531,7 @@ public class MineralCreator {
         NutritionIntakeView.builder()
             .name(AllowedNutrients.Sodium_Na.getNutrientName())
             .measurement(AllowedNutrients.Sodium_Na.getNutrientUnit())
-            .dailyConsumed(BigDecimal.ZERO)
+            .dailyConsumed(0.0)
             .build();
 
     BigDecimal dailyIntake = BigDecimal.ZERO;
@@ -551,7 +551,7 @@ public class MineralCreator {
         }
       }
     }
-    sodium.setRecommendedIntake(dailyIntake);
+    sodium.setRecommendedIntake(dailyIntake.doubleValue());
     map.put(sodium.getName(), sodium);
   }
 
@@ -561,7 +561,7 @@ public class MineralCreator {
         NutritionIntakeView.builder()
             .name(AllowedNutrients.Chloride.getNutrientName())
             .measurement(AllowedNutrients.Chloride.getNutrientUnit())
-            .dailyConsumed(BigDecimal.ZERO)
+            .dailyConsumed(0.0)
             .build();
 
     BigDecimal dailyIntake = BigDecimal.ZERO;
@@ -583,7 +583,7 @@ public class MineralCreator {
         }
       }
     }
-    chloride.setRecommendedIntake(dailyIntake);
+    chloride.setRecommendedIntake(dailyIntake.doubleValue());
     map.put(chloride.getName(), chloride);
   }
 

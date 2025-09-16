@@ -28,8 +28,8 @@
            class="cursor-pointer"></Tag>
     </div>
     <ul v-if="show && foodList.length !== 0" class="p-1"> Consumed foods:
-      <li v-for="food in foodList">{{ food.foodName }}: {{ calculateAveragePercentage(food.nutrientAmount, total) }}%
-        ({{ food.nutrientAmount }})
+      <li v-for="mealFood in foodList">{{ mealFood.foodName }}: {{ calculateAveragePercentage(mealFood.nutrientAmount, total) }}%
+        ({{ mealFood.nutrientAmount }})
       </li>
     </ul>
   </div>

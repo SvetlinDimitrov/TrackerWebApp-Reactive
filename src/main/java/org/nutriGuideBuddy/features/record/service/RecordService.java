@@ -1,17 +1,12 @@
 package org.nutriGuideBuddy.features.record.service;
 
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
-import org.nutriGuideBuddy.features.food.dto.NutritionIntakeView;
-import org.nutriGuideBuddy.features.food.entity.Calorie;
-import org.nutriGuideBuddy.features.food.repository.CalorieRepository;
-import org.nutriGuideBuddy.features.food.repository.NutrientRepository;
 import org.nutriGuideBuddy.features.record.dto.CreateRecord;
 import org.nutriGuideBuddy.features.record.dto.DistributedMacros;
 import org.nutriGuideBuddy.features.record.dto.NutritionView;
@@ -20,6 +15,8 @@ import org.nutriGuideBuddy.features.record.enums.Goals;
 import org.nutriGuideBuddy.features.record.utils.*;
 import org.nutriGuideBuddy.features.record.utils.BMRCalc;
 import org.nutriGuideBuddy.features.record.utils.DailyCaloriesCalculator;
+import org.nutriGuideBuddy.features.shared.dto.NutritionIntakeView;
+import org.nutriGuideBuddy.features.shared.repository.NutrientRepository;
 import org.nutriGuideBuddy.features.user_details.entity.UserDetails;
 import org.nutriGuideBuddy.features.user_details.repository.UserDetailsRepository;
 import org.nutriGuideBuddy.infrastructure.security.service.ReactiveUserDetailsServiceImpl;
@@ -34,7 +31,6 @@ public class RecordService {
 
   private final NutrientRepository nutrientRepository;
   private final UserDetailsRepository userDetailsRepository;
-  private final CalorieRepository calorieRepository;
 
   public Mono<RecordView> viewRecord(CreateRecord dto) {
     return ReactiveUserDetailsServiceImpl.getPrincipalId()
@@ -55,83 +51,76 @@ public class RecordService {
         .flatMap(data -> customizeRecordView(data.getT1(), data.getT2()));
   }
 
+  // TODO:: UPDATE THIS
   private Mono<RecordView> fetchRecordViewData(UserDetails details, Goals goal) {
     return Mono.just(details)
         .flatMap(
             userDetails -> {
               RecordView view = new RecordView();
-              view.setDailyCaloriesToConsume(
-                  DailyCaloriesCalculator.getCaloriesPerDay(
+              double caloriesToConsume =
+                  Math.floor(
+                      DailyCaloriesCalculator.getCaloriesPerDay(
                           BMRCalc.calculateBMR(
                               userDetails.getGender(),
-                              BigDecimal.valueOf(userDetails.getKilograms()),
-                              BigDecimal.valueOf(userDetails.getHeight()),
+                              userDetails.getKilograms(),
+                              userDetails.getHeight(),
                               userDetails.getAge()),
                           userDetails.getWorkoutState(),
-                          Optional.ofNullable(goal).orElse(Goals.MaintainWeight))
-                      .setScale(0, RoundingMode.DOWN));
+                          Optional.ofNullable(goal).orElse(Goals.MaintainWeight)));
+              view.setDailyCaloriesToConsume(caloriesToConsume);
               return Mono.zip(Mono.just(userDetails), Mono.just(view));
             })
         .flatMap(
-            data ->
-                calorieRepository
-                    .findAllByUserId(data.getT1().getUserId())
-                    .collectList()
-                    .map(
-                        list ->
-                            list.stream()
-                                .map(Calorie::getAmount)
-                                .reduce(BigDecimal.ZERO, BigDecimal::add)
-                                .setScale(0, RoundingMode.DOWN))
-                    .map(
-                        dailyConsumedCalories -> {
-                          data.getT2().setDailyCaloriesConsumed(dailyConsumedCalories);
-                          return data.getT2();
-                        }));
+            data -> {
+              data.getT2().setDailyCaloriesConsumed(0.0);
+              return Mono.just(data.getT2());
+            });
   }
+
+//  private Mono<RecordView> setNutritionViews(
+//      UserDetails details, RecordView view, DistributedMacros distributedMacros) {
+//
+//    return DistributedMacrosValidator.validate(distributedMacros)
+//        .flatMap(
+//            validatedDistribution ->
+//                Mono.zip(
+//                    Mono.just(view),
+//                    Mono.just(new HashMap<String, NutritionIntakeView>())
+//                        .map(
+//                            map -> {
+//                              MineralCreator.fillMinerals(
+//                                  map, details.getGender(), details.getAge());
+//                              VitaminCreator.fillVitamins(
+//                                  map, details.getGender(), details.getAge());
+//                              MacronutrientCreator.fillMacros(
+//                                  map,
+//                                  view.getDailyCaloriesToConsume(),
+//                                  details.getGender(),
+//                                  validatedDistribution,
+//                                  details.getAge());
+//                              return map;
+//                            }),
+//                    nutrientRepository.findAllByUserId(details.getUserId()).collectList()))
+//        .map(
+//            data -> {
+//              Map<String, NutritionIntakeView> nutritions = data.getT2();
+//              data.getT3()
+//                  .forEach(
+//                      entity -> {
+//                        NutritionIntakeView intakeView = nutritions.get(entity.getName());
+//                        intakeView.setDailyConsumed(
+//                            Math.floor(intakeView.getDailyConsumed() + entity.getAmount()));
+//                      });
+//              setVitaminIntakes(data.getT1(), nutritions);
+//              setMineralsIntakes(data.getT1(), nutritions);
+//              setMacrosIntakes(data.getT1(), nutritions);
+//              return data.getT1();
+//            });
+//  }
 
   private Mono<RecordView> setNutritionViews(
       UserDetails details, RecordView view, DistributedMacros distributedMacros) {
-
-    return DistributedMacrosValidator.validate(distributedMacros)
-        .flatMap(
-            validatedDistribution ->
-                Mono.zip(
-                    Mono.just(view),
-                    Mono.just(new HashMap<String, NutritionIntakeView>())
-                        .map(
-                            map -> {
-                              MineralCreator.fillMinerals(
-                                  map, details.getGender(), details.getAge());
-                              VitaminCreator.fillVitamins(
-                                  map, details.getGender(), details.getAge());
-                              MacronutrientCreator.fillMacros(
-                                  map,
-                                  view.getDailyCaloriesToConsume(),
-                                  details.getGender(),
-                                  validatedDistribution,
-                                  details.getAge());
-                              return map;
-                            }),
-                    nutrientRepository.findAllByUserId(details.getUserId()).collectList()))
-        .map(
-            data -> {
-              Map<String, NutritionIntakeView> nutritions = data.getT2();
-              data.getT3()
-                  .forEach(
-                      entity -> {
-                        NutritionIntakeView intakeView = nutritions.get(entity.getName());
-                        intakeView.setDailyConsumed(
-                            intakeView
-                                .getDailyConsumed()
-                                .add(entity.getAmount())
-                                .setScale(0, RoundingMode.DOWN));
-                      });
-              setVitaminIntakes(data.getT1(), nutritions);
-              setMineralsIntakes(data.getT1(), nutritions);
-              setMacrosIntakes(data.getT1(), nutritions);
-              return data.getT1();
-            });
+    return Mono.empty();
   }
 
   private void setVitaminIntakes(RecordView view, Map<String, NutritionIntakeView> intakeViewMap) {
@@ -179,7 +168,8 @@ public class RecordService {
               .forEach(
                   intake -> {
                     if (customIntakeMap.containsKey(intake.getName())) {
-                      intake.setRecommendedIntake(customIntakeMap.get(intake.getName()));
+                      intake.setRecommendedIntake(
+                          customIntakeMap.get(intake.getName()).doubleValue());
                     }
                   });
           record
@@ -187,7 +177,8 @@ public class RecordService {
               .forEach(
                   intake -> {
                     if (customIntakeMap.containsKey(intake.getName())) {
-                      intake.setRecommendedIntake(customIntakeMap.get(intake.getName()));
+                      intake.setRecommendedIntake(
+                          customIntakeMap.get(intake.getName()).doubleValue());
                     }
                   });
           record
@@ -195,7 +186,8 @@ public class RecordService {
               .forEach(
                   intake -> {
                     if (customIntakeMap.containsKey(intake.getName())) {
-                      intake.setRecommendedIntake(customIntakeMap.get(intake.getName()));
+                      intake.setRecommendedIntake(
+                          customIntakeMap.get(intake.getName()).doubleValue());
                     }
                   });
           return record;

@@ -76,6 +76,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     return repository
         .findById(id)
         .switchIfEmpty(
-            Mono.error(new NotFoundException(String.format(USER_DETAILS_NOT_FOUND_BY_ID, id))));
+            Mono.error(new NotFoundException(String.format(NOT_FOUND_BY_ID, "UserDetails", id))));
   }
 }

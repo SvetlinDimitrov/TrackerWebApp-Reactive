@@ -1,9 +1,8 @@
 package org.nutriGuideBuddy.features.meal.dto;
 
-import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
-import org.nutriGuideBuddy.features.food.dto.FoodShortView;
+import org.nutriGuideBuddy.features.shared.dto.FoodShortView;
 
 public record MealView(
     Long id,
@@ -11,5 +10,5 @@ public record MealView(
     String name,
     LocalDate createdAt,
     LocalDate updateAt,
-    BigDecimal consumedCalories,
+    Double totalCalories,
     List<FoodShortView> foods) {}

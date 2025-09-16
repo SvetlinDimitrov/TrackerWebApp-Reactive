@@ -5,8 +5,8 @@ import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import org.nutriGuideBuddy.features.food.dto.NutritionView;
-import org.nutriGuideBuddy.features.food.enums.AllowedNutrients;
+import org.nutriGuideBuddy.features.shared.dto.NutritionView;
+import org.nutriGuideBuddy.features.shared.enums.AllowedNutrients;
 import org.nutriGuideBuddy.infrastructure.nutritionx_api.dto.FoodItem;
 import org.nutriGuideBuddy.infrastructure.nutritionx_api.dto.FullNutrient;
 
@@ -18,11 +18,11 @@ public class NutrientMapperUtils {
     fillMinerals(nutrients, dto);
     fillMacros(nutrients, dto);
     return nutrients.stream()
-        .filter(data -> data.amount().compareTo(BigDecimal.ZERO) > 0)
+        .filter(data -> data.amount() != null && data.amount() > 0)
         .map(
             data ->
                 new NutritionView(
-                    data.name(), data.unit(), data.amount().setScale(2, RoundingMode.HALF_EVEN)))
+                    data.name(), data.unit(), Math.round(data.amount() * 100.0) / 100.0))
         .toList();
   }
 
@@ -79,7 +79,7 @@ public class NutrientMapperUtils {
                   new NutritionView(
                       AllowedNutrients.VitaminA.getNutrientName(),
                       AllowedNutrients.VitaminA.getNutrientUnit(),
-                      value.getValue());
+                      value.getValue().doubleValue());
               list.add(vitaminA);
             });
   }
@@ -94,7 +94,7 @@ public class NutrientMapperUtils {
                   new NutritionView(
                       AllowedNutrients.VitaminD_D2_D3.getNutrientName(),
                       AllowedNutrients.VitaminD_D2_D3.getNutrientUnit(),
-                      value.getValue());
+                      value.getValue().doubleValue());
               list.add(vitaminA);
             });
   }
@@ -109,7 +109,7 @@ public class NutrientMapperUtils {
                   new NutritionView(
                       AllowedNutrients.VitaminE.getNutrientName(),
                       AllowedNutrients.VitaminE.getNutrientUnit(),
-                      value.getValue());
+                      value.getValue().doubleValue());
               list.add(vitaminA);
             });
   }
@@ -124,7 +124,7 @@ public class NutrientMapperUtils {
                   new NutritionView(
                       AllowedNutrients.VitaminK.getNutrientName(),
                       AllowedNutrients.VitaminK.getNutrientUnit(),
-                      value.getValue());
+                      value.getValue().doubleValue());
               list.add(vitaminA);
             });
   }
@@ -139,7 +139,7 @@ public class NutrientMapperUtils {
                   new NutritionView(
                       AllowedNutrients.VitaminC.getNutrientName(),
                       AllowedNutrients.VitaminC.getNutrientUnit(),
-                      value.getValue());
+                      value.getValue().doubleValue());
               list.add(vitaminA);
             });
   }
@@ -154,7 +154,7 @@ public class NutrientMapperUtils {
                   new NutritionView(
                       AllowedNutrients.VitaminB1_Thiamin.getNutrientName(),
                       AllowedNutrients.VitaminB1_Thiamin.getNutrientUnit(),
-                      value.getValue());
+                      value.getValue().doubleValue());
               list.add(vitaminA);
             });
   }
@@ -169,7 +169,7 @@ public class NutrientMapperUtils {
                   new NutritionView(
                       AllowedNutrients.VitaminB2_Riboflavin.getNutrientName(),
                       AllowedNutrients.VitaminB2_Riboflavin.getNutrientUnit(),
-                      value.getValue());
+                      value.getValue().doubleValue());
               list.add(vitaminA);
             });
   }
@@ -184,7 +184,7 @@ public class NutrientMapperUtils {
                   new NutritionView(
                       AllowedNutrients.VitaminB3_Niacin.getNutrientName(),
                       AllowedNutrients.VitaminB3_Niacin.getNutrientUnit(),
-                      value.getValue());
+                      value.getValue().doubleValue());
               list.add(vitaminA);
             });
   }
@@ -199,7 +199,7 @@ public class NutrientMapperUtils {
                   new NutritionView(
                       AllowedNutrients.VitaminB5_PantothenicAcid.getNutrientName(),
                       AllowedNutrients.VitaminB5_PantothenicAcid.getNutrientUnit(),
-                      value.getValue());
+                      value.getValue().doubleValue());
               list.add(vitaminA);
             });
   }
@@ -214,7 +214,7 @@ public class NutrientMapperUtils {
                   new NutritionView(
                       AllowedNutrients.VitaminB6.getNutrientName(),
                       AllowedNutrients.VitaminB6.getNutrientUnit(),
-                      value.getValue());
+                      value.getValue().doubleValue());
               list.add(vitaminA);
             });
   }
@@ -229,7 +229,7 @@ public class NutrientMapperUtils {
                   new NutritionView(
                       AllowedNutrients.VitaminB9_Folate.getNutrientName(),
                       AllowedNutrients.VitaminB9_Folate.getNutrientUnit(),
-                      value.getValue());
+                      value.getValue().doubleValue());
               list.add(vitaminA);
             });
   }
@@ -244,7 +244,7 @@ public class NutrientMapperUtils {
                   new NutritionView(
                       AllowedNutrients.VitaminB12.getNutrientName(),
                       AllowedNutrients.VitaminB12.getNutrientUnit(),
-                      value.getValue());
+                      value.getValue().doubleValue());
               list.add(vitaminA);
             });
   }
@@ -259,7 +259,7 @@ public class NutrientMapperUtils {
                   new NutritionView(
                       AllowedNutrients.Choline.getNutrientName(),
                       AllowedNutrients.Choline.getNutrientUnit(),
-                      value.getValue());
+                      value.getValue().doubleValue());
               list.add(vitaminA);
             });
   }
@@ -276,7 +276,7 @@ public class NutrientMapperUtils {
                   new NutritionView(
                       AllowedNutrients.Calcium_Ca.getNutrientName(),
                       AllowedNutrients.Calcium_Ca.getNutrientUnit(),
-                      value.getValue());
+                      value.getValue().doubleValue());
               list.add(nutrient);
             });
   }
@@ -292,7 +292,7 @@ public class NutrientMapperUtils {
                   new NutritionView(
                       AllowedNutrients.Phosphorus_P.getNutrientName(),
                       AllowedNutrients.Phosphorus_P.getNutrientUnit(),
-                      value.getValue());
+                      value.getValue().doubleValue());
               list.add(nutrient);
             });
   }
@@ -307,7 +307,10 @@ public class NutrientMapperUtils {
                   new NutritionView(
                       AllowedNutrients.Fluoride.getNutrientName(),
                       AllowedNutrients.Fluoride.getNutrientUnit(),
-                      value.getValue().divide(BigDecimal.valueOf(1000), 2, RoundingMode.DOWN));
+                      value
+                          .getValue()
+                          .divide(BigDecimal.valueOf(1000), 2, RoundingMode.DOWN)
+                          .doubleValue());
               list.add(nutrient);
             });
   }
@@ -323,7 +326,7 @@ public class NutrientMapperUtils {
                   new NutritionView(
                       AllowedNutrients.Magnesium_Mg.getNutrientName(),
                       AllowedNutrients.Magnesium_Mg.getNutrientUnit(),
-                      value.getValue());
+                      value.getValue().doubleValue());
               list.add(nutrient);
             });
   }
@@ -338,7 +341,7 @@ public class NutrientMapperUtils {
                   new NutritionView(
                       AllowedNutrients.Sodium_Na.getNutrientName(),
                       AllowedNutrients.Sodium_Na.getNutrientUnit(),
-                      value.getValue());
+                      value.getValue().doubleValue());
               list.add(nutrient);
             });
   }
@@ -353,7 +356,7 @@ public class NutrientMapperUtils {
                   new NutritionView(
                       AllowedNutrients.Potassium_K.getNutrientName(),
                       AllowedNutrients.Potassium_K.getNutrientUnit(),
-                      value.getValue());
+                      value.getValue().doubleValue());
               list.add(nutrient);
             });
   }
@@ -368,7 +371,7 @@ public class NutrientMapperUtils {
                   new NutritionView(
                       AllowedNutrients.Iron_Fe.getNutrientName(),
                       AllowedNutrients.Iron_Fe.getNutrientUnit(),
-                      value.getValue());
+                      value.getValue().doubleValue());
               list.add(nutrient);
             });
   }
@@ -383,7 +386,7 @@ public class NutrientMapperUtils {
                   new NutritionView(
                       AllowedNutrients.Zinc_Zn.getNutrientName(),
                       AllowedNutrients.Zinc_Zn.getNutrientUnit(),
-                      value.getValue());
+                      value.getValue().doubleValue());
               list.add(nutrient);
             });
   }
@@ -401,7 +404,8 @@ public class NutrientMapperUtils {
                       value
                           .getValue()
                           .multiply(BigDecimal.valueOf(1000))
-                          .setScale(2, RoundingMode.DOWN));
+                          .setScale(2, RoundingMode.DOWN)
+                          .doubleValue());
               list.add(nutrient);
             });
   }
@@ -416,7 +420,7 @@ public class NutrientMapperUtils {
                   new NutritionView(
                       AllowedNutrients.Manganese_Mn.getNutrientName(),
                       AllowedNutrients.Manganese_Mn.getNutrientUnit(),
-                      value.getValue());
+                      value.getValue().doubleValue());
               list.add(nutrient);
             });
   }
@@ -432,7 +436,7 @@ public class NutrientMapperUtils {
                   new NutritionView(
                       AllowedNutrients.Selenium_Se.getNutrientName(),
                       AllowedNutrients.Selenium_Se.getNutrientUnit(),
-                      value.getValue());
+                      value.getValue().doubleValue());
               list.add(nutrient);
             });
   }
@@ -449,7 +453,7 @@ public class NutrientMapperUtils {
                   new NutritionView(
                       AllowedNutrients.Carbohydrate.getNutrientName(),
                       AllowedNutrients.Carbohydrate.getNutrientUnit(),
-                      value.getValue());
+                      value.getValue().doubleValue());
               list.add(nutrient);
             });
   }
@@ -464,7 +468,7 @@ public class NutrientMapperUtils {
                   new NutritionView(
                       AllowedNutrients.Protein.getNutrientName(),
                       AllowedNutrients.Protein.getNutrientUnit(),
-                      value.getValue());
+                      value.getValue().doubleValue());
               list.add(nutrient);
             });
   }
@@ -479,7 +483,7 @@ public class NutrientMapperUtils {
                   new NutritionView(
                       AllowedNutrients.Fat.getNutrientName(),
                       AllowedNutrients.Fat.getNutrientUnit(),
-                      value.getValue());
+                      value.getValue().doubleValue());
               list.add(nutrient);
             });
   }
@@ -494,7 +498,7 @@ public class NutrientMapperUtils {
                   new NutritionView(
                       AllowedNutrients.Fiber.getNutrientName(),
                       AllowedNutrients.Fiber.getNutrientUnit(),
-                      value.getValue());
+                      value.getValue().doubleValue());
               list.add(nutrient);
             });
   }
@@ -509,7 +513,7 @@ public class NutrientMapperUtils {
                   new NutritionView(
                       AllowedNutrients.Sugar.getNutrientName(),
                       AllowedNutrients.Sugar.getNutrientUnit(),
-                      value.getValue());
+                      value.getValue().doubleValue());
               list.add(nutrient);
             });
   }
@@ -535,7 +539,7 @@ public class NutrientMapperUtils {
                   new NutritionView(
                       AllowedNutrients.Omega6.getNutrientName(),
                       AllowedNutrients.Omega6.getNutrientUnit(),
-                      value);
+                      value.doubleValue());
               list.add(nutrient);
             });
   }
@@ -561,7 +565,7 @@ public class NutrientMapperUtils {
                   new NutritionView(
                       AllowedNutrients.Omega3.getNutrientName(),
                       AllowedNutrients.Omega3.getNutrientUnit(),
-                      value);
+                      value.doubleValue());
               list.add(nutrient);
             });
   }
@@ -576,7 +580,7 @@ public class NutrientMapperUtils {
                   new NutritionView(
                       AllowedNutrients.Cholesterol.getNutrientName(),
                       AllowedNutrients.Cholesterol.getNutrientUnit(),
-                      value.getValue());
+                      value.getValue().doubleValue());
               list.add(nutrient);
             });
   }
@@ -591,7 +595,10 @@ public class NutrientMapperUtils {
                   new NutritionView(
                       AllowedNutrients.Water.getNutrientName(),
                       AllowedNutrients.Water.getNutrientUnit(),
-                      value.getValue().divide(BigDecimal.valueOf(1000), 2, RoundingMode.CEILING));
+                      value
+                          .getValue()
+                          .divide(BigDecimal.valueOf(1000), 2, RoundingMode.CEILING)
+                          .doubleValue());
               list.add(nutrient);
             });
   }
@@ -606,7 +613,7 @@ public class NutrientMapperUtils {
                   new NutritionView(
                       AllowedNutrients.Saturated_Fat.getNutrientName(),
                       AllowedNutrients.Saturated_Fat.getNutrientUnit(),
-                      value.getValue());
+                      value.getValue().doubleValue());
               list.add(nutrient);
             });
   }
@@ -621,7 +628,7 @@ public class NutrientMapperUtils {
                   new NutritionView(
                       AllowedNutrients.Trans_Fat.getNutrientName(),
                       AllowedNutrients.Trans_Fat.getNutrientUnit(),
-                      value.getValue());
+                      value.getValue().doubleValue());
               list.add(nutrient);
             });
   }

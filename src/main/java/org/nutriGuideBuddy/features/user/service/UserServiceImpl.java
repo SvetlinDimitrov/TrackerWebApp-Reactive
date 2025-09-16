@@ -1,7 +1,6 @@
 package org.nutriGuideBuddy.features.user.service;
 
-import static org.nutriGuideBuddy.infrastructure.exceptions.ExceptionMessages.USER_NOT_FOUND_BY_EMAIL;
-import static org.nutriGuideBuddy.infrastructure.exceptions.ExceptionMessages.USER_NOT_FOUND_BY_ID;
+import static org.nutriGuideBuddy.infrastructure.exceptions.ExceptionMessages.*;
 
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
@@ -136,6 +135,7 @@ public class UserServiceImpl implements UserService {
   public Mono<User> findByIOrThrow(Long id) {
     return repository
         .findById(id)
-        .switchIfEmpty(Mono.error(new NotFoundException(String.format(USER_NOT_FOUND_BY_ID, id))));
+        .switchIfEmpty(
+            Mono.error(new NotFoundException(String.format(NOT_FOUND_BY_ID, "User", id))));
   }
 }

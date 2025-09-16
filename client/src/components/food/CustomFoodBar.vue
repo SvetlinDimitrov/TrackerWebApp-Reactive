@@ -4,7 +4,7 @@
       <div class="flex justify-between items-center mb-4">
         <h2 class="text-2xl font-bold">
           Your foods
-          <span v-if="props.foods.length > 0" class="text-sm">(Click on the food to insert it)</span>
+          <span v-if="props.foods.length > 0" class="text-sm">(Click on the mealFood to insert it)</span>
         </h2>
         <Avatar icon="pi pi-times" class="cursor-pointer border border-gray-300" @click="emits('close')"/>
       </div>
@@ -24,20 +24,20 @@
 
       <div class="relative h-80 overflow-auto border border-gray-300 rounded p-2">
         <ul>
-          <li v-for="(food, index) in props.foods" :key="food.name + index"
+          <li v-for="(mealFood, index) in props.foods" :key="mealFood.name + index"
               class="flex justify-between items-center p-1 mb-2 cursor-pointer hover:bg-gray-100 transition-colors duration-200 border-b border-gray-100 text-lg font-semibold"
-              @click="emits('foodClick', food)">
-            <span>{{ food.name }}</span>
+              @click="emits('foodClick', mealFood)">
+            <span>{{ mealFood.name }}</span>
             <div class="flex gap-2 items-center">
-              <span class="text-sm px-2 text-gray-700"> {{ food.calories }} kcal </span>
+              <span class="text-sm px-2 text-gray-700"> {{ mealFood.calories }} kcal </span>
               <Avatar icon="pi pi-pencil"
                       class="cursor-pointer hover:bg-gray-300 transition-colors duration-200 border border-gray-300"
-                      v-tooltip.top="'Modify food'"
-                      @click.stop="emits('editFood', food)"/>
+                      v-tooltip.top="'Modify mealFood'"
+                      @click.stop="emits('editFood', mealFood)"/>
               <Avatar icon="pi pi-trash"
                       class="cursor-pointer hover:bg-gray-300 transition-colors duration-200 border border-gray-300"
-                      v-tooltip.top="'Delete food'"
-                      @click.stop="emits('deleteFood', food)"/>
+                      v-tooltip.top="'Delete mealFood'"
+                      @click.stop="emits('deleteFood', mealFood)"/>
             </div>
           </li>
         </ul>

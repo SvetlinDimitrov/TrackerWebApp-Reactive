@@ -17,7 +17,7 @@ import router from "../../router/index.js";
 import {useToast} from "primevue/usetoast"
 import {useRoute} from "vue-router";
 import {useStore} from "vuex";
-import CustomFoodBar from "../../components/food/CustomFoodBar.vue";
+import CustomFoodBar from "../../components/mealFood/CustomFoodBar.vue";
 
 const store = useStore();
 const route = useRoute();
@@ -64,22 +64,22 @@ const handleAddCustomFood = () => {
   router.push({name: 'CreateCustomFood'});
 };
 
-const handleFoodClick = (food) => {
-  router.push({name: 'CustomFood', params: {id: mealId.value, foodId: food.id}});
+const handleFoodClick = (mealFood) => {
+  router.push({name: 'CustomFood', params: {id: mealId.value, foodId: mealFood.id}});
 };
 
-const handleEditFood = (food) => {
-  router.push({name: 'EditCustomFood', params: {foodId: food.id}});
+const handleEditFood = (mealFood) => {
+  router.push({name: 'EditCustomFood', params: {foodId: mealFood.id}});
 };
 
-const handleDeleteFood = async (food) => {
+const handleDeleteFood = async (mealFood) => {
   try {
-    await store.dispatch('deleteCustomFoodById', food.id);
+    await store.dispatch('deleteCustomFoodById', mealFood.id);
     toast.add({severity: 'success', summary: 'Success', detail: 'Food deleted successfully' , life: 3000});
     deletionRefresher.value = !deletionRefresher.value;
     await router.push({name: 'CustomInsertFood', params: {id: mealId.value}});
   } catch (error) {
-    toast.add({severity: 'error', summary: 'Error', detail: 'Failed to delete food'});
+    toast.add({severity: 'error', summary: 'Error', detail: 'Failed to delete mealFood'});
   }
 };
 </script>

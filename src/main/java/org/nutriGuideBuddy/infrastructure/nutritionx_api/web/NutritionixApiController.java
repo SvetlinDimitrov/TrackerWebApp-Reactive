@@ -2,7 +2,7 @@ package org.nutriGuideBuddy.infrastructure.nutritionx_api.web;
 
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.nutriGuideBuddy.features.food.dto.InsertFoodDto;
+import org.nutriGuideBuddy.features.meal.dto.MealFoodCreateRequest;
 import org.nutriGuideBuddy.infrastructure.exceptions.BadRequestException;
 import org.nutriGuideBuddy.infrastructure.exceptions.ExceptionResponse;
 import org.nutriGuideBuddy.infrastructure.nutritionx_api.dto.ListFoodsResponse;
@@ -20,13 +20,13 @@ public class NutritionixApiController {
 
   // Mostly return a single food
   @GetMapping("/common/{term}")
-  public Mono<List<InsertFoodDto>> getFoodBySearchCriteria(@PathVariable String term) {
+  public Mono<List<MealFoodCreateRequest>> getFoodBySearchCriteria(@PathVariable String term) {
     return service.getCommonFoodBySearchTerm(term);
   }
 
   // Mostly return a single food
   @GetMapping("/branded/{id}")
-  public Mono<List<InsertFoodDto>> getBrandedFoodById(@PathVariable String id) {
+  public Mono<List<MealFoodCreateRequest>> getBrandedFoodById(@PathVariable String id) {
     return service.getBrandedFoodById(id);
   }
 

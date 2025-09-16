@@ -1,20 +1,16 @@
 package org.nutriGuideBuddy.infrastructure.nutritionx_api.service;
 
 import jakarta.annotation.PostConstruct;
-import java.math.BigDecimal;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import org.nutriGuideBuddy.features.food.dto.*;
-import org.nutriGuideBuddy.features.food.enums.AllowedCalorieUnits;
+
+import org.nutriGuideBuddy.features.meal.dto.MealFoodCreateRequest;
 import org.nutriGuideBuddy.infrastructure.exceptions.BadRequestException;
 import org.nutriGuideBuddy.infrastructure.nutritionx_api.dto.FoodItem;
 import org.nutriGuideBuddy.infrastructure.nutritionx_api.dto.ListFoodsResponse;
-import org.nutriGuideBuddy.infrastructure.nutritionx_api.utils.FoodInfoMapperUtils;
 import org.nutriGuideBuddy.infrastructure.nutritionx_api.utils.GetFoodsResponse;
-import org.nutriGuideBuddy.infrastructure.nutritionx_api.utils.NutrientMapperUtils;
-import org.nutriGuideBuddy.infrastructure.nutritionx_api.utils.ServingMapperUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.MediaType;
@@ -56,7 +52,7 @@ public class NutritionixApiService {
     webClient = webClientBuilder.build();
   }
 
-  public Mono<List<InsertFoodDto>> getCommonFoodBySearchTerm(String query) {
+  public Mono<List<MealFoodCreateRequest>> getCommonFoodBySearchTerm(String query) {
 
     if (query.isBlank() || query.isEmpty()) {
       return Mono.error(new BadRequestException("term is empty"));
@@ -79,7 +75,7 @@ public class NutritionixApiService {
         .map(list -> list.stream().map(this::toView).toList());
   }
 
-  public Mono<List<InsertFoodDto>> getBrandedFoodById(String id) {
+  public Mono<List<MealFoodCreateRequest>> getBrandedFoodById(String id) {
 
     if (id.isBlank() || id.isEmpty()) {
       return Mono.error(new BadRequestException("id is empty"));
@@ -115,16 +111,18 @@ public class NutritionixApiService {
         .bodyToMono(ListFoodsResponse.class);
   }
 
-  private InsertFoodDto toView(FoodItem item) {
-    CalorieView calorieView =
-        new CalorieView(
-            BigDecimal.valueOf(item.getNfCalories()), AllowedCalorieUnits.CALORIE.getSymbol());
-    FoodInfoView foodInfoView = FoodInfoMapperUtils.generateFoodInfo(item);
-    List<NutritionView> nutrients = NutrientMapperUtils.getNutrients(item);
-    List<ServingView> servings = ServingMapperUtils.getServings(item);
-    ServingView mainServing = ServingMapperUtils.getMainServing(item);
-    return new InsertFoodDto(
-        item.getFoodName(), calorieView, mainServing, foodInfoView, servings, nutrients);
+  private MealFoodCreateRequest toView(FoodItem item) {
+    //    CalorieView calorieView =
+    //        new CalorieView(
+    //            BigDecimal.valueOf(item.getNfCalories()),
+    // AllowedCalorieUnits.CALORIE.getSymbol());
+    //    FoodInfoView foodInfoView = FoodInfoMapperUtils.generateFoodInfo(item);
+    //    List<NutritionView> nutrients = NutrientMapperUtils.getNutrients(item);
+    //    List<ServingView> servings = ServingMapperUtils.getServings(item);
+    //    ServingView mainServing = ServingMapperUtils.getMainServing(item);
+    //    return new FoodCreateRequest(
+    //        item.getFoodName(), calorieView, mainServing, foodInfoView, servings, nutrients);
+    return null;
   }
 
   private Mono<? extends Throwable> handle400Response(ClientResponse response) {

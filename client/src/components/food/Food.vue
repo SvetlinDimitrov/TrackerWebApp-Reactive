@@ -91,7 +91,7 @@
 
 <script setup>
 import {computed, ref, watch} from 'vue';
-import {createNewNutrientArray} from "../../utils/food.js";
+import {createNewNutrientArray} from "../../utils/mealFood.js";
 import PieChart from "./PieChart.vue";
 
 const showNutrients = ref(false);
@@ -99,7 +99,7 @@ const showMoreDetails = ref(false);
 const showInfo = ref(false);
 const showMoreInfo = ref(false);
 const props = defineProps({
-  food: Object,
+  mealFood: Object,
   originalFood: Object
 })
 const formatNumber = (servingSize) => {
@@ -113,7 +113,7 @@ const formatNumber = (servingSize) => {
   }
 };
 
-const currentFood = ref(props.food);
+const currentFood = ref(props.mealFood);
 const originalFood = ref(props.originalFood);
 const servingSize = ref(currentFood.value.mainServing.amount);
 const allServingsAvailable = ref(currentFood.value.otherServing.map(serving => {

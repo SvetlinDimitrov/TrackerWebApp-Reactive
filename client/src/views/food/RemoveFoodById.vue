@@ -26,7 +26,7 @@ onMounted(async () => {
 
   try {
     await store.dispatch('removeFoodById', {mealId: mealId.value, foodId: foodId.value});
-    toast.add({severity: 'success', summary: 'Success', detail: 'food removed successfully', life: 3000});
+    toast.add({severity: 'success', summary: 'Success', detail: 'mealFood removed successfully', life: 3000});
     await router.push({name: 'Home'});
   } catch (e) {
     await router.push({name: 'Home'});

@@ -10,14 +10,13 @@ import org.nutriGuideBuddy.features.meal.repository.projection.MealProjection;
 @Mapper(
     componentModel = "spring",
     nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE,
-    uses = {FoodMapper.class})
+    uses = {MealFoodMapper.class})
 @DecoratedWith(MealMapperDecorator.class)
 public interface MealMapper {
 
   @Mapping(target = "name", source = "dto.name")
   Meal toEntity(MealCreateRequest dto);
 
-  @Mapping(target = "consumedCalories", ignore = true)
   @Mapping(target = "createdAt", ignore = true)
   @Mapping(target = "updateAt", ignore = true)
   MealView toView(MealProjection projection);

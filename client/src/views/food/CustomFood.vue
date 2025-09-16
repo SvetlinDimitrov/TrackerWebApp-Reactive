@@ -1,6 +1,6 @@
 <template>
-  <Food v-if="food && hardCopyOfCurrentFood"
-        :food="food"
+  <Food v-if="mealFood && hardCopyOfCurrentFood"
+        :mealFood="mealFood"
         :originalFood="hardCopyOfCurrentFood"
         @close="handleClose"
         @submit="handleSubmit"/>
@@ -12,14 +12,14 @@ import router from "../../router/index.js";
 import {useToast} from "primevue/usetoast"
 import {useStore} from "vuex";
 import {useRoute} from "vue-router";
-import Food from "../../components/food/Food.vue";
+import Food from "../../components/mealFood/Food.vue";
 
 const store = useStore();
 const route = useRoute();
 const toast = useToast();
 const mealId = ref(route.params.id);
 const foodId = ref(route.params.foodId);
-const food = ref(null);
+const mealFood = ref(null);
 const hardCopyOfCurrentFood = ref(null);
 
 onMounted(async () => {
@@ -32,8 +32,8 @@ onMounted(async () => {
   }
 
   try {
-    food.value = await store.dispatch("getCustomFoodById", foodId.value);
-    hardCopyOfCurrentFood.value = JSON.parse(JSON.stringify(food.value));
+    mealFood.value = await store.dispatch("getCustomFoodById", foodId.value);
+    hardCopyOfCurrentFood.value = JSON.parse(JSON.stringify(mealFood.value));
   } catch (error) {
     await router.push({name: 'Home'});
     toast.add({severity: 'error', summary: 'Error', detail: error.message, life: 3000});
@@ -44,10 +44,10 @@ const handleClose = () => {
   router.go(-1);
 };
 
-const handleSubmit = async (food) => {
+const handleSubmit = async (mealFood) => {
   const payload = {
     mealId: mealId.value,
-    food: food
+    mealFood: mealFood
   };
   try {
     await store.dispatch("addFoodIntoMeal", payload);

@@ -1,23 +1,25 @@
 package org.nutriGuideBuddy.features.record.utils;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
-import org.nutriGuideBuddy.features.food.enums.AllowedNutrients;
+import org.nutriGuideBuddy.features.shared.enums.AllowedNutrients;
 
 public class CalculateMacros {
 
   /*
   Calculate Macros:
-  Protein: 25% of 2946.647 calories = (0.25 × 2946.647) / 4 calories per gram = 183.29 grams
-  Carbohydrates: 50% of 2946.647 calories = (0.50 × 2946.647) / 4 calories per gram = 367.50 grams
-  Fats: 25% of 2946.647 calories = (0.25 × 2946.647) / 9 calories per gram = 109.29 grams
+  Protein: 25% of 2946.647 calorie = (0.25 × 2946.647) / 4 calorie per gram = 183.29 grams
+  Carbohydrates: 50% of 2946.647 calorie = (0.50 × 2946.647) / 4 calorie per gram = 367.50 grams
+  Fats: 25% of 2946.647 calorie = (0.25 × 2946.647) / 9 calorie per gram = 109.29 grams
   */
-  public static BigDecimal calculateMacros(
-      String name, BigDecimal dailyConsumedCalories, BigDecimal distributedMacros) {
-    BigDecimal raw = distributedMacros.multiply(dailyConsumedCalories);
-    return name.equals(AllowedNutrients.Protein.getNutrientName())
-            || name.equals(AllowedNutrients.Carbohydrate.getNutrientName())
-        ? raw.divide(BigDecimal.valueOf(4), RoundingMode.HALF_DOWN).setScale(0, RoundingMode.DOWN)
-        : raw.divide(BigDecimal.valueOf(9), RoundingMode.HALF_DOWN).setScale(0, RoundingMode.DOWN);
+  public static double calculateMacros(
+      String name, double dailyConsumedCalories, double distributedMacros) {
+    double raw = distributedMacros * dailyConsumedCalories;
+    double result;
+    if (name.equals(AllowedNutrients.Protein.getNutrientName())
+        || name.equals(AllowedNutrients.Carbohydrate.getNutrientName())) {
+      result = raw / 4.0;
+    } else {
+      result = raw / 9.0;
+    }
+    return Math.floor(result);
   }
 }
