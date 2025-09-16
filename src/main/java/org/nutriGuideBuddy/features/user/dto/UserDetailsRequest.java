@@ -1,9 +1,9 @@
-package org.nutriGuideBuddy.features.user_details.dto;
+package org.nutriGuideBuddy.features.user.dto;
 
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.Min;
-import org.nutriGuideBuddy.features.user_details.annotaions.ValidGender;
-import org.nutriGuideBuddy.features.user_details.annotaions.ValidWorkoutState;
+import org.nutriGuideBuddy.features.user.annotations.ValidGender;
+import org.nutriGuideBuddy.features.user.annotations.ValidWorkoutState;
 
 public record UserDetailsRequest(
     @DecimalMin(value = "0.1", message = "must be greater than 0") Double kilograms,

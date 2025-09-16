@@ -1,7 +1,7 @@
 package org.nutriGuideBuddy.infrastructure.security.access_validator;
 
 import lombok.RequiredArgsConstructor;
-import org.nutriGuideBuddy.features.meal.service.MealServiceImpl;
+import org.nutriGuideBuddy.features.meal.service.MealService;
 import org.nutriGuideBuddy.infrastructure.security.service.ReactiveUserDetailsServiceImpl;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Component;
@@ -11,7 +11,7 @@ import reactor.core.publisher.Mono;
 @RequiredArgsConstructor
 public class MealAccessValidator {
 
-  private final MealServiceImpl service;
+  private final MealService service;
 
   public Mono<Void> validateAccess(Long id) {
     return ReactiveUserDetailsServiceImpl.getPrincipalId()

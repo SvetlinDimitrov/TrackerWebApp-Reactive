@@ -1,9 +1,9 @@
-package org.nutriGuideBuddy.features.user_details.entity;
+package org.nutriGuideBuddy.features.user.entity;
 
 import lombok.*;
 import org.nutriGuideBuddy.features.shared.entity.BaseEntity;
-import org.nutriGuideBuddy.features.user_details.enums.Gender;
-import org.nutriGuideBuddy.features.user_details.enums.WorkoutState;
+import org.nutriGuideBuddy.features.user.enums.Gender;
+import org.nutriGuideBuddy.features.user.enums.WorkoutState;
 import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
 

@@ -1,7 +1,7 @@
 package org.nutriGuideBuddy.features.record.utils;
 
 import org.nutriGuideBuddy.features.record.enums.Goals;
-import org.nutriGuideBuddy.features.user_details.enums.WorkoutState;
+import org.nutriGuideBuddy.features.user.enums.WorkoutState;
 
 public class DailyCaloriesCalculator {
 

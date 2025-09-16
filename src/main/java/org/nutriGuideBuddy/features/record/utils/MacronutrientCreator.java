@@ -5,7 +5,7 @@ import java.util.Set;
 import org.nutriGuideBuddy.features.shared.dto.NutritionIntakeView;
 import org.nutriGuideBuddy.features.shared.enums.AllowedNutrients;
 import org.nutriGuideBuddy.features.record.dto.DistributedMacros;
-import org.nutriGuideBuddy.features.user_details.enums.Gender;
+import org.nutriGuideBuddy.features.user.enums.Gender;
 
 public class MacronutrientCreator {
 

@@ -26,7 +26,7 @@ public interface UserService {
 
   Mono<Void> modifyPassword(ChangePasswordRequest dto, String token);
 
-  Mono<User> findByEmailOrThrow(String email);
+  Mono<User> findByEmail(String email);
 
   Mono<User> findByIOrThrow(Long id);
 

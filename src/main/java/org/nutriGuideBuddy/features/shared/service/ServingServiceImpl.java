@@ -1,5 +1,7 @@
 package org.nutriGuideBuddy.features.shared.service;
 
+import static org.nutriGuideBuddy.infrastructure.exceptions.ExceptionMessages.EXACTLY_ONE_MAIN_SERVING_AFTER_UPDATE;
+
 import java.util.Set;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -7,6 +9,7 @@ import org.nutriGuideBuddy.features.shared.dto.ServingCreateRequest;
 import org.nutriGuideBuddy.features.shared.dto.ServingUpdateRequest;
 import org.nutriGuideBuddy.features.shared.entity.Serving;
 import org.nutriGuideBuddy.features.shared.repository.ServingRepository;
+import org.nutriGuideBuddy.infrastructure.exceptions.BadRequestException;
 import org.nutriGuideBuddy.infrastructure.mappers.ServingMapper;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
@@ -27,32 +30,35 @@ public class ServingServiceImpl {
   }
 
   public Flux<Serving> updateAndFetchAll(Set<ServingUpdateRequest> requests, Set<Long> fetchIds) {
-    if (requests == null || requests.isEmpty() || fetchIds == null || fetchIds.isEmpty()) {
-      return Flux.empty();
-    }
-
-    Set<Long> requestIds =
-        requests.stream().map(ServingUpdateRequest::id).collect(Collectors.toSet());
-
     return repository
-        .findAllById(requestIds)
+        .findAllById(fetchIds)
         .collectList()
         .flatMapMany(
             existingEntities -> {
-              var requestMap =
-                  requests.stream().collect(Collectors.toMap(ServingUpdateRequest::id, req -> req));
+              if (requests != null && !requests.isEmpty()) {
+                var requestMap =
+                    requests.stream()
+                        .collect(Collectors.toMap(ServingUpdateRequest::id, req -> req));
 
-              existingEntities.forEach(
-                  entity -> {
-                    ServingUpdateRequest req = requestMap.get(entity.getId());
-                    if (req != null) {
-                      mapper.update(req, entity);
-                    }
-                  });
+                existingEntities.forEach(
+                    entity -> {
+                      ServingUpdateRequest req = requestMap.get(entity.getId());
+                      if (req != null) {
+                        mapper.update(req, entity);
+                      }
+                    });
+              }
 
-              return repository
-                  .saveAll(existingEntities)
-                  .thenMany(repository.findAllById(fetchIds));
+              long mainCount =
+                  existingEntities.stream().filter(s -> Boolean.TRUE.equals(s.getMain())).count();
+
+              if (mainCount != 1) {
+                return Flux.error(
+                    new BadRequestException(
+                        String.format(EXACTLY_ONE_MAIN_SERVING_AFTER_UPDATE, mainCount)));
+              }
+
+              return repository.saveAll(existingEntities);
             });
   }
 

@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class ServingProjection {
 
+  private Long id;
   private Double amount;
   private Double servingWeight;
   private String metric;

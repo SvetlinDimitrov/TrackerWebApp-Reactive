@@ -13,4 +13,7 @@ public class ExceptionMessages {
       "Serving with id %s does not belong to meal food with id %s";
   public static final String NUTRITION_NOT_BELONG_TO_MEAL_FOOD =
       "Nutrition with ids %s do not belong to meal food with id %s";
+  public static final String EXACTLY_ONE_MAIN_SERVING_AFTER_UPDATE =
+      "After update, exactly one serving must be marked as main. Found: %s";
+
 }

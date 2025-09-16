@@ -7,23 +7,16 @@ import org.nutriGuideBuddy.features.shared.dto.ServingCreateRequest;
 
 public class OnlyOneMainServingValidator
     implements ConstraintValidator<OnlyOneMainServing, Set<ServingCreateRequest>> {
+
   @Override
   public boolean isValid(Set<ServingCreateRequest> servings, ConstraintValidatorContext context) {
     if (servings == null || servings.isEmpty()) {
-      context.disableDefaultConstraintViolation();
-      context
-          .buildConstraintViolationWithTemplate("Exactly one serving must be marked as main")
-          .addConstraintViolation();
-      return false;
+      return true;
     }
-    long mainCount = servings.stream().filter(ServingCreateRequest::main).count();
-    if (mainCount != 1) {
-      context.disableDefaultConstraintViolation();
-      context
-          .buildConstraintViolationWithTemplate("Exactly one serving must be marked as main")
-          .addConstraintViolation();
-      return false;
-    }
-    return true;
+
+    long mainCount =
+        servings.stream().filter(s -> s != null && Boolean.TRUE.equals(s.main())).count();
+
+    return mainCount == 1;
   }
 }

@@ -19,6 +19,6 @@ public class MealFoodProjection {
   private String picture;
   private Double calorieAmount;
   private String calorieUnit;
-  private List<ServingProjection> serving = new ArrayList<>();
+  private List<ServingProjection> servings = new ArrayList<>();
   private List<NutritionProjection> nutritions = new ArrayList<>();
 }

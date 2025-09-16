@@ -23,44 +23,42 @@ import reactor.core.publisher.Mono;
 
 @Service
 @RequiredArgsConstructor
-public class MealFoodServiceImp {
+public class MealFoodServiceImp implements MealFoodService {
 
   private final MealFoodRepository mealFoodRepository;
   private final CustomMealFoodRepository customMealFoodRepository;
-  private final MealFoodServingServiceImpl mealFoodServingService;
-  private final MealFoodNutritionServiceImpl mealFoodNutritionService;
+  private final MealFoodServingService mealFoodServingService;
+  private final MealFoodNutritionService mealFoodNutritionService;
   private final MealFoodMapper foodMapper;
-  private final TransactionalOperator transactionalOperator;
+  private final TransactionalOperator operator;
 
   public Mono<MealFoodView> create(MealFoodCreateRequest dto, Long mealId) {
     MealFood mealFood = foodMapper.toEntity(dto);
     mealFood.setMealId(mealId);
 
-    return transactionalOperator.transactional(
-        mealFoodRepository
-            .save(mealFood)
-            .flatMap(
-                savedMealFood -> {
-                  Long foodId = savedMealFood.getId();
+    return mealFoodRepository
+        .save(mealFood)
+        .flatMap(
+            savedMealFood -> {
+              Long foodId = savedMealFood.getId();
 
-                  Flux<ServingView> servingFlux =
-                      (dto.servings() != null)
-                          ? mealFoodServingService.create(dto.servings(), foodId)
-                          : Flux.empty();
+              Flux<ServingView> servingFlux =
+                  (dto.servings() != null)
+                      ? mealFoodServingService.create(dto.servings(), foodId)
+                      : Flux.empty();
 
-                  Flux<NutritionView> nutritionFlux =
-                      (dto.nutrients() != null)
-                          ? mealFoodNutritionService.create(dto.nutrients(), foodId)
-                          : Flux.empty();
+              Flux<NutritionView> nutritionFlux =
+                  (dto.nutrients() != null)
+                      ? mealFoodNutritionService.create(dto.nutrients(), foodId)
+                      : Flux.empty();
 
-                  return Mono.zip(servingFlux.collectList(), nutritionFlux.collectList())
-                      .map(
-                          tuple ->
-                              foodMapper.toView(
-                                  savedMealFood,
-                                  Set.copyOf(tuple.getT1()),
-                                  Set.copyOf(tuple.getT2())));
-                }));
+              return Mono.zip(servingFlux.collectList(), nutritionFlux.collectList())
+                  .map(
+                      tuple ->
+                          foodMapper.toView(
+                              savedMealFood, Set.copyOf(tuple.getT1()), Set.copyOf(tuple.getT2())));
+            })
+        .as(operator::transactional);
   }
 
   public Flux<MealFoodView> getAll(Long mealId, MealFoodFilter filter) {
@@ -74,15 +72,15 @@ public class MealFoodServiceImp {
   }
 
   public Mono<Void> delete(Long id, Long mealId) {
-    return transactionalOperator.transactional(
-        Mono.defer(
+    return Mono.defer(
             () -> {
               Mono<Void> deleteServings = mealFoodServingService.deleteServingsForFoodId(id);
               Mono<Void> deleteNutritions = mealFoodNutritionService.deleteNutritionsForFoodId(id);
               Mono<Void> deleteMealFood = mealFoodRepository.deleteByIdAndMealId(id, mealId);
 
               return Mono.when(deleteServings, deleteNutritions).then(deleteMealFood);
-            }));
+            })
+        .as(operator::transactional);
   }
 
   // Do not call the repository delete method here.
@@ -93,58 +91,58 @@ public class MealFoodServiceImp {
       return Mono.empty();
     }
 
-    return transactionalOperator.transactional(
-        mealFoodRepository
-            .findByMealIdIn(mealIds)
-            .collectList()
-            .flatMap(
-                mealFoods -> {
-                  if (mealFoods.isEmpty()) {
-                    return Mono.empty();
-                  }
+    return mealFoodRepository
+        .findByMealIdIn(mealIds)
+        .collectList()
+        .flatMap(
+            mealFoods -> {
+              if (mealFoods.isEmpty()) {
+                return Mono.empty();
+              }
 
-                  Set<Long> mealFoodIds =
-                      mealFoods.stream().map(MealFood::getId).collect(Collectors.toSet());
+              Set<Long> mealFoodIds =
+                  mealFoods.stream().map(MealFood::getId).collect(Collectors.toSet());
 
-                  Mono<Void> deleteServings =
-                      mealFoodServingService.deleteServingsForFoodIdIn(mealFoodIds);
-                  Mono<Void> deleteNutritions =
-                      mealFoodNutritionService.deleteNutritionsForFoodIdIn(mealFoodIds);
+              Mono<Void> deleteServings =
+                  mealFoodServingService.deleteServingsForFoodIdIn(mealFoodIds);
+              Mono<Void> deleteNutritions =
+                  mealFoodNutritionService.deleteNutritionsForFoodIdIn(mealFoodIds);
 
-                  return Mono.when(deleteServings, deleteNutritions).then();
-                }));
+              return Mono.when(deleteServings, deleteNutritions).then();
+            })
+        .as(operator::transactional);
   }
 
   public Mono<MealFoodView> update(MealFoodUpdateRequest dto, Long foodId, Long mealId) {
-    return transactionalOperator.transactional(
-        findByIdAndMealIdOrThrow(foodId, mealId)
-            .flatMap(
-                existingMealFood -> {
-                  foodMapper.update(dto, existingMealFood);
+    return findByIdAndMealIdOrThrow(foodId, mealId)
+        .flatMap(
+            existingMealFood -> {
+              foodMapper.update(dto, existingMealFood);
 
-                  return mealFoodRepository
-                      .save(existingMealFood)
-                      .flatMap(
-                          savedMealFood -> {
-                            Flux<ServingView> servingFlux =
-                                (dto.servings() != null)
-                                    ? mealFoodServingService.update(dto.servings(), foodId)
-                                    : Flux.empty();
+              return mealFoodRepository
+                  .save(existingMealFood)
+                  .flatMap(
+                      savedMealFood -> {
+                        Flux<ServingView> servingFlux =
+                            (dto.servings() != null)
+                                ? mealFoodServingService.update(dto.servings(), foodId)
+                                : Flux.empty();
 
-                            Flux<NutritionView> nutritionFlux =
-                                (dto.nutrients() != null)
-                                    ? mealFoodNutritionService.update(dto.nutrients(), foodId)
-                                    : Flux.empty();
+                        Flux<NutritionView> nutritionFlux =
+                            (dto.nutrients() != null)
+                                ? mealFoodNutritionService.update(dto.nutrients(), foodId)
+                                : Flux.empty();
 
-                            return Mono.zip(servingFlux.collectList(), nutritionFlux.collectList())
-                                .map(
-                                    tuple ->
-                                        foodMapper.toView(
-                                            savedMealFood,
-                                            Set.copyOf(tuple.getT1()),
-                                            Set.copyOf(tuple.getT2())));
-                          });
-                }));
+                        return Mono.zip(servingFlux.collectList(), nutritionFlux.collectList())
+                            .map(
+                                tuple ->
+                                    foodMapper.toView(
+                                        savedMealFood,
+                                        Set.copyOf(tuple.getT1()),
+                                        Set.copyOf(tuple.getT2())));
+                      });
+            })
+        .as(operator::transactional);
   }
 
   public Mono<Boolean> existsByIdAndMealId(Long id, Long mealId) {

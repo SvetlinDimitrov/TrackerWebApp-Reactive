@@ -3,7 +3,7 @@ package org.nutriGuideBuddy.web;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.nutriGuideBuddy.features.meal.dto.*;
-import org.nutriGuideBuddy.features.meal.service.MealServiceImpl;
+import org.nutriGuideBuddy.features.meal.service.MealService;
 import org.nutriGuideBuddy.features.user.enums.UserRole;
 import org.nutriGuideBuddy.infrastructure.security.access_validator.MealAccessValidator;
 import org.nutriGuideBuddy.infrastructure.security.access_validator.UserAccessValidator;
@@ -18,7 +18,7 @@ import reactor.core.publisher.Mono;
 @RequestMapping("/api/v1/meals")
 public class MealController {
 
-  private final MealServiceImpl service;
+  private final MealService service;
   private final MealAccessValidator mealAccessValidator;
   private final UserDetailsAccessValidator userDetailsAccessValidator;
   private final UserAccessValidator userAccessValidator;

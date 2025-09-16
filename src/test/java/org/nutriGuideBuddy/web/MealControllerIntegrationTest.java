@@ -12,8 +12,8 @@
 // import org.nutriGuideBuddy.domain.dto.user.UserDetailsDto;
 // import org.nutriGuideBuddy.features.shared.enums.AllowedCalorieUnits;
 // import org.nutriGuideBuddy.features.shared.enums.AllowedNutrients;
-// import org.nutriGuideBuddy.features.user_details.enums.Gender;
-// import org.nutriGuideBuddy.features.user_details.enums.WorkoutState;
+// import org.nutriGuideBuddy.features.user.enums.Gender;
+// import org.nutriGuideBuddy.features.user.enums.WorkoutState;
 // import org.nutriGuideBuddy.enums.Credentials;
 // import org.nutriGuideBuddy.features.user.repository.UserRepository;
 // import org.nutriGuideBuddy.config.security.JWTUtilEmailValidation;

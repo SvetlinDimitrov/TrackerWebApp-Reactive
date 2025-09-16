@@ -1,8 +1,8 @@
-package org.nutriGuideBuddy.features.user_details.service;
+package org.nutriGuideBuddy.features.user.service;
 
-import org.nutriGuideBuddy.features.user_details.dto.UserDetailsRequest;
-import org.nutriGuideBuddy.features.user_details.dto.UserDetailsView;
-import org.nutriGuideBuddy.features.user_details.entity.UserDetails;
+import org.nutriGuideBuddy.features.user.dto.UserDetailsRequest;
+import org.nutriGuideBuddy.features.user.dto.UserDetailsView;
+import org.nutriGuideBuddy.features.user.entity.UserDetails;
 import reactor.core.publisher.Mono;
 
 public interface UserDetailsService {

@@ -9,7 +9,7 @@ import org.nutriGuideBuddy.features.user.dto.UserUpdateRequest;
 import org.nutriGuideBuddy.features.user.dto.UserView;
 import org.nutriGuideBuddy.features.user.dto.UserWithDetailsView;
 import org.nutriGuideBuddy.features.user.entity.User;
-import org.nutriGuideBuddy.features.user_details.dto.UserDetailsView;
+import org.nutriGuideBuddy.features.user.dto.UserDetailsView;
 import org.nutriGuideBuddy.infrastructure.security.dto.ChangePasswordRequest;
 
 @Mapper(

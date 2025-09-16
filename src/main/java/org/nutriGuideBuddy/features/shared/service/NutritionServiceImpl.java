@@ -27,10 +27,6 @@ public class NutritionServiceImpl {
   }
 
   public Flux<Nutrition> updateAndFetch(Set<NutritionUpdateRequest> requests, Set<Long> fetchIds) {
-    if (requests == null || requests.isEmpty() || fetchIds == null || fetchIds.isEmpty()) {
-      return Flux.empty();
-    }
-
     Set<Long> requestIds =
         requests.stream().map(NutritionUpdateRequest::id).collect(Collectors.toSet());
 

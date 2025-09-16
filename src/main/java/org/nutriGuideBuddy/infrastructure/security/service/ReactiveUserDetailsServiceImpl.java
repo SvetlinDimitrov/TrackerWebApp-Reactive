@@ -1,12 +1,15 @@
 package org.nutriGuideBuddy.infrastructure.security.service;
 
+import static org.nutriGuideBuddy.infrastructure.exceptions.ExceptionMessages.USER_NOT_FOUND_BY_EMAIL;
+
+import org.nutriGuideBuddy.features.user.service.UserDetailsService;
 import org.nutriGuideBuddy.features.user.service.UserService;
-import org.nutriGuideBuddy.features.user_details.service.UserDetailsService;
 import org.nutriGuideBuddy.infrastructure.exceptions.ExceptionMessages;
 import org.nutriGuideBuddy.infrastructure.exceptions.NotFoundException;
 import org.nutriGuideBuddy.infrastructure.security.config.UserPrincipal;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.ReactiveSecurityContextHolder;
@@ -24,7 +27,9 @@ public class ReactiveUserDetailsServiceImpl implements ReactiveUserDetailsServic
   @Override
   public Mono<UserDetails> findByUsername(String email) {
     return userService
-        .findByEmailOrThrow(email)
+        .findByEmail(email)
+        .switchIfEmpty(
+            Mono.error(new AccessDeniedException(String.format(USER_NOT_FOUND_BY_EMAIL, email))))
         .flatMap(
             user ->
                 userDetailsService

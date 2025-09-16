@@ -32,7 +32,7 @@ public interface MealFoodMapper {
   @Mapping(target = "calorieUnit", source = "entity.calorieUnit")
   MealFoodView toView(
       MealFood entity,
-      Set<ServingView> servingViews,
+      Set<ServingView> servings,
       Set<NutritionView> nutritions);
 
   FoodShortView toView(MealFoodShortProjection projection);

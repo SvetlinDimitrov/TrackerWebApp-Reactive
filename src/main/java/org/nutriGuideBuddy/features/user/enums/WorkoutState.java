@@ -1,4 +1,4 @@
-package org.nutriGuideBuddy.features.user_details.enums;
+package org.nutriGuideBuddy.features.user.enums;
 
 import java.util.Arrays;
 import java.util.stream.Collectors;

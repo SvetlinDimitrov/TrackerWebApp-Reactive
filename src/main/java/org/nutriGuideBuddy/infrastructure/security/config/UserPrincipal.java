@@ -8,7 +8,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 public record UserPrincipal(
-    User user, org.nutriGuideBuddy.features.user_details.entity.UserDetails details)
+    User user, org.nutriGuideBuddy.features.user.entity.UserDetails details)
     implements UserDetails {
 
   @Override

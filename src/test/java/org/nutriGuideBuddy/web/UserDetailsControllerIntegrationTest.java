@@ -6,9 +6,9 @@
 // import org.nutriGuideBuddy.domain.dto.user.JwtResponse;
 // import org.nutriGuideBuddy.domain.dto.user.UserRequest;
 // import org.nutriGuideBuddy.domain.dto.user.UserDetailsDto;
-// import org.nutriGuideBuddy.features.user_details.dto.UserDetailsView;
-// import org.nutriGuideBuddy.features.user_details.enums.Gender;
-// import org.nutriGuideBuddy.features.user_details.enums.WorkoutState;
+// import org.nutriGuideBuddy.features.user.dto.UserDetailsView;
+// import org.nutriGuideBuddy.features.user.enums.Gender;
+// import org.nutriGuideBuddy.features.user.enums.WorkoutState;
 // import org.nutriGuideBuddy.enums.Credentials;
 // import org.nutriGuideBuddy.features.user.repository.UserRepository;
 // import org.nutriGuideBuddy.config.security.JWTUtilEmailValidation;

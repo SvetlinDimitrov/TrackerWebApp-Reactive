@@ -9,10 +9,10 @@ import java.security.Key;
 import java.time.ZoneId;
 import java.util.Date;
 import lombok.extern.slf4j.Slf4j;
-import org.nutriGuideBuddy.infrastructure.exceptions.BadRequestException;
 import org.nutriGuideBuddy.infrastructure.exceptions.ExceptionMessages;
 import org.nutriGuideBuddy.infrastructure.security.dto.JwtToken;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Mono;
 
@@ -64,6 +64,6 @@ public class JwtTokenServiceImpl implements JwtTokenService {
       log.warn("JWT token compact of handler are invalid: {}", e.getMessage());
     }
 
-    return Mono.error(new BadRequestException(ExceptionMessages.INVALID_JWT_TOKEN));
+    return Mono.error(new AccessDeniedException(ExceptionMessages.INVALID_JWT_TOKEN));
   }
 }

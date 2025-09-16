@@ -6,7 +6,7 @@ import org.nutriGuideBuddy.features.meal.dto.MealFoodCreateRequest;
 import org.nutriGuideBuddy.features.meal.dto.MealFoodFilter;
 import org.nutriGuideBuddy.features.meal.dto.MealFoodUpdateRequest;
 import org.nutriGuideBuddy.features.meal.dto.MealFoodView;
-import org.nutriGuideBuddy.features.meal.service.MealFoodServiceImp;
+import org.nutriGuideBuddy.features.meal.service.MealFoodService;
 import org.nutriGuideBuddy.infrastructure.security.access_validator.MealAccessValidator;
 import org.nutriGuideBuddy.infrastructure.security.access_validator.MealFoodAccessValidator;
 import org.nutriGuideBuddy.infrastructure.security.access_validator.UserDetailsAccessValidator;
@@ -20,7 +20,7 @@ import reactor.core.publisher.Mono;
 @RequestMapping("/api/v1/meals/{mealId}/food")
 public class MealFoodController {
 
-  private final MealFoodServiceImp mealFoodService;
+  private final MealFoodService mealFoodService;
   private final MealAccessValidator mealAccessValidator;
   private final MealFoodAccessValidator mealFoodAccessValidator;
   private final UserDetailsAccessValidator userDetailsAccessValidator;
@@ -78,10 +78,10 @@ public class MealFoodController {
 
   @DeleteMapping("/{id}")
   @ResponseStatus(HttpStatus.NO_CONTENT)
-  public Mono<Void> deleteFood(@PathVariable Long meaId, @PathVariable Long id) {
+  public Mono<Void> deleteFood(@PathVariable Long mealId, @PathVariable Long id) {
     return userDetailsAccessValidator
         .validateFullyRegistered()
-        .then(mealFoodAccessValidator.validateFood(meaId, id))
-        .then(mealFoodService.delete(id, meaId));
+        .then(mealFoodAccessValidator.validateFood(mealId, id))
+        .then(mealFoodService.delete(id, mealId));
   }
 }

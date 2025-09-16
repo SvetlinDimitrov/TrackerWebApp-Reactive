@@ -2,9 +2,9 @@ package org.nutriGuideBuddy.infrastructure.mappers;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;
-import org.nutriGuideBuddy.features.user_details.dto.UserDetailsRequest;
-import org.nutriGuideBuddy.features.user_details.dto.UserDetailsView;
-import org.nutriGuideBuddy.features.user_details.entity.UserDetails;
+import org.nutriGuideBuddy.features.user.dto.UserDetailsRequest;
+import org.nutriGuideBuddy.features.user.dto.UserDetailsView;
+import org.nutriGuideBuddy.features.user.entity.UserDetails;
 
 @Mapper(
     componentModel = "spring",

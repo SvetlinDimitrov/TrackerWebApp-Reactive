@@ -5,7 +5,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.NullValuePropertyMappingStrategy;
 import org.nutriGuideBuddy.features.user.entity.User;
-import org.nutriGuideBuddy.features.user_details.entity.UserDetails;
+import org.nutriGuideBuddy.features.user.entity.UserDetails;
 import org.nutriGuideBuddy.infrastructure.security.dto.AuthenticationResponse;
 import org.nutriGuideBuddy.infrastructure.security.dto.JwtToken;
 

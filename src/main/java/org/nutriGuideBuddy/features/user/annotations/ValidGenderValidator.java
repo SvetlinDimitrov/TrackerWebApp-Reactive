@@ -1,22 +1,24 @@
-package org.nutriGuideBuddy.features.user_details.annotaions;
+package org.nutriGuideBuddy.features.user.annotations;
 
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
-import org.nutriGuideBuddy.features.user_details.enums.WorkoutState;
+import org.nutriGuideBuddy.features.user.enums.Gender;
 
-public class ValidWorkoutStateValidator implements ConstraintValidator<ValidWorkoutState, String> {
+public class ValidGenderValidator implements ConstraintValidator<ValidGender, String> {
   @Override
   public boolean isValid(String value, ConstraintValidatorContext context) {
-    if (value == null || value.isBlank()) return true;
+    if (value == null || value.isEmpty()) {
+      return true;
+    }
 
     try {
-      WorkoutState.valueOf(value.toUpperCase());
+      Gender.valueOf(value.toUpperCase());
       return true;
     } catch (IllegalArgumentException e) {
       context.disableDefaultConstraintViolation();
       context
           .buildConstraintViolationWithTemplate(
-              "Invalid workout state. Valid options are: " + WorkoutState.validValues())
+              "Invalid gender. Valid options are: " + Gender.validValues())
           .addConstraintViolation();
       return false;
     }

@@ -15,16 +15,18 @@ import org.nutriGuideBuddy.features.shared.service.ServingServiceImpl;
 import org.nutriGuideBuddy.infrastructure.exceptions.BadRequestException;
 import org.nutriGuideBuddy.infrastructure.mappers.ServingMapper;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.reactive.TransactionalOperator;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @Service
 @RequiredArgsConstructor
-public class MealFoodServingServiceImpl {
+public class MealFoodServingServiceImpl implements MealFoodServingService {
 
   private final MealFoodServingRepository repository;
   private final ServingServiceImpl servingService;
   private final ServingMapper mapper;
+  private final TransactionalOperator operator;
 
   public Flux<ServingView> create(Set<ServingCreateRequest> requests, Long foodId) {
     return servingService
@@ -36,17 +38,15 @@ public class MealFoodServingServiceImpl {
                   servings.stream()
                       .map(serving -> new MealFoodServing(foodId, serving.getId()))
                       .toList();
+
               return repository
                   .saveAll(mealFoodServings)
                   .thenMany(Flux.fromIterable(servings).map(mapper::toView));
-            });
+            })
+        .as(operator::transactional);
   }
 
   public Flux<ServingView> update(Set<ServingUpdateRequest> requests, Long foodId) {
-    if (requests == null || requests.isEmpty()) {
-      return Flux.empty();
-    }
-
     Set<Long> ids = requests.stream().map(ServingUpdateRequest::id).collect(Collectors.toSet());
 
     return repository
@@ -56,16 +56,19 @@ public class MealFoodServingServiceImpl {
         .flatMapMany(
             existingServingIds -> {
               HashSet<Long> existingServingIdsSet = new HashSet<>(existingServingIds);
+
               boolean allBelong = existingServingIdsSet.containsAll(ids);
               if (!allBelong) {
                 return Flux.error(
                     new BadRequestException(
                         String.format(SERVING_NOT_BELONG_TO_MEAL_FOOD, ids, foodId)));
               }
+
               return servingService
                   .updateAndFetchAll(requests, existingServingIdsSet)
                   .map(mapper::toView);
-            });
+            })
+        .as(operator::transactional);
   }
 
   public Mono<Void> deleteServingsForFoodId(Long foodId) {
@@ -84,7 +87,8 @@ public class MealFoodServingServiceImpl {
                       .collect(Collectors.toSet());
 
               return servingService.delete(servingIds);
-            });
+            })
+        .as(operator::transactional);
   }
 
   public Mono<Void> deleteServingsForFoodIdIn(Set<Long> foodIds) {
@@ -96,17 +100,18 @@ public class MealFoodServingServiceImpl {
         .findByMealFoodIdIn(foodIds)
         .collectList()
         .flatMap(
-            mealFoodNutritions -> {
-              if (mealFoodNutritions.isEmpty()) {
+            mealFoodServings -> {
+              if (mealFoodServings.isEmpty()) {
                 return Mono.empty();
               }
 
               Set<Long> servingIds =
-                  mealFoodNutritions.stream()
+                  mealFoodServings.stream()
                       .map(MealFoodServing::getServingId)
                       .collect(Collectors.toSet());
 
               return servingService.delete(servingIds);
-            });
+            })
+        .as(operator::transactional);
   }
 }

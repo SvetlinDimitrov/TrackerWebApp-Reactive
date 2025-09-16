@@ -1,4 +1,4 @@
-package org.nutriGuideBuddy.features.user_details.annotaions;
+package org.nutriGuideBuddy.features.user.annotations;
 
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;

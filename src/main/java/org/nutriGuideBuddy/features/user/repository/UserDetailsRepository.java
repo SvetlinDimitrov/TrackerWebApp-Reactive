@@ -1,6 +1,6 @@
-package org.nutriGuideBuddy.features.user_details.repository;
+package org.nutriGuideBuddy.features.user.repository;
 
-import org.nutriGuideBuddy.features.user_details.entity.UserDetails;
+import org.nutriGuideBuddy.features.user.entity.UserDetails;
 import org.springframework.data.r2dbc.repository.R2dbcRepository;
 import reactor.core.publisher.Mono;
 

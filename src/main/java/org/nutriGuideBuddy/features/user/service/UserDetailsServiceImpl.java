@@ -1,17 +1,18 @@
-package org.nutriGuideBuddy.features.user_details.service;
+package org.nutriGuideBuddy.features.user.service;
 
 import static org.nutriGuideBuddy.infrastructure.exceptions.ExceptionMessages.*;
 
 import lombok.RequiredArgsConstructor;
-import org.nutriGuideBuddy.features.user_details.dto.UserDetailsRequest;
-import org.nutriGuideBuddy.features.user_details.dto.UserDetailsView;
-import org.nutriGuideBuddy.features.user_details.entity.UserDetails;
-import org.nutriGuideBuddy.features.user_details.repository.UserDetailsRepository;
+import org.nutriGuideBuddy.features.user.dto.UserDetailsRequest;
+import org.nutriGuideBuddy.features.user.dto.UserDetailsView;
+import org.nutriGuideBuddy.features.user.entity.UserDetails;
+import org.nutriGuideBuddy.features.user.repository.UserDetailsRepository;
 import org.nutriGuideBuddy.infrastructure.exceptions.NotFoundException;
 import org.nutriGuideBuddy.infrastructure.mappers.UserDetailsMapper;
 import org.nutriGuideBuddy.infrastructure.security.config.UserPrincipal;
 import org.nutriGuideBuddy.infrastructure.security.service.ReactiveUserDetailsServiceImpl;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.reactive.TransactionalOperator;
 import reactor.core.publisher.Mono;
 
 @Component
@@ -20,12 +21,13 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
   private final UserDetailsRepository repository;
   private final UserDetailsMapper mapper;
+  private final TransactionalOperator operator;
 
   @Override
   public Mono<UserDetailsView> create(Long userId) {
     UserDetails entity = new UserDetails();
     entity.setUserId(userId);
-    return repository.save(entity).map(mapper::toView);
+    return repository.save(entity).map(mapper::toView).as(operator::transactional);
   }
 
   @Override
@@ -53,7 +55,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
               mapper.update(updateDto, entity);
               return repository.save(entity);
             })
-        .map(mapper::toView);
+        .map(mapper::toView)
+        .as(operator::transactional);
   }
 
   @Override

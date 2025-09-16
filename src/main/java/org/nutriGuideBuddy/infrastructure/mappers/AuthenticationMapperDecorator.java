@@ -2,7 +2,7 @@ package org.nutriGuideBuddy.infrastructure.mappers;
 
 import org.nutriGuideBuddy.features.user.dto.UserWithDetailsView;
 import org.nutriGuideBuddy.features.user.entity.User;
-import org.nutriGuideBuddy.features.user_details.entity.UserDetails;
+import org.nutriGuideBuddy.features.user.entity.UserDetails;
 import org.nutriGuideBuddy.infrastructure.security.dto.AuthenticationResponse;
 import org.nutriGuideBuddy.infrastructure.security.dto.JwtToken;
 import org.springframework.beans.factory.annotation.Autowired;

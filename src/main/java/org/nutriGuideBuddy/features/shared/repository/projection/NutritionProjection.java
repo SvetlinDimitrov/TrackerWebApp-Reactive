@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class NutritionProjection {
 
+  private Long id;
   private String name;
   private String unit;
   private Double amount;

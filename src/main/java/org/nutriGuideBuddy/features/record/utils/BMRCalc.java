@@ -1,6 +1,6 @@
 package org.nutriGuideBuddy.features.record.utils;
 
-import org.nutriGuideBuddy.features.user_details.enums.Gender;
+import org.nutriGuideBuddy.features.user.enums.Gender;
 
 public class BMRCalc {
 

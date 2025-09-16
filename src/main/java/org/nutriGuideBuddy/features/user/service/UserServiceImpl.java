@@ -4,12 +4,11 @@ import static org.nutriGuideBuddy.infrastructure.exceptions.ExceptionMessages.*;
 
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
-import org.nutriGuideBuddy.features.meal.service.MealServiceImpl;
+import org.nutriGuideBuddy.features.meal.service.MealService;
 import org.nutriGuideBuddy.features.user.dto.*;
 import org.nutriGuideBuddy.features.user.entity.User;
 import org.nutriGuideBuddy.features.user.repository.UserCustomRepository;
 import org.nutriGuideBuddy.features.user.repository.UserRepository;
-import org.nutriGuideBuddy.features.user_details.service.UserDetailsService;
 import org.nutriGuideBuddy.infrastructure.exceptions.NotFoundException;
 import org.nutriGuideBuddy.infrastructure.exceptions.ValidationException;
 import org.nutriGuideBuddy.infrastructure.mappers.UserMapper;
@@ -17,6 +16,7 @@ import org.nutriGuideBuddy.infrastructure.security.dto.ChangePasswordRequest;
 import org.nutriGuideBuddy.infrastructure.security.service.JwtEmailVerificationService;
 import org.nutriGuideBuddy.infrastructure.security.service.ReactiveUserDetailsServiceImpl;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.reactive.TransactionalOperator;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -24,12 +24,13 @@ import reactor.core.publisher.Mono;
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
+  private final MealService mealService;
   private final JwtEmailVerificationService emailVerificationService;
   private final UserDetailsService userDetailsService;
-  private final MealServiceImpl mealService;
   private final UserRepository repository;
   private final UserCustomRepository customRepository;
   private final UserMapper userMapper;
+  private final TransactionalOperator operator;
 
   @Override
   public Flux<UserView> getAll(UserFilter filter) {
@@ -86,7 +87,8 @@ public class UserServiceImpl implements UserService {
                 repository
                     .save(userMapper.toEntity(dto, email))
                     .flatMap(user -> userDetailsService.create(user.getId()).thenReturn(user)))
-        .map(userMapper::toView);
+        .map(userMapper::toView)
+        .as(operator::transactional);
   }
 
   @Override
@@ -102,13 +104,16 @@ public class UserServiceImpl implements UserService {
                 return repository.save(existingUser).map(userMapper::toView);
               }
               return Mono.empty();
-            });
+            })
+        .as(operator::transactional); // ✅
   }
 
   @Override
   public Mono<Void> delete(Long id) {
-    return mealService.deleteAllByUserId(id)
-        .then(repository.deleteById(id));
+    return mealService
+        .deleteAllByUserId(id)
+        .then(repository.deleteById(id))
+        .as(operator::transactional);
   }
 
   @Override
@@ -117,21 +122,22 @@ public class UserServiceImpl implements UserService {
         .validateToken(token)
         .flatMap(
             email ->
-                findByEmailOrThrow(email)
+                findByEmail(email)
+                    .switchIfEmpty(
+                        Mono.error(
+                            new NotFoundException(String.format(USER_NOT_FOUND_BY_EMAIL, email))))
                     .flatMap(
                         user -> {
                           userMapper.update(dto, user);
                           return repository.save(user);
-                        })
-                    .then());
+                        }))
+        .then()
+        .as(operator::transactional);
   }
 
   @Override
-  public Mono<User> findByEmailOrThrow(String email) {
-    return repository
-        .findByEmail(email)
-        .switchIfEmpty(
-            Mono.error(new NotFoundException(String.format(USER_NOT_FOUND_BY_EMAIL, email))));
+  public Mono<User> findByEmail(String email) {
+    return repository.findByEmail(email);
   }
 
   @Override
