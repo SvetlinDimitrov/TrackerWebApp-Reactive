@@ -8,10 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.nutriGuideBuddy.features.meal.service.MealFoodService;
 import org.nutriGuideBuddy.features.shared.repository.projection.NutritionProjection;
 import org.nutriGuideBuddy.features.shared.service.NutritionServiceImpl;
-import org.nutriGuideBuddy.features.tracker.dto.NutritionIntakeView;
-import org.nutriGuideBuddy.features.tracker.dto.NutritionRequest;
-import org.nutriGuideBuddy.features.tracker.dto.TrackerRequest;
-import org.nutriGuideBuddy.features.tracker.dto.TrackerView;
+import org.nutriGuideBuddy.features.tracker.dto.*;
 import org.nutriGuideBuddy.features.tracker.enums.Goals;
 import org.nutriGuideBuddy.features.tracker.utils.CalorieCalculator;
 import org.nutriGuideBuddy.features.tracker.utils.rdi_nutrients.MacronutrientRdiData;
@@ -119,5 +116,12 @@ public class TrackerService {
             userId ->
                 nutritionService.findUserNutritionDailyAmounts(
                     userId, request.name(), request.startDate(), request.endDate()));
+  }
+
+  public Mono<Map<LocalDate, Double>> getCaloriesInRange(CalorieRequest request) {
+    return ReactiveUserDetailsServiceImpl.getPrincipalId()
+        .flatMap(
+            userId ->
+                mealFoodService.getCaloriesInRange(request.startDate(), request.endDate(), userId));
   }
 }

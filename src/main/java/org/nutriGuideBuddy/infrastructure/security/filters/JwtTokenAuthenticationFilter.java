@@ -2,6 +2,7 @@ package org.nutriGuideBuddy.infrastructure.security.filters;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
@@ -79,7 +80,8 @@ public class JwtTokenAuthenticationFilter implements WebFilter {
 
     ProblemDetail problemDetail = ProblemDetail.forStatus(status);
     problemDetail.setTitle(title);
-    problemDetail.setDetail(ex.getCause().getMessage());
+    problemDetail.setDetail(
+        Optional.ofNullable(ex.getCause()).map(Throwable::getMessage).orElse(ex.getMessage()));
 
     exchange.getResponse().setStatusCode(status);
     exchange.getResponse().getHeaders().setContentType(MediaType.APPLICATION_PROBLEM_JSON);
@@ -97,7 +99,7 @@ public class JwtTokenAuthenticationFilter implements WebFilter {
         status,
         title,
         ex.getClass().getName(),
-        ex.getCause().getMessage());
+        Optional.ofNullable(ex.getCause()).map(Throwable::getMessage).orElse(ex.getMessage()));
 
     return exchange.getResponse().writeWith(Mono.just(buffer));
   }

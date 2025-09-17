@@ -56,36 +56,39 @@ public class CustomNutritionRepositoryImpl implements CustomNutritionRepository 
         .bind("nutritionName", nutritionName)
         .bind("startDate", startDate.atStartOfDay())
         .bind("endDate", endDate.atStartOfDay())
-        .map((row, meta) -> {
-          Object rawDay = row.get("day");
-          LocalDate day;
-          if (rawDay instanceof LocalDate ld) {
-            day = ld;
-          } else if (rawDay instanceof LocalDateTime ldt) {
-            day = ldt.toLocalDate();
-          } else {
-            day = LocalDate.parse(rawDay.toString());
-          }
+        .map(
+            (row, meta) -> {
+              Object rawDay = row.get("day");
+              LocalDate day;
+              if (rawDay instanceof LocalDate ld) {
+                day = ld;
+              } else if (rawDay instanceof LocalDateTime ldt) {
+                day = ldt.toLocalDate();
+              } else {
+                assert rawDay != null;
+                day = LocalDate.parse(rawDay.toString());
+              }
 
-          Double amount = row.get("total_amount", Double.class);
-          if (amount == null) {
-            BigDecimal bd = row.get("total_amount", BigDecimal.class);
-            amount = bd != null ? bd.doubleValue() : 0.0;
-          }
+              Double amount = row.get("total_amount", Double.class);
+              if (amount == null) {
+                BigDecimal bd = row.get("total_amount", BigDecimal.class);
+                amount = bd != null ? bd.doubleValue() : 0.0;
+              }
 
-          return Map.entry(day, amount);
-        })
+              return Map.entry(day, amount);
+            })
         .all()
         .collectMap(Map.Entry::getKey, Map.Entry::getValue, LinkedHashMap::new)
-        .map(aggregated -> {
-          Map<LocalDate, Double> filled = new LinkedHashMap<>();
-          LocalDate cursor = startDate;
-          while (!cursor.isAfter(endDate)) {
-            filled.put(cursor, aggregated.getOrDefault(cursor, 0.0));
-            cursor = cursor.plusDays(1);
-          }
-          return filled;
-        });
+        .map(
+            aggregated -> {
+              Map<LocalDate, Double> filled = new LinkedHashMap<>();
+              LocalDate cursor = startDate;
+              while (!cursor.isAfter(endDate)) {
+                filled.put(cursor, aggregated.getOrDefault(cursor, 0.0));
+                cursor = cursor.plusDays(1);
+              }
+              return filled;
+            });
   }
 
   private Mono<Map<String, NutritionProjection>> fetchAndAggregate(

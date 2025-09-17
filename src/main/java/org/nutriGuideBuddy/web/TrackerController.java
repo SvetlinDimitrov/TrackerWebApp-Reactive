@@ -4,6 +4,7 @@ import jakarta.validation.Valid;
 import java.time.LocalDate;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
+import org.nutriGuideBuddy.features.tracker.dto.CalorieRequest;
 import org.nutriGuideBuddy.features.tracker.dto.NutritionRequest;
 import org.nutriGuideBuddy.features.tracker.dto.TrackerRequest;
 import org.nutriGuideBuddy.features.tracker.dto.TrackerView;
@@ -29,5 +30,11 @@ public class TrackerController {
   public Mono<Map<LocalDate, Double>> getNutritionAmountInRange(
       @Valid @RequestBody NutritionRequest request) {
     return service.getNutritionForRange(request);
+  }
+
+  @PostMapping("/calories")
+  public Mono<Map<LocalDate, Double>> getCaloriesInRange(
+      @RequestBody @Valid CalorieRequest request) {
+    return service.getCaloriesInRange(request);
   }
 }
