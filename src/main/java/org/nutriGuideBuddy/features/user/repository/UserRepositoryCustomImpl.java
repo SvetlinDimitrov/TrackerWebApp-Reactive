@@ -31,7 +31,7 @@ public class UserRepositoryCustomImpl implements UserCustomRepository {
       criteria = criteria.and(where("email").like("%" + filter.getEmail() + "%"));
     }
 
-    if (filter.getRole() != null && !filter.getRole().isBlank()) {
+    if (filter.getRole() != null) {
       criteria = criteria.and(where("user_role").is(filter.getRole()));
     }
 
@@ -78,7 +78,7 @@ public class UserRepositoryCustomImpl implements UserCustomRepository {
       criteria = criteria.and(where("email").like("%" + filter.getEmail() + "%"));
     }
 
-    if (filter.getRole() != null && !filter.getRole().isBlank()) {
+    if (filter.getRole() != null) {
       criteria = criteria.and(where("user_role").is(filter.getRole()));
     }
 
