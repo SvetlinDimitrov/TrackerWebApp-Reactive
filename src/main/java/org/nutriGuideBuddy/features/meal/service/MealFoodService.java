@@ -1,5 +1,6 @@
 package org.nutriGuideBuddy.features.meal.service;
 
+import java.time.LocalDate;
 import java.util.Set;
 import org.nutriGuideBuddy.features.meal.dto.MealFoodCreateRequest;
 import org.nutriGuideBuddy.features.meal.dto.MealFoodFilter;
@@ -28,4 +29,6 @@ public interface MealFoodService {
   Mono<MealFood> findByIdAndMealIdOrThrow(Long id, Long mealId);
 
   Mono<Long> countByMealIdAndFilter(Long mealId, MealFoodFilter filter);
+
+  Mono<Double> sumConsumedCaloriesByUserIdAndDate(Long userId, LocalDate date);
 }

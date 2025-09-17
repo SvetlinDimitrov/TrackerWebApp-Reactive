@@ -2,6 +2,7 @@ package org.nutriGuideBuddy.features.meal.service;
 
 import static org.nutriGuideBuddy.infrastructure.exceptions.ExceptionMessages.NOT_FOUND_BY_ID;
 
+import java.time.LocalDate;
 import java.util.Set;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +17,7 @@ import org.nutriGuideBuddy.features.shared.dto.NutritionView;
 import org.nutriGuideBuddy.features.shared.dto.ServingView;
 import org.nutriGuideBuddy.infrastructure.exceptions.NotFoundException;
 import org.nutriGuideBuddy.infrastructure.mappers.MealFoodMapper;
+import org.nutriGuideBuddy.infrastructure.security.service.ReactiveUserDetailsServiceImpl;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.reactive.TransactionalOperator;
 import reactor.core.publisher.Flux;
@@ -33,30 +35,37 @@ public class MealFoodServiceImp implements MealFoodService {
   private final TransactionalOperator operator;
 
   public Mono<MealFoodView> create(MealFoodCreateRequest dto, Long mealId) {
-    MealFood mealFood = foodMapper.toEntity(dto);
-    mealFood.setMealId(mealId);
-
-    return mealFoodRepository
-        .save(mealFood)
+    return ReactiveUserDetailsServiceImpl.getPrincipalId()
         .flatMap(
-            savedMealFood -> {
-              Long foodId = savedMealFood.getId();
+            userId -> {
+              MealFood mealFood = foodMapper.toEntity(dto);
+              mealFood.setMealId(mealId);
+              mealFood.setUserId(userId);
 
-              Flux<ServingView> servingFlux =
-                  (dto.servings() != null)
-                      ? mealFoodServingService.create(dto.servings(), foodId)
-                      : Flux.empty();
+              return mealFoodRepository
+                  .save(mealFood)
+                  .flatMap(
+                      savedMealFood -> {
+                        Long foodId = savedMealFood.getId();
 
-              Flux<NutritionView> nutritionFlux =
-                  (dto.nutrients() != null)
-                      ? mealFoodNutritionService.create(dto.nutrients(), foodId)
-                      : Flux.empty();
+                        Flux<ServingView> servingFlux =
+                            (dto.servings() != null)
+                                ? mealFoodServingService.create(dto.servings(), foodId)
+                                : Flux.empty();
 
-              return Mono.zip(servingFlux.collectList(), nutritionFlux.collectList())
-                  .map(
-                      tuple ->
-                          foodMapper.toView(
-                              savedMealFood, Set.copyOf(tuple.getT1()), Set.copyOf(tuple.getT2())));
+                        Flux<NutritionView> nutritionFlux =
+                            (dto.nutrients() != null)
+                                ? mealFoodNutritionService.create(dto.nutrients(), foodId)
+                                : Flux.empty();
+
+                        return Mono.zip(servingFlux.collectList(), nutritionFlux.collectList())
+                            .map(
+                                tuple ->
+                                    foodMapper.toView(
+                                        savedMealFood,
+                                        Set.copyOf(tuple.getT1()),
+                                        Set.copyOf(tuple.getT2())));
+                      });
             })
         .as(operator::transactional);
   }
@@ -158,5 +167,10 @@ public class MealFoodServiceImp implements MealFoodService {
 
   public Mono<Long> countByMealIdAndFilter(Long mealId, MealFoodFilter filter) {
     return customMealFoodRepository.countByMealIdAndFilter(mealId, filter);
+  }
+
+  @Override
+  public Mono<Double> sumConsumedCaloriesByUserIdAndDate(Long userId, LocalDate date) {
+    return mealFoodRepository.sumCaloriesByUserIdOnDate(userId, date);
   }
 }

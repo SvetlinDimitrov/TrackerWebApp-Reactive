@@ -1,12 +1,16 @@
 package org.nutriGuideBuddy.features.shared.service;
 
+import java.time.LocalDate;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.nutriGuideBuddy.features.shared.dto.NutritionCreateRequest;
 import org.nutriGuideBuddy.features.shared.dto.NutritionUpdateRequest;
 import org.nutriGuideBuddy.features.shared.entity.Nutrition;
+import org.nutriGuideBuddy.features.shared.repository.CustomNutritionRepository;
 import org.nutriGuideBuddy.features.shared.repository.NutritionRepository;
+import org.nutriGuideBuddy.features.shared.repository.projection.NutritionProjection;
 import org.nutriGuideBuddy.infrastructure.mappers.NutritionMapper;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
@@ -17,6 +21,7 @@ import reactor.core.publisher.Mono;
 public class NutritionServiceImpl {
 
   private final NutritionRepository repository;
+  private final CustomNutritionRepository customRepository;
   private final NutritionMapper mapper;
 
   public Flux<Nutrition> create(Set<NutritionCreateRequest> requests) {
@@ -59,5 +64,10 @@ public class NutritionServiceImpl {
       return Mono.empty();
     }
     return repository.deleteAllById(ids);
+  }
+
+  public Mono<Map<String, NutritionProjection>> findUserDailyNutrition(
+      Long userId, LocalDate date) {
+    return customRepository.findUserDailyNutrition(userId, date);
   }
 }

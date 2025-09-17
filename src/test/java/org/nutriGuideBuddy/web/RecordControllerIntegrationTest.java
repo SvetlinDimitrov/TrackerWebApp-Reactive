@@ -3,7 +3,7 @@
 // import org.junit.jupiter.api.AfterEach;
 // import org.junit.jupiter.api.BeforeAll;
 // import org.junit.jupiter.api.Test;
-// import org.nutriGuideBuddy.features.shared.dto.NutritionIntakeView;
+// import org.nutriGuideBuddy.features.tracker.dto.NutritionIntakeView;
 // import org.nutriGuideBuddy.features.food.dto.CreateMeal;
 // import org.nutriGuideBuddy.features.food.dto.InsertFoodDto;
 // import org.nutriGuideBuddy.features.meal.dto.MealView;

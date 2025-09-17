@@ -34,4 +34,7 @@ public class MealFood extends AuditableEntity {
 
   @Column("meal_id")
   private Long mealId;
+
+  @Column("user_id")
+  private Long userId;
 }
