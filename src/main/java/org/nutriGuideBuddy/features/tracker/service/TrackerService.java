@@ -1,5 +1,6 @@
 package org.nutriGuideBuddy.features.tracker.service;
 
+import java.time.LocalDate;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -8,6 +9,7 @@ import org.nutriGuideBuddy.features.meal.service.MealFoodService;
 import org.nutriGuideBuddy.features.shared.repository.projection.NutritionProjection;
 import org.nutriGuideBuddy.features.shared.service.NutritionServiceImpl;
 import org.nutriGuideBuddy.features.tracker.dto.NutritionIntakeView;
+import org.nutriGuideBuddy.features.tracker.dto.NutritionRequest;
 import org.nutriGuideBuddy.features.tracker.dto.TrackerRequest;
 import org.nutriGuideBuddy.features.tracker.dto.TrackerView;
 import org.nutriGuideBuddy.features.tracker.enums.Goals;
@@ -17,6 +19,7 @@ import org.nutriGuideBuddy.features.tracker.utils.rdi_nutrients.MineralRdiData;
 import org.nutriGuideBuddy.features.tracker.utils.rdi_nutrients.VitaminRdiData;
 import org.nutriGuideBuddy.features.user.enums.Gender;
 import org.nutriGuideBuddy.features.user.service.UserService;
+import org.nutriGuideBuddy.infrastructure.security.service.ReactiveUserDetailsServiceImpl;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
@@ -108,5 +111,13 @@ public class TrackerService {
                   nutrient.getNutrientName(), consumed, recommended, nutrient.getNutrientUnit());
             })
         .collect(Collectors.toSet());
+  }
+
+  public Mono<Map<LocalDate, Double>> getNutritionForRange(NutritionRequest request) {
+    return ReactiveUserDetailsServiceImpl.getPrincipalId()
+        .flatMap(
+            userId ->
+                nutritionService.findUserNutritionDailyAmounts(
+                    userId, request.name(), request.startDate(), request.endDate()));
   }
 }

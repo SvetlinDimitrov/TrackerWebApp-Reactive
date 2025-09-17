@@ -1,7 +1,10 @@
 package org.nutriGuideBuddy.web;
 
 import jakarta.validation.Valid;
+import java.time.LocalDate;
+import java.util.Map;
 import lombok.RequiredArgsConstructor;
+import org.nutriGuideBuddy.features.tracker.dto.NutritionRequest;
 import org.nutriGuideBuddy.features.tracker.dto.TrackerRequest;
 import org.nutriGuideBuddy.features.tracker.dto.TrackerView;
 import org.nutriGuideBuddy.features.tracker.service.TrackerService;
@@ -18,8 +21,13 @@ public class TrackerController {
   private final UserAccessValidator userAccessValidator;
 
   @PostMapping
-  public Mono<TrackerView> viewRecord(
-      @RequestBody @Valid TrackerRequest dto, @PathVariable Long userId) {
-    return userAccessValidator.validateAccess(userId).then(service.get(dto , userId));
+  public Mono<TrackerView> get(@RequestBody @Valid TrackerRequest dto, @PathVariable Long userId) {
+    return userAccessValidator.validateAccess(userId).then(service.get(dto, userId));
+  }
+
+  @PostMapping("/nutrition")
+  public Mono<Map<LocalDate, Double>> getNutritionAmountInRange(
+      @Valid @RequestBody NutritionRequest request) {
+    return service.getNutritionForRange(request);
   }
 }

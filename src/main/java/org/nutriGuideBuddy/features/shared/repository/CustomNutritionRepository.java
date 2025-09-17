@@ -15,4 +15,7 @@ public interface CustomNutritionRepository {
    * @return map of nutrient name -> aggregated projection
    */
   Mono<Map<String, NutritionProjection>> findUserDailyNutrition(Long userId, LocalDate date);
+
+  Mono<Map<LocalDate, Double>> findUserNutritionDailyAmounts(
+      Long userId, String nutritionName, LocalDate startDate, LocalDate endDate);
 }

@@ -70,4 +70,10 @@ public class NutritionServiceImpl {
       Long userId, LocalDate date) {
     return customRepository.findUserDailyNutrition(userId, date);
   }
+
+  public Mono<Map<LocalDate, Double>> findUserNutritionDailyAmounts(
+      Long userId, String nutritionName, LocalDate startDate, LocalDate endDate) {
+    return customRepository.findUserNutritionDailyAmounts(
+        userId, nutritionName, startDate, endDate);
+  }
 }
