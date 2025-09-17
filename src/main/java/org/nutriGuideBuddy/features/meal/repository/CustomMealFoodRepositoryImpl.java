@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.nutriGuideBuddy.features.meal.dto.CustomPageableMealFood;
 import org.nutriGuideBuddy.features.meal.dto.MealFoodFilter;
 import org.nutriGuideBuddy.features.meal.repository.projection.MealFoodProjection;
+import org.nutriGuideBuddy.features.shared.enums.ServingMetric;
 import org.nutriGuideBuddy.features.shared.repository.projection.NutritionProjection;
 import org.nutriGuideBuddy.features.shared.repository.projection.ServingProjection;
 import org.springframework.r2dbc.core.DatabaseClient;
@@ -36,7 +37,6 @@ public class CustomMealFoodRepositoryImpl implements CustomMealFoodRepository {
 
             s.id AS serving_id,
             s.amount AS serving_amount,
-            s.serving_weight AS serving_weight,
             s.metric AS serving_metric,
             s.main AS serving_main,
 
@@ -162,7 +162,6 @@ public class CustomMealFoodRepositoryImpl implements CustomMealFoodRepository {
 
                   s.id AS serving_id,
                   s.amount AS serving_amount,
-                  s.serving_weight AS serving_weight,
                   s.metric AS serving_metric,
                   s.main AS serving_main,
 
@@ -262,7 +261,7 @@ public class CustomMealFoodRepositoryImpl implements CustomMealFoodRepository {
       row.get("calorie_unit", String.class),
       row.get("serving_id", Long.class),
       row.get("serving_amount", Double.class),
-      row.get("serving_weight", Double.class),
+      // ✅ Enum conversion happens later
       row.get("serving_metric", String.class),
       row.get("serving_main", Boolean.class),
       row.get("nutrition_id", Long.class),
@@ -293,24 +292,23 @@ public class CustomMealFoodRepositoryImpl implements CustomMealFoodRepository {
       // Servings
       Long sId = (Long) r[7];
       if (sId != null && seenServingIds.add(sId)) {
+        String metricStr = (String) r[9];
+        ServingMetric metric = metricStr != null ? ServingMetric.valueOf(metricStr) : null;
+
         servings.add(
             new ServingProjection(
-                sId, // ✅ Populate the ID
-                (Double) r[8],
-                (Double) r[9],
-                (String) r[10],
-                (Boolean) r[11]));
+                sId,
+                (Double) r[8], // amount
+                metric,
+                (Boolean) r[10] // main
+                ));
       }
 
       // Nutritions
-      Long nId = (Long) r[12];
+      Long nId = (Long) r[11];
       if (nId != null && seenNutritionIds.add(nId)) {
         nutritions.add(
-            new NutritionProjection(
-                nId, // ✅ Populate the ID
-                (String) r[13],
-                (String) r[14],
-                (Double) r[15]));
+            new NutritionProjection(nId, (String) r[12], (String) r[13], (Double) r[14]));
       }
     }
 
@@ -350,27 +348,25 @@ public class CustomMealFoodRepositoryImpl implements CustomMealFoodRepository {
       Long sId = (Long) r[7];
       if (sId != null
           && mf.getServings().stream().noneMatch(sp -> Objects.equals(sp.getId(), sId))) {
+        String metricStr = (String) r[9];
+        ServingMetric metric = metricStr != null ? ServingMetric.valueOf(metricStr) : null;
+
         mf.getServings()
             .add(
                 new ServingProjection(
-                    sId, // ✅ Populate the ID
-                    (Double) r[8],
-                    (Double) r[9],
-                    (String) r[10],
-                    (Boolean) r[11]));
+                    sId,
+                    (Double) r[8], // amount
+                    metric,
+                    (Boolean) r[10] // main
+                    ));
       }
 
       // Nutritions
-      Long nId = (Long) r[12];
+      Long nId = (Long) r[11];
       if (nId != null
           && mf.getNutritions().stream().noneMatch(np -> Objects.equals(np.getId(), nId))) {
         mf.getNutritions()
-            .add(
-                new NutritionProjection(
-                    nId, // ✅ Populate the ID
-                    (String) r[13],
-                    (String) r[14],
-                    (Double) r[15]));
+            .add(new NutritionProjection(nId, (String) r[12], (String) r[13], (Double) r[14]));
       }
     }
 

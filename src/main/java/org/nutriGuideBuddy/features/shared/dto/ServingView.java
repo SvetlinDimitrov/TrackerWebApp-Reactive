@@ -1,3 +1,5 @@
 package org.nutriGuideBuddy.features.shared.dto;
 
-public record ServingView(Long id, Double amount, Double servingWeight, String metric , Boolean main) {}
+import org.nutriGuideBuddy.features.shared.enums.ServingMetric;
+
+public record ServingView(Long id, Double amount, ServingMetric metric, Boolean main) {}

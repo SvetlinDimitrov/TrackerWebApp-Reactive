@@ -7,5 +7,7 @@ CREATE TABLE meal_foods (
     calorie_amount DOUBLE,
     calorie_unit VARCHAR(20),
     meal_id BIGINT NOT NULL,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     CONSTRAINT fk_meal_foods_meal FOREIGN KEY (meal_id) REFERENCES meals(id) ON DELETE CASCADE
 );
