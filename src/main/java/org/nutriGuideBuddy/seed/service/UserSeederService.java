@@ -40,7 +40,12 @@ public class UserSeederService {
 
                           return userRepository
                               .save(user)
-                              .doOnSuccess(u -> log.info("User seeded successfully: {}", u));
+                              .doOnSuccess(
+                                  u ->
+                                      log.info(
+                                          "🧑 Seeded user '{}' (email '{}')",
+                                          u.getUsername(),
+                                          u.getEmail()));
                         }))
         .then(Mono.fromRunnable(() -> log.info("User seeding completed.")));
   }

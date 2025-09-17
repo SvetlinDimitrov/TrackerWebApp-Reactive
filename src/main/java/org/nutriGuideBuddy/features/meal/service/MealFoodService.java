@@ -14,6 +14,8 @@ public interface MealFoodService {
 
   Mono<MealFoodView> create(MealFoodCreateRequest dto, Long mealId);
 
+  Mono<MealFoodView> create(MealFoodCreateRequest dto, Long mealId , Long userId);
+
   Flux<MealFoodView> getAll(Long mealId, MealFoodFilter filter);
 
   Mono<MealFoodView> getById(Long foodId);

@@ -13,7 +13,10 @@ import org.nutriGuideBuddy.features.shared.dto.NutritionCreateRequest;
 import org.nutriGuideBuddy.features.shared.dto.ServingCreateRequest;
 import org.nutriGuideBuddy.features.shared.enums.AllowedNutrients;
 import org.nutriGuideBuddy.features.shared.enums.ServingMetric;
+import org.nutriGuideBuddy.features.user.entity.User;
+import org.nutriGuideBuddy.features.user.repository.UserRepository;
 import org.springframework.stereotype.Service;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @Service
@@ -23,6 +26,7 @@ public class MealFoodSeederService {
 
   private final MealRepository mealRepository;
   private final MealFoodService mealFoodService;
+  private final UserRepository userRepository;
 
   private static final List<String> FOOD_NAMES =
       List.of(
@@ -43,7 +47,6 @@ public class MealFoodSeederService {
           "Orange");
 
   private static final List<String> CALORIE_UNITS = List.of("kcal");
-
   private static final List<String> PICTURES =
       List.of(
           "https://picsum.photos/200", "https://picsum.photos/201", "https://picsum.photos/202");
@@ -53,48 +56,59 @@ public class MealFoodSeederService {
   public Mono<Void> seed() {
     log.info("Starting Food seeding...");
 
-    return mealRepository
-        .findAll()
-        .flatMap(
-            meal ->
-                mealFoodService
-                    .countByMealIdAndFilter(meal.getId(), new MealFoodFilter())
+    return userRepository
+        .findAll() // fetch seeded users
+        .collectList()
+        .flatMapMany(
+            users ->
+                mealRepository
+                    .findAll()
                     .flatMap(
-                        count -> {
-                          if (count > 0) {
-                            return Mono.empty();
-                          }
+                        meal ->
+                            mealFoodService
+                                .countByMealIdAndFilter(meal.getId(), new MealFoodFilter())
+                                .flatMapMany(
+                                    count -> {
+                                      if (count > 0) {
+                                        return Flux.empty();
+                                      }
 
-                          int foodCount = ThreadLocalRandom.current().nextInt(5, 11); // 5–10 foods
-                          List<Mono<?>> creations = new ArrayList<>();
+                                      int foodCount =
+                                          ThreadLocalRandom.current().nextInt(5, 11); // 5–10 foods
+                                      List<Mono<?>> creations = new ArrayList<>();
 
-                          for (int i = 0; i < foodCount; i++) {
-                            MealFoodCreateRequest dto =
-                                new MealFoodCreateRequest(
-                                    randomFoodName(),
-                                    "Info about " + i,
-                                    "Detailed info about " + i,
-                                    randomPicture(),
-                                    randomCalorieAmount(),
-                                    CALORIE_UNITS.get(0),
-                                    randomServings(),
-                                    randomNutritions());
+                                      for (int i = 0; i < foodCount; i++) {
+                                        User owner =
+                                            users.get(
+                                                random.nextInt(
+                                                    users.size())); // assign random seeded user
 
-                            creations.add(
-                                mealFoodService
-                                    .create(dto, meal.getId())
-                                    .doOnSuccess(
-                                        food ->
-                                            log.info(
-                                                "Seeded food '{}' for meal '{}'",
-                                                food.name(),
-                                                meal.getName())));
-                          }
+                                        MealFoodCreateRequest dto =
+                                            new MealFoodCreateRequest(
+                                                randomFoodName(),
+                                                "Info about " + i,
+                                                "Detailed info about " + i,
+                                                randomPicture(),
+                                                randomCalorieAmount(),
+                                                CALORIE_UNITS.get(0),
+                                                randomServings(),
+                                                randomNutritions());
 
-                          return Mono.when(creations);
-                        }))
-        .doOnTerminate(() -> log.info("Food seeding completed."))
-        .then();
+                                        creations.add(
+                                            mealFoodService
+                                                .create(dto, meal.getId(), owner.getId())
+                                                .doOnSuccess(
+                                                    food ->
+                                                        log.info(
+                                                            "\uD83E\uDD57 Seeded food '{}' for meal '{}' (user '{}')",
+                                                            food,
+                                                            meal.getName(),
+                                                            owner.getEmail())));
+                                      }
+                                      return Flux.merge(creations);
+                                    })))
+        .then()
+        .doOnTerminate(() -> log.info("Food seeding completed."));
   }
 
   private String randomFoodName() {
@@ -117,7 +131,7 @@ public class MealFoodSeederService {
     Collections.shuffle(metrics);
 
     for (int i = 0; i < count; i++) {
-      boolean isMain = (i == 0); // ensure at least one main
+      boolean isMain = (i == 0);
       servings.add(
           new ServingCreateRequest(
               10.0 + random.nextDouble() * 200.0, metrics.get(i % metrics.size()).name(), isMain));
@@ -126,7 +140,7 @@ public class MealFoodSeederService {
   }
 
   private Set<NutritionCreateRequest> randomNutritions() {
-    int count = ThreadLocalRandom.current().nextInt(5, 21); // 5–20 nutrients
+    int count = ThreadLocalRandom.current().nextInt(5, 21);
     List<AllowedNutrients> nutrients = Arrays.asList(AllowedNutrients.values());
     Collections.shuffle(nutrients);
 

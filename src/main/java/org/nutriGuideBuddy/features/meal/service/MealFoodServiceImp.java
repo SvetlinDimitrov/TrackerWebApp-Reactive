@@ -34,38 +34,40 @@ public class MealFoodServiceImp implements MealFoodService {
   private final MealFoodMapper foodMapper;
   private final TransactionalOperator operator;
 
+  @Override
   public Mono<MealFoodView> create(MealFoodCreateRequest dto, Long mealId) {
     return ReactiveUserDetailsServiceImpl.getPrincipalId()
+        .flatMap(userId -> create(dto, mealId, userId))
+        .as(operator::transactional);
+  }
+
+  @Override
+  public Mono<MealFoodView> create(MealFoodCreateRequest dto, Long mealId, Long userId) {
+    MealFood mealFood = foodMapper.toEntity(dto);
+    mealFood.setMealId(mealId);
+    mealFood.setUserId(userId);
+
+    return mealFoodRepository
+        .save(mealFood)
         .flatMap(
-            userId -> {
-              MealFood mealFood = foodMapper.toEntity(dto);
-              mealFood.setMealId(mealId);
-              mealFood.setUserId(userId);
+            savedMealFood -> {
+              Long foodId = savedMealFood.getId();
 
-              return mealFoodRepository
-                  .save(mealFood)
-                  .flatMap(
-                      savedMealFood -> {
-                        Long foodId = savedMealFood.getId();
+              Flux<ServingView> servingFlux =
+                  (dto.servings() != null)
+                      ? mealFoodServingService.create(dto.servings(), foodId)
+                      : Flux.empty();
 
-                        Flux<ServingView> servingFlux =
-                            (dto.servings() != null)
-                                ? mealFoodServingService.create(dto.servings(), foodId)
-                                : Flux.empty();
+              Flux<NutritionView> nutritionFlux =
+                  (dto.nutrients() != null)
+                      ? mealFoodNutritionService.create(dto.nutrients(), foodId)
+                      : Flux.empty();
 
-                        Flux<NutritionView> nutritionFlux =
-                            (dto.nutrients() != null)
-                                ? mealFoodNutritionService.create(dto.nutrients(), foodId)
-                                : Flux.empty();
-
-                        return Mono.zip(servingFlux.collectList(), nutritionFlux.collectList())
-                            .map(
-                                tuple ->
-                                    foodMapper.toView(
-                                        savedMealFood,
-                                        Set.copyOf(tuple.getT1()),
-                                        Set.copyOf(tuple.getT2())));
-                      });
+              return Mono.zip(servingFlux.collectList(), nutritionFlux.collectList())
+                  .map(
+                      tuple ->
+                          foodMapper.toView(
+                              savedMealFood, Set.copyOf(tuple.getT1()), Set.copyOf(tuple.getT2())));
             })
         .as(operator::transactional);
   }

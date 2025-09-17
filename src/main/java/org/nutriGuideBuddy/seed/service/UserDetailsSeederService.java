@@ -5,11 +5,11 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.nutriGuideBuddy.features.user.repository.UserRepository;
 import org.nutriGuideBuddy.features.user.entity.UserDetails;
 import org.nutriGuideBuddy.features.user.enums.Gender;
 import org.nutriGuideBuddy.features.user.enums.WorkoutState;
 import org.nutriGuideBuddy.features.user.repository.UserDetailsRepository;
+import org.nutriGuideBuddy.features.user.repository.UserRepository;
 import org.nutriGuideBuddy.seed.enums.EmailEnum;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
@@ -53,7 +53,11 @@ public class UserDetailsSeederService {
                           return userDetailsRepository
                               .save(userDetails)
                               .doOnSuccess(
-                                  saved -> log.info("UserDetails seeded successfully: {}", saved));
+                                  saved ->
+                                      log.info(
+                                          "👤 Seeded user details '{}' (user '{}')",
+                                          saved,
+                                          user.getEmail()));
                         }))
         .doOnComplete(() -> log.info("UserDetails seeding completed."))
         .then();

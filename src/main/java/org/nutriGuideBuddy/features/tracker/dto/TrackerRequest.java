@@ -6,7 +6,7 @@ import org.nutriGuideBuddy.features.tracker.annotaions.ValidGoal;
 public record TrackerRequest(@ValidGoal String goal, LocalDate date) {
   public TrackerRequest {
     if (goal == null || goal.isBlank()) {
-      goal = "MAINTENANCE";
+      goal = "MAINTAIN_WEIGHT";
     }
     if (date == null) {
       date = LocalDate.now();
