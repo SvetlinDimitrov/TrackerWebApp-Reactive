@@ -25,13 +25,13 @@ public class MealController {
 
   @PostMapping("/get-all")
   @ResponseStatus(HttpStatus.OK)
-  public Flux<MealView> getAll(@RequestBody @Valid MealFilter filter) {
+  public Flux<MealView> getAll(@RequestBody(required = false) @Valid MealFilter filter) {
     return userDetailsAccessValidator.validateFullyRegistered().thenMany(service.getAll(filter));
   }
 
   @PostMapping("/get-all/count")
   @ResponseStatus(HttpStatus.OK)
-  public Mono<Long> count(@RequestBody @Valid MealFilter filter) {
+  public Mono<Long> count(@RequestBody(required = false) @Valid MealFilter filter) {
     return userDetailsAccessValidator.validateFullyRegistered().then(service.count(filter));
   }
 

@@ -28,7 +28,7 @@ public class MealFoodController {
   @PostMapping("/get-all")
   @ResponseStatus(HttpStatus.OK)
   public Flux<MealFoodView> getAllFood(
-      @PathVariable Long mealId, @RequestBody @Valid MealFoodFilter filter) {
+      @PathVariable Long mealId, @RequestBody(required = false) @Valid MealFoodFilter filter) {
     return userDetailsAccessValidator
         .validateFullyRegistered()
         .then(mealAccessValidator.validateAccess(mealId))
@@ -38,7 +38,7 @@ public class MealFoodController {
   @PostMapping("/get-all/count")
   @ResponseStatus(HttpStatus.OK)
   public Mono<Long> countByMealIdAndFilter(
-      @PathVariable Long mealId, @RequestBody @Valid MealFoodFilter filter) {
+      @PathVariable Long mealId, @RequestBody(required = false) @Valid MealFoodFilter filter) {
     return userDetailsAccessValidator
         .validateFullyRegistered()
         .then(mealAccessValidator.validateAccess(mealId))

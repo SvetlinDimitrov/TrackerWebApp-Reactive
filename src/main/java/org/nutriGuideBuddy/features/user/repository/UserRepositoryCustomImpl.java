@@ -22,6 +22,9 @@ public class UserRepositoryCustomImpl implements UserCustomRepository {
 
   public Flux<User> findAllByFilter(UserFilter filter) {
     var criteria = Criteria.empty();
+    if(filter == null){
+      filter = new UserFilter();
+    }
 
     if (filter.getUsername() != null && !filter.getUsername().isBlank()) {
       criteria = criteria.and(where("username").like("%" + filter.getUsername() + "%"));
@@ -69,6 +72,9 @@ public class UserRepositoryCustomImpl implements UserCustomRepository {
 
   public Mono<Long> countByFilter(UserFilter filter) {
     var criteria = Criteria.empty();
+    if(filter == null){
+      filter = new UserFilter();
+    }
 
     if (filter.getUsername() != null && !filter.getUsername().isBlank()) {
       criteria = criteria.and(where("username").like("%" + filter.getUsername() + "%"));

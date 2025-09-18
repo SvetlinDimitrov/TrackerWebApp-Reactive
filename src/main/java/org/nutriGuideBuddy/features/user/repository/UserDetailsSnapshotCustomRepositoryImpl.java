@@ -5,7 +5,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import lombok.RequiredArgsConstructor;
-import org.nutriGuideBuddy.features.user.dto.CustomPageableUserDetailsSnapshot;
+import org.nutriGuideBuddy.features.shared.dto.CustomPageable;
 import org.nutriGuideBuddy.features.user.dto.UserDetailsSnapshotFilter;
 import org.nutriGuideBuddy.features.user.enums.Gender;
 import org.nutriGuideBuddy.features.user.enums.WorkoutState;
@@ -25,32 +25,23 @@ public class UserDetailsSnapshotCustomRepositoryImpl
   @Override
   public Flux<UserDetailsSnapshotProjection> findAllByFilter(
       Long userId, UserDetailsSnapshotFilter filter) {
-    if (filter == null) filter = new UserDetailsSnapshotFilter(null, null, null, null, null);
-    if (filter.pageable() == null) {
-      filter =
-          new UserDetailsSnapshotFilter(
-              filter.to(),
-              filter.from(),
-              filter.idsIn(),
-              filter.idsNotIn(),
-              new CustomPageableUserDetailsSnapshot());
-    }
+    if (filter == null) filter = new UserDetailsSnapshotFilter();
 
     Map<String, Object> binds = new LinkedHashMap<>();
     binds.put("userId", userId);
 
     StringBuilder where = new StringBuilder(" WHERE uds.user_id = :userId");
 
-    if (filter.from() != null) {
+    if (filter.getFrom() != null) {
       where.append(" AND uds.created_at >= :from");
-      binds.put("from", filter.from().atStartOfDay());
+      binds.put("from", filter.getFrom().atStartOfDay());
     }
-    if (filter.to() != null) {
+    if (filter.getTo() != null) {
       where.append(" AND uds.created_at <= :to");
-      binds.put("to", filter.to().atTime(23, 59, 59));
+      binds.put("to", filter.getTo().atTime(23, 59, 59));
     }
-    if (filter.idsIn() != null && !filter.idsIn().isEmpty()) {
-      List<Long> ids = new ArrayList<>(filter.idsIn());
+    if (filter.getIdsIn() != null && !filter.getIdsIn().isEmpty()) {
+      List<Long> ids = new ArrayList<>(filter.getIdsIn());
       String inParams =
           IntStream.range(0, ids.size())
               .mapToObj(i -> ":idIn" + i)
@@ -60,8 +51,8 @@ public class UserDetailsSnapshotCustomRepositoryImpl
         binds.put("idIn" + i, ids.get(i));
       }
     }
-    if (filter.idsNotIn() != null && !filter.idsNotIn().isEmpty()) {
-      List<Long> ids = new ArrayList<>(filter.idsNotIn());
+    if (filter.getIdsNotIn() != null && !filter.getIdsNotIn().isEmpty()) {
+      List<Long> ids = new ArrayList<>(filter.getIdsNotIn());
       String notInParams =
           IntStream.range(0, ids.size())
               .mapToObj(i -> ":idNotIn" + i)
@@ -73,7 +64,9 @@ public class UserDetailsSnapshotCustomRepositoryImpl
     }
 
     Map<String, String> sortMap =
-        Optional.ofNullable(filter.pageable().getSort()).orElse(Collections.emptyMap());
+        Optional.ofNullable(filter.getPageable())
+            .map(CustomPageable::getSort)
+            .orElse(Collections.emptyMap());
     String orderBy;
     if (!sortMap.isEmpty()) {
       orderBy =
@@ -88,8 +81,10 @@ public class UserDetailsSnapshotCustomRepositoryImpl
       orderBy = "uds.created_at DESC";
     }
 
-    int pageSize = Optional.ofNullable(filter.pageable().getPageSize()).orElse(25);
-    int pageNumber = Optional.ofNullable(filter.pageable().getPageNumber()).orElse(0);
+    int pageSize =
+        Optional.ofNullable(filter.getPageable()).map(CustomPageable::getPageSize).orElse(25);
+    int pageNumber =
+        Optional.ofNullable(filter.getPageable()).map(CustomPageable::getPageNumber).orElse(0);
 
     String idQuery =
         "SELECT uds.id FROM user_details_snapshots uds "
@@ -152,23 +147,23 @@ public class UserDetailsSnapshotCustomRepositoryImpl
 
   @Override
   public Mono<Long> countByFilter(Long userId, UserDetailsSnapshotFilter filter) {
-    if (filter == null) filter = new UserDetailsSnapshotFilter(null, null, null, null, null);
+    if (filter == null) filter = new UserDetailsSnapshotFilter();
 
     Map<String, Object> binds = new LinkedHashMap<>();
     binds.put("userId", userId);
 
     StringBuilder where = new StringBuilder(" WHERE uds.user_id = :userId");
 
-    if (filter.from() != null) {
+    if (filter.getFrom() != null) {
       where.append(" AND uds.created_at >= :from");
-      binds.put("from", filter.from().atStartOfDay());
+      binds.put("from", filter.getFrom().atStartOfDay());
     }
-    if (filter.to() != null) {
+    if (filter.getTo() != null) {
       where.append(" AND uds.created_at <= :to");
-      binds.put("to", filter.to().atTime(23, 59, 59));
+      binds.put("to", filter.getTo().atTime(23, 59, 59));
     }
-    if (filter.idsIn() != null && !filter.idsIn().isEmpty()) {
-      List<Long> ids = new ArrayList<>(filter.idsIn());
+    if (filter.getIdsIn() != null && !filter.getIdsIn().isEmpty()) {
+      List<Long> ids = new ArrayList<>(filter.getIdsIn());
       String inParams =
           IntStream.range(0, ids.size())
               .mapToObj(i -> ":idIn" + i)
@@ -178,8 +173,8 @@ public class UserDetailsSnapshotCustomRepositoryImpl
         binds.put("idIn" + i, ids.get(i));
       }
     }
-    if (filter.idsNotIn() != null && !filter.idsNotIn().isEmpty()) {
-      List<Long> ids = new ArrayList<>(filter.idsNotIn());
+    if (filter.getIdsNotIn() != null && !filter.getIdsNotIn().isEmpty()) {
+      List<Long> ids = new ArrayList<>(filter.getIdsNotIn());
       String notInParams =
           IntStream.range(0, ids.size())
               .mapToObj(i -> ":idNotIn" + i)

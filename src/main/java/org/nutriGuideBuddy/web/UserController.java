@@ -28,13 +28,13 @@ public class UserController {
 
   @PostMapping("/get/all")
   @ResponseStatus(HttpStatus.OK)
-  public Flux<UserView> getAll(@RequestBody @Valid UserFilter filter) {
+  public Flux<UserView> getAll(@RequestBody(required = false) @Valid UserFilter filter) {
     return service.getAll(filter);
   }
 
   @PostMapping("/get/count")
   @ResponseStatus(HttpStatus.OK)
-  public Mono<Long> count(@RequestBody @Valid UserFilter filter) {
+  public Mono<Long> count(@RequestBody(required = false) @Valid UserFilter filter) {
     return service.countByFilter(filter);
   }
 
