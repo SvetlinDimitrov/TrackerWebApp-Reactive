@@ -25,19 +25,20 @@ public class TrackerController {
   private final UserAccessValidator userAccessValidator;
 
   @PostMapping
-  public Mono<TrackerView> get(@RequestBody @Valid TrackerRequest dto, @PathVariable Long userId) {
+  public Mono<TrackerView> get(
+      @RequestBody(required = false) @Valid TrackerRequest dto, @PathVariable Long userId) {
     return userAccessValidator.validateAccess(userId).then(service.get(dto, userId));
   }
 
   @PostMapping("/nutrition")
   public Mono<Map<LocalDate, Set<NutritionConsumedView>>> getNutritionAmountInRange(
-      @Valid @RequestBody NutritionRequest request) {
+      @RequestBody @Valid NutritionRequest request) {
     return service.getNutritionForRange(request);
   }
 
   @PostMapping("/calories")
   public Mono<Map<LocalDate, Set<MealConsumedView>>> getCaloriesInRange(
-      @RequestBody @Valid CalorieRequest request) {
+      @RequestBody(required = false) @Valid CalorieRequest request) {
     return service.getCaloriesInRange(request);
   }
 }

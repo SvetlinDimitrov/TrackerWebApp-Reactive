@@ -4,6 +4,7 @@ import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -13,7 +14,6 @@ import org.nutriGuideBuddy.features.shared.dto.NutritionConsumedDetailedView;
 import org.nutriGuideBuddy.features.shared.dto.NutritionConsumedView;
 import org.nutriGuideBuddy.features.shared.service.NutritionServiceImpl;
 import org.nutriGuideBuddy.features.tracker.dto.*;
-import org.nutriGuideBuddy.features.tracker.enums.Goals;
 import org.nutriGuideBuddy.features.tracker.utils.CalorieCalculator;
 import org.nutriGuideBuddy.features.tracker.utils.rdi_nutrients.RdiProviderFactory;
 import org.nutriGuideBuddy.features.user.enums.Gender;
@@ -31,18 +31,19 @@ public class TrackerService {
   private final MealService mealService;
 
   public Mono<TrackerView> get(TrackerRequest dto, Long userId) {
-    // Convert LocalDate from dto into an Instant at end of day
-    Instant dateInstant = dto.date().atTime(23, 59, 59).atZone(ZoneId.systemDefault()).toInstant();
+    LocalDate localDate =
+        Optional.ofNullable(dto).map(TrackerRequest::date).orElseGet(LocalDate::now);
+
+    Instant dateInstant = localDate.atTime(23, 59, 59).atZone(ZoneId.systemDefault()).toInstant();
 
     return userDetailsSnapshotService
         .findLatestByUserIdAndDate(userId, dateInstant)
         .flatMap(
             snapshot ->
                 Mono.zip(
-                        CalorieCalculator.calculateDailyCalories(
-                            snapshot, Goals.valueOf(dto.goal())),
-                        mealService.getAllConsumedByDateAndUserId(userId, dto.date()).collectList(),
-                        nutritionService.findUserDailyNutrition(userId, dto.date()))
+                        CalorieCalculator.calculateDailyCalories(snapshot, snapshot.goal()),
+                        mealService.getAllConsumedByDateAndUserId(userId, localDate).collectList(),
+                        nutritionService.findUserDailyNutrition(userId, localDate))
                     .map(
                         tuple -> {
                           double calorieGoal = tuple.getT1();
@@ -52,8 +53,7 @@ public class TrackerService {
                           Gender gender = snapshot.gender();
                           int age = snapshot.age();
 
-                          var provider =
-                              RdiProviderFactory.getProvider(RdiProviderFactory.DietType.STANDARD);
+                          var provider = RdiProviderFactory.getProvider(snapshot.duet());
 
                           Set<NutritionIntakeView> nutrients =
                               provider.getSupportedNutrients().stream()
@@ -89,9 +89,26 @@ public class TrackerService {
   }
 
   public Mono<Map<LocalDate, Set<MealConsumedView>>> getCaloriesInRange(CalorieRequest request) {
+    LocalDate today = LocalDate.now();
+
+    LocalDate startDate;
+    LocalDate endDate;
+
+    if (request == null || (request.startDate() == null && request.endDate() == null)) {
+      startDate = today;
+      endDate = today;
+    } else if (request.startDate() == null) {
+      startDate = request.endDate();
+      endDate = request.endDate();
+    } else if (request.endDate() == null) {
+      startDate = request.startDate();
+      endDate = request.startDate();
+    } else {
+      startDate = request.startDate();
+      endDate = request.endDate();
+    }
+
     return ReactiveUserDetailsServiceImpl.getPrincipalId()
-        .flatMap(
-            userId ->
-                mealService.getCaloriesInRange(request.startDate(), request.endDate(), userId));
+        .flatMap(userId -> mealService.getCaloriesInRange(startDate, endDate, userId));
   }
 }

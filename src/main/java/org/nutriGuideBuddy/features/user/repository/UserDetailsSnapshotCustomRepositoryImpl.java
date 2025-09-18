@@ -6,7 +6,9 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import lombok.RequiredArgsConstructor;
 import org.nutriGuideBuddy.features.shared.dto.CustomPageable;
+import org.nutriGuideBuddy.features.tracker.enums.Goals;
 import org.nutriGuideBuddy.features.user.dto.UserDetailsSnapshotFilter;
+import org.nutriGuideBuddy.features.user.enums.DuetTypes;
 import org.nutriGuideBuddy.features.user.enums.Gender;
 import org.nutriGuideBuddy.features.user.enums.WorkoutState;
 import org.nutriGuideBuddy.features.user.repository.projection.UserDetailsSnapshotProjection;
@@ -108,9 +110,9 @@ public class UserDetailsSnapshotCustomRepositoryImpl
         .filter(ids -> !ids.isEmpty())
         .flatMapMany(
             ids -> {
-              // Step 2: fetch full details
               String detailsQuery =
-                  "SELECT uds.id , uds.kilograms, uds.height, uds.age, uds.workout_state, uds.gender, uds.user_id, uds.created_at, uds.updated_at "
+                  "SELECT uds.id, uds.kilograms, uds.height, uds.age, uds.workout_state, uds.gender, "
+                      + "uds.goal, uds.duet, uds.user_id, uds.created_at, uds.updated_at "
                       + "FROM user_details_snapshots uds "
                       + "WHERE uds.id IN ("
                       + IntStream.range(0, ids.size())
@@ -137,6 +139,12 @@ public class UserDetailsSnapshotCustomRepositoryImpl
                                   .orElse(null),
                               Optional.ofNullable(row.get("gender", String.class))
                                   .map(Gender::valueOf)
+                                  .orElse(null),
+                              Optional.ofNullable(row.get("goal", String.class))
+                                  .map(Goals::valueOf)
+                                  .orElse(null),
+                              Optional.ofNullable(row.get("duet", String.class))
+                                  .map(DuetTypes::valueOf)
                                   .orElse(null),
                               row.get("user_id", Long.class),
                               row.get("created_at", Instant.class),

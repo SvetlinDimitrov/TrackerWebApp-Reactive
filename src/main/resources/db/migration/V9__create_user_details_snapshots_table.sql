@@ -6,6 +6,8 @@ CREATE TABLE user_details_snapshots (
     age INT,
     workout_state VARCHAR(50),
     gender VARCHAR(10),
+    goal VARCHAR(50),           -- NEW
+    duet VARCHAR(50),      -- NEW
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE

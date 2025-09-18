@@ -2,6 +2,8 @@ package org.nutriGuideBuddy.features.user.entity;
 
 import lombok.*;
 import org.nutriGuideBuddy.features.shared.entity.BaseEntity;
+import org.nutriGuideBuddy.features.tracker.enums.Goals;
+import org.nutriGuideBuddy.features.user.enums.DuetTypes;
 import org.nutriGuideBuddy.features.user.enums.Gender;
 import org.nutriGuideBuddy.features.user.enums.WorkoutState;
 import org.springframework.data.relational.core.mapping.Column;
@@ -30,6 +32,12 @@ public class UserDetails extends BaseEntity {
 
   @Column("gender")
   private Gender gender;
+
+  @Column("goal")
+  private Goals goal;
+
+  @Column("duet")
+  private DuetTypes duet;
 
   @Column("user_id")
   private Long userId;

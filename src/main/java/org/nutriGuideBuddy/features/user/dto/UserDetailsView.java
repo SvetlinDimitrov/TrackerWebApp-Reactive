@@ -1,5 +1,7 @@
 package org.nutriGuideBuddy.features.user.dto;
 
+import org.nutriGuideBuddy.features.tracker.enums.Goals;
+import org.nutriGuideBuddy.features.user.enums.DuetTypes;
 import org.nutriGuideBuddy.features.user.enums.Gender;
 import org.nutriGuideBuddy.features.user.enums.WorkoutState;
 
@@ -9,4 +11,6 @@ public record UserDetailsView(
     Double height,
     Integer age,
     WorkoutState workoutState,
-    Gender gender) {}
+    Gender gender,
+    Goals goal,
+    DuetTypes duet) {}

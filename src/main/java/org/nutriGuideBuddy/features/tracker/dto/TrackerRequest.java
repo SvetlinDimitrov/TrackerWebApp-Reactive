@@ -1,15 +1,5 @@
 package org.nutriGuideBuddy.features.tracker.dto;
 
 import java.time.LocalDate;
-import org.nutriGuideBuddy.features.tracker.annotaions.ValidGoal;
 
-public record TrackerRequest(@ValidGoal String goal, LocalDate date) {
-  public TrackerRequest {
-    if (goal == null || goal.isBlank()) {
-      goal = "MAINTAIN_WEIGHT";
-    }
-    if (date == null) {
-      date = LocalDate.now();
-    }
-  }
-}
+public record TrackerRequest(LocalDate date) {}

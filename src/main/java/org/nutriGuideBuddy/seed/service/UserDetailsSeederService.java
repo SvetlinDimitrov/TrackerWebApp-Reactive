@@ -5,7 +5,9 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.nutriGuideBuddy.features.tracker.enums.Goals;
 import org.nutriGuideBuddy.features.user.entity.UserDetails;
+import org.nutriGuideBuddy.features.user.enums.DuetTypes;
 import org.nutriGuideBuddy.features.user.enums.Gender;
 import org.nutriGuideBuddy.features.user.enums.WorkoutState;
 import org.nutriGuideBuddy.features.user.repository.UserDetailsRepository;
@@ -52,6 +54,10 @@ public class UserDetailsSeederService {
 
                           WorkoutState[] workoutStates = WorkoutState.values();
                           Gender[] genders = Gender.values();
+                          Goals[] goals = Goals.values();
+                          DuetTypes[] duetTypes = DuetTypes.values();
+                          userDetails.setDuet(duetTypes[random.nextInt(duetTypes.length)]);
+                          userDetails.setGoal(goals[random.nextInt(goals.length)]);
                           userDetails.setWorkoutState(
                               workoutStates[random.nextInt(workoutStates.length)]);
                           userDetails.setGender(genders[random.nextInt(genders.length)]);
