@@ -34,7 +34,4 @@ public interface MealFoodService {
   Mono<Long> countByMealIdAndFilter(Long mealId, MealFoodFilter filter);
 
   Mono<Double> sumConsumedCaloriesByUserIdAndDate(Long userId, LocalDate date);
-
-  Mono<Map<LocalDate, Double>> getCaloriesInRange(
-      LocalDate startDate, LocalDate endDate, Long userId);
 }

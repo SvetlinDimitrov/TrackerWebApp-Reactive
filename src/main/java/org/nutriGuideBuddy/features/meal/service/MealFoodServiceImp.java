@@ -3,6 +3,7 @@ package org.nutriGuideBuddy.features.meal.service;
 import static org.nutriGuideBuddy.infrastructure.exceptions.ExceptionMessages.NOT_FOUND_BY_ID;
 
 import java.time.LocalDate;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -14,6 +15,7 @@ import org.nutriGuideBuddy.features.meal.dto.MealFoodView;
 import org.nutriGuideBuddy.features.meal.entity.MealFood;
 import org.nutriGuideBuddy.features.meal.repository.CustomMealFoodRepository;
 import org.nutriGuideBuddy.features.meal.repository.MealFoodRepository;
+import org.nutriGuideBuddy.features.shared.dto.MealConsumedView;
 import org.nutriGuideBuddy.features.shared.dto.NutritionView;
 import org.nutriGuideBuddy.features.shared.dto.ServingView;
 import org.nutriGuideBuddy.infrastructure.exceptions.NotFoundException;
@@ -175,10 +177,5 @@ public class MealFoodServiceImp implements MealFoodService {
   @Override
   public Mono<Double> sumConsumedCaloriesByUserIdAndDate(Long userId, LocalDate date) {
     return mealFoodRepository.sumCaloriesByUserIdOnDate(userId, date);
-  }
-
-  public Mono<Map<LocalDate, Double>> getCaloriesInRange(
-      LocalDate startDate, LocalDate endDate, Long userId) {
-    return customMealFoodRepository.findUserCaloriesDailyAmounts(userId , startDate ,endDate);
   }
 }

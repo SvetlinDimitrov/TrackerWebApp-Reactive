@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.nutriGuideBuddy.features.meal.service.MealFoodService;
 import org.nutriGuideBuddy.features.meal.service.MealService;
+import org.nutriGuideBuddy.features.shared.dto.MealConsumedView;
 import org.nutriGuideBuddy.features.shared.dto.NutritionConsumedDetailedView;
 import org.nutriGuideBuddy.features.shared.dto.NutritionConsumedView;
 import org.nutriGuideBuddy.features.shared.service.NutritionServiceImpl;
@@ -116,10 +117,10 @@ public class TrackerService {
                     userId, request.name(), request.startDate(), request.endDate()));
   }
 
-  public Mono<Map<LocalDate, Double>> getCaloriesInRange(CalorieRequest request) {
+  public Mono<Map<LocalDate, Set<MealConsumedView>>> getCaloriesInRange(CalorieRequest request) {
     return ReactiveUserDetailsServiceImpl.getPrincipalId()
         .flatMap(
             userId ->
-                mealFoodService.getCaloriesInRange(request.startDate(), request.endDate(), userId));
+                mealService.getCaloriesInRange(request.startDate(), request.endDate(), userId));
   }
 }

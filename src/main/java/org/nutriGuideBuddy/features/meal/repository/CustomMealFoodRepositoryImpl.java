@@ -11,6 +11,8 @@ import java.util.stream.IntStream;
 import lombok.RequiredArgsConstructor;
 import org.nutriGuideBuddy.features.meal.dto.CustomPageableMealFood;
 import org.nutriGuideBuddy.features.meal.dto.MealFoodFilter;
+import org.nutriGuideBuddy.features.meal.repository.projection.MealConsumedProjection;
+import org.nutriGuideBuddy.features.meal.repository.projection.MealFoodConsumedProjection;
 import org.nutriGuideBuddy.features.meal.repository.projection.MealFoodProjection;
 import org.nutriGuideBuddy.features.shared.enums.ServingMetric;
 import org.nutriGuideBuddy.features.shared.repository.projection.NutritionProjection;
@@ -251,59 +253,6 @@ public class CustomMealFoodRepositoryImpl implements CustomMealFoodRepository {
     }
 
     return spec.map((row, metadata) -> row.get("total_count", Long.class)).one().defaultIfEmpty(0L);
-  }
-
-  public Mono<Map<LocalDate, Double>> findUserCaloriesDailyAmounts(
-      Long userId, LocalDate startDate, LocalDate endDate) {
-
-    String sql =
-        """
-        SELECT DATE(created_at) AS day, SUM(calorie_amount) AS total_amount
-        FROM meal_foods
-        WHERE user_id = :userId
-          AND created_at BETWEEN :startDate AND :endDate + INTERVAL 1 DAY - INTERVAL 1 SECOND
-        GROUP BY DATE(created_at)
-        ORDER BY day
-        """;
-
-    return client
-        .sql(sql)
-        .bind("userId", userId)
-        .bind("startDate", startDate.atStartOfDay())
-        .bind("endDate", endDate.atStartOfDay())
-        .map(
-            (row, meta) -> {
-              Object rawDay = row.get("day");
-              LocalDate day;
-              if (rawDay instanceof LocalDate ld) {
-                day = ld;
-              } else if (rawDay instanceof LocalDateTime ldt) {
-                day = ldt.toLocalDate();
-              } else {
-                assert rawDay != null;
-                day = LocalDate.parse(rawDay.toString());
-              }
-
-              Double amount = row.get("total_amount", Double.class);
-              if (amount == null) {
-                BigDecimal bd = row.get("total_amount", BigDecimal.class);
-                amount = bd != null ? bd.doubleValue() : 0.0;
-              }
-
-              return Map.entry(day, amount);
-            })
-        .all()
-        .collectMap(Map.Entry::getKey, Map.Entry::getValue, LinkedHashMap::new)
-        .map(
-            aggregated -> {
-              Map<LocalDate, Double> filled = new LinkedHashMap<>();
-              LocalDate cursor = startDate;
-              while (!cursor.isAfter(endDate)) {
-                filled.put(cursor, aggregated.getOrDefault(cursor, 0.0));
-                cursor = cursor.plusDays(1);
-              }
-              return filled;
-            });
   }
 
   private Object[] mapRowToArray(Row row, RowMetadata metadata) {

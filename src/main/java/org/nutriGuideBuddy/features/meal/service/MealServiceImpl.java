@@ -3,8 +3,10 @@ package org.nutriGuideBuddy.features.meal.service;
 import static org.nutriGuideBuddy.infrastructure.exceptions.ExceptionMessages.NOT_FOUND_BY_ID;
 
 import java.time.LocalDate;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.nutriGuideBuddy.features.meal.dto.MealCreateRequest;
 import org.nutriGuideBuddy.features.meal.dto.MealFilter;
@@ -29,7 +31,7 @@ public class MealServiceImpl implements MealService {
 
   private final CustomMealRepository customRepository;
   private final MealRepository repository;
-  private final MealMapper mealMapper;
+  private final MealMapper mapper;
   private final TransactionalOperator operator;
   private final MealFoodService mealFoodService;
 
@@ -37,7 +39,7 @@ public class MealServiceImpl implements MealService {
     return ReactiveUserDetailsServiceImpl.getPrincipalId()
         .flatMapMany(
             userId -> customRepository.findAllWithFoodDetailsByFilterAndUserId(filter, userId))
-        .map(mealMapper::toView);
+        .map(mapper::toView);
   }
 
   public Mono<Long> count(MealFilter filter) {
@@ -46,7 +48,7 @@ public class MealServiceImpl implements MealService {
   }
 
   public Mono<MealView> getById(Long id) {
-    return customRepository.findById(id).map(mealMapper::toView);
+    return customRepository.findById(id).map(mapper::toView);
   }
 
   public Mono<MealView> create(MealCreateRequest dto) {
@@ -61,7 +63,7 @@ public class MealServiceImpl implements MealService {
                             Map<String, String> errors = Map.of("name", "name already exists.");
                             return Mono.error(new ValidationException(errors));
                           }
-                          Meal meal = mealMapper.toEntity(dto);
+                          Meal meal = mapper.toEntity(dto);
                           meal.setUserId(userId);
                           return repository.save(meal);
                         }))
@@ -81,7 +83,7 @@ public class MealServiceImpl implements MealService {
                             Map<String, String> errors = Map.of("name", "name already exists.");
                             return Mono.error(new ValidationException(errors));
                           }
-                          mealMapper.update(dto, entity);
+                          mapper.update(dto, entity);
                           return repository.save(entity);
                         }))
         .flatMap(meal -> getById(meal.getId()))
@@ -119,7 +121,25 @@ public class MealServiceImpl implements MealService {
   public Flux<MealConsumedView> getAllConsumedByDateAndUserId(Long userId, LocalDate date) {
     return customRepository
         .findMealsConsumtionWithFoodsByUserIdAndDate(userId, date)
-        .map(mealMapper::toConsumedView);
+        .map(mapper::toConsumedView);
+  }
+
+  public Mono<Map<LocalDate, Set<MealConsumedView>>> getCaloriesInRange(
+      LocalDate startDate, LocalDate endDate, Long userId) {
+
+    return customRepository
+        .findUserCaloriesDailyAmounts(userId, startDate, endDate)
+        .map(
+            dailyMap -> {
+              Map<LocalDate, Set<MealConsumedView>> result = new LinkedHashMap<>();
+              dailyMap.forEach(
+                  (day, meals) -> {
+                    Set<MealConsumedView> views =
+                        meals.stream().map(mapper::toConsumedView).collect(Collectors.toSet());
+                    result.put(day, views);
+                  });
+              return result;
+            });
   }
 
   private Mono<Meal> findByIdOrThrow(Long mealId) {

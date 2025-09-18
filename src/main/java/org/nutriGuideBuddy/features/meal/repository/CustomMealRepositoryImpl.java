@@ -4,6 +4,7 @@ import io.r2dbc.spi.Row;
 import io.r2dbc.spi.RowMetadata;
 import java.time.Instant;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -209,52 +210,141 @@ public class CustomMealRepositoryImpl implements CustomMealRepository {
   }
 
   @Override
-  public Flux<MealConsumedProjection> findMealsConsumtionWithFoodsByUserIdAndDate(Long userId, LocalDate date) {
+  public Flux<MealConsumedProjection> findMealsConsumtionWithFoodsByUserIdAndDate(
+      Long userId, LocalDate date) {
     String sql =
-        "SELECT m.id AS meal_id, m.name AS meal_name, " +
-            "       f.id AS food_id, f.name AS food_name, f.calorie_amount AS food_amount " +
-            "FROM meals m " +
-            "JOIN meal_foods f ON m.id = f.meal_id " +
-            "WHERE m.user_id = :userId AND DATE(f.created_at) = :date";
+        "SELECT m.id AS meal_id, m.name AS meal_name, "
+            + "       f.id AS food_id, f.name AS food_name, f.calorie_amount AS food_amount "
+            + "FROM meals m "
+            + "JOIN meal_foods f ON m.id = f.meal_id "
+            + "WHERE m.user_id = :userId AND DATE(f.created_at) = :date";
 
-    return client.sql(sql)
+    return client
+        .sql(sql)
         .bind("userId", userId)
         .bind("date", date)
-        .map((row, meta) -> new Object() {
-          final Long mealId = row.get("meal_id", Long.class);
-          final String mealName = row.get("meal_name", String.class);
-          final MealFoodConsumedProjection food =
-              new MealFoodConsumedProjection(
-                  row.get("food_id", Long.class),
-                  row.get("food_name", String.class),
-                  row.get("food_amount", Double.class)
-              );
-        })
+        .map(
+            (row, meta) ->
+                new Object() {
+                  final Long mealId = row.get("meal_id", Long.class);
+                  final String mealName = row.get("meal_name", String.class);
+                  final MealFoodConsumedProjection food =
+                      new MealFoodConsumedProjection(
+                          row.get("food_id", Long.class),
+                          row.get("food_name", String.class),
+                          row.get("food_amount", Double.class));
+                })
         .all()
         .collectList()
-        .flatMapMany(rows -> {
-          Map<Long, MealConsumedProjection> grouped = new HashMap<>();
+        .flatMapMany(
+            rows -> {
+              Map<Long, MealConsumedProjection> grouped = new HashMap<>();
 
-          for (var r : rows) {
-            grouped.compute(r.mealId, (id, existing) -> {
-              if (existing == null) {
-                return new MealConsumedProjection(
+              for (var r : rows) {
+                grouped.compute(
                     r.mealId,
-                    r.mealName,
-                    r.food.getAmount(), // start with first food’s calories
-                    new HashSet<>(Set.of(r.food))
-                );
-              } else {
-                existing.getFoods().add(r.food);
-                existing.setAmount(existing.getAmount() + r.food.getAmount());
-                return existing;
+                    (id, existing) -> {
+                      if (existing == null) {
+                        return new MealConsumedProjection(
+                            r.mealId,
+                            r.mealName,
+                            r.food.getAmount(), // start with first food’s calories
+                            new HashSet<>(Set.of(r.food)));
+                      } else {
+                        existing.getFoods().add(r.food);
+                        existing.setAmount(existing.getAmount() + r.food.getAmount());
+                        return existing;
+                      }
+                    });
               }
+              return Flux.fromIterable(grouped.values());
             });
-          }
-          return Flux.fromIterable(grouped.values());
-        });
   }
 
+  public Mono<Map<LocalDate, Set<MealConsumedProjection>>> findUserCaloriesDailyAmounts(
+      Long userId, LocalDate startDate, LocalDate endDate) {
+
+    String sql =
+        """
+        SELECT DATE(m.created_at) AS day,
+               m.id   AS meal_id,
+               m.name AS meal_name,
+               mf.id  AS food_id,
+               mf.name AS food_name,
+               mf.calorie_amount AS calorie_amount
+        FROM meals m
+        JOIN meal_foods mf ON mf.meal_id = m.id
+        WHERE m.user_id = :userId
+          AND m.created_at BETWEEN :startDate AND :endDate + INTERVAL 1 DAY - INTERVAL 1 SECOND
+        ORDER BY day, meal_id, food_id
+        """;
+
+    return client
+        .sql(sql)
+        .bind("userId", userId)
+        .bind("startDate", startDate.atStartOfDay())
+        .bind("endDate", endDate.atStartOfDay())
+        .map(
+            (row, meta) -> {
+              Object rawDay = row.get("day");
+              LocalDate day;
+              if (rawDay instanceof LocalDate ld) {
+                day = ld;
+              } else if (rawDay instanceof LocalDateTime ldt) {
+                day = ldt.toLocalDate();
+              } else {
+                assert rawDay != null;
+                day = LocalDate.parse(rawDay.toString());
+              }
+
+              Long mealId = row.get("meal_id", Long.class);
+              String mealName = row.get("meal_name", String.class);
+              Long foodId = row.get("food_id", Long.class);
+              String foodName = row.get("food_name", String.class);
+              Double amount = row.get("calorie_amount", Double.class);
+
+              MealFoodConsumedProjection food =
+                  new MealFoodConsumedProjection(foodId, foodName, amount);
+              MealConsumedProjection meal =
+                  new MealConsumedProjection(mealId, mealName, amount, Set.of(food));
+
+              return Map.entry(day, meal);
+            })
+        .all()
+        .collectList()
+        .map(
+            list -> {
+              Map<LocalDate, Set<MealConsumedProjection>> result = new LinkedHashMap<>();
+              LocalDate cursor = startDate;
+              while (!cursor.isAfter(endDate)) {
+                result.put(cursor, new HashSet<>());
+                cursor = cursor.plusDays(1);
+              }
+
+              for (var entry : list) {
+                LocalDate day = entry.getKey();
+                MealConsumedProjection incoming = entry.getValue();
+
+                result.computeIfAbsent(day, k -> new HashSet<>()).stream()
+                    .filter(m -> m.getId().equals(incoming.getId()))
+                    .findFirst()
+                    .ifPresentOrElse(
+                        existing -> {
+                          Set<MealFoodConsumedProjection> foods =
+                              new HashSet<>(existing.getFoods());
+                          foods.addAll(incoming.getFoods());
+                          existing.setFoods(foods);
+                          existing.setAmount(
+                              foods.stream()
+                                  .mapToDouble(MealFoodConsumedProjection::getAmount)
+                                  .sum());
+                        },
+                        () -> result.get(day).add(incoming));
+              }
+
+              return result;
+            });
+  }
 
   private Object[] mapRowToArray(Row row, RowMetadata metadata) {
     return new Object[] {

@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import java.util.Map;
 import java.util.Set;
 import lombok.RequiredArgsConstructor;
+import org.nutriGuideBuddy.features.shared.dto.MealConsumedView;
 import org.nutriGuideBuddy.features.shared.dto.NutritionConsumedView;
 import org.nutriGuideBuddy.features.tracker.dto.CalorieRequest;
 import org.nutriGuideBuddy.features.tracker.dto.NutritionRequest;
@@ -35,7 +36,7 @@ public class TrackerController {
   }
 
   @PostMapping("/calories")
-  public Mono<Map<LocalDate, Double>> getCaloriesInRange(
+  public Mono<Map<LocalDate, Set<MealConsumedView>>> getCaloriesInRange(
       @RequestBody @Valid CalorieRequest request) {
     return service.getCaloriesInRange(request);
   }

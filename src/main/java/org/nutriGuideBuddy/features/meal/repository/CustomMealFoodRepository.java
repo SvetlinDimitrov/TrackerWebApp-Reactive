@@ -1,7 +1,5 @@
 package org.nutriGuideBuddy.features.meal.repository;
 
-import java.time.LocalDate;
-import java.util.Map;
 import org.nutriGuideBuddy.features.meal.dto.MealFoodFilter;
 import org.nutriGuideBuddy.features.meal.repository.projection.MealFoodProjection;
 import reactor.core.publisher.Flux;
@@ -14,7 +12,4 @@ public interface CustomMealFoodRepository {
   Flux<MealFoodProjection> findAllByMealIdAndFilter(Long mealId, MealFoodFilter filter);
 
   Mono<Long> countByMealIdAndFilter(Long mealId, MealFoodFilter filter);
-
-  Mono<Map<LocalDate, Double>> findUserCaloriesDailyAmounts(
-      Long userId, LocalDate startDate, LocalDate endDate);
 }
