@@ -9,11 +9,13 @@ import org.nutriGuideBuddy.features.meal.dto.MealFoodCreateRequest;
 import org.nutriGuideBuddy.features.meal.dto.MealFoodUpdateRequest;
 import org.nutriGuideBuddy.features.meal.dto.MealFoodView;
 import org.nutriGuideBuddy.features.meal.entity.MealFood;
+import org.nutriGuideBuddy.features.meal.repository.projection.MealFoodConsumedProjection;
 import org.nutriGuideBuddy.features.meal.repository.projection.MealFoodProjection;
 import org.nutriGuideBuddy.features.meal.repository.projection.MealFoodShortProjection;
 import org.nutriGuideBuddy.features.shared.dto.FoodShortView;
 import org.nutriGuideBuddy.features.shared.dto.NutritionView;
 import org.nutriGuideBuddy.features.shared.dto.ServingView;
+import org.nutriGuideBuddy.features.shared.dto.FoodConsumedView;
 
 @Mapper(
     componentModel = "spring",
@@ -30,14 +32,13 @@ public interface MealFoodMapper {
   @Mapping(target = "picture", source = "entity.picture")
   @Mapping(target = "calorieAmount", source = "entity.calorieAmount")
   @Mapping(target = "calorieUnit", source = "entity.calorieUnit")
-  MealFoodView toView(
-      MealFood entity,
-      Set<ServingView> servings,
-      Set<NutritionView> nutritions);
+  MealFoodView toView(MealFood entity, Set<ServingView> servings, Set<NutritionView> nutritions);
 
   FoodShortView toView(MealFoodShortProjection projection);
 
   MealFood toEntity(MealFoodCreateRequest dto);
+
+  FoodConsumedView toConsumedView(MealFoodConsumedProjection projection);
 
   @Mapping(target = "id", ignore = true)
   void update(MealFoodUpdateRequest dto, @MappingTarget MealFood entity);

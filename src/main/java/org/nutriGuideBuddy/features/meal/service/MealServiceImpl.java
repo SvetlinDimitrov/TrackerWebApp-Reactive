@@ -2,6 +2,7 @@ package org.nutriGuideBuddy.features.meal.service;
 
 import static org.nutriGuideBuddy.infrastructure.exceptions.ExceptionMessages.NOT_FOUND_BY_ID;
 
+import java.time.LocalDate;
 import java.util.Map;
 import java.util.Set;
 import lombok.RequiredArgsConstructor;
@@ -12,6 +13,7 @@ import org.nutriGuideBuddy.features.meal.dto.MealView;
 import org.nutriGuideBuddy.features.meal.entity.Meal;
 import org.nutriGuideBuddy.features.meal.repository.CustomMealRepository;
 import org.nutriGuideBuddy.features.meal.repository.MealRepository;
+import org.nutriGuideBuddy.features.shared.dto.MealConsumedView;
 import org.nutriGuideBuddy.infrastructure.exceptions.NotFoundException;
 import org.nutriGuideBuddy.infrastructure.exceptions.ValidationException;
 import org.nutriGuideBuddy.infrastructure.mappers.MealMapper;
@@ -112,6 +114,12 @@ public class MealServiceImpl implements MealService {
 
   public Mono<Boolean> existsByIdAndUserId(Long id, Long userId) {
     return repository.existsByIdAndUserId(id, userId);
+  }
+
+  public Flux<MealConsumedView> getAllConsumedByDateAndUserId(Long userId, LocalDate date) {
+    return customRepository
+        .findMealsConsumtionWithFoodsByUserIdAndDate(userId, date)
+        .map(mealMapper::toConsumedView);
   }
 
   private Mono<Meal> findByIdOrThrow(Long mealId) {

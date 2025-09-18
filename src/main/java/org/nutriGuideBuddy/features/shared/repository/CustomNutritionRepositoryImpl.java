@@ -3,11 +3,10 @@ package org.nutriGuideBuddy.features.shared.repository;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.*;
 import lombok.RequiredArgsConstructor;
-import org.nutriGuideBuddy.features.shared.repository.projection.NutritionProjection;
+import org.nutriGuideBuddy.features.shared.repository.projection.NutritionConsumedDetailedProjection;
+import org.nutriGuideBuddy.features.shared.repository.projection.NutritionConsumedProjection;
 import org.springframework.r2dbc.core.DatabaseClient;
 import org.springframework.stereotype.Repository;
 import reactor.core.publisher.Mono;
@@ -18,17 +17,25 @@ public class CustomNutritionRepositoryImpl implements CustomNutritionRepository 
 
   private final DatabaseClient client;
 
-  @Override
-  public Mono<Map<String, NutritionProjection>> findUserDailyNutrition(
+  public Mono<Map<String, NutritionConsumedDetailedProjection>> findUserDailyNutrition(
       Long userId, LocalDate date) {
+
     String sql =
         """
-        SELECT n.id, n.name, n.unit, n.amount
+        SELECT n.id,
+               n.name,
+               n.unit,
+               m.id   AS meal_id,
+               m.name AS meal_name,
+               mf.id  AS food_id,
+               mf.name AS food_name,
+               n.amount
         FROM meal_foods mf
+        JOIN meals m ON mf.meal_id = m.id
         JOIN meal_foods_nutritions mfn ON mf.id = mfn.meal_food_id
         JOIN nutritions n ON mfn.nutrition_id = n.id
         WHERE mf.user_id = :userId
-          AND DATE(mf.created_at) = :date
+          AND mf.created_at BETWEEN :startDate AND :endDate
         """;
 
     return fetchAndAggregate(sql, userId, date, null);
@@ -91,38 +98,57 @@ public class CustomNutritionRepositoryImpl implements CustomNutritionRepository 
             });
   }
 
-  private Mono<Map<String, NutritionProjection>> fetchAndAggregate(
+  private Mono<Map<String, NutritionConsumedDetailedProjection>> fetchAndAggregate(
       String sql, Long userId, LocalDate dateOrStart, LocalDate endDate) {
+
     var spec = client.sql(sql).bind("userId", userId);
 
     if (endDate == null) {
-      spec = spec.bind("date", dateOrStart);
+      spec =
+          spec.bind("startDate", dateOrStart.atStartOfDay())
+              .bind("endDate", dateOrStart.plusDays(1).atStartOfDay().minusNanos(1));
     } else {
-      spec = spec.bind("startDate", dateOrStart).bind("endDate", endDate);
+      spec =
+          spec.bind("startDate", dateOrStart.atStartOfDay())
+              .bind("endDate", endDate.plusDays(1).atStartOfDay().minusNanos(1));
     }
 
     return spec.map(
-            (row, meta) ->
-                new NutritionProjection(
-                    row.get("id", Long.class),
-                    row.get("name", String.class),
-                    row.get("unit", String.class),
-                    row.get("amount", Double.class)))
+            (row, meta) -> {
+              Long nutritionId = row.get("id", Long.class);
+              String nutritionName = row.get("name", String.class);
+              String nutritionUnit = row.get("unit", String.class);
+
+              Long mealId = row.get("meal_id", Long.class);
+              String mealName = row.get("meal_name", String.class);
+              Long foodId = row.get("food_id", Long.class);
+              String foodName = row.get("food_name", String.class);
+              Double amount = row.get("amount", Double.class);
+
+              var consumed =
+                  new NutritionConsumedProjection(mealId, mealName, foodId, foodName, amount);
+
+              return new AbstractMap.SimpleEntry<>(
+                  nutritionName,
+                  new NutritionConsumedDetailedProjection(
+                      nutritionId, nutritionName, nutritionUnit, Set.of(consumed)));
+            })
         .all()
         .collectList()
         .map(
             list -> {
-              Map<String, NutritionProjection> result = new HashMap<>();
-              for (NutritionProjection np : list) {
+              Map<String, NutritionConsumedDetailedProjection> result = new HashMap<>();
+              for (var entry : list) {
                 result.merge(
-                    np.getName(),
-                    np,
-                    (existing, incoming) ->
-                        new NutritionProjection(
-                            existing.getId(),
-                            existing.getName(),
-                            existing.getUnit(),
-                            existing.getAmount() + incoming.getAmount()));
+                    entry.getKey(),
+                    entry.getValue(),
+                    (existing, incoming) -> {
+                      Set<NutritionConsumedProjection> merged =
+                          new HashSet<>(existing.getConsumed());
+                      merged.addAll(incoming.getConsumed());
+                      return new NutritionConsumedDetailedProjection(
+                          existing.getId(), existing.getName(), existing.getUnit(), merged);
+                    });
               }
               return result;
             });

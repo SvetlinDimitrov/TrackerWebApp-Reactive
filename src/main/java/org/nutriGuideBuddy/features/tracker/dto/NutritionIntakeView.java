@@ -1,5 +1,8 @@
 package org.nutriGuideBuddy.features.tracker.dto;
 
+import java.util.Set;
+import org.nutriGuideBuddy.features.shared.dto.NutritionConsumedView;
+
 /**
  * View model representing intake progress for a nutrient.
  *
@@ -9,4 +12,4 @@ package org.nutriGuideBuddy.features.tracker.dto;
  * @param unit measurement unit (e.g. g, mg, µg, kcal)
  */
 public record NutritionIntakeView(
-    String nutrient, Double consumed, Double recommended, String unit) {}
+    String nutrient, Set<NutritionConsumedView> consumed, Double recommended, String unit) {}

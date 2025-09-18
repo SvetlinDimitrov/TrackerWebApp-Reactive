@@ -6,7 +6,9 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.nutriGuideBuddy.features.meal.service.MealFoodService;
-import org.nutriGuideBuddy.features.shared.repository.projection.NutritionProjection;
+import org.nutriGuideBuddy.features.meal.service.MealService;
+import org.nutriGuideBuddy.features.shared.dto.NutritionConsumedDetailedView;
+import org.nutriGuideBuddy.features.shared.dto.NutritionConsumedView;
 import org.nutriGuideBuddy.features.shared.service.NutritionServiceImpl;
 import org.nutriGuideBuddy.features.tracker.dto.*;
 import org.nutriGuideBuddy.features.tracker.enums.Goals;
@@ -27,6 +29,7 @@ public class TrackerService {
   private final UserService userService;
   private final MealFoodService mealFoodService;
   private final NutritionServiceImpl nutritionService;
+  private final MealService mealService;
 
   public Mono<TrackerView> get(TrackerRequest dto, Long userId) {
     return userService
@@ -36,13 +39,13 @@ public class TrackerService {
                 Mono.zip(
                         CalorieCalculator.calculateDailyCalories(
                             user.details(), Goals.valueOf(dto.goal())),
-                        mealFoodService.sumConsumedCaloriesByUserIdAndDate(userId, dto.date()),
+                        mealService.getAllConsumedByDateAndUserId(userId, dto.date()).collectList(),
                         nutritionService.findUserDailyNutrition(userId, dto.date()))
                     .map(
                         tuple -> {
                           double calorieGoal = tuple.getT1();
-                          double caloriesConsumed = tuple.getT2();
-                          Map<String, NutritionProjection> consumedMap = tuple.getT3();
+                          var consumedList = tuple.getT2();
+                          Map<String, NutritionConsumedDetailedView> consumedMap = tuple.getT3();
 
                           Gender gender = user.details().gender();
                           int age = user.details().age();
@@ -52,22 +55,20 @@ public class TrackerService {
                           var macros = buildMacronutrientIntakes(consumedMap, gender, age);
 
                           return new TrackerView(
-                              calorieGoal, caloriesConsumed, vitamins, minerals, macros);
+                              calorieGoal, consumedList, vitamins, minerals, macros);
                         }));
   }
 
   private Set<NutritionIntakeView> buildVitaminIntakes(
-      Map<String, NutritionProjection> consumedMap, Gender gender, int age) {
+      Map<String, NutritionConsumedDetailedView> consumedMap, Gender gender, int age) {
     return VitaminRdiData.getSupportedNutrients().stream()
         .map(
             nutrient -> {
-              double consumed =
+              Set<NutritionConsumedView> consumed =
                   consumedMap.containsKey(nutrient.getNutrientName())
-                      ? consumedMap.get(nutrient.getNutrientName()).getAmount()
-                      : 0.0;
-
+                      ? consumedMap.get(nutrient.getNutrientName()).consumed()
+                      : Set.of();
               double recommended = VitaminRdiData.getRecommended(nutrient, gender, age);
-
               return new NutritionIntakeView(
                   nutrient.getNutrientName(), consumed, recommended, nutrient.getNutrientUnit());
             })
@@ -75,17 +76,15 @@ public class TrackerService {
   }
 
   private Set<NutritionIntakeView> buildMineralIntakes(
-      Map<String, NutritionProjection> consumedMap, Gender gender, int age) {
+      Map<String, NutritionConsumedDetailedView> consumedMap, Gender gender, int age) {
     return MineralRdiData.getSupportedNutrients().stream()
         .map(
             nutrient -> {
-              double consumed =
+              Set<NutritionConsumedView> consumed =
                   consumedMap.containsKey(nutrient.getNutrientName())
-                      ? consumedMap.get(nutrient.getNutrientName()).getAmount()
-                      : 0.0;
-
+                      ? consumedMap.get(nutrient.getNutrientName()).consumed()
+                      : Set.of();
               double recommended = MineralRdiData.getRecommended(nutrient, gender, age);
-
               return new NutritionIntakeView(
                   nutrient.getNutrientName(), consumed, recommended, nutrient.getNutrientUnit());
             })
@@ -93,17 +92,15 @@ public class TrackerService {
   }
 
   private Set<NutritionIntakeView> buildMacronutrientIntakes(
-      Map<String, NutritionProjection> consumedMap, Gender gender, int age) {
+      Map<String, NutritionConsumedDetailedView> consumedMap, Gender gender, int age) {
     return MacronutrientRdiData.getSupportedNutrients().stream()
         .map(
             nutrient -> {
-              double consumed =
+              Set<NutritionConsumedView> consumed =
                   consumedMap.containsKey(nutrient.getNutrientName())
-                      ? consumedMap.get(nutrient.getNutrientName()).getAmount()
-                      : 0.0;
-
+                      ? consumedMap.get(nutrient.getNutrientName()).consumed()
+                      : Set.of();
               double recommended = MacronutrientRdiData.getRecommended(nutrient, gender, age);
-
               return new NutritionIntakeView(
                   nutrient.getNutrientName(), consumed, recommended, nutrient.getNutrientUnit());
             })

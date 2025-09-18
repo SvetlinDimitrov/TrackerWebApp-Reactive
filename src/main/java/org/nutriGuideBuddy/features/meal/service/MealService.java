@@ -4,8 +4,11 @@ import org.nutriGuideBuddy.features.meal.dto.MealCreateRequest;
 import org.nutriGuideBuddy.features.meal.dto.MealFilter;
 import org.nutriGuideBuddy.features.meal.dto.MealUpdateRequest;
 import org.nutriGuideBuddy.features.meal.dto.MealView;
+import org.nutriGuideBuddy.features.shared.dto.MealConsumedView;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+
+import java.time.LocalDate;
 
 public interface MealService {
 
@@ -24,4 +27,6 @@ public interface MealService {
   Mono<Void> deleteAllByUserId(Long userId);
 
   Mono<Boolean> existsByIdAndUserId(Long id, Long userId);
+
+  Flux<MealConsumedView> getAllConsumedByDateAndUserId(Long userId, LocalDate date);
 }

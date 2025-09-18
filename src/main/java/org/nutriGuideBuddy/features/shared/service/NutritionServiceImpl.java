@@ -5,12 +5,12 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import org.nutriGuideBuddy.features.shared.dto.NutritionConsumedDetailedView;
 import org.nutriGuideBuddy.features.shared.dto.NutritionCreateRequest;
 import org.nutriGuideBuddy.features.shared.dto.NutritionUpdateRequest;
 import org.nutriGuideBuddy.features.shared.entity.Nutrition;
 import org.nutriGuideBuddy.features.shared.repository.CustomNutritionRepository;
 import org.nutriGuideBuddy.features.shared.repository.NutritionRepository;
-import org.nutriGuideBuddy.features.shared.repository.projection.NutritionProjection;
 import org.nutriGuideBuddy.infrastructure.mappers.NutritionMapper;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
@@ -66,9 +66,17 @@ public class NutritionServiceImpl {
     return repository.deleteAllById(ids);
   }
 
-  public Mono<Map<String, NutritionProjection>> findUserDailyNutrition(
+  public Mono<Map<String, NutritionConsumedDetailedView>> findUserDailyNutrition(
       Long userId, LocalDate date) {
-    return customRepository.findUserDailyNutrition(userId, date);
+    return customRepository
+        .findUserDailyNutrition(userId, date)
+        .map(
+            map ->
+                map.entrySet().stream()
+                    .collect(
+                        Collectors.toMap(
+                            Map.Entry::getKey,
+                            entry -> mapper.toConsumedDetailedView(entry.getValue()))));
   }
 
   public Mono<Map<LocalDate, Double>> findUserNutritionDailyAmounts(
