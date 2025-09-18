@@ -42,8 +42,10 @@ public class MealSeederService {
                                               .save(meal)
                                               .doOnSuccess(
                                                   saved ->
-                                                      log.info("🍽️ Seeded meal '{}' (user '{}')", meal, user.getEmail()));
-
+                                                      log.info(
+                                                          "🍽️ Seeded meal '{}' (user '{}')",
+                                                          meal,
+                                                          user.getEmail()));
                                         }))
                         .toList()))
         .doOnComplete(() -> log.info("Meal seeding completed."))

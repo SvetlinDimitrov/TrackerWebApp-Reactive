@@ -10,6 +10,8 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ValidServingMetric {
   String message() default "Invalid serving metric";
+
   Class<?>[] groups() default {};
+
   Class<? extends Payload>[] payload() default {};
 }

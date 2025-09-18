@@ -1,16 +1,16 @@
-//package org.nutriGuideBuddy.infrastructure.nutritionx_api.utils;
+// package org.nutriGuideBuddy.infrastructure.nutritionx_api.utils;
 //
-//import java.math.BigDecimal;
-//import java.math.RoundingMode;
-//import java.util.ArrayList;
-//import java.util.List;
-//import java.util.Optional;
-//import org.nutriGuideBuddy.features.shared.dto.NutritionView;
-//import org.nutriGuideBuddy.features.shared.enums.AllowedNutrients;
-//import org.nutriGuideBuddy.infrastructure.nutritionx_api.dto.FoodItem;
-//import org.nutriGuideBuddy.infrastructure.nutritionx_api.dto.FullNutrient;
+// import java.math.BigDecimal;
+// import java.math.RoundingMode;
+// import java.util.ArrayList;
+// import java.util.List;
+// import java.util.Optional;
+// import org.nutriGuideBuddy.features.shared.dto.NutritionView;
+// import org.nutriGuideBuddy.features.shared.enums.AllowedNutrients;
+// import org.nutriGuideBuddy.infrastructure.nutritionx_api.dto.FoodItem;
+// import org.nutriGuideBuddy.infrastructure.nutritionx_api.dto.FullNutrient;
 //
-//public class NutrientMapperUtils {
+// public class NutrientMapperUtils {
 //
 //  public static List<NutritionView> getNutrients(FoodItem dto) {
 //    List<NutritionView> nutrients = new ArrayList<>();
@@ -632,14 +632,16 @@
 //              list.add(nutrient);
 //            });
 //  }
-//}
-///**
+// }
+/// **
 // * vitamin_values = { "Vitamin A": nutrient_table["VITA_RAE"], "Vitamin D (D2 + D3)":
 // * nutrient_table["VITD"], "Vitamin E": nutrient_table["TOCPHA"], "Vitamin K":
 // * nutrient_table["VITK1"], "Vitamin C": nutrient_table["VITC"], "Vitamin B1 (Thiamin)":
-// * nutrient_table["THIA"], "Vitamin B2 (Riboflavin)": nutrient_table["RIBF"], "Vitamin B3 (Niacin)":
+// * nutrient_table["THIA"], "Vitamin B2 (Riboflavin)": nutrient_table["RIBF"], "Vitamin B3
+// (Niacin)":
 // * nutrient_table["NIA"], "Vitamin B5 (Pantothenic acid)": nutrient_table["PANTAC"], "Vitamin B6":
-// * nutrient_table["VITB6A"], "Vitamin B7 (Biotin)": nutrient_table["VITB7"], "Vitamin B9 (Folate)":
+// * nutrient_table["VITB6A"], "Vitamin B7 (Biotin)": nutrient_table["VITB7"], "Vitamin B9
+// (Folate)":
 // * nutrient_table["FOL"], "Vitamin B12": nutrient_table["VITB12"], "Choline":
 // * nutrient_table["CHOLN"] }
 // */

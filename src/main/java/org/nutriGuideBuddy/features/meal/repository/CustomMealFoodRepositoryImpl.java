@@ -2,17 +2,12 @@ package org.nutriGuideBuddy.features.meal.repository;
 
 import io.r2dbc.spi.Row;
 import io.r2dbc.spi.RowMetadata;
-import java.math.BigDecimal;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import lombok.RequiredArgsConstructor;
 import org.nutriGuideBuddy.features.meal.dto.CustomPageableMealFood;
 import org.nutriGuideBuddy.features.meal.dto.MealFoodFilter;
-import org.nutriGuideBuddy.features.meal.repository.projection.MealConsumedProjection;
-import org.nutriGuideBuddy.features.meal.repository.projection.MealFoodConsumedProjection;
 import org.nutriGuideBuddy.features.meal.repository.projection.MealFoodProjection;
 import org.nutriGuideBuddy.features.shared.enums.ServingMetric;
 import org.nutriGuideBuddy.features.shared.repository.projection.NutritionProjection;

@@ -6,10 +6,12 @@ import java.lang.annotation.*;
 
 @Documented
 @Constraint(validatedBy = ValidImageUrlValidator.class)
-@Target({ ElementType.FIELD })
+@Target({ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ValidImageUrl {
-    String message() default "Invalid image URL";
-    Class<?>[] groups() default {};
-    Class<? extends Payload>[] payload() default {};
+  String message() default "Invalid image URL";
+
+  Class<?>[] groups() default {};
+
+  Class<? extends Payload>[] payload() default {};
 }

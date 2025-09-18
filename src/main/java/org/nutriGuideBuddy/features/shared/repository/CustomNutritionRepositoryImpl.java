@@ -86,7 +86,8 @@ public class CustomNutritionRepositoryImpl implements CustomNutritionRepository 
               String foodName = row.get("food_name", String.class);
               Double amount = row.get("amount", Double.class);
 
-              var projection = new NutritionConsumedProjection(mealId, mealName, foodId, foodName, amount);
+              var projection =
+                  new NutritionConsumedProjection(mealId, mealName, foodId, foodName, amount);
 
               return Map.entry(day, projection);
             })
@@ -108,7 +109,6 @@ public class CustomNutritionRepositoryImpl implements CustomNutritionRepository 
               return result;
             });
   }
-
 
   private Mono<Map<String, NutritionConsumedDetailedProjection>> fetchAndAggregate(
       String sql, Long userId, LocalDate dateOrStart, LocalDate endDate) {

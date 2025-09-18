@@ -1,7 +1,6 @@
 package org.nutriGuideBuddy.features.meal.service;
 
 import java.time.LocalDate;
-import java.util.Map;
 import java.util.Set;
 import org.nutriGuideBuddy.features.meal.dto.MealFoodCreateRequest;
 import org.nutriGuideBuddy.features.meal.dto.MealFoodFilter;

@@ -5,7 +5,6 @@ import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import org.nutriGuideBuddy.features.meal.dto.MealFoodCreateRequest;
 import org.nutriGuideBuddy.infrastructure.exceptions.BadRequestException;
 import org.nutriGuideBuddy.infrastructure.nutritionx_api.dto.FoodItem;

@@ -2,9 +2,9 @@ package org.nutriGuideBuddy.web;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.nutriGuideBuddy.features.user.enums.UserRole;
 import org.nutriGuideBuddy.features.user.dto.UserDetailsRequest;
 import org.nutriGuideBuddy.features.user.dto.UserDetailsView;
+import org.nutriGuideBuddy.features.user.enums.UserRole;
 import org.nutriGuideBuddy.features.user.service.UserDetailsService;
 import org.nutriGuideBuddy.infrastructure.security.access_validator.UserAccessValidator;
 import org.nutriGuideBuddy.infrastructure.security.access_validator.UserDetailsAccessValidator;

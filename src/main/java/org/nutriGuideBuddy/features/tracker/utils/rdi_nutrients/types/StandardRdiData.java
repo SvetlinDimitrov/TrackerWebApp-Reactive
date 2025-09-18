@@ -387,8 +387,7 @@ public class StandardRdiData implements RdiProvider {
         Map.entry(AllowedNutrients.VitaminB12, getVitaminB12Rdi()),
         Map.entry(AllowedNutrients.VitaminB5_PantothenicAcid, getVitaminB5Rdi()),
         Map.entry(AllowedNutrients.VitaminB7_Biotin, getVitaminB7Rdi()),
-        Map.entry(AllowedNutrients.Choline, getCholineRdi())
-    );
+        Map.entry(AllowedNutrients.Choline, getCholineRdi()));
   }
 
   @Override

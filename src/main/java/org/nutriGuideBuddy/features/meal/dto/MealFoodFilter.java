@@ -1,8 +1,7 @@
 package org.nutriGuideBuddy.features.meal.dto;
 
-import java.util.Set;
-
 import jakarta.validation.Valid;
+import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

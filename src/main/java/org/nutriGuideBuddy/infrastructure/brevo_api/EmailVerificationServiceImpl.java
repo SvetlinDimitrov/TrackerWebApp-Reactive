@@ -1,10 +1,11 @@
 package org.nutriGuideBuddy.infrastructure.brevo_api;
 
+import static org.nutriGuideBuddy.infrastructure.exceptions.ExceptionMessages.USER_NOT_FOUND_BY_EMAIL;
+
 import java.util.List;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.nutriGuideBuddy.features.user.service.UserService;
-import org.nutriGuideBuddy.infrastructure.exceptions.ExceptionMessages;
 import org.nutriGuideBuddy.infrastructure.exceptions.NotFoundException;
 import org.nutriGuideBuddy.infrastructure.exceptions.ValidationException;
 import org.nutriGuideBuddy.infrastructure.security.dto.EmailValidationRequest;
@@ -22,8 +23,6 @@ import sibApi.TransactionalEmailsApi;
 import sibModel.SendSmtpEmail;
 import sibModel.SendSmtpEmailSender;
 import sibModel.SendSmtpEmailTo;
-
-import static org.nutriGuideBuddy.infrastructure.exceptions.ExceptionMessages.USER_NOT_FOUND_BY_EMAIL;
 
 @Service
 @RequiredArgsConstructor

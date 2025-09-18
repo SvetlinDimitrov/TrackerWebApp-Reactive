@@ -12,10 +12,10 @@ import org.nutriGuideBuddy.features.meal.entity.MealFood;
 import org.nutriGuideBuddy.features.meal.repository.projection.MealFoodConsumedProjection;
 import org.nutriGuideBuddy.features.meal.repository.projection.MealFoodProjection;
 import org.nutriGuideBuddy.features.meal.repository.projection.MealFoodShortProjection;
+import org.nutriGuideBuddy.features.shared.dto.FoodConsumedView;
 import org.nutriGuideBuddy.features.shared.dto.FoodShortView;
 import org.nutriGuideBuddy.features.shared.dto.NutritionView;
 import org.nutriGuideBuddy.features.shared.dto.ServingView;
-import org.nutriGuideBuddy.features.shared.dto.FoodConsumedView;
 
 @Mapper(
     componentModel = "spring",

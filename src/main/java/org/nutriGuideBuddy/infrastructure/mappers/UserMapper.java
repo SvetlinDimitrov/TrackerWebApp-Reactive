@@ -5,11 +5,11 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 import org.nutriGuideBuddy.features.user.dto.UserCreateRequest;
+import org.nutriGuideBuddy.features.user.dto.UserDetailsView;
 import org.nutriGuideBuddy.features.user.dto.UserUpdateRequest;
 import org.nutriGuideBuddy.features.user.dto.UserView;
 import org.nutriGuideBuddy.features.user.dto.UserWithDetailsView;
 import org.nutriGuideBuddy.features.user.entity.User;
-import org.nutriGuideBuddy.features.user.dto.UserDetailsView;
 import org.nutriGuideBuddy.infrastructure.security.dto.ChangePasswordRequest;
 
 @Mapper(
