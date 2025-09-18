@@ -5,7 +5,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
-import org.nutriGuideBuddy.features.meal.service.MealFoodService;
 import org.nutriGuideBuddy.features.meal.service.MealService;
 import org.nutriGuideBuddy.features.shared.dto.MealConsumedView;
 import org.nutriGuideBuddy.features.shared.dto.NutritionConsumedDetailedView;
@@ -14,9 +13,7 @@ import org.nutriGuideBuddy.features.shared.service.NutritionServiceImpl;
 import org.nutriGuideBuddy.features.tracker.dto.*;
 import org.nutriGuideBuddy.features.tracker.enums.Goals;
 import org.nutriGuideBuddy.features.tracker.utils.CalorieCalculator;
-import org.nutriGuideBuddy.features.tracker.utils.rdi_nutrients.MacronutrientRdiData;
-import org.nutriGuideBuddy.features.tracker.utils.rdi_nutrients.MineralRdiData;
-import org.nutriGuideBuddy.features.tracker.utils.rdi_nutrients.VitaminRdiData;
+import org.nutriGuideBuddy.features.tracker.utils.rdi_nutrients.RdiProviderFactory;
 import org.nutriGuideBuddy.features.user.enums.Gender;
 import org.nutriGuideBuddy.features.user.service.UserService;
 import org.nutriGuideBuddy.infrastructure.security.service.ReactiveUserDetailsServiceImpl;
@@ -28,7 +25,6 @@ import reactor.core.publisher.Mono;
 public class TrackerService {
 
   private final UserService userService;
-  private final MealFoodService mealFoodService;
   private final NutritionServiceImpl nutritionService;
   private final MealService mealService;
 
@@ -51,61 +47,31 @@ public class TrackerService {
                           Gender gender = user.details().gender();
                           int age = user.details().age();
 
-                          var vitamins = buildVitaminIntakes(consumedMap, gender, age);
-                          var minerals = buildMineralIntakes(consumedMap, gender, age);
-                          var macros = buildMacronutrientIntakes(consumedMap, gender, age);
+                          var provider =
+                              RdiProviderFactory.getProvider(RdiProviderFactory.DietType.STANDARD);
 
-                          return new TrackerView(
-                              calorieGoal, consumedList, vitamins, minerals, macros);
+                          Set<NutritionIntakeView> nutrients =
+                              provider.getSupportedNutrients().stream()
+                                  .map(
+                                      nutrient -> {
+                                        Set<NutritionConsumedView> consumed =
+                                            consumedMap.containsKey(nutrient.getNutrientName())
+                                                ? consumedMap
+                                                    .get(nutrient.getNutrientName())
+                                                    .consumed()
+                                                : Set.of();
+                                        double recommended =
+                                            provider.getRecommended(nutrient, gender, age);
+                                        return new NutritionIntakeView(
+                                            nutrient.getNutrientName(),
+                                            consumed,
+                                            recommended,
+                                            nutrient.getNutrientUnit());
+                                      })
+                                  .collect(Collectors.toSet());
+
+                          return new TrackerView(calorieGoal, consumedList, nutrients);
                         }));
-  }
-
-  private Set<NutritionIntakeView> buildVitaminIntakes(
-      Map<String, NutritionConsumedDetailedView> consumedMap, Gender gender, int age) {
-    return VitaminRdiData.getSupportedNutrients().stream()
-        .map(
-            nutrient -> {
-              Set<NutritionConsumedView> consumed =
-                  consumedMap.containsKey(nutrient.getNutrientName())
-                      ? consumedMap.get(nutrient.getNutrientName()).consumed()
-                      : Set.of();
-              double recommended = VitaminRdiData.getRecommended(nutrient, gender, age);
-              return new NutritionIntakeView(
-                  nutrient.getNutrientName(), consumed, recommended, nutrient.getNutrientUnit());
-            })
-        .collect(Collectors.toSet());
-  }
-
-  private Set<NutritionIntakeView> buildMineralIntakes(
-      Map<String, NutritionConsumedDetailedView> consumedMap, Gender gender, int age) {
-    return MineralRdiData.getSupportedNutrients().stream()
-        .map(
-            nutrient -> {
-              Set<NutritionConsumedView> consumed =
-                  consumedMap.containsKey(nutrient.getNutrientName())
-                      ? consumedMap.get(nutrient.getNutrientName()).consumed()
-                      : Set.of();
-              double recommended = MineralRdiData.getRecommended(nutrient, gender, age);
-              return new NutritionIntakeView(
-                  nutrient.getNutrientName(), consumed, recommended, nutrient.getNutrientUnit());
-            })
-        .collect(Collectors.toSet());
-  }
-
-  private Set<NutritionIntakeView> buildMacronutrientIntakes(
-      Map<String, NutritionConsumedDetailedView> consumedMap, Gender gender, int age) {
-    return MacronutrientRdiData.getSupportedNutrients().stream()
-        .map(
-            nutrient -> {
-              Set<NutritionConsumedView> consumed =
-                  consumedMap.containsKey(nutrient.getNutrientName())
-                      ? consumedMap.get(nutrient.getNutrientName()).consumed()
-                      : Set.of();
-              double recommended = MacronutrientRdiData.getRecommended(nutrient, gender, age);
-              return new NutritionIntakeView(
-                  nutrient.getNutrientName(), consumed, recommended, nutrient.getNutrientUnit());
-            })
-        .collect(Collectors.toSet());
   }
 
   public Mono<Map<LocalDate, Set<NutritionConsumedView>>> getNutritionForRange(
