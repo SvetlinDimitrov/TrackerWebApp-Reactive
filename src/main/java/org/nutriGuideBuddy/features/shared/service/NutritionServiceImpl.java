@@ -1,11 +1,13 @@
 package org.nutriGuideBuddy.features.shared.service;
 
 import java.time.LocalDate;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.nutriGuideBuddy.features.shared.dto.NutritionConsumedDetailedView;
+import org.nutriGuideBuddy.features.shared.dto.NutritionConsumedView;
 import org.nutriGuideBuddy.features.shared.dto.NutritionCreateRequest;
 import org.nutriGuideBuddy.features.shared.dto.NutritionUpdateRequest;
 import org.nutriGuideBuddy.features.shared.entity.Nutrition;
@@ -79,9 +81,23 @@ public class NutritionServiceImpl {
                             entry -> mapper.toConsumedDetailedView(entry.getValue()))));
   }
 
-  public Mono<Map<LocalDate, Double>> findUserNutritionDailyAmounts(
+  public Mono<Map<LocalDate, Set<NutritionConsumedView>>> findUserNutritionDailyAmountsView(
       Long userId, String nutritionName, LocalDate startDate, LocalDate endDate) {
-    return customRepository.findUserNutritionDailyAmounts(
-        userId, nutritionName, startDate, endDate);
+
+    return customRepository
+        .findUserNutritionDailyAmounts(userId, nutritionName, startDate, endDate)
+        .map(
+            dailyMap -> {
+              Map<LocalDate, Set<NutritionConsumedView>> result = new LinkedHashMap<>();
+              dailyMap.forEach(
+                  (day, projections) -> {
+                    Set<NutritionConsumedView> views =
+                        projections.stream()
+                            .map(mapper::toConsumedView)
+                            .collect(Collectors.toSet());
+                    result.put(day, views);
+                  });
+              return result;
+            });
   }
 }

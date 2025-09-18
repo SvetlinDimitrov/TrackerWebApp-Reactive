@@ -1,6 +1,5 @@
 package org.nutriGuideBuddy.features.shared.repository;
 
-import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
@@ -41,19 +40,24 @@ public class CustomNutritionRepositoryImpl implements CustomNutritionRepository 
     return fetchAndAggregate(sql, userId, date, null);
   }
 
-  public Mono<Map<LocalDate, Double>> findUserNutritionDailyAmounts(
+  public Mono<Map<LocalDate, Set<NutritionConsumedProjection>>> findUserNutritionDailyAmounts(
       Long userId, String nutritionName, LocalDate startDate, LocalDate endDate) {
 
     String sql =
         """
-        SELECT DATE(mf.created_at) AS day, SUM(n.amount) AS total_amount
+        SELECT DATE(mf.created_at) AS day,
+               m.id   AS meal_id,
+               m.name AS meal_name,
+               mf.id  AS food_id,
+               mf.name AS food_name,
+               n.amount
         FROM meal_foods mf
+        JOIN meals m ON mf.meal_id = m.id
         JOIN meal_foods_nutritions mfn ON mf.id = mfn.meal_food_id
         JOIN nutritions n ON mfn.nutrition_id = n.id
         WHERE mf.user_id = :userId
           AND n.name = :nutritionName
           AND mf.created_at BETWEEN :startDate AND :endDate + INTERVAL 1 DAY - INTERVAL 1 SECOND
-        GROUP BY DATE(mf.created_at)
         ORDER BY day
         """;
 
@@ -76,27 +80,35 @@ public class CustomNutritionRepositoryImpl implements CustomNutritionRepository 
                 day = LocalDate.parse(rawDay.toString());
               }
 
-              Double amount = row.get("total_amount", Double.class);
-              if (amount == null) {
-                BigDecimal bd = row.get("total_amount", BigDecimal.class);
-                amount = bd != null ? bd.doubleValue() : 0.0;
-              }
+              Long mealId = row.get("meal_id", Long.class);
+              String mealName = row.get("meal_name", String.class);
+              Long foodId = row.get("food_id", Long.class);
+              String foodName = row.get("food_name", String.class);
+              Double amount = row.get("amount", Double.class);
 
-              return Map.entry(day, amount);
+              var projection = new NutritionConsumedProjection(mealId, mealName, foodId, foodName, amount);
+
+              return Map.entry(day, projection);
             })
         .all()
-        .collectMap(Map.Entry::getKey, Map.Entry::getValue, LinkedHashMap::new)
+        .collectList()
         .map(
-            aggregated -> {
-              Map<LocalDate, Double> filled = new LinkedHashMap<>();
+            list -> {
+              Map<LocalDate, Set<NutritionConsumedProjection>> result = new LinkedHashMap<>();
               LocalDate cursor = startDate;
               while (!cursor.isAfter(endDate)) {
-                filled.put(cursor, aggregated.getOrDefault(cursor, 0.0));
+                result.put(cursor, new HashSet<>());
                 cursor = cursor.plusDays(1);
               }
-              return filled;
+
+              for (var entry : list) {
+                result.computeIfAbsent(entry.getKey(), k -> new HashSet<>()).add(entry.getValue());
+              }
+
+              return result;
             });
   }
+
 
   private Mono<Map<String, NutritionConsumedDetailedProjection>> fetchAndAggregate(
       String sql, Long userId, LocalDate dateOrStart, LocalDate endDate) {

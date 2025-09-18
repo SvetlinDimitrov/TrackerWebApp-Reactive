@@ -107,11 +107,12 @@ public class TrackerService {
         .collect(Collectors.toSet());
   }
 
-  public Mono<Map<LocalDate, Double>> getNutritionForRange(NutritionRequest request) {
+  public Mono<Map<LocalDate, Set<NutritionConsumedView>>> getNutritionForRange(
+      NutritionRequest request) {
     return ReactiveUserDetailsServiceImpl.getPrincipalId()
         .flatMap(
             userId ->
-                nutritionService.findUserNutritionDailyAmounts(
+                nutritionService.findUserNutritionDailyAmountsView(
                     userId, request.name(), request.startDate(), request.endDate()));
   }
 
