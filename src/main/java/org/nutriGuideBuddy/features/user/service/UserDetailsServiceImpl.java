@@ -22,6 +22,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
   private final UserDetailsRepository repository;
   private final UserDetailsMapper mapper;
   private final TransactionalOperator operator;
+  private final UserDetailsSnapshotService snapshotService;
 
   @Override
   public Mono<UserDetailsView> create(Long userId) {
@@ -53,7 +54,15 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         .flatMap(
             entity -> {
               mapper.update(updateDto, entity);
-              return repository.save(entity);
+              return repository
+                  .save(entity)
+                  .flatMap(
+                      saved -> {
+                        if (saved.isFullyCreated()) {
+                          return snapshotService.create(saved).thenReturn(saved);
+                        }
+                        return Mono.just(saved);
+                      });
             })
         .map(mapper::toView)
         .as(operator::transactional);

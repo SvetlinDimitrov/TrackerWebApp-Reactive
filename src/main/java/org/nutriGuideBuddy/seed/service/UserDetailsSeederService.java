@@ -10,6 +10,7 @@ import org.nutriGuideBuddy.features.user.enums.Gender;
 import org.nutriGuideBuddy.features.user.enums.WorkoutState;
 import org.nutriGuideBuddy.features.user.repository.UserDetailsRepository;
 import org.nutriGuideBuddy.features.user.repository.UserRepository;
+import org.nutriGuideBuddy.features.user.service.UserDetailsSnapshotService;
 import org.nutriGuideBuddy.seed.enums.EmailEnum;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
@@ -21,6 +22,7 @@ public class UserDetailsSeederService {
 
   private final UserRepository userRepository;
   private final UserDetailsRepository userDetailsRepository;
+  private final UserDetailsSnapshotService userDetailsSnapshotService;
   private final Random random = new Random();
 
   public Mono<Void> seed() {
@@ -35,9 +37,13 @@ public class UserDetailsSeederService {
             user ->
                 userDetailsRepository
                     .existsByUserId(user.getId())
-                    .filter(exists -> !exists) // Proceed only if they do not exist
                     .flatMap(
                         exists -> {
+                          if (exists) {
+                            log.info("UserDetails already exist for '{}'", user.getEmail());
+                            return Mono.empty();
+                          }
+
                           UserDetails userDetails = new UserDetails();
                           userDetails.setUserId(user.getId());
                           userDetails.setKilograms(50.0 + random.nextDouble() * 70.0);
@@ -52,14 +58,19 @@ public class UserDetailsSeederService {
 
                           return userDetailsRepository
                               .save(userDetails)
-                              .doOnSuccess(
+                              .flatMap(
                                   saved ->
-                                      log.info(
-                                          "👤 Seeded user details '{}' (user '{}')",
-                                          saved,
-                                          user.getEmail()));
+                                      userDetailsSnapshotService
+                                          .create(saved)
+                                          .then(
+                                              Mono.fromRunnable(
+                                                  () ->
+                                                      log.info(
+                                                          "📸 Created initial snapshot & seeded details '{}' (user '{}')",
+                                                          saved,
+                                                          user.getEmail()))));
                         }))
-        .doOnComplete(() -> log.info("UserDetails seeding completed."))
+        .doOnComplete(() -> log.info("✅ UserDetails seeding completed."))
         .then();
   }
 }

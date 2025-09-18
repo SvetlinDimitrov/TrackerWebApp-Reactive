@@ -1,7 +1,7 @@
 package org.nutriGuideBuddy.features.tracker.utils;
 
 import org.nutriGuideBuddy.features.tracker.enums.Goals;
-import org.nutriGuideBuddy.features.user.dto.UserDetailsView;
+import org.nutriGuideBuddy.features.user.dto.UserDetailsSnapshotView;
 import org.nutriGuideBuddy.features.user.enums.Gender;
 import org.nutriGuideBuddy.features.user.enums.WorkoutState;
 import reactor.core.publisher.Mono;
@@ -15,7 +15,8 @@ public class CalorieCalculator {
    * @param goal the user’s goal (maintain, lose, gain weight)
    * @return Mono emitting the daily calorie target
    */
-  public static Mono<Double> calculateDailyCalories(UserDetailsView userDetails, Goals goal) {
+  public static Mono<Double> calculateDailyCalories(
+      UserDetailsSnapshotView userDetails, Goals goal) {
     if (userDetails == null || goal == null) {
       return Mono.error(new IllegalArgumentException("UserDetails and goal must not be null"));
     }
