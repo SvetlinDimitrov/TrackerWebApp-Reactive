@@ -1,0 +1,75 @@
+{
+  "NIH_IOM": {
+    "CARBOHYDRATE": {
+      "ALL": {
+        "14-150": {
+          "rdi": 100,
+          "ul": null
+        }
+      }
+    },
+    "PROTEIN": {
+      "MALE": {
+        "19-150": {
+          "rdi": 70,
+          "ul": null
+        }
+      },
+      "FEMALE": {
+        "19-150": {
+          "rdi": 60,
+          "ul": null
+        }
+      },
+      "FEMALE_PREGNANT": {
+        "14-50": {
+          "rdi": 80,
+          "ul": null
+        }
+      },
+      "FEMALE_LACTATING": {
+        "14-50": {
+          "rdi": 80,
+          "ul": null
+        }
+      }
+    },
+    "POTASSIUM_K": {
+      "ALL": {
+        "14-150": {
+          "rdi": 4700,
+          "ul": null
+        }
+      }
+    },
+    "MAGNESIUM_MG": {
+      "ALL": {
+        "14-150": {
+          "rdi": 450,
+          "ul": 350
+        }
+      }
+    },
+    "ZINC_ZN": {
+      "ALL": {
+        "14-150": {
+          "rdi": 12,
+          "ul": 40
+        }
+      }
+    },
+    "VITAMIN_D_D2_D3": {
+      "ALL": {
+        "14-150": {
+          "rdi": 20,
+          "ul": 100
+        }
+      }
+    }
+  },
+  "WHO_FAO": {},
+  "EFSA": {},
+  "UK_SACN": {},
+  "DACH": {},
+  "SPORTS": {}
+}

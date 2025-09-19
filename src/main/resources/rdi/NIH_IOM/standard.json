@@ -1,0 +1,726 @@
+{
+  "nutrients": {
+    "FIBER": {
+      "ALL": {
+        "1-3": { "rdi": 19, "ul": null },
+        "4-8": { "rdi": 25, "ul": null }
+      },
+      "MALE": {
+        "9-13": { "rdi": 31, "ul": null },
+        "14-50": { "rdi": 38, "ul": null },
+        "51-150": { "rdi": 30, "ul": null }
+      },
+      "FEMALE": {
+        "9-18": { "rdi": 26, "ul": null },
+        "14-50": { "rdi": 25, "ul": null },
+        "51-150": { "rdi": 21, "ul": null }
+      },
+      "FEMALE_PREGNANT": {
+        "14-50": { "rdi": 28, "ul": null }
+      },
+      "FEMALE_LACTATING": {
+        "14-50": { "rdi": 29, "ul": null }
+      }
+    },
+    "WATER": {
+      "ALL": {
+        "1-3": { "rdi": 1.3, "ul": null },
+        "4-8": { "rdi": 1.7, "ul": null }
+      },
+      "MALE": {
+        "9-13": { "rdi": 2.4, "ul": null },
+        "14-18": { "rdi": 3.3, "ul": null },
+        "19-150": { "rdi": 3.7, "ul": null }
+      },
+      "FEMALE": {
+        "9-13": { "rdi": 2.1, "ul": null },
+        "14-18": { "rdi": 2.3, "ul": null },
+        "19-150": { "rdi": 2.7, "ul": null }
+      },
+      "FEMALE_PREGNANT": {
+        "14-50": { "rdi": 3.0, "ul": null }
+      },
+      "FEMALE_LACTATING": {
+        "14-50": { "rdi": 3.8, "ul": null }
+      }
+    },
+    "SUGAR": {
+      "ALL": {
+        "2-18": { "rdi": 25, "ul": null }
+      },
+      "FEMALE": {
+        "19-150": { "rdi": 25, "ul": null }
+      },
+      "MALE": {
+        "19-150": { "rdi": 36, "ul": null }
+      }
+    },
+    "CHOLESTEROL": {
+      "ALL": {
+        "0-150": { "rdi": 300, "ul": null }
+      }
+    },
+    "SATURATED_FAT": {
+      "ALL": {
+        "0-150": { "rdi": 0, "ul": null }
+      }
+    },
+    "TRANS_FAT": {
+      "ALL": {
+        "0-150": { "rdi": 0, "ul": null }
+      }
+    },
+    "CARBOHYDRATE": {
+      "ALL": {
+        "1-3": { "rdi": 130, "ul": null },
+        "4-8": { "rdi": 130, "ul": null },
+        "9-13": { "rdi": 130, "ul": null }
+      },
+      "MALE": {
+        "14-150": { "rdi": 130, "ul": null }
+      },
+      "FEMALE": {
+        "14-150": { "rdi": 130, "ul": null }
+      },
+      "FEMALE_PREGNANT": {
+        "14-50": { "rdi": 175, "ul": null }
+      },
+      "FEMALE_LACTATING": {
+        "14-50": { "rdi": 210, "ul": null }
+      }
+    },
+    "PROTEIN": {
+      "ALL": {
+        "1-3": { "rdi": 13, "ul": null },
+        "4-8": { "rdi": 19, "ul": null },
+        "9-13": { "rdi": 34, "ul": null }
+      },
+      "MALE": {
+        "14-18": { "rdi": 52, "ul": null },
+        "19-150": { "rdi": 56, "ul": null }
+      },
+      "FEMALE": {
+        "14-18": { "rdi": 46, "ul": null },
+        "19-150": { "rdi": 46, "ul": null }
+      },
+      "FEMALE_PREGNANT": {
+        "14-50": { "rdi": 71, "ul": null }
+      },
+      "FEMALE_LACTATING": {
+        "14-50": { "rdi": 71, "ul": null }
+      }
+    },
+    "FAT": {
+      "ALL": {
+        "1-3": { "rdi": 30, "ul": null },
+        "4-8": { "rdi": 40, "ul": null },
+        "9-13": { "rdi": 60, "ul": null }
+      },
+      "MALE": {
+        "14-150": { "rdi": 70, "ul": null }
+      },
+      "FEMALE": {
+        "14-150": { "rdi": 60, "ul": null }
+      },
+      "FEMALE_PREGNANT": {
+        "14-50": { "rdi": 65, "ul": null }
+      },
+      "FEMALE_LACTATING": {
+        "14-50": { "rdi": 65, "ul": null }
+      }
+    },
+    "OMEGA6": {
+      "ALL": {
+        "1-3": { "rdi": 7, "ul": null },
+        "4-8": { "rdi": 10, "ul": null },
+        "9-13": { "rdi": 12, "ul": null }
+      },
+      "MALE": {
+        "14-150": { "rdi": 17, "ul": null }
+      },
+      "FEMALE": {
+        "14-150": { "rdi": 12, "ul": null }
+      },
+      "FEMALE_PREGNANT": {
+        "14-50": { "rdi": 13, "ul": null }
+      },
+      "FEMALE_LACTATING": {
+        "14-50": { "rdi": 13, "ul": null }
+      }
+    },
+    "OMEGA3": {
+      "ALL": {
+        "1-3": { "rdi": 0.7, "ul": null },
+        "4-8": { "rdi": 0.9, "ul": null },
+        "9-13": { "rdi": 1.2, "ul": null }
+      },
+      "MALE": {
+        "14-150": { "rdi": 1.6, "ul": null }
+      },
+      "FEMALE": {
+        "14-150": { "rdi": 1.1, "ul": null }
+      },
+      "FEMALE_PREGNANT": {
+        "14-50": { "rdi": 1.4, "ul": null }
+      },
+      "FEMALE_LACTATING": {
+        "14-50": { "rdi": 1.3, "ul": null }
+      }
+    },
+
+    "CALCIUM_CA": {
+      "ALL": {
+        "1-3": { "rdi": 700, "ul": 2500 },
+        "4-8": { "rdi": 1000, "ul": 2500 },
+        "9-18": { "rdi": 1300, "ul": 3000 },
+        "19-50": { "rdi": 1000, "ul": 2500 },
+        "51-150": { "rdi": 1200, "ul": 2000 }
+      },
+      "FEMALE_PREGNANT": {
+        "14-50": { "rdi": 1000, "ul": 2500 }
+      },
+      "FEMALE_LACTATING": {
+        "14-50": { "rdi": 1000, "ul": 2500 }
+      }
+    },
+    "CHROMIUM_CR": {
+      "ALL": {
+        "1-3": { "rdi": 11, "ul": null },
+        "4-8": { "rdi": 15, "ul": null }
+      },
+      "MALE": {
+        "9-13": { "rdi": 25, "ul": null },
+        "14-50": { "rdi": 35, "ul": null },
+        "51-150": { "rdi": 30, "ul": null }
+      },
+      "FEMALE": {
+        "9-13": { "rdi": 21, "ul": null },
+        "14-18": { "rdi": 24, "ul": null },
+        "19-50": { "rdi": 25, "ul": null },
+        "51-150": { "rdi": 20, "ul": null }
+      },
+      "FEMALE_PREGNANT": {
+        "14-50": { "rdi": 29, "ul": null }
+      },
+      "FEMALE_LACTATING": {
+        "14-50": { "rdi": 45, "ul": null }
+      }
+    },
+    "COPPER_CU": {
+      "ALL": {
+        "1-3": { "rdi": 340, "ul": 1000 },
+        "4-8": { "rdi": 440, "ul": 3000 },
+        "9-13": { "rdi": 700, "ul": 5000 },
+        "14-18": { "rdi": 890, "ul": 8000 }
+      },
+      "MALE": {
+        "19-150": { "rdi": 900, "ul": 10000 }
+      },
+      "FEMALE": {
+        "19-150": { "rdi": 900, "ul": 10000 }
+      },
+      "FEMALE_PREGNANT": {
+        "14-50": { "rdi": 1000, "ul": 10000 }
+      },
+      "FEMALE_LACTATING": {
+        "14-50": { "rdi": 1300, "ul": 10000 }
+      }
+    },
+    "FLUORIDE": {
+      "ALL": {
+        "1-3": { "rdi": 0.7, "ul": 1.3 },
+        "4-8": { "rdi": 1.0, "ul": 2.2 },
+        "9-13": { "rdi": 2.0, "ul": 10.0 }
+      },
+      "MALE": {
+        "14-18": { "rdi": 3.0, "ul": 10.0 },
+        "19-150": { "rdi": 4.0, "ul": 10.0 }
+      },
+      "FEMALE": {
+        "14-18": { "rdi": 2.0, "ul": 10.0 },
+        "19-150": { "rdi": 3.0, "ul": 10.0 }
+      },
+      "FEMALE_PREGNANT": {
+        "14-50": { "rdi": 3.0, "ul": 10.0 }
+      },
+      "FEMALE_LACTATING": {
+        "14-50": { "rdi": 3.0, "ul": 10.0 }
+      }
+    },
+    "IODINE_I": {
+      "ALL": {
+        "1-8": { "rdi": 90, "ul": 200 },
+        "9-13": { "rdi": 120, "ul": 300 }
+      },
+      "MALE": {
+        "14-150": { "rdi": 150, "ul": 1100 }
+      },
+      "FEMALE": {
+        "14-150": { "rdi": 150, "ul": 1100 }
+      },
+      "FEMALE_PREGNANT": {
+        "14-50": { "rdi": 220, "ul": 1100 }
+      },
+      "FEMALE_LACTATING": {
+        "14-50": { "rdi": 290, "ul": 1100 }
+      }
+    },
+    "IRON_FE": {
+      "ALL": {
+        "1-3": { "rdi": 7, "ul": 40 },
+        "4-8": { "rdi": 10, "ul": 40 },
+        "9-13": { "rdi": 8, "ul": 40 },
+        "51-150": { "rdi": 8, "ul": 45 }
+      },
+      "MALE": {
+        "14-18": { "rdi": 11, "ul": 45 },
+        "19-50": { "rdi": 8, "ul": 45 }
+      },
+      "FEMALE": {
+        "14-18": { "rdi": 15, "ul": 45 },
+        "19-50": { "rdi": 18, "ul": 45 }
+      },
+      "FEMALE_PREGNANT": {
+        "14-18": { "rdi": 27, "ul": 45 },
+        "19-50": { "rdi": 27, "ul": 45 }
+      },
+      "FEMALE_LACTATING": {
+        "14-18": { "rdi": 10, "ul": 45 },
+        "19-50": { "rdi": 9, "ul": 45 }
+      }
+    },
+    "MAGNESIUM_MG": {
+      "ALL": {
+        "1-3": { "rdi": 80, "ul": 65 },
+        "4-8": { "rdi": 130, "ul": 110 },
+        "9-13": { "rdi": 240, "ul": 350 }
+      },
+      "MALE": {
+        "14-18": { "rdi": 410, "ul": 350 },
+        "19-30": { "rdi": 400, "ul": 350 },
+        "31-150": { "rdi": 420, "ul": 350 }
+      },
+      "FEMALE": {
+        "14-18": { "rdi": 360, "ul": 350 },
+        "19-30": { "rdi": 310, "ul": 350 },
+        "31-150": { "rdi": 320, "ul": 350 }
+      },
+      "FEMALE_PREGNANT": {
+        "14-18": { "rdi": 400, "ul": 350 },
+        "19-30": { "rdi": 350, "ul": 350 },
+        "31-50": { "rdi": 360, "ul": 350 }
+      },
+      "FEMALE_LACTATING": {
+        "14-18": { "rdi": 360, "ul": 350 },
+        "19-30": { "rdi": 310, "ul": 350 },
+        "31-50": { "rdi": 320, "ul": 350 }
+      }
+    },
+    "MANGANESE_MN": {
+      "ALL": {
+        "1-3": { "rdi": 1.2, "ul": 2.0 },
+        "4-8": { "rdi": 1.5, "ul": 3.0 }
+      },
+      "MALE": {
+        "9-13": { "rdi": 1.9, "ul": 6.0 },
+        "14-18": { "rdi": 2.2, "ul": 9.0 },
+        "19-150": { "rdi": 2.3, "ul": 11.0 }
+      },
+      "FEMALE": {
+        "9-13": { "rdi": 1.6, "ul": 6.0 },
+        "14-18": { "rdi": 1.6, "ul": 9.0 },
+        "19-150": { "rdi": 1.8, "ul": 11.0 }
+      },
+      "FEMALE_PREGNANT": {
+        "14-50": { "rdi": 2.0, "ul": 9.0 }
+      },
+      "FEMALE_LACTATING": {
+        "14-50": { "rdi": 2.6, "ul": 9.0 }
+      }
+    },
+    "MOLYBDENUM_MO": {
+      "ALL": {
+        "1-3": { "rdi": 17, "ul": 300 },
+        "4-8": { "rdi": 22, "ul": 600 },
+        "9-13": { "rdi": 34, "ul": 1100 },
+        "14-18": { "rdi": 43, "ul": 1700 }
+      },
+      "MALE": {
+        "19-150": { "rdi": 45, "ul": 2000 }
+      },
+      "FEMALE": {
+        "19-150": { "rdi": 45, "ul": 2000 }
+      },
+      "FEMALE_PREGNANT": {
+        "14-50": { "rdi": 50, "ul": 2000 }
+      },
+      "FEMALE_LACTATING": {
+        "14-50": { "rdi": 50, "ul": 2000 }
+      }
+    },
+    "PHOSPHORUS_P": {
+      "ALL": {
+        "1-3": { "rdi": 460, "ul": 3000 },
+        "4-8": { "rdi": 500, "ul": 3000 },
+        "9-18": { "rdi": 1250, "ul": 4000 },
+        "19-70": { "rdi": 700, "ul": 4000 },
+        "71-150": { "rdi": 700, "ul": 3000 }
+      },
+      "FEMALE_PREGNANT": {
+        "14-50": { "rdi": 700, "ul": 3500 }
+      },
+      "FEMALE_LACTATING": {
+        "14-50": { "rdi": 700, "ul": 3500 }
+      }
+    },
+    "SELENIUM_SE": {
+      "ALL": {
+        "1-3": { "rdi": 20, "ul": 90 },
+        "4-8": { "rdi": 30, "ul": 150 },
+        "9-13": { "rdi": 40, "ul": 280 }
+      },
+      "MALE": {
+        "14-150": { "rdi": 55, "ul": 400 }
+      },
+      "FEMALE": {
+        "14-150": { "rdi": 55, "ul": 400 }
+      },
+      "FEMALE_PREGNANT": {
+        "14-50": { "rdi": 60, "ul": 400 }
+      },
+      "FEMALE_LACTATING": {
+        "14-50": { "rdi": 70, "ul": 400 }
+      }
+    },
+    "ZINC_ZN": {
+      "ALL": {
+        "1-3": { "rdi": 3, "ul": 7 },
+        "4-8": { "rdi": 5, "ul": 12 },
+        "9-13": { "rdi": 8, "ul": 23 }
+      },
+      "MALE": {
+        "14-18": { "rdi": 11, "ul": 34 },
+        "19-150": { "rdi": 11, "ul": 40 }
+      },
+      "FEMALE": {
+        "14-18": { "rdi": 9, "ul": 34 },
+        "19-150": { "rdi": 8, "ul": 40 }
+      },
+      "FEMALE_PREGNANT": {
+        "14-18": { "rdi": 12, "ul": 34 },
+        "19-50": { "rdi": 11, "ul": 40 }
+      },
+      "FEMALE_LACTATING": {
+        "14-18": { "rdi": 13, "ul": 34 },
+        "19-50": { "rdi": 12, "ul": 40 }
+      }
+    },
+    "POTASSIUM_K": {
+      "ALL": {
+        "1-3": { "rdi": 2000, "ul": null },
+        "4-8": { "rdi": 2300, "ul": null }
+      },
+      "MALE": {
+        "9-13": { "rdi": 2500, "ul": null },
+        "14-18": { "rdi": 3000, "ul": null },
+        "19-150": { "rdi": 3400, "ul": null }
+      },
+      "FEMALE": {
+        "9-18": { "rdi": 2300, "ul": null },
+        "19-150": { "rdi": 2600, "ul": null }
+      },
+      "FEMALE_PREGNANT": {
+        "14-50": { "rdi": 2900, "ul": null }
+      },
+      "FEMALE_LACTATING": {
+        "14-50": { "rdi": 2800, "ul": null }
+      }
+    },
+    "SODIUM_NA": {
+      "ALL": {
+        "1-3": { "rdi": 800, "ul": 1500 },
+        "4-8": { "rdi": 1000, "ul": 1900 },
+        "9-13": { "rdi": 1200, "ul": 2200 },
+        "14-150": { "rdi": 1500, "ul": 2300 }
+      },
+      "FEMALE_PREGNANT": {
+        "14-50": { "rdi": 1500, "ul": 2300 }
+      },
+      "FEMALE_LACTATING": {
+        "14-50": { "rdi": 1500, "ul": 2300 }
+      }
+    },
+    "CHLORIDE": {
+      "ALL": {
+        "1-3": { "rdi": 1.5, "ul": 2.3 },
+        "4-8": { "rdi": 1.9, "ul": 2.9 },
+        "9-50": { "rdi": 2.3, "ul": 3.6 },
+        "51-70": { "rdi": 2.0, "ul": 3.4 },
+        "71-150": { "rdi": 1.8, "ul": 3.3 }
+      },
+      "FEMALE_PREGNANT": {
+        "14-50": { "rdi": 2.3, "ul": 3.6 }
+      },
+      "FEMALE_LACTATING": {
+        "14-50": { "rdi": 2.3, "ul": 3.6 }
+      }
+    },
+
+    "VITAMIN_A": {
+      "ALL": {
+        "1-3": { "rdi": 300, "ul": 600 },
+        "4-8": { "rdi": 400, "ul": 900 },
+        "9-13": { "rdi": 600, "ul": 1700 }
+      },
+      "MALE": {
+        "14-150": { "rdi": 900, "ul": 3000 }
+      },
+      "FEMALE": {
+        "14-150": { "rdi": 700, "ul": 3000 }
+      },
+      "FEMALE_PREGNANT": {
+        "14-50": { "rdi": 770, "ul": 3000 }
+      },
+      "FEMALE_LACTATING": {
+        "14-50": { "rdi": 1300, "ul": 3000 }
+      }
+    },
+    "VITAMIN_C": {
+      "ALL": {
+        "1-3": { "rdi": 15, "ul": 400 },
+        "4-8": { "rdi": 25, "ul": 650 },
+        "9-13": { "rdi": 45, "ul": 1200 }
+      },
+      "MALE": {
+        "14-18": { "rdi": 75, "ul": 1800 },
+        "19-150": { "rdi": 90, "ul": 2000 }
+      },
+      "FEMALE": {
+        "14-18": { "rdi": 65, "ul": 1800 },
+        "19-150": { "rdi": 75, "ul": 2000 }
+      },
+      "FEMALE_PREGNANT": {
+        "14-18": { "rdi": 80, "ul": 1800 },
+        "19-150": { "rdi": 85, "ul": 2000 }
+      },
+      "FEMALE_LACTATING": {
+        "14-18": { "rdi": 115, "ul": 1800 },
+        "19-150": { "rdi": 120, "ul": 2000 }
+      }
+    },
+    "VITAMIN_D_D2_D3": {
+      "ALL": {
+        "1-8": { "rdi": 15, "ul": 50 },
+        "9-150": { "rdi": 15, "ul": 100 }
+      },
+      "FEMALE_PREGNANT": {
+        "14-50": { "rdi": 15, "ul": 100 }
+      },
+      "FEMALE_LACTATING": {
+        "14-50": { "rdi": 15, "ul": 100 }
+      }
+    },
+    "VITAMIN_E": {
+      "ALL": {
+        "1-3": { "rdi": 6, "ul": 200 },
+        "4-8": { "rdi": 7, "ul": 300 },
+        "9-13": { "rdi": 11, "ul": 600 }
+      },
+      "MALE": {
+        "14-150": { "rdi": 15, "ul": 1000 }
+      },
+      "FEMALE": {
+        "14-150": { "rdi": 15, "ul": 1000 }
+      },
+      "FEMALE_PREGNANT": {
+        "14-50": { "rdi": 15, "ul": 1000 }
+      },
+      "FEMALE_LACTATING": {
+        "14-50": { "rdi": 19, "ul": 1000 }
+      }
+    },
+    "VITAMIN_K": {
+      "ALL": {
+        "1-3": { "rdi": 30, "ul": null },
+        "4-8": { "rdi": 55, "ul": null },
+        "9-13": { "rdi": 60, "ul": null },
+        "14-18": { "rdi": 75, "ul": null }
+      },
+      "MALE": {
+        "19-150": { "rdi": 120, "ul": null }
+      },
+      "FEMALE": {
+        "19-150": { "rdi": 90, "ul": null }
+      },
+      "FEMALE_PREGNANT": {
+        "14-50": { "rdi": 90, "ul": null }
+      },
+      "FEMALE_LACTATING": {
+        "14-50": { "rdi": 90, "ul": null }
+      }
+    },
+    "VITAMIN_B1_THIAMIN": {
+      "ALL": {
+        "1-3": { "rdi": 0.5, "ul": null },
+        "4-8": { "rdi": 0.6, "ul": null },
+        "9-13": { "rdi": 0.9, "ul": null }
+      },
+      "MALE": {
+        "14-150": { "rdi": 1.2, "ul": null }
+      },
+      "FEMALE": {
+        "14-18": { "rdi": 1.0, "ul": null },
+        "19-150": { "rdi": 1.1, "ul": null }
+      },
+      "FEMALE_PREGNANT": {
+        "14-50": { "rdi": 1.4, "ul": null }
+      },
+      "FEMALE_LACTATING": {
+        "14-50": { "rdi": 1.4, "ul": null }
+      }
+    },
+    "VITAMIN_B2_RIBOFLAVIN": {
+      "ALL": {
+        "1-3": { "rdi": 0.5, "ul": null },
+        "4-8": { "rdi": 0.6, "ul": null },
+        "9-13": { "rdi": 0.9, "ul": null }
+      },
+      "MALE": {
+        "14-150": { "rdi": 1.3, "ul": null }
+      },
+      "FEMALE": {
+        "14-18": { "rdi": 1.0, "ul": null },
+        "19-150": { "rdi": 1.1, "ul": null }
+      },
+      "FEMALE_PREGNANT": {
+        "14-50": { "rdi": 1.4, "ul": null }
+      },
+      "FEMALE_LACTATING": {
+        "14-50": { "rdi": 1.6, "ul": null }
+      }
+    },
+    "VITAMIN_B3_NIACIN": {
+      "ALL": {
+        "1-3": { "rdi": 6, "ul": 10 },
+        "4-8": { "rdi": 8, "ul": 15 },
+        "9-13": { "rdi": 12, "ul": 20 }
+      },
+      "MALE": {
+        "14-150": { "rdi": 16, "ul": 35 }
+      },
+      "FEMALE": {
+        "14-150": { "rdi": 14, "ul": 35 }
+      },
+      "FEMALE_PREGNANT": {
+        "14-50": { "rdi": 18, "ul": 35 }
+      },
+      "FEMALE_LACTATING": {
+        "14-50": { "rdi": 17, "ul": 35 }
+      }
+    },
+    "VITAMIN_B6": {
+      "ALL": {
+        "1-3": { "rdi": 0.5, "ul": 30 },
+        "4-8": { "rdi": 0.6, "ul": 40 },
+        "9-13": { "rdi": 1.0, "ul": 60 }
+      },
+      "MALE": {
+        "14-50": { "rdi": 1.3, "ul": 80 },
+        "51-150": { "rdi": 1.7, "ul": 100 }
+      },
+      "FEMALE": {
+        "14-18": { "rdi": 1.2, "ul": 80 },
+        "19-50": { "rdi": 1.3, "ul": 100 },
+        "51-150": { "rdi": 1.5, "ul": 100 }
+      },
+      "FEMALE_PREGNANT": {
+        "14-50": { "rdi": 1.9, "ul": 80 }
+      },
+      "FEMALE_LACTATING": {
+        "14-50": { "rdi": 2.0, "ul": 80 }
+      }
+    },
+    "VITAMIN_B9_FOLATE": {
+      "ALL": {
+        "1-3": { "rdi": 150, "ul": 300 },
+        "4-8": { "rdi": 200, "ul": 400 },
+        "9-13": { "rdi": 300, "ul": 600 }
+      },
+      "MALE": {
+        "14-150": { "rdi": 400, "ul": 1000 }
+      },
+      "FEMALE": {
+        "14-150": { "rdi": 400, "ul": 1000 }
+      },
+      "FEMALE_PREGNANT": {
+        "14-50": { "rdi": 600, "ul": 1000 }
+      },
+      "FEMALE_LACTATING": {
+        "14-50": { "rdi": 500, "ul": 1000 }
+      }
+    },
+    "VITAMIN_B12": {
+      "ALL": {
+        "1-3": { "rdi": 0.9, "ul": null },
+        "4-8": { "rdi": 1.2, "ul": null },
+        "9-13": { "rdi": 1.8, "ul": null },
+        "14-150": { "rdi": 2.4, "ul": null }
+      },
+      "FEMALE_PREGNANT": {
+        "14-50": { "rdi": 2.6, "ul": null }
+      },
+      "FEMALE_LACTATING": {
+        "14-50": { "rdi": 2.8, "ul": null }
+      }
+    },
+    "VITAMIN_B5_PANTOTHENIC_ACID": {
+      "ALL": {
+        "1-3": { "rdi": 2, "ul": null },
+        "4-8": { "rdi": 3, "ul": null },
+        "9-13": { "rdi": 4, "ul": null },
+        "14-150": { "rdi": 5, "ul": null }
+      },
+      "FEMALE_PREGNANT": {
+        "14-50": { "rdi": 6, "ul": null }
+      },
+      "FEMALE_LACTATING": {
+        "14-50": { "rdi": 7, "ul": null }
+      }
+    },
+    "VITAMIN_B7_BIOTIN": {
+      "ALL": {
+        "1-3": { "rdi": 8, "ul": null },
+        "4-8": { "rdi": 12, "ul": null },
+        "9-13": { "rdi": 20, "ul": null },
+        "14-18": { "rdi": 25, "ul": null },
+        "19-150": { "rdi": 30, "ul": null }
+      },
+      "FEMALE_PREGNANT": {
+        "14-50": { "rdi": 30, "ul": null }
+      },
+      "FEMALE_LACTATING": {
+        "14-50": { "rdi": 35, "ul": null }
+      }
+    },
+    "CHOLINE": {
+      "ALL": {
+        "1-3": { "rdi": 200, "ul": 1000 },
+        "4-8": { "rdi": 250, "ul": 2000 }
+      },
+      "MALE": {
+        "9-13": { "rdi": 375, "ul": 3000 },
+        "14-150": { "rdi": 550, "ul": 3500 }
+      },
+      "FEMALE": {
+        "9-13": { "rdi": 375, "ul": 3000 },
+        "14-150": { "rdi": 425, "ul": 3500 }
+      },
+      "FEMALE_PREGNANT": {
+        "14-50": { "rdi": 450, "ul": 3500 }
+      },
+      "FEMALE_LACTATING": {
+        "14-50": { "rdi": 550, "ul": 3500 }
+      }
+    }
+  }
+}

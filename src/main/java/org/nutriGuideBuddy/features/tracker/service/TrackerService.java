@@ -12,12 +12,15 @@ import org.nutriGuideBuddy.features.meal.service.MealService;
 import org.nutriGuideBuddy.features.shared.dto.MealConsumedView;
 import org.nutriGuideBuddy.features.shared.dto.NutritionConsumedDetailedView;
 import org.nutriGuideBuddy.features.shared.dto.NutritionConsumedView;
+import org.nutriGuideBuddy.features.shared.enums.AllowedNutrients;
 import org.nutriGuideBuddy.features.shared.service.NutritionServiceImpl;
 import org.nutriGuideBuddy.features.tracker.dto.*;
 import org.nutriGuideBuddy.features.tracker.utils.CalorieCalculator;
-import org.nutriGuideBuddy.features.tracker.utils.rdi_nutrients.RdiProviderFactory;
 import org.nutriGuideBuddy.features.user.enums.Gender;
 import org.nutriGuideBuddy.features.user.service.UserDetailsSnapshotService;
+import org.nutriGuideBuddy.infrastructure.io.rdi.NutrientRequirementFactory;
+import org.nutriGuideBuddy.infrastructure.io.rdi.RdiFinder;
+import org.nutriGuideBuddy.infrastructure.io.rdi.dto.*;
 import org.nutriGuideBuddy.infrastructure.security.service.ReactiveUserDetailsServiceImpl;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
@@ -29,11 +32,11 @@ public class TrackerService {
   private final UserDetailsSnapshotService userDetailsSnapshotService;
   private final NutritionServiceImpl nutritionService;
   private final MealService mealService;
+  private final NutrientRequirementFactory requirementFactory;
 
   public Mono<TrackerView> get(TrackerRequest dto, Long userId) {
     LocalDate localDate =
         Optional.ofNullable(dto).map(TrackerRequest::date).orElseGet(LocalDate::now);
-
     Instant dateInstant = localDate.atTime(23, 59, 59).atZone(ZoneId.systemDefault()).toInstant();
 
     return userDetailsSnapshotService
@@ -53,24 +56,36 @@ public class TrackerService {
                           Gender gender = snapshot.gender();
                           int age = snapshot.age();
 
-                          var provider = RdiProviderFactory.getProvider(snapshot.duet());
+                          Map<JsonAllowedNutrients, Map<JsonPopulationGroup, Set<JsonRdiRange>>>
+                              requirements =
+                                  requirementFactory.build(
+                                      snapshot.nutritionAuthority(), snapshot.diet());
 
                           Set<NutritionIntakeView> nutrients =
-                              provider.getSupportedNutrients().stream()
+                              requirements.entrySet().stream()
                                   .map(
-                                      nutrient -> {
+                                      entry -> {
+                                        JsonAllowedNutrients jsonNutrient = entry.getKey();
+                                        Map<JsonPopulationGroup, Set<JsonRdiRange>> groupMap =
+                                            entry.getValue();
+
+                                        AllowedNutrients nutrient =
+                                            AllowedNutrients.valueOf(jsonNutrient.name());
+
+                                        var rdiRange = RdiFinder.findMatch(groupMap, gender, age);
+
                                         Set<NutritionConsumedView> consumed =
                                             consumedMap.containsKey(nutrient.getNutrientName())
                                                 ? consumedMap
                                                     .get(nutrient.getNutrientName())
                                                     .consumed()
                                                 : Set.of();
-                                        double recommended =
-                                            provider.getRecommended(nutrient, gender, age);
+
                                         return new NutritionIntakeView(
                                             nutrient.getNutrientName(),
                                             consumed,
-                                            recommended,
+                                            rdiRange != null ? rdiRange.rdi() : null,
+                                            rdiRange != null ? rdiRange.ul() : null,
                                             nutrient.getNutrientUnit());
                                       })
                                   .collect(Collectors.toSet());

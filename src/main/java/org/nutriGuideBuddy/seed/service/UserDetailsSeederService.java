@@ -7,8 +7,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.nutriGuideBuddy.features.tracker.enums.Goals;
 import org.nutriGuideBuddy.features.user.entity.UserDetails;
-import org.nutriGuideBuddy.features.user.enums.DuetTypes;
+import org.nutriGuideBuddy.features.user.enums.DietType;
 import org.nutriGuideBuddy.features.user.enums.Gender;
+import org.nutriGuideBuddy.features.user.enums.NutritionAuthority;
 import org.nutriGuideBuddy.features.user.enums.WorkoutState;
 import org.nutriGuideBuddy.features.user.repository.UserDetailsRepository;
 import org.nutriGuideBuddy.features.user.repository.UserRepository;
@@ -55,13 +56,16 @@ public class UserDetailsSeederService {
                           WorkoutState[] workoutStates = WorkoutState.values();
                           Gender[] genders = Gender.values();
                           Goals[] goals = Goals.values();
-                          DuetTypes[] duetTypes = DuetTypes.values();
-                          userDetails.setDuet(duetTypes[random.nextInt(duetTypes.length)]);
+                          DietType[] dietTypes = DietType.values();
+                          NutritionAuthority[] nutritionAuthorities = NutritionAuthority.values();
+
+                          userDetails.setDiet(dietTypes[random.nextInt(dietTypes.length)]);
                           userDetails.setGoal(goals[random.nextInt(goals.length)]);
                           userDetails.setWorkoutState(
                               workoutStates[random.nextInt(workoutStates.length)]);
                           userDetails.setGender(genders[random.nextInt(genders.length)]);
-
+                          userDetails.setNutritionAuthority(
+                              nutritionAuthorities[random.nextInt(nutritionAuthorities.length)]);
                           return userDetailsRepository
                               .save(userDetails)
                               .flatMap(

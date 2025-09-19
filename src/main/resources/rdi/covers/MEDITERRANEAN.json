@@ -1,0 +1,73 @@
+{
+  "NIH_IOM": {
+    "CARBOHYDRATE": {
+      "ALL": {
+        "14-150": {
+          "rdi": 200,
+          "ul": null
+        }
+      }
+    },
+    "FAT": {
+      "ALL": {
+        "14-150": {
+          "rdi": 80,
+          "ul": null
+        }
+      }
+    },
+    "OMEGA3": {
+      "ALL": {
+        "14-150": {
+          "rdi": 2.0,
+          "ul": null
+        }
+      }
+    },
+    "OMEGA6": {
+      "ALL": {
+        "14-150": {
+          "rdi": 14,
+          "ul": null
+        }
+      }
+    },
+    "FIBER": {
+      "ALL": {
+        "14-150": {
+          "rdi": 30,
+          "ul": null
+        }
+      }
+    },
+    "POTASSIUM_K": {
+      "ALL": {
+        "14-150": {
+          "rdi": 4700,
+          "ul": null
+        }
+      }
+    },
+    "MAGNESIUM_MG": {
+      "ALL": {
+        "14-150": {
+          "rdi": 420,
+          "ul": 350
+        }
+      }
+    },
+    "SODIUM_NA": {
+      "ALL": {
+        "14-150": {
+          "rdi": 1500,
+          "ul": 2300
+        }
+      }
+    }
+  },
+  "WHO_FAO": {},
+  "EFSA": {},
+  "UK_SACN": {},
+  "DACH": {},
+  "SPORTS": {}
+}

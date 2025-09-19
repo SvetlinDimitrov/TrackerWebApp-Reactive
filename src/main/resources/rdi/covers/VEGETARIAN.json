@@ -1,0 +1,57 @@
+{
+  "NIH_IOM": {
+    "PROTEIN": {
+      "ALL": {
+        "14-150": {
+          "rdi": 55,
+          "ul": null
+        }
+      }
+    },
+    "FIBER": {
+      "ALL": {
+        "14-150": {
+          "rdi": 30,
+          "ul": null
+        }
+      }
+    },
+    "VITAMIN_B12": {
+      "ALL": {
+        "14-150": {
+          "rdi": 3.0,
+          "ul": null
+        }
+      }
+    },
+    "IRON_FE": {
+      "ALL": {
+        "14-150": {
+          "rdi": 16,
+          "ul": 45
+        }
+      }
+    },
+    "ZINC_ZN": {
+      "ALL": {
+        "14-150": {
+          "rdi": 11,
+          "ul": 40
+        }
+      }
+    },
+    "OMEGA3": {
+      "ALL": {
+        "14-150": {
+          "rdi": 1.8,
+          "ul": null
+        }
+      }
+    }
+  },
+  "WHO_FAO": {},
+  "EFSA": {},
+  "UK_SACN": {},
+  "DACH": {},
+  "SPORTS": {}
+}

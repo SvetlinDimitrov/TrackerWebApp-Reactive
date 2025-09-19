@@ -1,0 +1,96 @@
+{
+  "NIH_IOM": {
+    "CARBOHYDRATE": {
+      "MALE": {
+        "14-150": {
+          "rdi": 30,
+          "ul": null
+        }
+      },
+      "FEMALE": {
+        "14-150": {
+          "rdi": 30,
+          "ul": null
+        }
+      },
+      "FEMALE_PREGNANT": {
+        "14-50": {
+          "rdi": 30,
+          "ul": null
+        }
+      },
+      "FEMALE_LACTATING": {
+        "14-50": {
+          "rdi": 30,
+          "ul": null
+        }
+      }
+    },
+    "PROTEIN": {
+      "MALE": {
+        "14-150": {
+          "rdi": 90,
+          "ul": null
+        }
+      },
+      "FEMALE": {
+        "14-150": {
+          "rdi": 80,
+          "ul": null
+        }
+      },
+      "FEMALE_PREGNANT": {
+        "14-50": {
+          "rdi": 90,
+          "ul": null
+        }
+      },
+      "FEMALE_LACTATING": {
+        "14-50": {
+          "rdi": 90,
+          "ul": null
+        }
+      }
+    },
+    "FAT": {
+      "MALE": {
+        "14-150": {
+          "rdi": 160,
+          "ul": null
+        }
+      },
+      "FEMALE": {
+        "14-150": {
+          "rdi": 150,
+          "ul": null
+        }
+      },
+      "FEMALE_PREGNANT": {
+        "14-50": {
+          "rdi": 160,
+          "ul": null
+        }
+      },
+      "FEMALE_LACTATING": {
+        "14-50": {
+          "rdi": 160,
+          "ul": null
+        }
+      }
+    }
+  },
+  "WHO_FAO": {
+    "CARBOHYDRATE": {
+      "ALL": {
+        "14-150": {
+          "rdi": 40,
+          "ul": null
+        }
+      }
+    }
+  },
+  "EFSA": {},
+  "UK_SACN": {},
+  "DACH": {},
+  "SPORTS": {}
+}

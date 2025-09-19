@@ -8,8 +8,9 @@ import lombok.RequiredArgsConstructor;
 import org.nutriGuideBuddy.features.shared.dto.CustomPageable;
 import org.nutriGuideBuddy.features.tracker.enums.Goals;
 import org.nutriGuideBuddy.features.user.dto.UserDetailsSnapshotFilter;
-import org.nutriGuideBuddy.features.user.enums.DuetTypes;
+import org.nutriGuideBuddy.features.user.enums.DietType;
 import org.nutriGuideBuddy.features.user.enums.Gender;
+import org.nutriGuideBuddy.features.user.enums.NutritionAuthority;
 import org.nutriGuideBuddy.features.user.enums.WorkoutState;
 import org.nutriGuideBuddy.features.user.repository.projection.UserDetailsSnapshotProjection;
 import org.springframework.r2dbc.core.DatabaseClient;
@@ -112,7 +113,7 @@ public class UserDetailsSnapshotCustomRepositoryImpl
             ids -> {
               String detailsQuery =
                   "SELECT uds.id, uds.kilograms, uds.height, uds.age, uds.workout_state, uds.gender, "
-                      + "uds.goal, uds.duet, uds.user_id, uds.created_at, uds.updated_at "
+                      + "uds.goal, uds.diet, uds.nutrition_authority, uds.user_id, uds.created_at, uds.updated_at "
                       + "FROM user_details_snapshots uds "
                       + "WHERE uds.id IN ("
                       + IntStream.range(0, ids.size())
@@ -143,8 +144,11 @@ public class UserDetailsSnapshotCustomRepositoryImpl
                               Optional.ofNullable(row.get("goal", String.class))
                                   .map(Goals::valueOf)
                                   .orElse(null),
-                              Optional.ofNullable(row.get("duet", String.class))
-                                  .map(DuetTypes::valueOf)
+                              Optional.ofNullable(row.get("diet", String.class))
+                                  .map(DietType::valueOf)
+                                  .orElse(null),
+                              Optional.ofNullable(row.get("nutrition_authority", String.class))
+                                  .map(NutritionAuthority::valueOf)
                                   .orElse(null),
                               row.get("user_id", Long.class),
                               row.get("created_at", Instant.class),

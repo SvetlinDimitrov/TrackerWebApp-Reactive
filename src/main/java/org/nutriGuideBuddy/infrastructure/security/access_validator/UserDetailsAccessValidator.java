@@ -33,7 +33,9 @@ public class UserDetailsAccessValidator {
                       && principal.details().getHeight() != null
                       && principal.details().getKilograms() != null
                       && principal.details().getGender() != null
-                      && principal.details().getWorkoutState() != null;
+                      && principal.details().getWorkoutState() != null
+                      && principal.details().getGoal() != null
+                      && principal.details().getDiet() != null;
               if (!fullyRegistered) {
                 return Mono.error(new AccessDeniedException("User is not fully registered"));
               }
