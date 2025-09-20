@@ -1,0 +1,519 @@
+{
+  "nutrients": {
+    "source": "D-A-CH Referenzwerte für die Nährstoffzufuhr (2011, update 2020)",
+
+    "CARBOHYDRATE": {
+      "ALL": {
+        "1-150": {
+          "rdiMin": 50,
+          "unit": "g",
+          "isDerived": true,
+          "basis": "ENERGY",
+          "divisor": 4
+        }
+      }
+    },
+    "PROTEIN": {
+      "ALL": {
+        "1-150": {
+          "rdiMin": 0.8,
+          "unit": "g",
+          "isDerived": true,
+          "basis": "BODY_WEIGHT"
+        }
+      }
+    },
+    "FAT": {
+      "ALL": {
+        "1-150": {
+          "rdiMin": 30,
+          "unit": "g",
+          "isDerived": true,
+          "basis": "ENERGY",
+          "divisor": 9
+        }
+      }
+    },
+    "FIBER": {
+      "ALL": {
+        "1-150": {
+          "rdiMin": 30,
+          "unit": "g",
+          "isDerived": false
+        }
+      }
+    },
+    "SUGAR": {
+      "ALL": {
+        "1-150": {
+          "rdiMax": 10,
+          "unit": "g",
+          "isDerived": true,
+          "basis": "ENERGY",
+          "divisor": 4
+        }
+      }
+    },
+    "OMEGA6": {
+      "ALL": {
+        "1-150": {
+          "rdiMin": 2.5,
+          "unit": "g",
+          "isDerived": true,
+          "basis": "ENERGY",
+          "divisor": 9
+        }
+      }
+    },
+    "OMEGA3": {
+      "ALL": {
+        "19-150": {
+          "rdiMin": 0.25,
+          "unit": "g",
+          "isDerived": false
+        }
+      }
+    },
+    "SATURATED_FAT": {
+      "ALL": {
+        "1-150": {
+          "rdiMax": 10,
+          "unit": "g",
+          "isDerived": true,
+          "basis": "ENERGY",
+          "divisor": 9
+        }
+      }
+    },
+    "TRANS_FAT": {
+      "ALL": {
+        "1-150": {
+          "rdiMax": 1,
+          "unit": "g",
+          "isDerived": true,
+          "basis": "ENERGY",
+          "divisor": 9
+        }
+      }
+    },
+
+    "VITAMIN_A": {
+      "ALL": {
+        "1-3": { "rdiMin": 210, "unit": "µg", "isDerived": false },
+        "4-6": { "rdiMin": 270, "unit": "µg", "isDerived": false },
+        "7-9": { "rdiMin": 350, "unit": "µg", "isDerived": false }
+      },
+      "MALE": {
+        "10-12": { "rdiMin": 450, "unit": "µg", "isDerived": false },
+        "13-18": { "rdiMin": 600, "unit": "µg", "isDerived": false },
+        "19-150": { "rdiMin": 850, "unit": "µg", "isDerived": false }
+      },
+      "FEMALE": {
+        "10-12": { "rdiMin": 400, "unit": "µg", "isDerived": false },
+        "13-18": { "rdiMin": 550, "unit": "µg", "isDerived": false },
+        "19-150": { "rdiMin": 700, "unit": "µg", "isDerived": false }
+      }
+    },
+    "VITAMIN_D_D2_D3": {
+      "ALL": {
+        "1-150": {
+          "rdiMin": 20,
+          "unit": "µg",
+          "isDerived": false
+        }
+      }
+    },
+    "VITAMIN_E": {
+      "ALL": {
+        "1-3": { "rdiMin": 3, "unit": "mg", "isDerived": false },
+        "4-6": { "rdiMin": 4, "unit": "mg", "isDerived": false },
+        "7-9": { "rdiMin": 6, "unit": "mg", "isDerived": false }
+      },
+      "MALE": {
+        "10-12": { "rdiMin": 8, "unit": "mg", "isDerived": false },
+        "13-18": { "rdiMin": 12, "unit": "mg", "isDerived": false },
+        "19-150": { "rdiMin": 14, "unit": "mg", "isDerived": false }
+      },
+      "FEMALE": {
+        "10-12": { "rdiMin": 7, "unit": "mg", "isDerived": false },
+        "13-18": { "rdiMin": 11, "unit": "mg", "isDerived": false },
+        "19-150": { "rdiMin": 12, "unit": "mg", "isDerived": false }
+      }
+    },
+    "VITAMIN_K": {
+      "ALL": {
+        "1-3": { "rdiMin": 15, "unit": "µg", "isDerived": false },
+        "4-6": { "rdiMin": 20, "unit": "µg", "isDerived": false },
+        "7-9": { "rdiMin": 30, "unit": "µg", "isDerived": false }
+      },
+      "MALE": {
+        "10-12": { "rdiMin": 40, "unit": "µg", "isDerived": false },
+        "13-18": { "rdiMin": 50, "unit": "µg", "isDerived": false },
+        "19-150": { "rdiMin": 70, "unit": "µg", "isDerived": false }
+      },
+      "FEMALE": {
+        "10-12": { "rdiMin": 40, "unit": "µg", "isDerived": false },
+        "13-18": { "rdiMin": 50, "unit": "µg", "isDerived": false },
+        "19-150": { "rdiMin": 60, "unit": "µg", "isDerived": false }
+      }
+    },
+    "VITAMIN_C": {
+      "ALL": {
+        "1-3": { "rdiMin": 20, "unit": "mg", "isDerived": false },
+        "4-6": { "rdiMin": 30, "unit": "mg", "isDerived": false },
+        "7-9": { "rdiMin": 45, "unit": "mg", "isDerived": false }
+      },
+      "MALE": {
+        "10-12": { "rdiMin": 65, "unit": "mg", "isDerived": false },
+        "13-18": { "rdiMin": 85, "unit": "mg", "isDerived": false },
+        "19-150": { "rdiMin": 110, "unit": "mg", "isDerived": false }
+      },
+      "FEMALE": {
+        "10-12": { "rdiMin": 60, "unit": "mg", "isDerived": false },
+        "13-18": { "rdiMin": 80, "unit": "mg", "isDerived": false },
+        "19-150": { "rdiMin": 95, "unit": "mg", "isDerived": false }
+      }
+    },
+    "VITAMIN_B1_THIAMIN": {
+      "ALL": {
+        "1-3": { "rdiMin": 0.4, "unit": "mg", "isDerived": false },
+        "4-6": { "rdiMin": 0.5, "unit": "mg", "isDerived": false },
+        "7-9": { "rdiMin": 0.6, "unit": "mg", "isDerived": false }
+      },
+      "MALE": {
+        "10-12": { "rdiMin": 0.9, "unit": "mg", "isDerived": false },
+        "13-18": { "rdiMin": 1.2, "unit": "mg", "isDerived": false },
+        "19-150": { "rdiMin": 1.2, "unit": "mg", "isDerived": false }
+      },
+      "FEMALE": {
+        "10-12": { "rdiMin": 0.8, "unit": "mg", "isDerived": false },
+        "13-18": { "rdiMin": 1.0, "unit": "mg", "isDerived": false },
+        "19-150": { "rdiMin": 1.0, "unit": "mg", "isDerived": false }
+      }
+    },
+    "VITAMIN_B2_RIBOFLAVIN": {
+      "ALL": {
+        "1-3": { "rdiMin": 0.5, "unit": "mg", "isDerived": false },
+        "4-6": { "rdiMin": 0.6, "unit": "mg", "isDerived": false },
+        "7-9": { "rdiMin": 0.7, "unit": "mg", "isDerived": false }
+      },
+      "MALE": {
+        "10-12": { "rdiMin": 1.0, "unit": "mg", "isDerived": false },
+        "13-18": { "rdiMin": 1.4, "unit": "mg", "isDerived": false },
+        "19-150": { "rdiMin": 1.4, "unit": "mg", "isDerived": false }
+      },
+      "FEMALE": {
+        "10-12": { "rdiMin": 0.9, "unit": "mg", "isDerived": false },
+        "13-18": { "rdiMin": 1.1, "unit": "mg", "isDerived": false },
+        "19-150": { "rdiMin": 1.1, "unit": "mg", "isDerived": false }
+      }
+    },
+    "VITAMIN_B3_NIACIN": {
+      "ALL": {
+        "1-3": { "rdiMin": 6, "unit": "mg", "isDerived": false },
+        "4-6": { "rdiMin": 8, "unit": "mg", "isDerived": false },
+        "7-9": { "rdiMin": 11, "unit": "mg", "isDerived": false }
+      },
+      "MALE": {
+        "10-12": { "rdiMin": 13, "unit": "mg", "isDerived": false },
+        "13-18": { "rdiMin": 17, "unit": "mg", "isDerived": false },
+        "19-150": { "rdiMin": 16, "unit": "mg", "isDerived": false }
+      },
+      "FEMALE": {
+        "10-12": { "rdiMin": 11, "unit": "mg", "isDerived": false },
+        "13-18": { "rdiMin": 15, "unit": "mg", "isDerived": false },
+        "19-150": { "rdiMin": 13, "unit": "mg", "isDerived": false }
+      }
+    },
+    "VITAMIN_B5_PANTOTHENIC_ACID": {
+      "ALL": {
+        "1-3": { "rdiMin": 3, "unit": "mg", "isDerived": false },
+        "4-6": { "rdiMin": 4, "unit": "mg", "isDerived": false },
+        "7-9": { "rdiMin": 4, "unit": "mg", "isDerived": false },
+        "10-12": { "rdiMin": 5, "unit": "mg", "isDerived": false },
+        "13-150": { "rdiMin": 5, "unit": "mg", "isDerived": false }
+      }
+    },
+    "VITAMIN_B6": {
+      "ALL": {
+        "1-3": { "rdiMin": 0.6, "unit": "mg", "isDerived": false },
+        "4-6": { "rdiMin": 0.7, "unit": "mg", "isDerived": false },
+        "7-9": { "rdiMin": 1.0, "unit": "mg", "isDerived": false }
+      },
+      "MALE": {
+        "10-12": { "rdiMin": 1.2, "unit": "mg", "isDerived": false },
+        "13-18": { "rdiMin": 1.5, "unit": "mg", "isDerived": false },
+        "19-150": { "rdiMin": 1.5, "unit": "mg", "isDerived": false }
+      },
+      "FEMALE": {
+        "10-12": { "rdiMin": 1.1, "unit": "mg", "isDerived": false },
+        "13-18": { "rdiMin": 1.2, "unit": "mg", "isDerived": false },
+        "19-150": { "rdiMin": 1.2, "unit": "mg", "isDerived": false }
+      }
+    },
+    "VITAMIN_B7_BIOTIN": {
+      "ALL": {
+        "1-3": { "rdiMin": 20, "unit": "µg", "isDerived": false },
+        "4-6": { "rdiMin": 25, "unit": "µg", "isDerived": false },
+        "7-9": { "rdiMin": 30, "unit": "µg", "isDerived": false },
+        "10-12": { "rdiMin": 35, "unit": "µg", "isDerived": false },
+        "13-150": { "rdiMin": 40, "unit": "µg", "isDerived": false }
+      }
+    },
+    "VITAMIN_B9_FOLATE": {
+      "ALL": {
+        "1-3": { "rdiMin": 120, "unit": "µg", "isDerived": false },
+        "4-6": { "rdiMin": 140, "unit": "µg", "isDerived": false },
+        "7-9": { "rdiMin": 180, "unit": "µg", "isDerived": false }
+      },
+      "MALE": {
+        "10-12": { "rdiMin": 240, "unit": "µg", "isDerived": false },
+        "13-150": { "rdiMin": 300, "unit": "µg", "isDerived": false }
+      },
+      "FEMALE": {
+        "10-12": { "rdiMin": 240, "unit": "µg", "isDerived": false },
+        "13-150": { "rdiMin": 300, "unit": "µg", "isDerived": false }
+      },
+      "FEMALE_PREGNANT": {
+        "14-50": { "rdiMin": 550, "unit": "µg", "isDerived": false }
+      },
+      "FEMALE_LACTATING": {
+        "14-50": { "rdiMin": 450, "unit": "µg", "isDerived": false }
+      }
+    },
+    "VITAMIN_B12": {
+      "ALL": {
+        "1-3": { "rdiMin": 1.5, "unit": "µg", "isDerived": false },
+        "4-6": { "rdiMin": 1.5, "unit": "µg", "isDerived": false },
+        "7-9": { "rdiMin": 1.5, "unit": "µg", "isDerived": false }
+      },
+      "MALE": {
+        "10-12": { "rdiMin": 3.0, "unit": "µg", "isDerived": false },
+        "13-150": { "rdiMin": 4.0, "unit": "µg", "isDerived": false }
+      },
+      "FEMALE": {
+        "10-12": { "rdiMin": 3.0, "unit": "µg", "isDerived": false },
+        "13-150": { "rdiMin": 4.0, "unit": "µg", "isDerived": false }
+      }
+    },
+
+    "CALCIUM_CA": {
+      "ALL": {
+        "1-3": { "rdiMin": 600, "unit": "mg", "isDerived": false },
+        "4-6": { "rdiMin": 750, "unit": "mg", "isDerived": false },
+        "7-9": { "rdiMin": 900, "unit": "mg", "isDerived": false }
+      },
+      "MALE": {
+        "10-12": { "rdiMin": 1100, "unit": "mg", "isDerived": false },
+        "13-18": { "rdiMin": 1200, "unit": "mg", "isDerived": false },
+        "19-150": { "rdiMin": 1000, "unit": "mg", "isDerived": false }
+      },
+      "FEMALE": {
+        "10-12": { "rdiMin": 1100, "unit": "mg", "isDerived": false },
+        "13-18": { "rdiMin": 1200, "unit": "mg", "isDerived": false },
+        "19-150": { "rdiMin": 1000, "unit": "mg", "isDerived": false }
+      }
+    },
+    "PHOSPHORUS_P": {
+      "ALL": {
+        "1-3": { "rdiMin": 500, "unit": "mg", "isDerived": false },
+        "4-6": { "rdiMin": 600, "unit": "mg", "isDerived": false },
+        "7-9": { "rdiMin": 700, "unit": "mg", "isDerived": false }
+      },
+      "MALE": {
+        "10-12": { "rdiMin": 1100, "unit": "mg", "isDerived": false },
+        "13-18": { "rdiMin": 1250, "unit": "mg", "isDerived": false },
+        "19-150": { "rdiMin": 700, "unit": "mg", "isDerived": false }
+      },
+      "FEMALE": {
+        "10-12": { "rdiMin": 1100, "unit": "mg", "isDerived": false },
+        "13-18": { "rdiMin": 1250, "unit": "mg", "isDerived": false },
+        "19-150": { "rdiMin": 700, "unit": "mg", "isDerived": false }
+      }
+    },
+    "MAGNESIUM_MG": {
+      "ALL": {
+        "1-3": { "rdiMin": 80, "unit": "mg", "isDerived": false },
+        "4-6": { "rdiMin": 120, "unit": "mg", "isDerived": false },
+        "7-9": { "rdiMin": 170, "unit": "mg", "isDerived": false }
+      },
+      "MALE": {
+        "10-12": { "rdiMin": 240, "unit": "mg", "isDerived": false },
+        "13-14": { "rdiMin": 300, "unit": "mg", "isDerived": false },
+        "15-18": { "rdiMin": 400, "unit": "mg", "isDerived": false },
+        "19-150": { "rdiMin": 350, "unit": "mg", "isDerived": false }
+      },
+      "FEMALE": {
+        "10-12": { "rdiMin": 240, "unit": "mg", "isDerived": false },
+        "13-14": { "rdiMin": 300, "unit": "mg", "isDerived": false },
+        "15-18": { "rdiMin": 350, "unit": "mg", "isDerived": false },
+        "19-150": { "rdiMin": 300, "unit": "mg", "isDerived": false }
+      }
+    },
+    "SODIUM_NA": {
+      "ALL": {
+        "1-150": {
+          "rdiMin": 1500,
+          "unit": "mg",
+          "isDerived": false
+        }
+      }
+    },
+    "POTASSIUM_K": {
+      "ALL": {
+        "1-3": { "rdiMin": 1100, "unit": "mg", "isDerived": false },
+        "4-6": { "rdiMin": 1300, "unit": "mg", "isDerived": false },
+        "7-9": { "rdiMin": 2000, "unit": "mg", "isDerived": false }
+      },
+      "MALE": {
+        "10-13": { "rdiMin": 3900, "unit": "mg", "isDerived": false },
+        "14-150": { "rdiMin": 4000, "unit": "mg", "isDerived": false }
+      },
+      "FEMALE": {
+        "10-13": { "rdiMin": 3900, "unit": "mg", "isDerived": false },
+        "14-150": { "rdiMin": 4000, "unit": "mg", "isDerived": false }
+      }
+    },
+    "IRON_FE": {
+      "ALL": {
+        "1-3": { "rdiMin": 8, "unit": "mg", "isDerived": false },
+        "4-6": { "rdiMin": 8, "unit": "mg", "isDerived": false },
+        "7-9": { "rdiMin": 10, "unit": "mg", "isDerived": false }
+      },
+      "MALE": {
+        "10-12": { "rdiMin": 12, "unit": "mg", "isDerived": false },
+        "13-150": { "rdiMin": 10, "unit": "mg", "isDerived": false }
+      },
+      "FEMALE": {
+        "10-12": { "rdiMin": 15, "unit": "mg", "isDerived": false },
+        "13-50": { "rdiMin": 15, "unit": "mg", "isDerived": false },
+        "51-150": { "rdiMin": 10, "unit": "mg", "isDerived": false }
+      }
+    },
+    "ZINC_ZN": {
+      "ALL": {
+        "1-3": { "rdiMin": 3, "unit": "mg", "isDerived": false },
+        "4-6": { "rdiMin": 5, "unit": "mg", "isDerived": false },
+        "7-9": { "rdiMin": 7, "unit": "mg", "isDerived": false }
+      },
+      "MALE": {
+        "10-12": { "rdiMin": 9, "unit": "mg", "isDerived": false },
+        "13-150": { "rdiMin": 11, "unit": "mg", "isDerived": false }
+      },
+      "FEMALE": {
+        "10-12": { "rdiMin": 9, "unit": "mg", "isDerived": false },
+        "13-150": { "rdiMin": 7, "unit": "mg", "isDerived": false }
+      }
+    },
+    "IODINE_I": {
+      "ALL": {
+        "1-3": { "rdiMin": 100, "unit": "µg", "isDerived": false },
+        "4-6": { "rdiMin": 120, "unit": "µg", "isDerived": false },
+        "7-9": { "rdiMin": 140, "unit": "µg", "isDerived": false }
+      },
+      "MALE": {
+        "10-12": { "rdiMin": 180, "unit": "µg", "isDerived": false },
+        "13-150": { "rdiMin": 200, "unit": "µg", "isDerived": false }
+      },
+      "FEMALE": {
+        "10-12": { "rdiMin": 180, "unit": "µg", "isDerived": false },
+        "13-150": { "rdiMin": 200, "unit": "µg", "isDerived": false }
+      },
+      "FEMALE_PREGNANT": {
+        "14-50": { "rdiMin": 230, "unit": "µg", "isDerived": false }
+      },
+      "FEMALE_LACTATING": {
+        "14-50": { "rdiMin": 260, "unit": "µg", "isDerived": false }
+      }
+    },
+    "SELENIUM_SE": {
+      "ALL": {
+        "1-3": { "rdiMin": 15, "unit": "µg", "isDerived": false },
+        "4-6": { "rdiMin": 20, "unit": "µg", "isDerived": false },
+        "7-9": { "rdiMin": 30, "unit": "µg", "isDerived": false }
+      },
+      "MALE": {
+        "10-12": { "rdiMin": 45, "unit": "µg", "isDerived": false },
+        "13-150": { "rdiMin": 70, "unit": "µg", "isDerived": false }
+      },
+      "FEMALE": {
+        "10-12": { "rdiMin": 45, "unit": "µg", "isDerived": false },
+        "13-150": { "rdiMin": 60, "unit": "µg", "isDerived": false }
+      }
+    },
+    "COPPER_CU": {
+      "ALL": {
+        "1-3": { "rdiMin": 0.5, "unit": "mg", "isDerived": false },
+        "4-6": { "rdiMin": 0.5, "unit": "mg", "isDerived": false },
+        "7-9": { "rdiMin": 0.7, "unit": "mg", "isDerived": false }
+      },
+      "MALE": {
+        "10-12": { "rdiMin": 0.8, "unit": "mg", "isDerived": false },
+        "13-150": { "rdiMin": 1.0, "unit": "mg", "isDerived": false }
+      },
+      "FEMALE": {
+        "10-12": { "rdiMin": 0.8, "unit": "mg", "isDerived": false },
+        "13-150": { "rdiMin": 1.0, "unit": "mg", "isDerived": false }
+      }
+    },
+    "MANGANESE_MN": {
+      "ALL": {
+        "1-150": {
+          "unit": "mg",
+          "isDerived": false,
+          "note": "D-A-CH: No precise reference value set; estimated safe intake assumed."
+        }
+      }
+    },
+    "MOLYBDENUM_MO": {
+      "ALL": {
+        "1-150": {
+          "unit": "µg",
+          "isDerived": false,
+          "note": "D-A-CH: No specific reference value established; adequate intake assumed."
+        }
+      }
+    },
+    "CHROMIUM_CR": {
+      "ALL": {
+        "1-150": {
+          "unit": "µg",
+          "isDerived": false,
+          "note": "D-A-CH: No reference values available due to insufficient data."
+        }
+      }
+    },
+    "FLUORIDE": {
+      "ALL": {
+        "1-3": { "rdiMin": 0.7, "unit": "mg", "isDerived": false },
+        "4-6": { "rdiMin": 1.1, "unit": "mg", "isDerived": false },
+        "7-10": { "rdiMin": 1.5, "unit": "mg", "isDerived": false }
+      },
+      "MALE": {
+        "11-13": { "rdiMin": 2.1, "unit": "mg", "isDerived": false },
+        "14-18": { "rdiMin": 3.2, "unit": "mg", "isDerived": false },
+        "19-150": { "rdiMin": 3.8, "unit": "mg", "isDerived": false }
+      },
+      "FEMALE": {
+        "11-13": { "rdiMin": 2.1, "unit": "mg", "isDerived": false },
+        "14-18": { "rdiMin": 2.9, "unit": "mg", "isDerived": false },
+        "19-150": { "rdiMin": 3.1, "unit": "mg", "isDerived": false }
+      }
+    },
+    "CHLORIDE": {
+      "ALL": {
+        "1-3": { "rdiMin": 1.5, "unit": "g", "isDerived": false },
+        "4-6": { "rdiMin": 1.9, "unit": "g", "isDerived": false },
+        "7-10": { "rdiMin": 2.3, "unit": "g", "isDerived": false }
+      },
+      "MALE": {
+        "11-18": { "rdiMin": 2.3, "unit": "g", "isDerived": false },
+        "19-150": { "rdiMin": 2.3, "unit": "g", "isDerived": false }
+      },
+      "FEMALE": {
+        "11-18": { "rdiMin": 2.3, "unit": "g", "isDerived": false },
+        "19-150": { "rdiMin": 2.3, "unit": "g", "isDerived": false }
+      }
+    }
+  }
+}

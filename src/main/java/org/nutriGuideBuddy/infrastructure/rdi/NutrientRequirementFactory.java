@@ -1,4 +1,4 @@
-package org.nutriGuideBuddy.infrastructure.io.rdi;
+package org.nutriGuideBuddy.infrastructure.rdi;
 
 import java.util.EnumMap;
 import java.util.HashSet;
@@ -7,9 +7,9 @@ import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import org.nutriGuideBuddy.features.user.enums.DietType;
 import org.nutriGuideBuddy.features.user.enums.NutritionAuthority;
-import org.nutriGuideBuddy.infrastructure.io.rdi.dto.JsonAllowedNutrients;
-import org.nutriGuideBuddy.infrastructure.io.rdi.dto.JsonPopulationGroup;
-import org.nutriGuideBuddy.infrastructure.io.rdi.dto.JsonRdiRange;
+import org.nutriGuideBuddy.infrastructure.rdi.dto.JsonAllowedNutrients;
+import org.nutriGuideBuddy.infrastructure.rdi.dto.JsonNutrientRdiRange;
+import org.nutriGuideBuddy.infrastructure.rdi.dto.JsonPopulationGroup;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -20,25 +20,29 @@ public class NutrientRequirementFactory {
   private final DietAuthorityStore dietAuthorityStore;
 
   /**
-   * Build merged nutrient requirements for a given authority + diet. Cover values override
-   * baseline.
+   * Build merged nutrient requirements for a given nutritionAuthority + diet. Baseline values (from
+   * nutritionAuthority) are merged with diet covers. Covers always override baseline for the same
+   * nutrient+group.
    */
-  public Map<JsonAllowedNutrients, Map<JsonPopulationGroup, Set<JsonRdiRange>>> build(
+  public Map<JsonAllowedNutrients, Map<JsonPopulationGroup, Set<JsonNutrientRdiRange>>> build(
       NutritionAuthority authority, DietType diet) {
 
-    Map<JsonAllowedNutrients, Map<JsonPopulationGroup, Set<JsonRdiRange>>> baseline =
+    // baseline from the selected nutritionAuthority
+    Map<JsonAllowedNutrients, Map<JsonPopulationGroup, Set<JsonNutrientRdiRange>>> baseline =
         nutrientAuthorityStore.getRequirements(authority);
 
-    Map<JsonAllowedNutrients, Map<JsonPopulationGroup, Set<JsonRdiRange>>> cover =
+    // overlay cover for given diet + nutritionAuthority
+    Map<JsonAllowedNutrients, Map<JsonPopulationGroup, Set<JsonNutrientRdiRange>>> cover =
         dietAuthorityStore.getRequirements(diet, authority);
 
-    Map<JsonAllowedNutrients, Map<JsonPopulationGroup, Set<JsonRdiRange>>> merged =
+    // merged result
+    Map<JsonAllowedNutrients, Map<JsonPopulationGroup, Set<JsonNutrientRdiRange>>> merged =
         new EnumMap<>(JsonAllowedNutrients.class);
 
     if (baseline != null) {
       baseline.forEach(
           (nutrient, groupMap) -> {
-            Map<JsonPopulationGroup, Set<JsonRdiRange>> copy =
+            Map<JsonPopulationGroup, Set<JsonNutrientRdiRange>> copy =
                 new EnumMap<>(JsonPopulationGroup.class);
             groupMap.forEach((group, ranges) -> copy.put(group, new HashSet<>(ranges)));
             merged.put(nutrient, copy);
@@ -48,7 +52,7 @@ public class NutrientRequirementFactory {
     if (cover != null) {
       cover.forEach(
           (nutrient, groupMap) -> {
-            Map<JsonPopulationGroup, Set<JsonRdiRange>> existing =
+            Map<JsonPopulationGroup, Set<JsonNutrientRdiRange>> existing =
                 merged.computeIfAbsent(nutrient, k -> new EnumMap<>(JsonPopulationGroup.class));
             groupMap.forEach((group, ranges) -> existing.put(group, new HashSet<>(ranges)));
           });

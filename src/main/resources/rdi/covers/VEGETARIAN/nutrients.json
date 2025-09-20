@@ -1,0 +1,181 @@
+{
+  "baseline": {
+    "CARBOHYDRATE": {
+      "ALL": {
+        "14-150": {
+          "rdiMin": 50,
+          "rdiMax": 60,
+          "unit": "g",
+          "isDerived": true,
+          "basis": "ENERGY",
+          "divisor": 4,
+          "note": "Vegetarian diets are higher in carbohydrate (50–60% total energy) from grains, legumes, fruits, vegetables."
+        }
+      }
+    },
+    "PROTEIN": {
+      "ALL": {
+        "14-150": {
+          "rdiMin": 0.9,
+          "unit": "g",
+          "isDerived": true,
+          "basis": "BODY_WEIGHT",
+          "note": "Eggs and dairy improve protein quality; ~0.9 g/kg BW/day recommended (slightly higher than omnivorous)."
+        }
+      }
+    },
+    "FAT": {
+      "ALL": {
+        "14-150": {
+          "rdiMin": 25,
+          "rdiMax": 35,
+          "unit": "g",
+          "isDerived": true,
+          "basis": "ENERGY",
+          "divisor": 9,
+          "note": "Vegetarian diets provide ~25–35% energy from fat, with emphasis on plant oils, nuts, seeds, and dairy fats."
+        }
+      }
+    },
+    "FIBER": {
+      "ALL": {
+        "14-150": {
+          "rdiMin": 30,
+          "unit": "g",
+          "isDerived": false,
+          "note": "Vegetarian diets provide high fiber; ≥30 g/day common."
+        }
+      }
+    },
+    "SUGAR": {
+      "ALL": {
+        "14-150": {
+          "rdiMax": 10,
+          "unit": "g",
+          "isDerived": true,
+          "basis": "ENERGY",
+          "divisor": 4,
+          "note": "Free sugars should be <10% total energy; watch fruit juices and sweetened dairy."
+        }
+      }
+    },
+    "OMEGA6": {
+      "ALL": {
+        "14-150": {
+          "rdiMin": 4,
+          "rdiMax": 8,
+          "unit": "g",
+          "isDerived": true,
+          "basis": "ENERGY",
+          "divisor": 9,
+          "note": "Vegetarians obtain sufficient omega-6 from vegetable oils (sunflower, soybean)."
+        }
+      }
+    },
+    "OMEGA3": {
+      "ALL": {
+        "14-150": {
+          "rdiMin": 1.1,
+          "unit": "g",
+          "isDerived": false,
+          "note": "ALA from flax, chia, walnuts; consider algal DHA supplement for optimal status."
+        }
+      }
+    },
+    "SATURATED_FAT": {
+      "ALL": {
+        "14-150": {
+          "rdiMax": 10,
+          "unit": "g",
+          "isDerived": true,
+          "basis": "ENERGY",
+          "divisor": 9,
+          "note": "May be higher than vegan due to dairy/eggs; keep <10% of total energy."
+        }
+      }
+    },
+    "TRANS_FAT": {
+      "ALL": {
+        "14-150": {
+          "rdiMax": 1,
+          "unit": "g",
+          "isDerived": true,
+          "basis": "ENERGY",
+          "divisor": 9,
+          "note": "Avoid processed foods; natural intake from dairy/eggs is very low."
+        }
+      }
+    },
+    "IRON_FE": {
+      "ALL": {
+        "14-150": {
+          "rdiMin": 14,
+          "unit": "mg",
+          "isDerived": false,
+          "note": "Non-heme iron sources (legumes, greens); bioavailability lower than in meat eaters."
+        }
+      }
+    },
+    "ZINC_ZN": {
+      "ALL": {
+        "14-150": {
+          "rdiMin": 10,
+          "unit": "mg",
+          "isDerived": false,
+          "note": "Eggs/dairy improve status somewhat, but intake should still be monitored."
+        }
+      }
+    },
+    "VITAMIN_B12": {
+      "ALL": {
+        "14-150": {
+          "rdiMin": 2,
+          "unit": "µg",
+          "isDerived": false,
+          "note": "Eggs and dairy provide some B12, but fortified foods/supplements may still be needed."
+        }
+      }
+    },
+    "CALCIUM_CA": {
+      "ALL": {
+        "14-150": {
+          "rdiMin": 1000,
+          "unit": "mg",
+          "isDerived": false,
+          "note": "Dairy foods help meet calcium needs; ~1000 mg/day target."
+        }
+      }
+    },
+    "IODINE_I": {
+      "ALL": {
+        "14-150": {
+          "rdiMin": 150,
+          "unit": "µg",
+          "isDerived": false,
+          "note": "Eggs and dairy provide iodine; seaweed/fortified foods also contribute."
+        }
+      }
+    },
+    "VITAMIN_D_D2_D3": {
+      "ALL": {
+        "14-150": {
+          "rdiMin": 10,
+          "unit": "µg",
+          "isDerived": false,
+          "note": "Same as general population; fortified dairy can help, but supplements often needed in low sunlight."
+        }
+      }
+    },
+    "CHOLINE": {
+      "ALL": {
+        "14-150": {
+          "rdiMin": 500,
+          "unit": "mg",
+          "isDerived": false,
+          "note": "Eggs provide choline; intake closer to omnivorous recommended levels."
+        }
+      }
+    }
+  },
+  "overlays": {}
+}

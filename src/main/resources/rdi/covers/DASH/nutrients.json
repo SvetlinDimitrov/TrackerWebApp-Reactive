@@ -1,0 +1,143 @@
+{
+  "baseline": {
+    "CARBOHYDRATE": {
+      "ALL": {
+        "19-150": {
+          "rdiMin": 55,
+          "rdiMax": 60,
+          "unit": "g",
+          "isDerived": true,
+          "basis": "ENERGY",
+          "divisor": 4,
+          "source": "DASH diet: carbohydrates provide 55–60% of total energy, mainly from whole grains, fruits, and vegetables."
+        }
+      }
+    },
+    "PROTEIN": {
+      "ALL": {
+        "19-150": {
+          "rdiMin": 18,
+          "rdiMax": 20,
+          "unit": "g",
+          "isDerived": true,
+          "basis": "ENERGY",
+          "divisor": 4,
+          "source": "DASH diet: protein contributes ~18–20% of energy, emphasizing lean meats, fish, legumes, and nuts."
+        }
+      }
+    },
+    "FAT": {
+      "ALL": {
+        "19-150": {
+          "rdiMin": 25,
+          "rdiMax": 30,
+          "unit": "g",
+          "isDerived": true,
+          "basis": "ENERGY",
+          "divisor": 9,
+          "source": "DASH diet: total fat provides 25–30% of total energy, primarily from unsaturated fats."
+        }
+      }
+    },
+    "SATURATED_FAT": {
+      "ALL": {
+        "19-150": {
+          "rdiMax": 7,
+          "unit": "g",
+          "isDerived": true,
+          "basis": "ENERGY",
+          "divisor": 9,
+          "source": "DASH diet limits saturated fat to <7% of energy."
+        }
+      }
+    },
+    "TRANS_FAT": {
+      "ALL": {
+        "19-150": {
+          "rdiMax": 1,
+          "unit": "g",
+          "isDerived": true,
+          "basis": "ENERGY",
+          "divisor": 9,
+          "source": "DASH diet minimizes trans fat intake, aiming for <1% of energy."
+        }
+      }
+    },
+    "SUGAR": {
+      "ALL": {
+        "19-150": {
+          "rdiMax": 10,
+          "unit": "g",
+          "isDerived": true,
+          "basis": "ENERGY",
+          "divisor": 4,
+          "source": "DASH diet restricts added sugars to <10% of energy."
+        }
+      }
+    },
+    "FIBER": {
+      "ALL": {
+        "19-150": {
+          "rdiMin": 30,
+          "unit": "g",
+          "isDerived": false,
+          "source": "DASH diet emphasizes fruits, vegetables, and whole grains to provide ~30 g/day fiber."
+        }
+      }
+    },
+    "SODIUM_NA": {
+      "ALL": {
+        "19-150": {
+          "rdiMax": 2300,
+          "unit": "mg",
+          "isDerived": false,
+          "source": "DASH standard version: sodium intake ≤2300 mg/day."
+        }
+      }
+    }
+  },
+  "overlays": {
+    "NIH_IOM": {
+      "SODIUM_NA": {
+        "ALL": {
+          "19-150": {
+            "rdiMax": 1500,
+            "unit": "mg",
+            "isDerived": false,
+            "source": "DASH low sodium version: sodium intake ≤1500 mg/day."
+          }
+        }
+      },
+      "POTASSIUM_K": {
+        "ALL": {
+          "19-150": {
+            "rdiMin": 4700,
+            "unit": "mg",
+            "isDerived": false,
+            "source": "DASH encourages high potassium intake (~4700 mg/day) from fruits and vegetables."
+          }
+        }
+      },
+      "MAGNESIUM_MG": {
+        "ALL": {
+          "19-150": {
+            "rdiMin": 500,
+            "unit": "mg",
+            "isDerived": false,
+            "source": "DASH increases magnesium intake (~500 mg/day) via nuts, legumes, and whole grains."
+          }
+        }
+      },
+      "CALCIUM_CA": {
+        "ALL": {
+          "19-150": {
+            "rdiMin": 1250,
+            "unit": "mg",
+            "isDerived": false,
+            "source": "DASH encourages dairy or fortified foods to supply ~1250 mg/day calcium."
+          }
+        }
+      }
+    }
+  }
+}

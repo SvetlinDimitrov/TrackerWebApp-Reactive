@@ -1,0 +1,121 @@
+{
+  "baseline": {
+    "CARBOHYDRATE": {
+      "ALL": {
+        "14-150": {
+          "rdiMax": 100,
+          "unit": "g",
+          "isDerived": false,
+          "note": "Paleo typically restricts refined carbs; carbohydrate intake comes from fruits, vegetables, and tubers (~≤100 g/day)."
+        }
+      }
+    },
+    "PROTEIN": {
+      "ALL": {
+        "14-150": {
+          "rdiMin": 1.2,
+          "rdiMax": 2.0,
+          "unit": "g",
+          "isDerived": true,
+          "basis": "BODY_WEIGHT",
+          "note": "Higher protein intake (~1.2–2.0 g/kg BW) from lean meats, fish, and eggs typical of Paleo diets."
+        }
+      }
+    },
+    "FAT": {
+      "ALL": {
+        "14-150": {
+          "rdiMin": 30,
+          "rdiMax": 40,
+          "unit": "g",
+          "isDerived": true,
+          "basis": "ENERGY",
+          "divisor": 9,
+          "note": "Fat provides ~30–40% of total energy in Paleo, largely from whole-food sources like nuts, seeds, meat, and fish."
+        }
+      }
+    },
+    "SATURATED_FAT": {
+      "ALL": {
+        "14-150": {
+          "rdiMax": 10,
+          "unit": "g",
+          "isDerived": true,
+          "basis": "ENERGY",
+          "divisor": 9,
+          "note": "Paleo includes natural saturated fats (meat, coconut), but avoids industrial trans fats."
+        }
+      }
+    },
+    "TRANS_FAT": {
+      "ALL": {
+        "14-150": {
+          "rdiMax": 0,
+          "unit": "g",
+          "isDerived": false,
+          "note": "Industrial trans fats are excluded in Paleo."
+        }
+      }
+    },
+    "OMEGA3": {
+      "ALL": {
+        "14-150": {
+          "rdiMin": 1,
+          "unit": "g",
+          "isDerived": false,
+          "note": "Emphasis on omega-3s from wild fish, grass-fed meat, and some nuts/seeds."
+        }
+      }
+    },
+    "OMEGA6": {
+      "ALL": {
+        "14-150": {
+          "rdiMax": 5,
+          "unit": "g",
+          "isDerived": false,
+          "note": "Paleo avoids seed oils; omega-6 intake kept moderate (~≤5% energy)."
+        }
+      }
+    },
+    "CHOLESTEROL": {
+      "ALL": {
+        "14-150": {
+          "unit": "mg",
+          "isDerived": false,
+          "note": "No explicit upper limit; Paleo foods naturally contain cholesterol from animal sources."
+        }
+      }
+    },
+    "SODIUM_NA": {
+      "ALL": {
+        "14-150": {
+          "rdiMax": 2300,
+          "unit": "mg",
+          "isDerived": false,
+          "note": "Lower than modern diets; Paleo excludes processed foods and salt."
+        }
+      }
+    },
+    "POTASSIUM_K": {
+      "ALL": {
+        "14-150": {
+          "rdiMin": 4000,
+          "unit": "mg",
+          "isDerived": false,
+          "note": "High potassium intake (~4 g/day) from fruits, vegetables, and tubers is typical of Paleo."
+        }
+      }
+    },
+    "FIBER": {
+      "ALL": {
+        "14-150": {
+          "rdiMin": 30,
+          "unit": "g",
+          "isDerived": false,
+          "note": "Fiber-rich diet from fruits, vegetables, and nuts, excluding grains/legumes."
+        }
+      }
+    }
+  },
+  "overlays": {}
+}

@@ -1,4 +1,4 @@
-package org.nutriGuideBuddy.infrastructure.io.rdi.dto;
+package org.nutriGuideBuddy.infrastructure.rdi.dto;
 
 public enum JsonNutritionAuthority {
   NIH_IOM,

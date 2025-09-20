@@ -22,7 +22,4 @@ public enum NutritionAuthority {
 
   /** Germany / Austria / Switzerland joint recommendations (D-A-CH reference values) */
   DACH,
-
-  /** Sports / Performance nutrition (ACSM, ISSN, etc.) with higher protein/carb/fluid intakes */
-  SPORTS;
 }

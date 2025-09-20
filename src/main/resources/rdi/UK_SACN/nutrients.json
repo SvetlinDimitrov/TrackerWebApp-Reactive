@@ -1,0 +1,500 @@
+{
+  "source": "UK COMA (1991) Dietary Reference Values; SACN updates (2016–2021); EVM (2003) Safe Upper Levels",
+  "nutrients": {
+    "CALCIUM_CA": {
+      "ALL": {
+        "1-3": { "rdiMin": 350, "unit": "mg", "isDerived": false },
+        "4-6": { "rdiMin": 450, "unit": "mg", "isDerived": false },
+        "7-10": { "rdiMin": 550, "unit": "mg", "isDerived": false }
+      },
+      "MALE": {
+        "11-18": { "rdiMin": 1000, "unit": "mg", "isDerived": false },
+        "19-150": { "rdiMin": 700, "unit": "mg", "isDerived": false, "rdiMax": 2500 }
+      },
+      "FEMALE": {
+        "11-18": { "rdiMin": 800, "unit": "mg", "isDerived": false },
+        "19-150": { "rdiMin": 700, "unit": "mg", "isDerived": false, "rdiMax": 2500 }
+      }
+    },
+    "IRON_FE": {
+      "ALL": {
+        "1-3": { "rdiMin": 6.9, "unit": "mg", "isDerived": false },
+        "4-6": { "rdiMin": 6.1, "unit": "mg", "isDerived": false },
+        "7-10": { "rdiMin": 8.7, "unit": "mg", "isDerived": false }
+      },
+      "MALE": {
+        "11-18": { "rdiMin": 11.3, "unit": "mg", "isDerived": false },
+        "19-150": { "rdiMin": 8.7, "unit": "mg", "isDerived": false, "rdiMax": 45 }
+      },
+      "FEMALE": {
+        "11-50": { "rdiMin": 14.8, "unit": "mg", "isDerived": false },
+        "51-150": { "rdiMin": 8.7, "unit": "mg", "isDerived": false, "rdiMax": 45 }
+      }
+    },
+    "ZINC_ZN": {
+      "ALL": {
+        "1-3": { "rdiMin": 5.0, "unit": "mg", "isDerived": false },
+        "4-6": { "rdiMin": 6.5, "unit": "mg", "isDerived": false },
+        "7-10": { "rdiMin": 7.0, "unit": "mg", "isDerived": false }
+      },
+      "MALE": {
+        "11-14": { "rdiMin": 9.0, "unit": "mg", "isDerived": false },
+        "15-18": { "rdiMin": 9.5, "unit": "mg", "isDerived": false },
+        "19-150": { "rdiMin": 9.5, "unit": "mg", "isDerived": false, "rdiMax": 25 }
+      },
+      "FEMALE": {
+        "11-18": { "rdiMin": 7.0, "unit": "mg", "isDerived": false },
+        "19-150": { "rdiMin": 7.0, "unit": "mg", "isDerived": false, "rdiMax": 25 }
+      }
+    },
+    "IODINE_I": {
+      "ALL": {
+        "1-3": { "rdiMin": 70, "unit": "µg", "isDerived": false },
+        "4-6": { "rdiMin": 100, "unit": "µg", "isDerived": false },
+        "7-10": { "rdiMin": 110, "unit": "µg", "isDerived": false }
+      },
+      "MALE": {
+        "11-18": { "rdiMin": 130, "unit": "µg", "isDerived": false },
+        "19-150": { "rdiMin": 140, "unit": "µg", "isDerived": false, "rdiMax": 500 }
+      },
+      "FEMALE": {
+        "11-18": { "rdiMin": 130, "unit": "µg", "isDerived": false },
+        "19-150": { "rdiMin": 140, "unit": "µg", "isDerived": false, "rdiMax": 500 }
+      }
+    },
+    "MAGNESIUM_MG": {
+      "ALL": {
+        "1-3": { "rdiMin": 85, "unit": "mg", "isDerived": false },
+        "4-6": { "rdiMin": 120, "unit": "mg", "isDerived": false },
+        "7-10": { "rdiMin": 200, "unit": "mg", "isDerived": false }
+      },
+      "MALE": {
+        "11-14": { "rdiMin": 280, "unit": "mg", "isDerived": false },
+        "15-18": { "rdiMin": 300, "unit": "mg", "isDerived": false },
+        "19-150": { "rdiMin": 300, "unit": "mg", "isDerived": false, "rdiMax": 400 }
+      },
+      "FEMALE": {
+        "11-14": { "rdiMin": 280, "unit": "mg", "isDerived": false },
+        "15-18": { "rdiMin": 300, "unit": "mg", "isDerived": false },
+        "19-150": { "rdiMin": 270, "unit": "mg", "isDerived": false, "rdiMax": 400 }
+      }
+    },
+    "PHOSPHORUS_P": {
+      "ALL": {
+        "1-3": { "rdiMin": 270, "unit": "mg", "isDerived": false },
+        "4-6": { "rdiMin": 350, "unit": "mg", "isDerived": false },
+        "7-10": { "rdiMin": 450, "unit": "mg", "isDerived": false }
+      },
+      "MALE": {
+        "11-18": { "rdiMin": 775, "unit": "mg", "isDerived": false },
+        "19-150": { "rdiMin": 550, "unit": "mg", "isDerived": false, "rdiMax": 4000 }
+      },
+      "FEMALE": {
+        "11-18": { "rdiMin": 625, "unit": "mg", "isDerived": false },
+        "19-150": { "rdiMin": 550, "unit": "mg", "isDerived": false, "rdiMax": 4000 }
+      }
+    },
+    "SODIUM_NA": {
+      "ALL": {
+        "1-3": { "rdiMin": 800, "unit": "mg", "isDerived": false },
+        "4-6": { "rdiMin": 1200, "unit": "mg", "isDerived": false },
+        "7-10": { "rdiMin": 1600, "unit": "mg", "isDerived": false }
+      },
+      "MALE": {
+        "11-18": { "rdiMin": 2000, "unit": "mg", "isDerived": false },
+        "19-150": { "rdiMin": 2400, "unit": "mg", "isDerived": false, "rdiMax": 2400 }
+      },
+      "FEMALE": {
+        "11-18": { "rdiMin": 2000, "unit": "mg", "isDerived": false },
+        "19-150": { "rdiMin": 2400, "unit": "mg", "isDerived": false, "rdiMax": 2400 }
+      },
+      "note": "SACN advises adults to limit salt to 6 g/day (~2400 mg sodium)."
+    },
+    "POTASSIUM_K": {
+      "ALL": {
+        "1-3": { "rdiMin": 1100, "unit": "mg", "isDerived": false },
+        "4-6": { "rdiMin": 1600, "unit": "mg", "isDerived": false },
+        "7-10": { "rdiMin": 2000, "unit": "mg", "isDerived": false }
+      },
+      "MALE": {
+        "11-18": { "rdiMin": 3100, "unit": "mg", "isDerived": false },
+        "19-150": { "rdiMin": 3500, "unit": "mg", "isDerived": false }
+      },
+      "FEMALE": {
+        "11-18": { "rdiMin": 3100, "unit": "mg", "isDerived": false },
+        "19-150": { "rdiMin": 3500, "unit": "mg", "isDerived": false }
+      }
+    },
+    "CHLORIDE": {
+      "ALL": {
+        "1-3": { "rdiMin": 1.5, "unit": "g", "isDerived": false },
+        "4-6": { "rdiMin": 1.9, "unit": "g", "isDerived": false },
+        "7-10": { "rdiMin": 2.3, "unit": "g", "isDerived": false }
+      },
+      "MALE": {
+        "11-18": { "rdiMin": 2.8, "unit": "g", "isDerived": false },
+        "19-150": { "rdiMin": 3.0, "unit": "g", "isDerived": false }
+      },
+      "FEMALE": {
+        "11-18": { "rdiMin": 2.8, "unit": "g", "isDerived": false },
+        "19-150": { "rdiMin": 3.0, "unit": "g", "isDerived": false }
+      }
+    },
+    "COPPER_CU": {
+      "ALL": {
+        "1-3": { "rdiMin": 0.4, "unit": "mg", "isDerived": false },
+        "4-6": { "rdiMin": 0.6, "unit": "mg", "isDerived": false },
+        "7-10": { "rdiMin": 0.7, "unit": "mg", "isDerived": false }
+      },
+      "MALE": {
+        "11-18": { "rdiMin": 0.8, "unit": "mg", "isDerived": false },
+        "19-150": { "rdiMin": 1.2, "unit": "mg", "isDerived": false, "rdiMax": 10 }
+      },
+      "FEMALE": {
+        "11-18": { "rdiMin": 0.8, "unit": "mg", "isDerived": false },
+        "19-150": { "rdiMin": 1.2, "unit": "mg", "isDerived": false, "rdiMax": 10 }
+      }
+    },
+    "SELENIUM_SE": {
+      "ALL": {
+        "1-3": { "rdiMin": 15, "unit": "µg", "isDerived": false },
+        "4-6": { "rdiMin": 20, "unit": "µg", "isDerived": false },
+        "7-10": { "rdiMin": 30, "unit": "µg", "isDerived": false }
+      },
+      "MALE": {
+        "11-18": { "rdiMin": 45, "unit": "µg", "isDerived": false },
+        "19-150": { "rdiMin": 75, "unit": "µg", "isDerived": false, "rdiMax": 450 }
+      },
+      "FEMALE": {
+        "11-18": { "rdiMin": 45, "unit": "µg", "isDerived": false },
+        "19-150": { "rdiMin": 60, "unit": "µg", "isDerived": false, "rdiMax": 450 }
+      }
+    },
+    "MANGANESE_MN": {
+      "ALL": {
+        "1-150": {
+          "unit": "mg",
+          "isDerived": false,
+          "rdiMax": 4,
+          "note": "Safe upper level applies to supplemental intake; no RNI established."
+        }
+      }
+    },
+    "FLUORIDE": {
+      "ALL": {
+        "1-150": {
+          "unit": "mg",
+          "isDerived": false,
+          "rdiMax": 7,
+          "note": "Adult UL set at 7 mg/day to avoid dental fluorosis."
+        }
+      }
+    },
+    "CHROMIUM_CR": {
+      "ALL": {
+        "1-150": {
+          "unit": "µg",
+          "isDerived": false,
+          "note": "No RNI or UL established due to insufficient data."
+        }
+      }
+    },
+    "MOLYBDENUM_MO": {
+      "ALL": {
+        "1-150": {
+          "unit": "µg",
+          "isDerived": false,
+          "rdiMax": 600,
+          "note": "Safe upper level set at 600 µg/day for adults."
+        }
+      }
+    },
+    "CHOLINE": {
+      "ALL": {
+        "1-150": {
+          "unit": "mg",
+          "isDerived": false,
+          "rdiMax": 3500,
+          "note": "No RNI; safe upper level set at 3500 mg/day."
+        }
+      }
+    },
+
+    "VITAMIN_A": {
+      "ALL": {
+        "1-3": { "rdiMin": 400, "unit": "µg", "isDerived": false },
+        "4-6": { "rdiMin": 500, "unit": "µg", "isDerived": false },
+        "7-10": { "rdiMin": 500, "unit": "µg", "isDerived": false }
+      },
+      "MALE": {
+        "11-18": { "rdiMin": 600, "unit": "µg", "isDerived": false },
+        "19-150": { "rdiMin": 700, "unit": "µg", "isDerived": false, "rdiMax": 1500 }
+      },
+      "FEMALE": {
+        "11-18": { "rdiMin": 600, "unit": "µg", "isDerived": false },
+        "19-150": { "rdiMin": 600, "unit": "µg", "isDerived": false, "rdiMax": 1500 }
+      }
+    },
+    "VITAMIN_D_D2_D3": {
+      "ALL": {
+        "1-150": {
+          "rdiMin": 10,
+          "unit": "µg",
+          "isDerived": false,
+          "rdiMax": 100,
+          "note": "SACN (2016): 10 µg/day recommended for all ≥1 year; safe upper level 100 µg/day."
+        }
+      }
+    },
+    "VITAMIN_E": {
+      "ALL": {
+        "1-150": {
+          "unit": "mg",
+          "isDerived": false,
+          "note": "SACN/COMA: No specific RNI; EVM UL 540 mg/day (adults)."
+        }
+      }
+    },
+    "VITAMIN_K": {
+      "ALL": {
+        "1-150": {
+          "unit": "µg",
+          "isDerived": false,
+          "note": "SACN/COMA: No RNI established; adequate intake assumed from normal diet."
+        }
+      }
+    },
+    "VITAMIN_C": {
+      "ALL": {
+        "1-3": { "rdiMin": 30, "unit": "mg", "isDerived": false },
+        "4-6": { "rdiMin": 30, "unit": "mg", "isDerived": false },
+        "7-10": { "rdiMin": 30, "unit": "mg", "isDerived": false }
+      },
+      "MALE": {
+        "11-18": { "rdiMin": 35, "unit": "mg", "isDerived": false },
+        "19-150": { "rdiMin": 40, "unit": "mg", "isDerived": false, "rdiMax": 1000 }
+      },
+      "FEMALE": {
+        "11-18": { "rdiMin": 35, "unit": "mg", "isDerived": false },
+        "19-150": { "rdiMin": 40, "unit": "mg", "isDerived": false, "rdiMax": 1000 }
+      }
+    },
+    "VITAMIN_B1_THIAMIN": {
+      "ALL": {
+        "1-3": { "rdiMin": 0.5, "unit": "mg", "isDerived": false },
+        "4-6": { "rdiMin": 0.7, "unit": "mg", "isDerived": false },
+        "7-10": { "rdiMin": 0.9, "unit": "mg", "isDerived": false }
+      },
+      "MALE": {
+        "11-18": { "rdiMin": 1.1, "unit": "mg", "isDerived": false },
+        "19-150": { "rdiMin": 1.0, "unit": "mg", "isDerived": false }
+      },
+      "FEMALE": {
+        "11-18": { "rdiMin": 0.9, "unit": "mg", "isDerived": false },
+        "19-150": { "rdiMin": 0.8, "unit": "mg", "isDerived": false }
+      }
+    },
+    "VITAMIN_B2_RIBOFLAVIN": {
+      "ALL": {
+        "1-3": { "rdiMin": 0.6, "unit": "mg", "isDerived": false },
+        "4-6": { "rdiMin": 0.8, "unit": "mg", "isDerived": false },
+        "7-10": { "rdiMin": 1.0, "unit": "mg", "isDerived": false }
+      },
+      "MALE": {
+        "11-18": { "rdiMin": 1.3, "unit": "mg", "isDerived": false },
+        "19-150": { "rdiMin": 1.3, "unit": "mg", "isDerived": false }
+      },
+      "FEMALE": {
+        "11-18": { "rdiMin": 1.1, "unit": "mg", "isDerived": false },
+        "19-150": { "rdiMin": 1.1, "unit": "mg", "isDerived": false }
+      }
+    },
+    "VITAMIN_B3_NIACIN": {
+      "ALL": {
+        "1-3": { "rdiMin": 8, "unit": "mg", "isDerived": false },
+        "4-6": { "rdiMin": 11, "unit": "mg", "isDerived": false },
+        "7-10": { "rdiMin": 13, "unit": "mg", "isDerived": false }
+      },
+      "MALE": {
+        "11-18": { "rdiMin": 17, "unit": "mg", "isDerived": false },
+        "19-150": { "rdiMin": 16, "unit": "mg", "isDerived": false, "rdiMax": 500 }
+      },
+      "FEMALE": {
+        "11-18": { "rdiMin": 15, "unit": "mg", "isDerived": false },
+        "19-150": { "rdiMin": 13, "unit": "mg", "isDerived": false, "rdiMax": 500 }
+      }
+    },
+    "VITAMIN_B6": {
+      "ALL": {
+        "1-3": { "rdiMin": 0.7, "unit": "mg", "isDerived": false },
+        "4-6": { "rdiMin": 0.9, "unit": "mg", "isDerived": false },
+        "7-10": { "rdiMin": 1.0, "unit": "mg", "isDerived": false }
+      },
+      "MALE": {
+        "11-18": { "rdiMin": 1.2, "unit": "mg", "isDerived": false },
+        "19-150": { "rdiMin": 1.4, "unit": "mg", "isDerived": false, "rdiMax": 10 }
+      },
+      "FEMALE": {
+        "11-18": { "rdiMin": 1.1, "unit": "mg", "isDerived": false },
+        "19-150": { "rdiMin": 1.2, "unit": "mg", "isDerived": false, "rdiMax": 10 }
+      }
+    },
+    "VITAMIN_B9_FOLATE": {
+      "ALL": {
+        "1-3": { "rdiMin": 70, "unit": "µg", "isDerived": false },
+        "4-6": { "rdiMin": 100, "unit": "µg", "isDerived": false },
+        "7-10": { "rdiMin": 150, "unit": "µg", "isDerived": false }
+      },
+      "MALE": {
+        "11-18": { "rdiMin": 200, "unit": "µg", "isDerived": false },
+        "19-150": { "rdiMin": 200, "unit": "µg", "isDerived": false, "rdiMax": 1000 }
+      },
+      "FEMALE": {
+        "11-18": { "rdiMin": 200, "unit": "µg", "isDerived": false },
+        "19-150": { "rdiMin": 200, "unit": "µg", "isDerived": false, "rdiMax": 1000 }
+      }
+    },
+    "VITAMIN_B12": {
+      "ALL": {
+        "1-3": { "rdiMin": 0.5, "unit": "µg", "isDerived": false },
+        "4-6": { "rdiMin": 0.8, "unit": "µg", "isDerived": false },
+        "7-10": { "rdiMin": 1.0, "unit": "µg", "isDerived": false }
+      },
+      "MALE": {
+        "11-18": { "rdiMin": 1.2, "unit": "µg", "isDerived": false },
+        "19-150": { "rdiMin": 1.5, "unit": "µg", "isDerived": false }
+      },
+      "FEMALE": {
+        "11-18": { "rdiMin": 1.2, "unit": "µg", "isDerived": false },
+        "19-150": { "rdiMin": 1.5, "unit": "µg", "isDerived": false }
+      }
+    },
+    "VITAMIN_B7_BIOTIN": {
+      "ALL": {
+        "1-150": {
+          "unit": "µg",
+          "isDerived": false,
+          "note": "No RNI set by SACN/COMA; adequate intake assumed from diet. EVM UL 900 µg/day."
+        }
+      }
+    },
+    "VITAMIN_B5_PANTOTHENIC_ACID": {
+      "ALL": {
+        "1-150": {
+          "unit": "mg",
+          "isDerived": false,
+          "note": "No RNI set by SACN/COMA; adequate intake assumed from diet. No UL established."
+        }
+      }
+    },
+
+    "CARBOHYDRATE": {
+      "ALL": {
+        "1-150": {
+          "rdiMin": 50,
+          "unit": "g",
+          "isDerived": true,
+          "basis": "ENERGY",
+          "divisor": 4,
+          "note": "SACN (2015): Carbohydrates should provide ~50% of total energy intake."
+        }
+      }
+    },
+    "PROTEIN": {
+      "ALL": {
+        "1-150": {
+          "rdiMin": 0.75,
+          "unit": "g",
+          "isDerived": true,
+          "basis": "BODY_WEIGHT"
+        }
+      }
+    },
+    "FAT": {
+      "ALL": {
+        "1-150": {
+          "rdiMin": 20,
+          "rdiMax": 35,
+          "unit": "g",
+          "isDerived": true,
+          "basis": "ENERGY",
+          "divisor": 9,
+          "note": "Total fat should provide 20–35% of total energy intake."
+        }
+      }
+    },
+    "FIBER": {
+      "ALL": {
+        "1-150": {
+          "rdiMin": 30,
+          "unit": "g",
+          "isDerived": false,
+          "note": "SACN (2015): Adults should consume at least 30 g/day of fiber (measured as AOAC)."
+        }
+      }
+    },
+    "SUGAR": {
+      "ALL": {
+        "1-150": {
+          "rdiMax": 5,
+          "unit": "g",
+          "isDerived": true,
+          "basis": "ENERGY",
+          "divisor": 4,
+          "note": "SACN (2015): Free sugars should provide no more than 5% of total energy intake."
+        }
+      }
+    },
+    "OMEGA6": {
+      "ALL": {
+        "1-150": {
+          "unit": "g",
+          "isDerived": false,
+          "note": "No specific RNI set by SACN; recommendations often follow WHO/EFSA (~2.5–9% energy)."
+        }
+      }
+    },
+    "OMEGA3": {
+      "MALE": {
+        "19-150": {
+          "rdiMin": 0.45,
+          "unit": "g",
+          "isDerived": false,
+          "note": "SACN (2015): Adults should consume at least 450 mg/day of long-chain omega-3s (EPA + DHA)."
+        }
+      },
+      "FEMALE": {
+        "19-150": {
+          "rdiMin": 0.45,
+          "unit": "g",
+          "isDerived": false,
+          "note": "SACN (2015): Adults should consume at least 450 mg/day of long-chain omega-3s (EPA + DHA)."
+        }
+      }
+    },
+    "SATURATED_FAT": {
+      "ALL": {
+        "1-150": {
+          "rdiMax": 10,
+          "unit": "g",
+          "isDerived": true,
+          "basis": "ENERGY",
+          "divisor": 9,
+          "note": "SACN: Saturated fat should provide less than 10% of total energy intake."
+        }
+      }
+    },
+    "TRANS_FAT": {
+      "ALL": {
+        "1-150": {
+          "rdiMax": 2,
+          "unit": "g",
+          "isDerived": true,
+          "basis": "ENERGY",
+          "divisor": 9,
+          "note": "SACN: Trans fats should provide less than 2% of total energy intake."
+        }
+      }
+    }
+  }
+}

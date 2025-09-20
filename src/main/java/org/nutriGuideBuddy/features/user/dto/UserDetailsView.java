@@ -15,4 +15,4 @@ public record UserDetailsView(
     Gender gender,
     Goals goal,
     DietType diet,
-    NutritionAuthority authority) {}
+    NutritionAuthority nutritionAuthority) {}

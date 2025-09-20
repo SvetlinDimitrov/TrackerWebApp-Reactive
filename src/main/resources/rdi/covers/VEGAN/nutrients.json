@@ -1,0 +1,175 @@
+{
+  "baseline": {
+    "CARBOHYDRATE": {
+      "ALL": {
+        "14-150": {
+          "rdiMin": 50,
+          "rdiMax": 65,
+          "unit": "g",
+          "isDerived": true,
+          "basis": "ENERGY",
+          "divisor": 4,
+          "note": "Vegan diets are typically higher in carbohydrate (50–65% of total energy) due to reliance on grains, legumes, fruits, vegetables."
+        }
+      }
+    },
+    "PROTEIN": {
+      "ALL": {
+        "14-150": {
+          "rdiMin": 1.0,
+          "unit": "g",
+          "isDerived": true,
+          "basis": "BODY_WEIGHT",
+          "note": "Plant protein digestibility is lower; ~1.0 g/kg BW recommended (vs. 0.8 g/kg in omnivorous diets)."
+        }
+      }
+    },
+    "FAT": {
+      "ALL": {
+        "14-150": {
+          "rdiMin": 20,
+          "rdiMax": 30,
+          "unit": "g",
+          "isDerived": true,
+          "basis": "ENERGY",
+          "divisor": 9,
+          "note": "Fat intake often lower in vegan diets (~20–30% energy), focus on unsaturated plant oils, nuts, seeds."
+        }
+      }
+    },
+    "FIBER": {
+      "ALL": {
+        "14-150": {
+          "rdiMin": 30,
+          "unit": "g",
+          "isDerived": false,
+          "note": "Vegan diets naturally provide high fiber; ≥30 g/day is common."
+        }
+      }
+    },
+    "SUGAR": {
+      "ALL": {
+        "14-150": {
+          "rdiMax": 10,
+          "unit": "g",
+          "isDerived": true,
+          "basis": "ENERGY",
+          "divisor": 4,
+          "note": "Free sugars should be <10% total energy; vegan diets may include higher fruit sugars but should limit refined sugars."
+        }
+      }
+    },
+    "OMEGA6": {
+      "ALL": {
+        "14-150": {
+          "rdiMin": 5,
+          "rdiMax": 8,
+          "unit": "g",
+          "isDerived": true,
+          "basis": "ENERGY",
+          "divisor": 9,
+          "note": "Plant diets provide ample omega-6 (soy, sunflower, corn oils). Balance with omega-3 sources is important."
+        }
+      }
+    },
+    "OMEGA3": {
+      "ALL": {
+        "14-150": {
+          "rdiMin": 1.6,
+          "unit": "g",
+          "isDerived": false,
+          "note": "ALA sources (flax, chia, walnuts) emphasized; algal DHA supplement recommended."
+        }
+      }
+    },
+    "SATURATED_FAT": {
+      "ALL": {
+        "14-150": {
+          "rdiMax": 10,
+          "unit": "g",
+          "isDerived": true,
+          "basis": "ENERGY",
+          "divisor": 9,
+          "note": "Generally lower in vegan diets unless high use of coconut/palm oil."
+        }
+      }
+    },
+    "TRANS_FAT": {
+      "ALL": {
+        "14-150": {
+          "rdiMax": 1,
+          "unit": "g",
+          "isDerived": true,
+          "basis": "ENERGY",
+          "divisor": 9,
+          "note": "Avoid hydrogenated oils; natural intake very low in vegan diets."
+        }
+      }
+    },
+    "IRON_FE": {
+      "ALL": {
+        "14-150": {
+          "rdiMin": 18,
+          "unit": "mg",
+          "isDerived": false
+        }
+      }
+    },
+    "ZINC_ZN": {
+      "ALL": {
+        "14-150": {
+          "rdiMin": 12,
+          "unit": "mg",
+          "isDerived": false
+        }
+      }
+    },
+    "VITAMIN_B12": {
+      "ALL": {
+        "14-150": {
+          "rdiMin": 4,
+          "unit": "µg",
+          "isDerived": false
+        }
+      }
+    },
+    "CALCIUM_CA": {
+      "ALL": {
+        "14-150": {
+          "rdiMin": 1000,
+          "unit": "mg",
+          "isDerived": false
+        }
+      }
+    },
+    "IODINE_I": {
+      "ALL": {
+        "14-150": {
+          "rdiMin": 150,
+          "unit": "µg",
+          "isDerived": false
+        }
+      }
+    },
+    "VITAMIN_D_D2_D3": {
+      "ALL": {
+        "14-150": {
+          "rdiMin": 10,
+          "unit": "µg",
+          "isDerived": false
+        }
+      }
+    },
+    "CHOLINE": {
+      "ALL": {
+        "14-150": {
+          "rdiMin": 450,
+          "unit": "mg",
+          "isDerived": false,
+          "note": "Choline may be low in vegan diets (egg/meat-free); aim for ~450 mg/day from soy, crucifers, supplements if needed."
+        }
+      }
+    }
+  },
+  "overlays": {}
+}

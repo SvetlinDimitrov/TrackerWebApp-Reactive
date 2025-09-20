@@ -1,0 +1,74 @@
+{
+  "nutrients": {
+    "source": "IOM Dietary Reference Intakes (2005), https://www.ncbi.nlm.nih.gov/books/NBK56068/",
+    "WATER": {
+      "ALL": {
+        "1-3": {
+          "rdiMin": 1.3,
+          "unit": "L",
+          "isDerived": false
+        },
+        "4-8": {
+          "rdiMin": 1.7,
+          "unit": "L",
+          "isDerived": false
+        }
+      },
+      "MALE": {
+        "9-13": {
+          "rdiMin": 2.4,
+          "unit": "L",
+          "isDerived": false
+        },
+        "14-18": {
+          "rdiMin": 3.3,
+          "unit": "L",
+          "isDerived": false
+        },
+        "19-150": {
+          "rdiMin": 3.7,
+          "unit": "L",
+          "isDerived": false
+        }
+      },
+      "FEMALE": {
+        "9-13": {
+          "rdiMin": 2.1,
+          "unit": "L",
+          "isDerived": false
+        },
+        "14-18": {
+          "rdiMin": 2.3,
+          "unit": "L",
+          "isDerived": false
+        },
+        "19-150": {
+          "rdiMin": 2.7,
+          "unit": "L",
+          "isDerived": false
+        }
+      }
+    },
+    "ALCOHOL": {
+      "ALL": {
+        "19-150": {
+          "rdiMin": 5,
+          "rdiMax": 15,
+          "unit": "g",
+          "isDerived": true,
+          "basis": "ENERGY",
+          "divisor": 7
+        }
+      }
+    },
+    "CHOLESTEROL": {
+      "ALL": {
+        "1-150": {
+          "unit": "mg",
+          "isDerived": false,
+          "note": "IOM: No UL set; intake should be kept as low as possible while maintaining adequate nutrition."
+        }
+      }
+    }
+  }
+}

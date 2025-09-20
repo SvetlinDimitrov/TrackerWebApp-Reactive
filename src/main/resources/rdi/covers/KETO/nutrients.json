@@ -1,0 +1,87 @@
+{
+  "baseline": {
+    "CARBOHYDRATE": {
+      "ALL": {
+        "14-150": {
+          "rdiMax": 30,
+          "unit": "g",
+          "isDerived": false,
+          "source": "Generic ketogenic diet definition commonly limits carbohydrate to ~≤30 g/day to promote ketosis (e.g., Volek & Phinney; clinical keto practice)."
+        }
+      }
+    },
+    "PROTEIN": {
+      "ALL": {
+        "14-150": {
+          "rdiMin": 15,
+          "rdiMax": 25,
+          "unit": "g",
+          "isDerived": true,
+          "basis": "ENERGY",
+          "divisor": 4,
+          "source": "Keto consensus places protein as moderate (~15–25% of total energy) to preserve lean mass while maintaining ketosis."
+        }
+      }
+    },
+    "FAT": {
+      "ALL": {
+        "14-150": {
+          "rdiMin": 70,
+          "rdiMax": 80,
+          "unit": "g",
+          "isDerived": true,
+          "basis": "ENERGY",
+          "divisor": 9,
+          "source": "Keto consensus provides most energy from fat (~70–80% of total energy)."
+        }
+      }
+    },
+    "SODIUM_NA": {
+      "ALL": {
+        "14-150": {
+          "rdiMin": 3000,
+          "rdiMax": 5000,
+          "unit": "mg",
+          "isDerived": false,
+          "source": "Keto diets increase sodium losses; clinical keto practice and Phinney & Volek recommend ~3–5 g/day sodium."
+        }
+      }
+    },
+    "POTASSIUM_K": {
+      "ALL": {
+        "14-150": {
+          "rdiMin": 3000,
+          "rdiMax": 4700,
+          "unit": "mg",
+          "isDerived": false,
+          "source": "Adequate potassium is emphasized in ketogenic diets (~3–4.7 g/day) to support electrolyte balance and muscle function."
+        }
+      }
+    },
+    "MAGNESIUM_MG": {
+      "ALL": {
+        "14-150": {
+          "rdiMin": 300,
+          "rdiMax": 500,
+          "unit": "mg",
+          "isDerived": false,
+          "source": "Magnesium is commonly supplemented in keto diets (300–500 mg/day) to prevent cramps and support energy metabolism."
+        }
+      }
+    }
+  },
+  "overlays": {
+    "NIH_IOM": {
+      "CARBOHYDRATE": {
+        "ALL": {
+          "14-150": {
+            "rdiMax": 20,
+            "unit": "g",
+            "isDerived": false,
+            "source": "Therapeutic ketogenic protocols (e.g., clinical epilepsy programs) commonly use ~≤20 g/day carbohydrate to initiate/maintain ketosis."
+          }
+        }
+      }
+    }
+  }
+}

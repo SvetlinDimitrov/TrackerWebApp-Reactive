@@ -1,0 +1,88 @@
+{
+  "nutrients": {
+    "source": "D-A-CH Referenzwerte für die Nährstoffzufuhr (2011, update 2020)",
+    "WATER": {
+      "ALL": {
+        "1-3": {
+          "rdiMin": 1.3,
+          "unit": "L",
+          "isDerived": false
+        },
+        "4-6": {
+          "rdiMin": 1.6,
+          "unit": "L",
+          "isDerived": false
+        }
+      },
+      "MALE": {
+        "7-10": {
+          "rdiMin": 1.7,
+          "unit": "L",
+          "isDerived": false
+        },
+        "11-14": {
+          "rdiMin": 1.9,
+          "unit": "L",
+          "isDerived": false
+        },
+        "15-18": {
+          "rdiMin": 2.6,
+          "unit": "L",
+          "isDerived": false
+        },
+        "19-150": {
+          "rdiMin": 2.6,
+          "unit": "L",
+          "isDerived": false
+        }
+      },
+      "FEMALE": {
+        "7-10": {
+          "rdiMin": 1.5,
+          "unit": "L",
+          "isDerived": false
+        },
+        "11-14": {
+          "rdiMin": 1.7,
+          "unit": "L",
+          "isDerived": false
+        },
+        "15-18": {
+          "rdiMin": 1.9,
+          "unit": "L",
+          "isDerived": false
+        },
+        "19-150": {
+          "rdiMin": 2.1,
+          "unit": "L",
+          "isDerived": false
+        }
+      }
+    },
+    "ALCOHOL": {
+      "MALE": {
+        "19-150": {
+          "rdiMax": 20,
+          "unit": "g",
+          "isDerived": false
+        }
+      },
+      "FEMALE": {
+        "19-150": {
+          "rdiMax": 10,
+          "unit": "g",
+          "isDerived": false
+        }
+      }
+    },
+    "CHOLESTEROL": {
+      "ALL": {
+        "1-150": {
+          "unit": "mg",
+          "isDerived": false,
+          "note": "No recommended intake; should be as low as possible while maintaining adequate nutrition."
+        }
+      }
+    }
+  }
+}
