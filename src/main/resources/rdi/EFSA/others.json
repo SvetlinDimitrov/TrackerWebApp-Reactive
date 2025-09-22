@@ -2,75 +2,37 @@
   "source": "EFSA Dietary Reference Values (2010–2017), EFSA Scientific Opinions",
   "nutrients": {
     "WATER": {
-      "ALL": {
-        "1-3": {
-          "rdiMin": 1.1,
-          "unit": "L",
-          "isDerived": false
-        },
-        "4-8": {
-          "rdiMin": 1.6,
-          "unit": "L",
-          "isDerived": false
-        }
-      },
-      "MALE": {
-        "9-13": {
-          "rdiMin": 2.1,
-          "unit": "L",
-          "isDerived": false
-        },
-        "14-18": {
-          "rdiMin": 2.5,
-          "unit": "L",
-          "isDerived": false
-        },
-        "19-150": {
-          "rdiMin": 2.5,
-          "unit": "L",
-          "isDerived": false
-        }
-      },
-      "FEMALE": {
-        "9-13": {
-          "rdiMin": 1.9,
-          "unit": "L",
-          "isDerived": false
-        },
-        "14-18": {
-          "rdiMin": 2.0,
-          "unit": "L",
-          "isDerived": false
-        },
-        "19-150": {
-          "rdiMin": 2.0,
-          "unit": "L",
-          "isDerived": false
-        }
-      },
-      "FEMALE_PREGNANT": {
-        "14-50": {
-          "rdiMin": 2.3,
-          "unit": "L",
-          "isDerived": false
-        }
-      },
-      "FEMALE_LACTATING": {
-        "14-50": {
-          "rdiMin": 2.7,
-          "unit": "L",
-          "isDerived": false
-        }
-      }
+      "ALL": [
+        { "ageMin": 1, "ageMax": 3, "rdiMin": 1.1, "unit": "L", "isDerived": false },
+        { "ageMin": 4, "ageMax": 8, "rdiMin": 1.6, "unit": "L", "isDerived": false }
+      ],
+      "MALE": [
+        { "ageMin": 9, "ageMax": 13, "rdiMin": 2.1, "unit": "L", "isDerived": false },
+        { "ageMin": 14, "ageMax": 18, "rdiMin": 2.5, "unit": "L", "isDerived": false },
+        { "ageMin": 19, "ageMax": 150, "rdiMin": 2.5, "unit": "L", "isDerived": false }
+      ],
+      "FEMALE": [
+        { "ageMin": 9, "ageMax": 13, "rdiMin": 1.9, "unit": "L", "isDerived": false },
+        { "ageMin": 14, "ageMax": 18, "rdiMin": 2.0, "unit": "L", "isDerived": false },
+        { "ageMin": 19, "ageMax": 150, "rdiMin": 2.0, "unit": "L", "isDerived": false }
+      ],
+      "FEMALE_PREGNANT": [
+        { "ageMin": 14, "ageMax": 50, "rdiMin": 2.3, "unit": "L", "isDerived": false }
+      ],
+      "FEMALE_LACTATING": [
+        { "ageMin": 14, "ageMax": 50, "rdiMin": 2.7, "unit": "L", "isDerived": false }
+      ]
     },
     "CHOLESTEROL": {
-      "ALL": {
-        "1-150": {
+      "ALL": [
+        {
+          "ageMin": 1,
+          "ageMax": 150,
           "unit": "mg",
           "isDerived": false,
           "note": "EFSA (2010): No requirement; intake should be as low as possible within a nutritionally adequate diet."
         }
-      }
+      ]
     }
   }
 }

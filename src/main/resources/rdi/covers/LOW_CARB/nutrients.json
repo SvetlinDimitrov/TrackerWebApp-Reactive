@@ -1,19 +1,23 @@
 {
   "baseline": {
     "CARBOHYDRATE": {
-      "ALL": {
-        "14-150": {
+      "ALL": [
+        {
+          "ageMin": 14,
+          "ageMax": 150,
           "rdiMin": 50,
           "rdiMax": 130,
           "unit": "g",
           "isDerived": false,
           "source": "Generic low-carb definition: carbohydrate intake limited to ~50–130 g/day (or <40% of energy)."
         }
-      }
+      ]
     },
     "PROTEIN": {
-      "ALL": {
-        "14-150": {
+      "ALL": [
+        {
+          "ageMin": 14,
+          "ageMax": 150,
           "rdiMin": 20,
           "rdiMax": 30,
           "unit": "g",
@@ -22,11 +26,13 @@
           "divisor": 4,
           "source": "Low-carb diets typically increase protein intake to ~20–30% of energy for satiety and lean mass preservation."
         }
-      }
+      ]
     },
     "FAT": {
-      "ALL": {
-        "14-150": {
+      "ALL": [
+        {
+          "ageMin": 14,
+          "ageMax": 150,
           "rdiMin": 30,
           "rdiMax": 50,
           "unit": "g",
@@ -35,17 +41,19 @@
           "divisor": 9,
           "source": "Fat provides 30–50% of energy in low-carb diets, primarily from unsaturated sources."
         }
-      }
+      ]
     },
     "FIBER": {
-      "ALL": {
-        "14-150": {
+      "ALL": [
+        {
+          "ageMin": 14,
+          "ageMax": 150,
           "rdiMin": 25,
           "unit": "g",
           "isDerived": false,
           "source": "Low-carb diets emphasize adequate fiber (~25 g/day) from vegetables, nuts, and low-glycemic fruits."
         }
-      }
+      ]
     }
   },
   "overlays": {}

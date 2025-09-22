@@ -2,71 +2,27 @@
   "source": "D-A-CH Referenzwerte für die Nährstoffzufuhr (2011, update 2020)",
   "nutrients": {
     "WATER": {
-      "ALL": {
-        "1-3": {
-          "rdiMin": 1.3,
-          "unit": "L",
-          "isDerived": false
-        },
-        "4-6": {
-          "rdiMin": 1.6,
-          "unit": "L",
-          "isDerived": false
-        }
-      },
-      "MALE": {
-        "7-10": {
-          "rdiMin": 1.7,
-          "unit": "L",
-          "isDerived": false
-        },
-        "11-14": {
-          "rdiMin": 1.9,
-          "unit": "L",
-          "isDerived": false
-        },
-        "15-18": {
-          "rdiMin": 2.6,
-          "unit": "L",
-          "isDerived": false
-        },
-        "19-150": {
-          "rdiMin": 2.6,
-          "unit": "L",
-          "isDerived": false
-        }
-      },
-      "FEMALE": {
-        "7-10": {
-          "rdiMin": 1.5,
-          "unit": "L",
-          "isDerived": false
-        },
-        "11-14": {
-          "rdiMin": 1.7,
-          "unit": "L",
-          "isDerived": false
-        },
-        "15-18": {
-          "rdiMin": 1.9,
-          "unit": "L",
-          "isDerived": false
-        },
-        "19-150": {
-          "rdiMin": 2.1,
-          "unit": "L",
-          "isDerived": false
-        }
-      }
+      "ALL": [
+        { "ageMin": 1, "ageMax": 3, "rdiMin": 1.3, "unit": "L", "isDerived": false },
+        { "ageMin": 4, "ageMax": 6, "rdiMin": 1.6, "unit": "L", "isDerived": false }
+      ],
+      "MALE": [
+        { "ageMin": 7, "ageMax": 10, "rdiMin": 1.7, "unit": "L", "isDerived": false },
+        { "ageMin": 11, "ageMax": 14, "rdiMin": 1.9, "unit": "L", "isDerived": false },
+        { "ageMin": 15, "ageMax": 18, "rdiMin": 2.6, "unit": "L", "isDerived": false },
+        { "ageMin": 19, "ageMax": 150, "rdiMin": 2.6, "unit": "L", "isDerived": false }
+      ],
+      "FEMALE": [
+        { "ageMin": 7, "ageMax": 10, "rdiMin": 1.5, "unit": "L", "isDerived": false },
+        { "ageMin": 11, "ageMax": 14, "rdiMin": 1.7, "unit": "L", "isDerived": false },
+        { "ageMin": 15, "ageMax": 18, "rdiMin": 1.9, "unit": "L", "isDerived": false },
+        { "ageMin": 19, "ageMax": 150, "rdiMin": 2.1, "unit": "L", "isDerived": false }
+      ]
     },
     "CHOLESTEROL": {
-      "ALL": {
-        "1-150": {
-          "unit": "mg",
-          "isDerived": false,
-          "note": "No recommended intake; should be as low as possible while maintaining adequate nutrition."
-        }
-      }
+      "ALL": [
+        { "ageMin": 1, "ageMax": 150, "unit": "mg", "isDerived": false, "note": "No recommended intake; should be as low as possible while maintaining adequate nutrition." }
+      ]
     }
   }
 }
