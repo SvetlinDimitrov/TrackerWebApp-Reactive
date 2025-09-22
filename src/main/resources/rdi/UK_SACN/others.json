@@ -1,27 +1,5 @@
 {
   "source": "UK SACN Reports (2011–2018), COMA reports, and Expert Group on Vitamins and Minerals (EVM)",
   "nutrients": {
-    "WATER": {
-      "ALL": [
-        {
-          "ageMin": 1,
-          "ageMax": 150,
-          "unit": "L",
-          "isDerived": false,
-          "note": "SACN has not set specific water intake recommendations; general guidance aligns with EFSA (~2.0–2.5 L/day for adults)."
-        }
-      ]
-    },
-    "CHOLESTEROL": {
-      "ALL": [
-        {
-          "ageMin": 1,
-          "ageMax": 150,
-          "unit": "mg",
-          "isDerived": false,
-          "note": "SACN/COMA: No recommended intake or UL; advice is to keep intake as low as possible within a balanced diet."
-        }
-      ]
-    }
   }
 }

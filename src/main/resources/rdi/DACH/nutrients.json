@@ -466,21 +466,6 @@
         { "ageMin": 13, "ageMax": 150, "rdiMin": 1000, "unit": "µg", "isDerived": false }
       ]
     },
-    "MANGANESE_MN": {
-      "ALL": [
-        { "ageMin": 1, "ageMax": 150, "unit": "mg", "isDerived": false, "note": "D-A-CH: No precise reference value set; estimated safe intake assumed." }
-      ]
-    },
-    "MOLYBDENUM_MO": {
-      "ALL": [
-        { "ageMin": 1, "ageMax": 150, "unit": "µg", "isDerived": false, "note": "D-A-CH: No specific reference value established; adequate intake assumed." }
-      ]
-    },
-    "CHROMIUM_CR": {
-      "ALL": [
-        { "ageMin": 1, "ageMax": 150, "unit": "µg", "isDerived": false, "note": "D-A-CH: No reference values available due to insufficient data." }
-      ]
-    },
     "FLUORIDE": {
       "ALL": [
         { "ageMin": 1, "ageMax": 3, "rdiMin": 0.7, "unit": "mg", "isDerived": false },

@@ -22,17 +22,6 @@
       "FEMALE_LACTATING": [
         { "ageMin": 14, "ageMax": 50, "rdiMin": 2.7, "unit": "L", "isDerived": false }
       ]
-    },
-    "CHOLESTEROL": {
-      "ALL": [
-        {
-          "ageMin": 1,
-          "ageMax": 150,
-          "unit": "mg",
-          "isDerived": false,
-          "note": "EFSA (2010): No requirement; intake should be as low as possible within a nutritionally adequate diet."
-        }
-      ]
     }
   }
 }

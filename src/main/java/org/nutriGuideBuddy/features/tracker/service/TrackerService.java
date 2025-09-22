@@ -3,9 +3,7 @@ package org.nutriGuideBuddy.features.tracker.service;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.nutriGuideBuddy.features.meal.service.MealService;
@@ -18,8 +16,8 @@ import org.nutriGuideBuddy.features.tracker.dto.*;
 import org.nutriGuideBuddy.features.tracker.utils.CalorieCalculator;
 import org.nutriGuideBuddy.features.user.enums.Gender;
 import org.nutriGuideBuddy.features.user.service.UserDetailsSnapshotService;
-import org.nutriGuideBuddy.infrastructure.rdi.NutrientRequirementFactory;
-import org.nutriGuideBuddy.infrastructure.rdi.RdiFinder;
+import org.nutriGuideBuddy.infrastructure.rdi.utils.NutrientRequirementFactory;
+import org.nutriGuideBuddy.infrastructure.rdi.utils.RdiFinder;
 import org.nutriGuideBuddy.infrastructure.rdi.dto.JsonAllowedNutrients;
 import org.nutriGuideBuddy.infrastructure.rdi.dto.JsonNutrientRdiRange;
 import org.nutriGuideBuddy.infrastructure.rdi.dto.JsonPopulationGroup;
@@ -66,15 +64,16 @@ public class TrackerService {
                                       snapshot.nutritionAuthority(), snapshot.diet());
 
                           Set<NutritionIntakeView> nutrients =
-                              requirements.entrySet().stream()
+                              Arrays.stream(AllowedNutrients.values())
                                   .map(
-                                      entry -> {
-                                        JsonAllowedNutrients jsonNutrient = entry.getKey();
-                                        Map<JsonPopulationGroup, Set<JsonNutrientRdiRange>>
-                                            groupMap = entry.getValue();
+                                      nutrient -> {
+                                        JsonAllowedNutrients jsonNutrient =
+                                            JsonAllowedNutrients.valueOf(nutrient.name());
 
-                                        AllowedNutrients nutrient =
-                                            AllowedNutrients.valueOf(jsonNutrient.name());
+                                        Map<JsonPopulationGroup, Set<JsonNutrientRdiRange>>
+                                            groupMap =
+                                                requirements.getOrDefault(
+                                                    jsonNutrient, Collections.emptyMap());
 
                                         var rdiRange =
                                             RdiFinder.findMatch(
@@ -94,12 +93,12 @@ public class TrackerService {
                                         return new NutritionIntakeView(
                                             nutrient.getNutrientName(),
                                             consumed,
-                                            rdiRange != null
-                                                ? rdiRange.rdiMin().orElse(null)
-                                                : null,
-                                            rdiRange != null
-                                                ? rdiRange.rdiMax().orElse(null)
-                                                : null,
+                                            Optional.ofNullable(rdiRange)
+                                                .flatMap(JsonNutrientRdiRange::rdiMin)
+                                                .orElse(null),
+                                            Optional.ofNullable(rdiRange)
+                                                .flatMap(JsonNutrientRdiRange::rdiMax)
+                                                .orElse(null),
                                             nutrient.getNutrientUnit());
                                       })
                                   .collect(Collectors.toSet());

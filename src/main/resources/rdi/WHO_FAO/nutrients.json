@@ -349,17 +349,6 @@
         { "ageMin": 14, "ageMax": 50, "rdiMin": 550, "unit": "mg", "isDerived": false }
       ]
     },
-    "CHROMIUM_CR": {
-      "ALL": [
-        {
-          "ageMin": 1,
-          "ageMax": 150,
-          "unit": "µg",
-          "isDerived": false,
-          "note": "WHO/FAO (2004): No RNI established due to insufficient evidence."
-        }
-      ]
-    },
 
     "VITAMIN_A": {
       "ALL": [
@@ -645,16 +634,6 @@
     "FAT": {
       "ALL": [
         { "ageMin": 1, "ageMax": 150, "rdiMin": 15, "rdiMax": 30, "unit": "g", "isDerived": true, "basis": "ENERGY", "divisor": 9 }
-      ]
-    },
-    "SATURATED_FAT": {
-      "ALL": [
-        { "ageMin": 1, "ageMax": 150, "unit": "g", "isDerived": false, "note": "WHO/FAO (2003, 2010): Intake of saturated fatty acids should be less than 10% of total energy intake." }
-      ]
-    },
-    "TRANS_FAT": {
-      "ALL": [
-        { "ageMin": 1, "ageMax": 150, "unit": "g", "isDerived": false, "note": "WHO/FAO (2018): Intake of industrial trans-fatty acids should be less than 1% of total energy intake." }
       ]
     },
     "OMEGA6": {

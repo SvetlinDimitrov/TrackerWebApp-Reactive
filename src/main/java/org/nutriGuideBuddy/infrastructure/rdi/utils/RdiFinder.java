@@ -1,4 +1,4 @@
-package org.nutriGuideBuddy.infrastructure.rdi;
+package org.nutriGuideBuddy.infrastructure.rdi.utils;
 
 import java.util.Map;
 import java.util.Optional;

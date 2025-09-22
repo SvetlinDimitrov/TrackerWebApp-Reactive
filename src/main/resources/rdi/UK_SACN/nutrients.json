@@ -179,11 +179,6 @@
         { "ageMin": 1, "ageMax": 150, "unit": "mg", "isDerived": false, "rdiMax": 7, "note": "Adult UL set at 7 mg/day to avoid dental fluorosis." }
       ]
     },
-    "CHROMIUM_CR": {
-      "ALL": [
-        { "ageMin": 1, "ageMax": 150, "unit": "µg", "isDerived": false, "note": "No RNI or UL established due to insufficient data." }
-      ]
-    },
     "MOLYBDENUM_MO": {
       "ALL": [
         { "ageMin": 1, "ageMax": 150, "unit": "µg", "isDerived": false, "rdiMax": 600, "note": "Safe upper level set at 600 µg/day for adults." }
@@ -213,16 +208,6 @@
     "VITAMIN_D_D2_D3": {
       "ALL": [
         { "ageMin": 1, "ageMax": 150, "rdiMin": 10, "unit": "µg", "isDerived": false, "rdiMax": 100, "note": "SACN (2016): 10 µg/day recommended for all ≥1 year; safe upper level 100 µg/day." }
-      ]
-    },
-    "VITAMIN_E": {
-      "ALL": [
-        { "ageMin": 1, "ageMax": 150, "unit": "mg", "isDerived": false, "note": "SACN/COMA: No specific RNI; EVM UL 540 mg/day (adults)." }
-      ]
-    },
-    "VITAMIN_K": {
-      "ALL": [
-        { "ageMin": 1, "ageMax": 150, "unit": "µg", "isDerived": false, "note": "SACN/COMA: No RNI established; adequate intake assumed from normal diet." }
       ]
     },
     "VITAMIN_C": {
@@ -330,16 +315,6 @@
         { "ageMin": 19, "ageMax": 150, "rdiMin": 1.5, "unit": "µg", "isDerived": false }
       ]
     },
-    "VITAMIN_B7_BIOTIN": {
-      "ALL": [
-        { "ageMin": 1, "ageMax": 150, "unit": "µg", "isDerived": false, "note": "No RNI set by SACN/COMA; adequate intake assumed from diet. EVM UL 900 µg/day." }
-      ]
-    },
-    "VITAMIN_B5_PANTOTHENIC_ACID": {
-      "ALL": [
-        { "ageMin": 1, "ageMax": 150, "unit": "mg", "isDerived": false, "note": "No RNI set by SACN/COMA; adequate intake assumed from diet. No UL established." }
-      ]
-    },
 
     "CARBOHYDRATE": {
       "ALL": [
@@ -405,17 +380,6 @@
           "basis": "ENERGY",
           "divisor": 4,
           "note": "SACN (2015): Free sugars should provide no more than 5% of total energy intake."
-        }
-      ]
-    },
-    "OMEGA6": {
-      "ALL": [
-        {
-          "ageMin": 1,
-          "ageMax": 150,
-          "unit": "g",
-          "isDerived": false,
-          "note": "No specific RNI set by SACN; recommendations often follow WHO/EFSA (~2.5–9% energy)."
         }
       ]
     },

@@ -26,11 +26,6 @@
         { "ageMin": 14, "ageMax": 50, "rdiMin": 1000, "unit": "mg", "isDerived": false }
       ]
     },
-    "CHROMIUM_CR": {
-      "ALL": [
-        { "ageMin": 1, "ageMax": 150, "unit": "µg", "isDerived": false, "note": "EFSA (2014): No DRV established due to insufficient evidence." }
-      ]
-    },
     "COPPER_CU": {
       "ALL": [
         { "ageMin": 1, "ageMax": 3, "rdiMin": 700, "unit": "µg", "isDerived": false },
@@ -49,11 +44,6 @@
       ],
       "FEMALE_LACTATING": [
         { "ageMin": 14, "ageMax": 50, "rdiMin": 1500, "unit": "µg", "isDerived": false }
-      ]
-    },
-    "FLUORIDE": {
-      "ALL": [
-        { "ageMin": 1, "ageMax": 150, "unit": "mg", "isDerived": false, "note": "EFSA (2013): No DRV established; only AI for safe intake from water at 0.05 mg/kg/day." }
       ]
     },
     "IODINE_I": {
@@ -117,16 +107,6 @@
       ],
       "FEMALE_LACTATING": [
         { "ageMin": 14, "ageMax": 50, "rdiMin": 300, "unit": "mg", "isDerived": false }
-      ]
-    },
-    "MANGANESE_MN": {
-      "ALL": [
-        { "ageMin": 1, "ageMax": 150, "unit": "mg", "isDerived": false, "note": "EFSA (2013): Adequate Intake set at 3 mg/day for adults; 0.5–2 mg/day for children depending on age." }
-      ]
-    },
-    "MOLYBDENUM_MO": {
-      "ALL": [
-        { "ageMin": 1, "ageMax": 150, "unit": "µg", "isDerived": false, "note": "EFSA (2013): No DRV established due to insufficient evidence." }
       ]
     },
     "PHOSPHORUS_P": {
@@ -541,28 +521,6 @@
           "basis": "ENERGY",
           "divisor": 9,
           "note": "EFSA (2010): Total fat should provide 20–35% of total energy intake for adults."
-        }
-      ]
-    },
-    "SATURATED_FAT": {
-      "ALL": [
-        {
-          "ageMin": 1,
-          "ageMax": 150,
-          "unit": "g",
-          "isDerived": false,
-          "note": "EFSA (2010): No tolerable upper intake level; recommendation is to keep intake as low as possible within a nutritionally adequate diet."
-        }
-      ]
-    },
-    "TRANS_FAT": {
-      "ALL": [
-        {
-          "ageMin": 1,
-          "ageMax": 150,
-          "unit": "g",
-          "isDerived": false,
-          "note": "EFSA (2010): No safe intake level; intake should be as low as possible, ideally <1% of total energy."
         }
       ]
     },

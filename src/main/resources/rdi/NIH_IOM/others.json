@@ -16,17 +16,6 @@
         { "ageMin": 14, "ageMax": 18, "rdiMin": 2.3, "unit": "L", "isDerived": false },
         { "ageMin": 19, "ageMax": 150, "rdiMin": 2.7, "unit": "L", "isDerived": false }
       ]
-    },
-    "CHOLESTEROL": {
-      "ALL": [
-        {
-          "ageMin": 1,
-          "ageMax": 150,
-          "unit": "mg",
-          "isDerived": false,
-          "note": "IOM: No UL set; intake should be kept as low as possible while maintaining adequate nutrition."
-        }
-      ]
     }
   }
 }

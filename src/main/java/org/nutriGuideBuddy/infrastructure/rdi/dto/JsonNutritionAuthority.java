@@ -9,7 +9,5 @@ public enum JsonNutritionAuthority {
 
   UK_SACN,
 
-  DACH,
-
-  SPORTS;
+  DACH;
 }

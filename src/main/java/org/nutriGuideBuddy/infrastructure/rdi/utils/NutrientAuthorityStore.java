@@ -1,4 +1,4 @@
-package org.nutriGuideBuddy.infrastructure.rdi;
+package org.nutriGuideBuddy.infrastructure.rdi.utils;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import jakarta.annotation.PostConstruct;
