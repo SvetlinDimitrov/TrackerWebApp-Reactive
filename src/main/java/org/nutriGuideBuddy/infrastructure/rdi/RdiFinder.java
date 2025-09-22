@@ -112,7 +112,8 @@ public final class RdiFinder {
         range.unit(),
         true,
         range.basis(),
-        range.divisor());
+        range.divisor(),
+        range.note());
   }
 
   private static JsonPopulationGroup mapGenderToPopulationGroup(Gender gender) {

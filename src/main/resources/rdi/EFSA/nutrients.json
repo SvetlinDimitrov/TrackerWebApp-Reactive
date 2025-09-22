@@ -90,51 +90,51 @@
     "COPPER_CU": {
       "ALL": {
         "1-3": {
-          "rdiMin": 0.7,
-          "unit": "mg",
+          "rdiMin": 700,
+          "unit": "µg",
           "isDerived": false
         },
         "4-6": {
-          "rdiMin": 0.8,
-          "unit": "mg",
+          "rdiMin": 800,
+          "unit": "µg",
           "isDerived": false
         },
         "7-10": {
-          "rdiMin": 1.0,
-          "unit": "mg",
+          "rdiMin": 1000,
+          "unit": "µg",
           "isDerived": false
         },
         "11-17": {
-          "rdiMin": 1.3,
-          "unit": "mg",
+          "rdiMin": 1300,
+          "unit": "µg",
           "isDerived": false
         }
       },
       "MALE": {
         "18-150": {
-          "rdiMin": 1.6,
-          "unit": "mg",
+          "rdiMin": 1600,
+          "unit": "µg",
           "isDerived": false
         }
       },
       "FEMALE": {
         "18-150": {
-          "rdiMin": 1.3,
-          "unit": "mg",
+          "rdiMin": 1300,
+          "unit": "µg",
           "isDerived": false
         }
       },
       "FEMALE_PREGNANT": {
         "14-50": {
-          "rdiMin": 1.5,
-          "unit": "mg",
+          "rdiMin": 1500,
+          "unit": "µg",
           "isDerived": false
         }
       },
       "FEMALE_LACTATING": {
         "14-50": {
-          "rdiMin": 1.5,
-          "unit": "mg",
+          "rdiMin": 1500,
+          "unit": "µg",
           "isDerived": false
         }
       }
@@ -506,74 +506,178 @@
           "unit": "mg",
           "isDerived": false
         }
-      },
-      "note": "EFSA zinc requirements vary with diet phytate level; values above assume moderate bioavailability."
+      }
     },
     "CHLORIDE": {
       "ALL": {
-        "1-3": { "rdiMin": 1.7, "unit": "g", "isDerived": false },
-        "4-6": { "rdiMin": 2.0, "unit": "g", "isDerived": false },
-        "7-10": { "rdiMin": 2.3, "unit": "g", "isDerived": false }
+        "1-3": {
+          "rdiMin": 1.7,
+          "unit": "g",
+          "isDerived": false
+        },
+        "4-6": {
+          "rdiMin": 2.0,
+          "unit": "g",
+          "isDerived": false
+        },
+        "7-10": {
+          "rdiMin": 2.3,
+          "unit": "g",
+          "isDerived": false
+        }
       },
       "MALE": {
-        "11-17": { "rdiMin": 3.1, "unit": "g", "isDerived": false },
-        "18-150": { "rdiMin": 3.1, "unit": "g", "isDerived": false }
+        "11-17": {
+          "rdiMin": 3.1,
+          "unit": "g",
+          "isDerived": false
+        },
+        "18-150": {
+          "rdiMin": 3.1,
+          "unit": "g",
+          "isDerived": false
+        }
       },
       "FEMALE": {
-        "11-17": { "rdiMin": 2.5, "unit": "g", "isDerived": false },
-        "18-150": { "rdiMin": 2.5, "unit": "g", "isDerived": false }
+        "11-17": {
+          "rdiMin": 2.5,
+          "unit": "g",
+          "isDerived": false
+        },
+        "18-150": {
+          "rdiMin": 2.5,
+          "unit": "g",
+          "isDerived": false
+        }
       },
       "FEMALE_PREGNANT": {
-        "14-50": { "rdiMin": 2.9, "unit": "g", "isDerived": false }
+        "14-50": {
+          "rdiMin": 2.9,
+          "unit": "g",
+          "isDerived": false
+        }
       },
       "FEMALE_LACTATING": {
-        "14-50": { "rdiMin": 3.1, "unit": "g", "isDerived": false }
-      },
-      "note": "EFSA (2019): Adequate Intake set based on sodium chloride needs."
+        "14-50": {
+          "rdiMin": 3.1,
+          "unit": "g",
+          "isDerived": false
+        }
+      }
     },
     "SODIUM_NA": {
       "ALL": {
-        "1-3": { "rdiMin": 1.1, "unit": "g", "isDerived": false },
-        "4-6": { "rdiMin": 1.3, "unit": "g", "isDerived": false },
-        "7-10": { "rdiMin": 1.7, "unit": "g", "isDerived": false }
+        "1-3": {
+          "rdiMin": 1100,
+          "unit": "mg",
+          "isDerived": false
+        },
+        "4-6": {
+          "rdiMin": 1300,
+          "unit": "mg",
+          "isDerived": false
+        },
+        "7-10": {
+          "rdiMin": 1700,
+          "unit": "mg",
+          "isDerived": false
+        }
       },
       "MALE": {
-        "11-17": { "rdiMin": 2.0, "unit": "g", "isDerived": false },
-        "18-150": { "rdiMin": 2.0, "unit": "g", "isDerived": false }
+        "11-17": {
+          "rdiMin": 2000,
+          "unit": "mg",
+          "isDerived": false
+        },
+        "18-150": {
+          "rdiMin": 2000,
+          "unit": "mg",
+          "isDerived": false
+        }
       },
       "FEMALE": {
-        "11-17": { "rdiMin": 1.6, "unit": "g", "isDerived": false },
-        "18-150": { "rdiMin": 1.6, "unit": "g", "isDerived": false }
+        "11-17": {
+          "rdiMin": 1600,
+          "unit": "mg",
+          "isDerived": false
+        },
+        "18-150": {
+          "rdiMin": 1600,
+          "unit": "mg",
+          "isDerived": false
+        }
       },
       "FEMALE_PREGNANT": {
-        "14-50": { "rdiMin": 2.0, "unit": "g", "isDerived": false }
+        "14-50": {
+          "rdiMin": 2000,
+          "unit": "mg",
+          "isDerived": false
+        }
       },
       "FEMALE_LACTATING": {
-        "14-50": { "rdiMin": 2.0, "unit": "g", "isDerived": false }
-      },
-      "note": "EFSA (2019): Adequate Intake for sodium is 2.0 g/day for adults."
+        "14-50": {
+          "rdiMin": 2000,
+          "unit": "mg",
+          "isDerived": false
+        }
+      }
     },
     "POTASSIUM_K": {
       "ALL": {
-        "1-3": { "rdiMin": 800, "unit": "mg", "isDerived": false },
-        "4-6": { "rdiMin": 1100, "unit": "mg", "isDerived": false },
-        "7-10": { "rdiMin": 2000, "unit": "mg", "isDerived": false }
+        "1-3": {
+          "rdiMin": 800,
+          "unit": "mg",
+          "isDerived": false
+        },
+        "4-6": {
+          "rdiMin": 1100,
+          "unit": "mg",
+          "isDerived": false
+        },
+        "7-10": {
+          "rdiMin": 2000,
+          "unit": "mg",
+          "isDerived": false
+        }
       },
       "MALE": {
-        "11-17": { "rdiMin": 3500, "unit": "mg", "isDerived": false },
-        "18-150": { "rdiMin": 3500, "unit": "mg", "isDerived": false }
+        "11-17": {
+          "rdiMin": 3500,
+          "unit": "mg",
+          "isDerived": false
+        },
+        "18-150": {
+          "rdiMin": 3500,
+          "unit": "mg",
+          "isDerived": false
+        }
       },
       "FEMALE": {
-        "11-17": { "rdiMin": 3500, "unit": "mg", "isDerived": false },
-        "18-150": { "rdiMin": 3500, "unit": "mg", "isDerived": false }
+        "11-17": {
+          "rdiMin": 3500,
+          "unit": "mg",
+          "isDerived": false
+        },
+        "18-150": {
+          "rdiMin": 3500,
+          "unit": "mg",
+          "isDerived": false
+        }
       },
       "FEMALE_PREGNANT": {
-        "14-50": { "rdiMin": 3500, "unit": "mg", "isDerived": false }
+        "14-50": {
+          "rdiMin": 3500,
+          "unit": "mg",
+          "isDerived": false
+        }
       },
       "FEMALE_LACTATING": {
-        "14-50": { "rdiMin": 4000, "unit": "mg", "isDerived": false }
-      },
-      "note": "EFSA (2016): Adequate Intake for adults set at 3500 mg/day."
+        "14-50": {
+          "rdiMin": 4000,
+          "unit": "mg",
+          "isDerived": false
+        }
+      }
     },
     "CHOLINE": {
       "ALL": {
@@ -1036,8 +1140,7 @@
           "unit": "mg",
           "isDerived": false
         }
-      },
-      "note": "EFSA (2014): Adequate Intake values set; no PRI established."
+      }
     },
     "VITAMIN_B6": {
       "ALL": {
@@ -1223,8 +1326,7 @@
           "unit": "µg",
           "isDerived": false
         }
-      },
-      "note": "EFSA (2014): Adequate Intake values set; no PRI established."
+      }
     },
 
     "CARBOHYDRATE": {

@@ -1,40 +1,68 @@
 {
+  "source": "EFSA Dietary Reference Values (2010–2017), EFSA Scientific Opinions",
   "nutrients": {
-    "source": "EFSA Dietary Reference Values (2010–2017), EFSA Scientific Opinions",
-
     "WATER": {
       "ALL": {
-        "1-3": { "rdiMin": 1.1, "unit": "L", "isDerived": false },
-        "4-8": { "rdiMin": 1.6, "unit": "L", "isDerived": false }
+        "1-3": {
+          "rdiMin": 1.1,
+          "unit": "L",
+          "isDerived": false
+        },
+        "4-8": {
+          "rdiMin": 1.6,
+          "unit": "L",
+          "isDerived": false
+        }
       },
       "MALE": {
-        "9-13": { "rdiMin": 2.1, "unit": "L", "isDerived": false },
-        "14-18": { "rdiMin": 2.5, "unit": "L", "isDerived": false },
-        "19-150": { "rdiMin": 2.5, "unit": "L", "isDerived": false }
+        "9-13": {
+          "rdiMin": 2.1,
+          "unit": "L",
+          "isDerived": false
+        },
+        "14-18": {
+          "rdiMin": 2.5,
+          "unit": "L",
+          "isDerived": false
+        },
+        "19-150": {
+          "rdiMin": 2.5,
+          "unit": "L",
+          "isDerived": false
+        }
       },
       "FEMALE": {
-        "9-13": { "rdiMin": 1.9, "unit": "L", "isDerived": false },
-        "14-18": { "rdiMin": 2.0, "unit": "L", "isDerived": false },
-        "19-150": { "rdiMin": 2.0, "unit": "L", "isDerived": false }
+        "9-13": {
+          "rdiMin": 1.9,
+          "unit": "L",
+          "isDerived": false
+        },
+        "14-18": {
+          "rdiMin": 2.0,
+          "unit": "L",
+          "isDerived": false
+        },
+        "19-150": {
+          "rdiMin": 2.0,
+          "unit": "L",
+          "isDerived": false
+        }
       },
       "FEMALE_PREGNANT": {
-        "14-50": { "rdiMin": 2.3, "unit": "L", "isDerived": false }
+        "14-50": {
+          "rdiMin": 2.3,
+          "unit": "L",
+          "isDerived": false
+        }
       },
       "FEMALE_LACTATING": {
-        "14-50": { "rdiMin": 2.7, "unit": "L", "isDerived": false }
-      }
-    },
-
-    "ALCOHOL": {
-      "ALL": {
-        "19-150": {
-          "unit": "g",
-          "isDerived": false,
-          "note": "EFSA has not set dietary reference values for alcohol; consumption should be minimized."
+        "14-50": {
+          "rdiMin": 2.7,
+          "unit": "L",
+          "isDerived": false
         }
       }
     },
-
     "CHOLESTEROL": {
       "ALL": {
         "1-150": {

@@ -1,6 +1,6 @@
 {
+  "source": "UK SACN Reports (2011–2018), COMA reports, and Expert Group on Vitamins and Minerals (EVM)",
   "nutrients": {
-    "source": "UK SACN Reports (2011–2018), COMA reports, and Expert Group on Vitamins and Minerals (EVM)",
     "WATER": {
       "ALL": {
         "1-150": {
@@ -10,50 +10,12 @@
         }
       }
     },
-    "ALCOHOL": {
-      "ALL": {
-        "19-150": {
-          "rdiMax": 14,
-          "unit": "units/week",
-          "isDerived": false,
-          "note": "UK CMO (2016): Limit alcohol intake to ≤14 units/week for both men and women."
-        }
-      }
-    },
     "CHOLESTEROL": {
       "ALL": {
         "1-150": {
           "unit": "mg",
           "isDerived": false,
           "note": "SACN/COMA: No recommended intake or UL; advice is to keep intake as low as possible within a balanced diet."
-        }
-      }
-    },
-    "CAFFEINE": {
-      "ALL": {
-        "19-150": {
-          "rdiMax": 400,
-          "unit": "mg",
-          "isDerived": false,
-          "note": "EVM/EFSA: Safe intake for adults up to 400 mg/day (~4 cups of coffee)."
-        }
-      },
-      "FEMALE_PREGNANT": {
-        "14-50": {
-          "rdiMax": 200,
-          "unit": "mg",
-          "isDerived": false,
-          "note": "UK NHS guidance: Pregnant women should limit caffeine intake to <200 mg/day."
-        }
-      }
-    },
-    "SALT": {
-      "ALL": {
-        "1-150": {
-          "rdiMax": 6,
-          "unit": "g",
-          "isDerived": false,
-          "note": "SACN (2003, reaffirmed 2018): Adults should consume no more than 6 g/day of salt (~2400 mg sodium)."
         }
       }
     }

@@ -10,4 +10,5 @@ public record JsonNutrientRdiRange(
     String unit,
     boolean isDerived,
     Optional<RdiBasis> basis,
-    Optional<Double> divisor) {}
+    Optional<Double> divisor,
+    Optional<String> note) {}

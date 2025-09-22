@@ -1,6 +1,6 @@
 {
+  "source": "IOM Dietary Reference Intakes (2005), https://www.ncbi.nlm.nih.gov/books/NBK56068/",
   "nutrients": {
-    "source": "IOM Dietary Reference Intakes (2005), https://www.ncbi.nlm.nih.gov/books/NBK56068/",
     "WATER": {
       "ALL": {
         "1-3": {
@@ -46,18 +46,6 @@
           "rdiMin": 2.7,
           "unit": "L",
           "isDerived": false
-        }
-      }
-    },
-    "ALCOHOL": {
-      "ALL": {
-        "19-150": {
-          "rdiMin": 5,
-          "rdiMax": 15,
-          "unit": "g",
-          "isDerived": true,
-          "basis": "ENERGY",
-          "divisor": 7
         }
       }
     },

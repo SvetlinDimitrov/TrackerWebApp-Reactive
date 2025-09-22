@@ -107,8 +107,7 @@
       "FEMALE": {
         "11-18": { "rdiMin": 2000, "unit": "mg", "isDerived": false },
         "19-150": { "rdiMin": 2400, "unit": "mg", "isDerived": false, "rdiMax": 2400 }
-      },
-      "note": "SACN advises adults to limit salt to 6 g/day (~2400 mg sodium)."
+      }
     },
     "POTASSIUM_K": {
       "ALL": {
@@ -142,17 +141,17 @@
     },
     "COPPER_CU": {
       "ALL": {
-        "1-3": { "rdiMin": 0.4, "unit": "mg", "isDerived": false },
-        "4-6": { "rdiMin": 0.6, "unit": "mg", "isDerived": false },
-        "7-10": { "rdiMin": 0.7, "unit": "mg", "isDerived": false }
+        "1-3": { "rdiMin": 400, "unit": "µg", "isDerived": false },
+        "4-6": { "rdiMin": 600, "unit": "µg", "isDerived": false },
+        "7-10": { "rdiMin": 700, "unit": "µg", "isDerived": false }
       },
       "MALE": {
-        "11-18": { "rdiMin": 0.8, "unit": "mg", "isDerived": false },
-        "19-150": { "rdiMin": 1.2, "unit": "mg", "isDerived": false, "rdiMax": 10 }
+        "11-18": { "rdiMin": 800, "unit": "µg", "isDerived": false },
+        "19-150": { "rdiMin": 1200, "unit": "µg", "isDerived": false, "rdiMax": 10000 }
       },
       "FEMALE": {
-        "11-18": { "rdiMin": 0.8, "unit": "mg", "isDerived": false },
-        "19-150": { "rdiMin": 1.2, "unit": "mg", "isDerived": false, "rdiMax": 10 }
+        "11-18": { "rdiMin": 800, "unit": "µg", "isDerived": false },
+        "19-150": { "rdiMin": 1200, "unit": "µg", "isDerived": false, "rdiMax": 10000 }
       }
     },
     "SELENIUM_SE": {

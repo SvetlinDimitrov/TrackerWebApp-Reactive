@@ -146,10 +146,14 @@ public class DietAuthorityStore {
               values.has("divisor") && !values.get("divisor").isNull()
                   ? Optional.of(values.get("divisor").asDouble())
                   : Optional.empty();
+          Optional<String> note =
+              values.has("note") && !values.get("note").isNull()
+                  ? Optional.of(values.get("note").asText())
+                  : Optional.empty();
 
           JsonNutrientRdiRange requirement =
               new JsonNutrientRdiRange(
-                  bounds[0], bounds[1], rdiMin, rdiMax, unit, isDerived, basis, divisor);
+                  bounds[0], bounds[1], rdiMin, rdiMax, unit, isDerived, basis, divisor, note);
 
           target
               .computeIfAbsent(nutrient, k -> new EnumMap<>(JsonPopulationGroup.class))

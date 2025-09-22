@@ -30,8 +30,9 @@ public class NutrientAuthorityStore {
 
   private void loadNutrients() {
     for (JsonNutritionAuthority authority : JsonNutritionAuthority.values()) {
-      String path = String.format("rdi/%s/others.json", authority.name());
+      String path = String.format("rdi/%s/nutrients.json", authority.name());
       readAndFill(path, authority);
+      log.info("Loaded nutrient requirements for authority: {}", authority.name());
     }
   }
 
@@ -39,6 +40,7 @@ public class NutrientAuthorityStore {
     for (JsonNutritionAuthority authority : JsonNutritionAuthority.values()) {
       String path = String.format("rdi/%s/others.json", authority.name());
       readAndFill(path, authority);
+      log.info("Loaded other requirements for authority: {}", authority.name());
     }
   }
 
@@ -51,6 +53,11 @@ public class NutrientAuthorityStore {
 
       JsonNode root = mapper.readTree(inputStream);
       JsonNode nutrientsNode = root.get("nutrients");
+      JsonNode sourceNode = root.get("source");
+
+      if (sourceNode != null) {
+        log.info("Seeding {} with source: {}", path, sourceNode.asText());
+      }
 
       if (nutrientsNode == null) {
         log.warn("Invalid JSON: missing 'nutrients' node in {}", path);
@@ -65,7 +72,7 @@ public class NutrientAuthorityStore {
       Iterator<String> nutrientNames = nutrientsNode.fieldNames();
       while (nutrientNames.hasNext()) {
         String nutrientKey = nutrientNames.next();
-        JsonAllowedNutrients nutrient = parseNutrient(nutrientKey);
+        JsonAllowedNutrients nutrient = parseNutrient(nutrientKey, path, authority);
         if (nutrient == null) continue;
 
         JsonNode nutrientNode = nutrientsNode.get(nutrientKey);
@@ -73,6 +80,15 @@ public class NutrientAuthorityStore {
         Iterator<String> groupNames = nutrientNode.fieldNames();
         while (groupNames.hasNext()) {
           String groupKey = groupNames.next();
+
+          if ("note".equalsIgnoreCase(groupKey)) {
+            log.info(
+                "Skipping root-level note for nutrient {} in authority {}",
+                nutrient.name(),
+                authority.name());
+            continue;
+          }
+
           JsonPopulationGroup group = JsonPopulationGroup.valueOf(groupKey);
 
           JsonNode groupNode = nutrientNode.get(groupKey);
@@ -98,19 +114,37 @@ public class NutrientAuthorityStore {
                     ? values.get("unit").asText()
                     : nutrient.getUnit();
 
+            String normalizedUnit = normalizeUnit(unit);
+            String normalizedEnumUnit = normalizeUnit(nutrient.getUnit());
+
+            if (!normalizedUnit.equals(normalizedEnumUnit)) {
+              log.warn(
+                  "Unit mismatch for nutrient {} in authority {} (JSON: {}, Enum: {})",
+                  nutrient.name(),
+                  authority.name(),
+                  unit,
+                  nutrient.getUnit());
+            }
+
             boolean isDerived = values.has("isDerived") && values.get("isDerived").asBoolean(false);
             Optional<RdiBasis> basis =
                 values.has("basis") && !values.get("basis").isNull()
                     ? parseBasis(values.get("basis").asText())
                     : Optional.empty();
+
             Optional<Double> divisor =
                 values.has("divisor") && !values.get("divisor").isNull()
                     ? Optional.of(values.get("divisor").asDouble())
                     : Optional.empty();
 
+            Optional<String> note =
+                values.has("note") && !values.get("note").isNull()
+                    ? Optional.of(values.get("note").asText())
+                    : Optional.empty();
+
             JsonNutrientRdiRange requirement =
                 new JsonNutrientRdiRange(
-                    bounds[0], bounds[1], rdiMin, rdiMax, unit, isDerived, basis, divisor);
+                    bounds[0], bounds[1], rdiMin, rdiMax, unit, isDerived, basis, divisor, note);
 
             nutrientRequirements
                 .computeIfAbsent(nutrient, k -> new EnumMap<>(JsonPopulationGroup.class))
@@ -135,11 +169,13 @@ public class NutrientAuthorityStore {
     }
   }
 
-  private JsonAllowedNutrients parseNutrient(String key) {
+  private JsonAllowedNutrients parseNutrient(
+      String key, String path, JsonNutritionAuthority authority) {
     try {
       return JsonAllowedNutrients.valueOf(key);
     } catch (IllegalArgumentException e) {
-      log.error("Skipping unknown nutrient: {}", key);
+      log.error(
+          "Skipping unknown nutrient '{}' in authority {} (file: {})", key, authority.name(), path);
       return null;
     }
   }
@@ -160,5 +196,26 @@ public class NutrientAuthorityStore {
       return new double[] {Double.parseDouble(parts[0]), Double.parseDouble(parts[1])};
     }
     throw new IllegalArgumentException("Invalid age range format: " + range);
+  }
+
+  private String normalizeUnit(String unit) {
+    if (unit == null) return null;
+
+    String normalized = unit;
+
+    // Normalize mu/micro variants
+    normalized = normalized.replace("μ", "µ");
+
+    // Normalize common synonyms
+    normalized =
+        normalized
+            .replaceAll("(?i)grams?", "g")
+            .replaceAll("(?i)milligrams?", "mg")
+            .replaceAll("(?i)micrograms?", "µg")
+            .replaceAll("(?i)liters?", "L")
+            .replaceAll("(?i)liter", "L");
+
+    // Trim and lowercase for safe compare
+    return normalized.trim().toLowerCase();
   }
 }

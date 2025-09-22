@@ -1,6 +1,6 @@
 {
+  "source": "D-A-CH Referenzwerte für die Nährstoffzufuhr (2011, update 2020)",
   "nutrients": {
-    "source": "D-A-CH Referenzwerte für die Nährstoffzufuhr (2011, update 2020)",
     "WATER": {
       "ALL": {
         "1-3": {
@@ -55,22 +55,6 @@
         "19-150": {
           "rdiMin": 2.1,
           "unit": "L",
-          "isDerived": false
-        }
-      }
-    },
-    "ALCOHOL": {
-      "MALE": {
-        "19-150": {
-          "rdiMax": 20,
-          "unit": "g",
-          "isDerived": false
-        }
-      },
-      "FEMALE": {
-        "19-150": {
-          "rdiMax": 10,
-          "unit": "g",
           "isDerived": false
         }
       }

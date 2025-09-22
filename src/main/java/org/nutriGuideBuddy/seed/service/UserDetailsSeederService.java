@@ -43,7 +43,6 @@ public class UserDetailsSeederService {
                     .flatMap(
                         exists -> {
                           if (exists) {
-                            log.info("UserDetails already exist for '{}'", user.getEmail());
                             return Mono.empty();
                           }
 
@@ -80,7 +79,7 @@ public class UserDetailsSeederService {
                                                           saved,
                                                           user.getEmail()))));
                         }))
-        .doOnComplete(() -> log.info("✅ UserDetails seeding completed."))
+        .doOnComplete(() -> log.info("UserDetails seeding completed."))
         .then();
   }
 }
