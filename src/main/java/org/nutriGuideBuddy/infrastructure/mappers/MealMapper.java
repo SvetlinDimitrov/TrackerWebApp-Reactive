@@ -17,6 +17,7 @@ import org.nutriGuideBuddy.features.shared.dto.MealConsumedView;
 public interface MealMapper {
 
   @Mapping(target = "name", source = "dto.name")
+  @Mapping(target = "createdAt", ignore = true)
   Meal toEntity(MealCreateRequest dto);
 
   @Mapping(target = "createdAt", ignore = true)
