@@ -5,13 +5,14 @@ import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.nutriGuideBuddy.features.meal.dto.MealFoodCreateRequest;
+import org.nutriGuideBuddy.features.shared.dto.FoodCreateRequest;
 import org.nutriGuideBuddy.features.meal.dto.MealFoodFilter;
 import org.nutriGuideBuddy.features.meal.repository.MealRepository;
 import org.nutriGuideBuddy.features.meal.service.MealFoodService;
 import org.nutriGuideBuddy.features.shared.dto.NutritionCreateRequest;
 import org.nutriGuideBuddy.features.shared.dto.ServingCreateRequest;
 import org.nutriGuideBuddy.features.shared.enums.AllowedNutrients;
+import org.nutriGuideBuddy.features.shared.enums.CalorieUnits;
 import org.nutriGuideBuddy.features.shared.enums.ServingMetric;
 import org.nutriGuideBuddy.features.user.entity.User;
 import org.nutriGuideBuddy.features.user.repository.UserRepository;
@@ -47,7 +48,6 @@ public class MealFoodSeederService {
           "Yogurt",
           "Orange");
 
-  private static final List<String> CALORIE_UNITS = List.of("kcal");
   private static final List<String> PICTURES =
       List.of(
           "https://picsum.photos/200", "https://picsum.photos/201", "https://picsum.photos/202");
@@ -87,14 +87,14 @@ public class MealFoodSeederService {
                                                 random.nextInt(
                                                     users.size())); // assign random seeded user
 
-                                        MealFoodCreateRequest dto =
-                                            new MealFoodCreateRequest(
+                                        FoodCreateRequest dto =
+                                            new FoodCreateRequest(
                                                 randomFoodName(),
                                                 "Info about " + i,
                                                 "Detailed info about " + i,
                                                 randomPicture(),
                                                 randomCalorieAmount(),
-                                                CALORIE_UNITS.get(0),
+                                                CalorieUnits.KCAL,
                                                 randomServings(),
                                                 randomNutritions());
 
@@ -135,10 +135,11 @@ public class MealFoodSeederService {
     Collections.shuffle(metrics);
 
     for (int i = 0; i < count; i++) {
+      ServingMetric randomMetric = ServingMetric.values()[random.nextInt(ServingMetric.values().length)];
       boolean isMain = (i == 0);
       servings.add(
           new ServingCreateRequest(
-              10.0 + random.nextDouble() * 200.0, metrics.get(i % metrics.size()).name(), isMain));
+              10.0 + random.nextDouble() * 200.0, randomMetric, isMain));
     }
     return servings;
   }

@@ -57,4 +57,13 @@ public class GlobalExceptionHandler {
     problemDetail.setDetail(ex.getMessage());
     return Mono.just(problemDetail);
   }
+
+  @ExceptionHandler(ServiceUnavaibleException.class)
+  @ResponseStatus(HttpStatus.SERVICE_UNAVAILABLE)
+  public Mono<ProblemDetail> handleServiceUnavailableException(ServiceUnavaibleException ex) {
+    var problemDetail = ProblemDetail.forStatus(HttpStatus.SERVICE_UNAVAILABLE);
+    problemDetail.setTitle("Service Temporarily Unavailable");
+    problemDetail.setDetail(ex.getMessage());
+    return Mono.just(problemDetail);
+  }
 }

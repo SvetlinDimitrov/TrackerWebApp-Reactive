@@ -5,7 +5,7 @@ CREATE TABLE meal_foods (
     large_info TEXT,
     picture VARCHAR(255),
     calorie_amount DOUBLE,
-    calorie_unit VARCHAR(20),
+    calorie_unit VARCHAR(50),
     meal_id BIGINT NOT NULL,
     user_id BIGINT NOT NULL,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,

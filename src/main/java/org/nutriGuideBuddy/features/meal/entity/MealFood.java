@@ -2,6 +2,7 @@ package org.nutriGuideBuddy.features.meal.entity;
 
 import lombok.*;
 import org.nutriGuideBuddy.features.shared.entity.AuditableEntity;
+import org.nutriGuideBuddy.features.shared.enums.CalorieUnits;
 import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
 
@@ -30,7 +31,7 @@ public class MealFood extends AuditableEntity {
   private Double calorieAmount;
 
   @Column("calorie_unit")
-  private String calorieUnit;
+  private CalorieUnits calorieUnit;
 
   @Column("meal_id")
   private Long mealId;

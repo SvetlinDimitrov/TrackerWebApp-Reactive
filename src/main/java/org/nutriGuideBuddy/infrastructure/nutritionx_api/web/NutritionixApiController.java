@@ -2,9 +2,7 @@ package org.nutriGuideBuddy.infrastructure.nutritionx_api.web;
 
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.nutriGuideBuddy.features.meal.dto.MealFoodCreateRequest;
-import org.nutriGuideBuddy.infrastructure.exceptions.BadRequestException;
-import org.nutriGuideBuddy.infrastructure.exceptions.ExceptionResponse;
+import org.nutriGuideBuddy.features.shared.dto.FoodCreateRequest;
 import org.nutriGuideBuddy.infrastructure.nutritionx_api.dto.ListFoodsResponse;
 import org.nutriGuideBuddy.infrastructure.nutritionx_api.service.NutritionixApiService;
 import org.springframework.http.HttpStatus;
@@ -13,35 +11,24 @@ import reactor.core.publisher.Mono;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/food_db_api/search")
+@RequestMapping("/api/v1/food_db_api/search")
 public class NutritionixApiController {
 
   private final NutritionixApiService service;
 
-  // Mostly return a single food
-  @GetMapping("/common/{term}")
-  public Mono<List<MealFoodCreateRequest>> getFoodBySearchCriteria(@PathVariable String term) {
-    return service.getCommonFoodBySearchTerm(term);
-  }
-
-  // Mostly return a single food
-  @GetMapping("/branded/{id}")
-  public Mono<List<MealFoodCreateRequest>> getBrandedFoodById(@PathVariable String id) {
-    return service.getBrandedFoodById(id);
-  }
-
   @GetMapping
-  public Mono<ListFoodsResponse> getFoodsByName(@RequestParam String foodName) {
+  @ResponseStatus(HttpStatus.OK)
+  public Mono<ListFoodsResponse> getAllByName(@RequestParam String foodName) {
     return service.getAllFoodsByFoodName(foodName);
   }
 
-  //  @GetMapping("/{foodId}")
-  //  public List<InsertFoodDto> getFoodById(@PathVariable String foodId){
-  //
-  //  }
-  @ExceptionHandler(BadRequestException.class)
-  @ResponseStatus(HttpStatus.BAD_REQUEST)
-  public Mono<ExceptionResponse> catchUserNotFound(BadRequestException e) {
-    return Mono.just(new ExceptionResponse(e.getMessage()));
+  @GetMapping("/common/{term}")
+  public Mono<List<FoodCreateRequest>> getFoodBySearchCriteria(@PathVariable String term) {
+    return service.getCommonFoodBySearchTerm(term);
+  }
+
+  @GetMapping("/branded/{id}")
+  public Mono<List<FoodCreateRequest>> getBrandedFoodById(@PathVariable String id) {
+    return service.getBrandedFoodById(id);
   }
 }

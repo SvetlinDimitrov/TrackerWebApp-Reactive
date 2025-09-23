@@ -1,5 +1,6 @@
-package org.nutriGuideBuddy.infrastructure.mail;
+package org.nutriGuideBuddy.infrastructure.email;
 
+import static org.nutriGuideBuddy.infrastructure.exceptions.ExceptionMessages.SERVICE_TEMPORARILY_UNAVAILABLE;
 import static org.nutriGuideBuddy.infrastructure.exceptions.ExceptionMessages.USER_NOT_FOUND_BY_EMAIL;
 
 import jakarta.mail.MessagingException;
@@ -9,18 +10,16 @@ import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.nutriGuideBuddy.features.user.service.UserService;
-import org.nutriGuideBuddy.infrastructure.email.EmailVerificationService;
 import org.nutriGuideBuddy.infrastructure.exceptions.NotFoundException;
+import org.nutriGuideBuddy.infrastructure.exceptions.ServiceUnavaibleException;
 import org.nutriGuideBuddy.infrastructure.exceptions.ValidationException;
 import org.nutriGuideBuddy.infrastructure.security.dto.EmailValidationRequest;
 import org.nutriGuideBuddy.infrastructure.security.service.JwtEmailVerificationService;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpStatus;
 import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.spring6.SpringTemplateEngine;
 import reactor.core.publisher.Mono;
@@ -58,7 +57,7 @@ public class EmailVerificationServiceImpl implements EmailVerificationService {
               return sendTemplateEmail(
                   dto.email(),
                   "Email Verification",
-                  "verify-email", // thymeleaf template name (verify-email.html)
+                  "verify-email",
                   Map.of(
                       "title", "Verify your email",
                       "buttonText", "Verify Email",
@@ -81,7 +80,7 @@ public class EmailVerificationServiceImpl implements EmailVerificationService {
               return sendTemplateEmail(
                   email,
                   "Reset Password",
-                  "reset-password", // thymeleaf template name (reset-password.html)
+                  "reset-password",
                   Map.of(
                       "title", "Reset your password",
                       "buttonText", "Reset Password",
@@ -95,8 +94,7 @@ public class EmailVerificationServiceImpl implements EmailVerificationService {
 
     return Mono.fromCallable(
             () -> {
-              // render html
-              Context ctx = new Context(); // optionally pass Locale here
+              Context ctx = new Context();
               ctx.setVariables(model);
               String html = emailTemplateEngine.process(templateName, ctx);
 
@@ -111,8 +109,6 @@ public class EmailVerificationServiceImpl implements EmailVerificationService {
               helper.setTo(recipientEmail);
               helper.setSubject(subject);
               helper.setText(html, true);
-
-              // send
               mailSender.send(message);
               return true;
             })
@@ -120,16 +116,24 @@ public class EmailVerificationServiceImpl implements EmailVerificationService {
         .onErrorMap(
             MessagingException.class,
             e -> {
-              log.error("MessagingException while sending email", e);
-              return new ResponseStatusException(
-                  HttpStatus.INTERNAL_SERVER_ERROR, "Unable to compose email");
+              log.error(
+                  "MessagingException while sending email. Subject: '{}', Recipient: '{}', Reason: {}",
+                  subject,
+                  recipientEmail,
+                  e.getMessage());
+              return new ServiceUnavaibleException(
+                  String.format(SERVICE_TEMPORARILY_UNAVAILABLE, "Email"));
             })
         .onErrorMap(
             MailException.class,
             e -> {
-              log.error("MailException while sending email", e);
-              return new ResponseStatusException(
-                  HttpStatus.SERVICE_UNAVAILABLE, "Email temporarily unavailable");
+              log.error(
+                  "Failed to send email. Subject: '{}', Recipient: '{}', Reason: {}",
+                  subject,
+                  recipientEmail,
+                  e.getMessage());
+              return new ServiceUnavaibleException(
+                  String.format(SERVICE_TEMPORARILY_UNAVAILABLE, "Email"));
             })
         .subscribeOn(Schedulers.boundedElastic())
         .then();

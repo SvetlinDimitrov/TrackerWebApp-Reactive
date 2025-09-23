@@ -1,4 +1,4 @@
-package org.nutriGuideBuddy.features.meal.dto;
+package org.nutriGuideBuddy.features.shared.dto;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.DecimalMin;
@@ -8,10 +8,9 @@ import jakarta.validation.constraints.Size;
 import java.util.Set;
 import org.nutriGuideBuddy.features.shared.annotaions.OnlyOneMainServing;
 import org.nutriGuideBuddy.features.shared.annotaions.ValidImageUrl;
-import org.nutriGuideBuddy.features.shared.dto.NutritionCreateRequest;
-import org.nutriGuideBuddy.features.shared.dto.ServingCreateRequest;
+import org.nutriGuideBuddy.features.shared.enums.CalorieUnits;
 
-public record MealFoodCreateRequest(
+public record FoodCreateRequest(
     @NotBlank(message = "cannot be blank")
         @Size(min = 1, max = 255, message = "must be between 1 and 255 characters")
         String name,
@@ -22,8 +21,6 @@ public record MealFoodCreateRequest(
     @NotNull(message = "is required")
         @DecimalMin(value = "0.01", message = "must be a positive number")
         Double calorieAmount,
-    @NotNull(message = "is required")
-        @Size(min = 1, max = 255, message = "must be between 1 and 255 characters")
-        String calorieUnit,
+    @NotNull(message = "is required") CalorieUnits calorieUnit,
     @OnlyOneMainServing Set<@Valid ServingCreateRequest> servings,
     Set<@Valid NutritionCreateRequest> nutrients) {}

@@ -12,6 +12,7 @@ import org.nutriGuideBuddy.features.meal.dto.*;
 import org.nutriGuideBuddy.features.meal.entity.MealFood;
 import org.nutriGuideBuddy.features.meal.repository.CustomMealFoodRepository;
 import org.nutriGuideBuddy.features.meal.repository.MealFoodRepository;
+import org.nutriGuideBuddy.features.shared.dto.FoodCreateRequest;
 import org.nutriGuideBuddy.features.shared.dto.NutritionView;
 import org.nutriGuideBuddy.features.shared.dto.ServingView;
 import org.nutriGuideBuddy.infrastructure.exceptions.NotFoundException;
@@ -42,14 +43,14 @@ public class MealFoodServiceImp implements MealFoodService {
   }
 
   @Override
-  public Mono<MealFoodView> create(MealFoodCreateRequest dto, Long mealId) {
+  public Mono<MealFoodView> create(FoodCreateRequest dto, Long mealId) {
     return ReactiveUserDetailsServiceImpl.getPrincipalId()
         .flatMap(userId -> create(dto, mealId, userId))
         .as(operator::transactional);
   }
 
   @Override
-  public Mono<MealFoodView> create(MealFoodCreateRequest dto, Long mealId, Long userId) {
+  public Mono<MealFoodView> create(FoodCreateRequest dto, Long mealId, Long userId) {
     return mealService
         .getById(mealId)
         .flatMap(

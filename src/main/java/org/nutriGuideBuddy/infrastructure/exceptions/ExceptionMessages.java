@@ -15,4 +15,6 @@ public class ExceptionMessages {
       "Nutrition with ids %s do not belong to meal food with id %s";
   public static final String EXACTLY_ONE_MAIN_SERVING_AFTER_UPDATE =
       "After update, exactly one serving must be marked as main. Found: %s";
+  public static final String SERVICE_TEMPORARILY_UNAVAILABLE =
+      "%s service is temporarily unavailable.";
 }

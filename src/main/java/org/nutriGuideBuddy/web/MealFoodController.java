@@ -2,7 +2,7 @@ package org.nutriGuideBuddy.web;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.nutriGuideBuddy.features.meal.dto.MealFoodCreateRequest;
+import org.nutriGuideBuddy.features.shared.dto.FoodCreateRequest;
 import org.nutriGuideBuddy.features.meal.dto.MealFoodFilter;
 import org.nutriGuideBuddy.features.meal.dto.MealFoodUpdateRequest;
 import org.nutriGuideBuddy.features.meal.dto.MealFoodView;
@@ -48,7 +48,7 @@ public class MealFoodController {
   @PostMapping
   @ResponseStatus(HttpStatus.CREATED)
   public Mono<MealFoodView> createFood(
-      @RequestBody @Valid MealFoodCreateRequest dto, @PathVariable Long mealId) {
+      @RequestBody @Valid FoodCreateRequest dto, @PathVariable Long mealId) {
     return userDetailsAccessValidator
         .validateFullyRegistered()
         .then(mealAccessValidator.validateAccess(mealId))
