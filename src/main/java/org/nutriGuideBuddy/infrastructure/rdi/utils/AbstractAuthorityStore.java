@@ -20,6 +20,15 @@ public abstract class AbstractAuthorityStore {
     }
   }
 
+  protected JsonPopulationGroup parsePopulationGroup(String key, String context) {
+    try {
+      return JsonPopulationGroup.valueOf(key);
+    } catch (IllegalArgumentException e) {
+      log.error("Skipping unknown population group {} in {}", key, context);
+      return null;
+    }
+  }
+
   protected Optional<RdiBasis> parseBasis(String text) {
     try {
       return Optional.of(RdiBasis.valueOf(text));
@@ -74,6 +83,15 @@ public abstract class AbstractAuthorityStore {
     double ageMin = values.has("ageMin") ? values.get("ageMin").asDouble() : 0;
     double ageMax = values.has("ageMax") ? values.get("ageMax").asDouble() : 0;
 
+    if (ageMin < 0 || ageMax < 0) {
+      log.warn(
+          "Skipping nutrient {} in {} because ageMin/ageMax cannot be negative. Entry: {}",
+          nutrient.name(),
+          context,
+          values);
+      return null;
+    }
+
     Optional<Double> rdiMin =
         values.has("rdiMin") && !values.get("rdiMin").isNull()
             ? Optional.of(values.get("rdiMin").asDouble())
@@ -83,9 +101,26 @@ public abstract class AbstractAuthorityStore {
             ? Optional.of(values.get("rdiMax").asDouble())
             : Optional.empty();
 
+    if (rdiMin.isPresent() && rdiMin.get() < 0) {
+      log.warn(
+          "Skipping nutrient {} in {} because rdiMin is negative. Entry: {}",
+          nutrient.name(),
+          context,
+          values);
+      return null;
+    }
+    if (rdiMax.isPresent() && rdiMax.get() < 0) {
+      log.warn(
+          "Skipping nutrient {} in {} because rdiMax is negative. Entry: {}",
+          nutrient.name(),
+          context,
+          values);
+      return null;
+    }
+
     if (rdiMin.isPresent() && rdiMax.isPresent() && rdiMin.get() > rdiMax.get()) {
       log.warn(
-          "Skipping nutrient {} in {} because rdiMin={} is not less than rdiMax={}. Entry: {}",
+          "Skipping nutrient {} in {} because rdiMin={} is not less than or equal to rdiMax={}. Entry: {}",
           nutrient.name(),
           context,
           rdiMin.get(),
@@ -117,6 +152,15 @@ public abstract class AbstractAuthorityStore {
           context,
           ageMin,
           ageMax,
+          values);
+      return null;
+    }
+
+    if (rdiMin.isEmpty() && rdiMax.isEmpty()) {
+      log.warn(
+          "Skipping nutrient {} in {} because both rdiMin and rdiMax are missing. Entry: {}",
+          nutrient.name(),
+          context,
           values);
       return null;
     }

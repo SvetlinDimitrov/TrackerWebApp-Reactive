@@ -91,17 +91,6 @@
         }
       ]
     },
-    "CHOLESTEROL": {
-      "ALL": [
-        {
-          "ageMin": 14,
-          "ageMax": 150,
-          "unit": "mg",
-          "isDerived": false,
-          "note": "No explicit upper limit; Paleo foods naturally contain cholesterol from animal sources."
-        }
-      ]
-    },
     "SODIUM_NA": {
       "ALL": [
         {

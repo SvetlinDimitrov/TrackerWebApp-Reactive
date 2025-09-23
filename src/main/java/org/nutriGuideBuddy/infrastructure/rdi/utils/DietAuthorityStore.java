@@ -29,61 +29,85 @@ public class DietAuthorityStore extends AbstractAuthorityStore {
   @PostConstruct
   private void init() {
     for (DietType dietType : DietType.values()) {
-      loadDietFile(dietType, "nutrients.json");
-      log.info("Loaded baseline nutrient file for diet: {}", dietType);
-      loadDietFile(dietType, "others.json");
-      log.info("Loaded other nutrient file for diet: {}", dietType);
-    }
-  }
+      String path = String.format("rdi/covers/%s/%s", dietType.name(), "standard.json");
 
-  private void loadDietFile(DietType dietType, String fileName) {
-    String path = String.format("rdi/covers/%s/%s", dietType.name(), fileName);
-
-    try (InputStream inputStream = getClass().getClassLoader().getResourceAsStream(path)) {
-      if (inputStream == null) {
-        log.debug("No cover file found for: {}", path);
-        return;
-      }
-
-      JsonNode root = mapper.readTree(inputStream);
-      JsonNode baselineNode = root.get("baseline");
-      JsonNode overlaysNode = root.get("overlays");
-
-      if (baselineNode != null) {
-        Map<JsonAllowedNutrients, Map<JsonPopulationGroup, Set<JsonNutrientRdiRange>>> baseline =
-            baselineStore.computeIfAbsent(dietType, k -> new EnumMap<>(JsonAllowedNutrients.class));
-        parseNutrientsInto(baselineNode, baseline, path);
-      }
-
-      if (overlaysNode != null) {
-        Map<
-                JsonNutritionAuthority,
-                Map<JsonAllowedNutrients, Map<JsonPopulationGroup, Set<JsonNutrientRdiRange>>>>
-            authorityMap =
-                store.computeIfAbsent(dietType, k -> new EnumMap<>(JsonNutritionAuthority.class));
-
-        Iterator<String> authorityKeys = overlaysNode.fieldNames();
-        while (authorityKeys.hasNext()) {
-          String authorityKey = authorityKeys.next();
-          JsonNutritionAuthority jsonAuth;
-          try {
-            jsonAuth = JsonNutritionAuthority.valueOf(authorityKey);
-          } catch (IllegalArgumentException e) {
-            log.warn("Skipping unknown nutritionAuthority {} in {}", authorityKey, path);
-            continue;
-          }
-
-          Map<JsonAllowedNutrients, Map<JsonPopulationGroup, Set<JsonNutrientRdiRange>>>
-              requirements =
-                  authorityMap.computeIfAbsent(
-                      jsonAuth, k -> new EnumMap<>(JsonAllowedNutrients.class));
-
-          parseNutrientsInto(overlaysNode.get(authorityKey), requirements, path);
+      try (InputStream inputStream = getClass().getClassLoader().getResourceAsStream(path)) {
+        if (inputStream == null) {
+          log.error("No cover file found for: {}", path);
+          continue;
         }
+
+        JsonNode root = mapper.readTree(inputStream);
+        if (root == null || !root.isObject()) {
+          log.error("Invalid JSON root for {}", path);
+          continue;
+        }
+
+        JsonNode baselineNode = root.get("baseline");
+        JsonNode overlaysNode = root.get("overlays");
+
+        if (baselineNode != null) {
+          if (!baselineNode.isObject()) {
+            log.warn("Expected 'baseline' to be an object in {}, skipping baseline", path);
+          } else {
+            Map<JsonAllowedNutrients, Map<JsonPopulationGroup, Set<JsonNutrientRdiRange>>>
+                baseline =
+                    baselineStore.computeIfAbsent(
+                        dietType, k -> new EnumMap<>(JsonAllowedNutrients.class));
+            parseNutrientsInto(baselineNode, baseline, path);
+          }
+        } else {
+          log.error("No 'baseline' section in {}", path);
+        }
+
+        if (overlaysNode != null) {
+          if (!overlaysNode.isObject()) {
+            log.warn("Expected 'overlays' to be an object in {}, skipping overlays", path);
+          } else {
+            Map<
+                    JsonNutritionAuthority,
+                    Map<JsonAllowedNutrients, Map<JsonPopulationGroup, Set<JsonNutrientRdiRange>>>>
+                authorityMap =
+                    store.computeIfAbsent(
+                        dietType, k -> new EnumMap<>(JsonNutritionAuthority.class));
+
+            Iterator<String> authorityKeys = overlaysNode.fieldNames();
+            while (authorityKeys.hasNext()) {
+              String authorityKey = authorityKeys.next();
+              JsonNutritionAuthority jsonAuth;
+              try {
+                jsonAuth = JsonNutritionAuthority.valueOf(authorityKey);
+              } catch (IllegalArgumentException e) {
+                log.warn("Skipping unknown nutritionAuthority {} in {}", authorityKey, path);
+                continue;
+              }
+
+              JsonNode overlayNode = overlaysNode.get(authorityKey);
+              if (overlayNode == null || !overlayNode.isObject()) {
+                log.warn(
+                    "Expected object for overlays[{}] in {}, skipping this authority",
+                    authorityKey,
+                    path);
+                continue;
+              }
+
+              Map<JsonAllowedNutrients, Map<JsonPopulationGroup, Set<JsonNutrientRdiRange>>>
+                  requirements =
+                      authorityMap.computeIfAbsent(
+                          jsonAuth, k -> new EnumMap<>(JsonAllowedNutrients.class));
+
+              parseNutrientsInto(overlayNode, requirements, path);
+            }
+          }
+        } else {
+          log.error("No 'overlays' section in {}", path);
+        }
+
+      } catch (IOException e) {
+        log.error("Error loading cover file for: {}", path, e);
       }
 
-    } catch (IOException e) {
-      throw new RuntimeException("Failed to load " + path, e);
+      log.info("Loaded cover file for diet: {}", dietType);
     }
   }
 
@@ -95,36 +119,72 @@ public class DietAuthorityStore extends AbstractAuthorityStore {
     Iterator<String> nutrientNames = parentNode.fieldNames();
     while (nutrientNames.hasNext()) {
       String nutrientKey = nutrientNames.next();
+
       JsonAllowedNutrients nutrient = parseNutrient(nutrientKey, context);
-      if (nutrient == null) continue;
+      if (nutrient == null) {
+        continue;
+      }
 
       JsonNode nutrientNode = parentNode.get(nutrientKey);
+      if (nutrientNode == null || !nutrientNode.isObject()) {
+        continue;
+      }
+
+      Map<JsonPopulationGroup, Set<JsonNutrientRdiRange>> buffered =
+          new EnumMap<>(JsonPopulationGroup.class);
+      boolean dropNutrient = false;
 
       Iterator<String> groupNames = nutrientNode.fieldNames();
-      while (groupNames.hasNext()) {
+      while (groupNames.hasNext() && !dropNutrient) {
         String groupKey = groupNames.next();
-        JsonPopulationGroup group = JsonPopulationGroup.valueOf(groupKey);
-        JsonNode groupNode = nutrientNode.get(groupKey);
 
-        if (!groupNode.isArray()) {
+        JsonPopulationGroup group = parsePopulationGroup(groupKey, context);
+        if (group == null) {
           log.warn(
-              "Expected array for nutrient {} group {} in {}, skipping",
-              nutrient.name(),
-              groupKey,
-              context);
-          continue;
+              "Dropping nutrient {} in {}: invalid population group '{}'",
+              nutrientKey,
+              context,
+              groupKey);
+          dropNutrient = true;
+          break;
+        }
+
+        JsonNode groupNode = nutrientNode.get(groupKey);
+        if (groupNode == null || !groupNode.isArray()) {
+          log.warn(
+              "Dropping nutrient {} in {}: expected array for group {}",
+              nutrientKey,
+              context,
+              groupKey);
+          dropNutrient = true;
+          break;
         }
 
         for (JsonNode entry : groupNode) {
           JsonNutrientRdiRange requirement = buildRange(entry, nutrient, context);
-          if (requirement == null) continue;
+          if (requirement == null) {
+            log.warn(
+                "Dropping nutrient {} in {}: invalid entry under group {} -> {}",
+                nutrientKey,
+                context,
+                groupKey,
+                entry);
+            dropNutrient = true;
+            break;
+          }
 
-          target
-              .computeIfAbsent(nutrient, k -> new EnumMap<>(JsonPopulationGroup.class))
-              .computeIfAbsent(group, k -> new HashSet<>())
-              .add(requirement);
+          buffered.computeIfAbsent(group, k -> new HashSet<>()).add(requirement);
         }
       }
+
+      if (dropNutrient) {
+        log.warn("Nutrient {} dropped from {} due to validation errors", nutrientKey, context);
+        continue;
+      }
+
+      target
+          .computeIfAbsent(nutrient, k -> new EnumMap<>(JsonPopulationGroup.class))
+          .putAll(buffered);
     }
   }
 

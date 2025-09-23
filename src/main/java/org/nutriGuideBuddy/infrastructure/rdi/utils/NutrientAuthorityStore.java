@@ -22,37 +22,32 @@ public class NutrientAuthorityStore extends AbstractAuthorityStore {
   @PostConstruct
   private void init() {
     for (JsonNutritionAuthority authority : JsonNutritionAuthority.values()) {
-      loadFile(authority, "nutrients.json");
-      loadFile(authority, "others.json");
-    }
-  }
+      String path = String.format("rdi/%s/%s", authority.name(), "standard.json");
 
-  private void loadFile(JsonNutritionAuthority authority, String fileName) {
-    String path = String.format("rdi/%s/%s", authority.name(), fileName);
+      try (InputStream inputStream = getClass().getClassLoader().getResourceAsStream(path)) {
+        if (inputStream == null) {
+          log.error("No resource found for: {}", path);
+          continue;
+        }
 
-    try (InputStream inputStream = getClass().getClassLoader().getResourceAsStream(path)) {
-      if (inputStream == null) {
-        log.debug("No resource found for: {}", path);
-        return;
+        JsonNode root = mapper.readTree(inputStream);
+        if (root == null || !root.has("nutrients")) {
+          log.error("Invalid JSON: missing 'nutrients' in {}", path);
+          continue;
+        }
+
+        JsonNode nutrientsNode = root.get("nutrients");
+        Map<JsonAllowedNutrients, Map<JsonPopulationGroup, Set<JsonNutrientRdiRange>>>
+            nutrientRequirements =
+                nutrientStore.computeIfAbsent(
+                    authority, k -> new EnumMap<>(JsonAllowedNutrients.class));
+
+        parseNutrientsInto(nutrientsNode, nutrientRequirements, path);
+        log.info("Loaded nutrient file for {}: {}", authority, "standard.json");
+
+      } catch (IOException e) {
+        log.error("Failed to load or parse JSON from {}", path, e);
       }
-
-      JsonNode root = mapper.readTree(inputStream);
-      JsonNode nutrientsNode = root.get("nutrients");
-      if (nutrientsNode == null) {
-        log.warn("Invalid JSON: missing 'nutrients' in {}", path);
-        return;
-      }
-
-      Map<JsonAllowedNutrients, Map<JsonPopulationGroup, Set<JsonNutrientRdiRange>>>
-          nutrientRequirements =
-              nutrientStore.computeIfAbsent(
-                  authority, k -> new EnumMap<>(JsonAllowedNutrients.class));
-
-      parseNutrientsInto(nutrientsNode, nutrientRequirements, path);
-      log.info("Loaded nutrient file for {}: {}", authority, fileName);
-
-    } catch (IOException e) {
-      throw new RuntimeException("Failed to load " + path, e);
     }
   }
 
@@ -64,33 +59,68 @@ public class NutrientAuthorityStore extends AbstractAuthorityStore {
     Iterator<String> nutrientNames = parentNode.fieldNames();
     while (nutrientNames.hasNext()) {
       String nutrientKey = nutrientNames.next();
+
       JsonAllowedNutrients nutrient = parseNutrient(nutrientKey, context);
-      if (nutrient == null) continue;
+      if (nutrient == null) {
+        log.error("Unknown nutrient {} in {}, skipping", nutrientKey, context);
+        continue;
+      }
 
       JsonNode nutrientNode = parentNode.get(nutrientKey);
+      if (nutrientNode == null || !nutrientNode.isObject()) {
+        log.error("Dropping nutrient {} in {}: expected object", nutrientKey, context);
+        continue;
+      }
+
+      Map<JsonPopulationGroup, Set<JsonNutrientRdiRange>> buffered =
+          new EnumMap<>(JsonPopulationGroup.class);
+      boolean dropNutrient = false;
 
       Iterator<String> groupNames = nutrientNode.fieldNames();
-      while (groupNames.hasNext()) {
+      while (groupNames.hasNext() && !dropNutrient) {
         String groupKey = groupNames.next();
 
-        JsonPopulationGroup group = JsonPopulationGroup.valueOf(groupKey);
-        JsonNode groupNode = nutrientNode.get(groupKey);
+        JsonPopulationGroup group = parsePopulationGroup(groupKey, context);
+        if (group == null) {
+          log.warn(
+              "Dropping nutrient {} in {}: invalid population group '{}'",
+              nutrientKey,
+              context,
+              groupKey);
+          dropNutrient = true;
+          break;
+        }
 
-        if (!groupNode.isArray()) {
-          log.warn("Expected array for group {} in {}, skipping", groupKey, context);
-          continue;
+        JsonNode groupNode = nutrientNode.get(groupKey);
+        if (groupNode == null || !groupNode.isArray()) {
+          log.warn(
+              "Dropping nutrient {} in {}: expected array for group {}",
+              nutrientKey,
+              context,
+              groupKey);
+          dropNutrient = true;
+          break;
         }
 
         for (JsonNode entry : groupNode) {
           JsonNutrientRdiRange requirement = buildRange(entry, nutrient, context);
-          if (requirement == null) continue;
+          if (requirement == null) {
+            dropNutrient = true;
+            break;
+          }
 
-          target
-              .computeIfAbsent(nutrient, k -> new EnumMap<>(JsonPopulationGroup.class))
-              .computeIfAbsent(group, k -> new HashSet<>())
-              .add(requirement);
+          buffered.computeIfAbsent(group, k -> new HashSet<>()).add(requirement);
         }
       }
+
+      if (dropNutrient) {
+        log.warn("Nutrient {} dropped from {} due to validation errors", nutrientKey, context);
+        continue;
+      }
+
+      target
+          .computeIfAbsent(nutrient, k -> new EnumMap<>(JsonPopulationGroup.class))
+          .putAll(buffered);
     }
   }
 
