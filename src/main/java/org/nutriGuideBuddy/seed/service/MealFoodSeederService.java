@@ -15,6 +15,7 @@ import org.nutriGuideBuddy.features.shared.enums.AllowedNutrients;
 import org.nutriGuideBuddy.features.shared.enums.ServingMetric;
 import org.nutriGuideBuddy.features.user.entity.User;
 import org.nutriGuideBuddy.features.user.repository.UserRepository;
+import org.nutriGuideBuddy.seed.enums.EmailEnum;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -56,8 +57,11 @@ public class MealFoodSeederService {
   public Mono<Void> seed() {
     log.info("Starting Food seeding...");
 
+    Set<String> emails =
+        Set.of(EmailEnum.values()).stream().map(EmailEnum::getEmail).collect(Collectors.toSet());
+
     return userRepository
-        .findAll() // fetch seeded users
+        .findAllByEmailIn(emails)
         .collectList()
         .flatMapMany(
             users ->
