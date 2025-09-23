@@ -45,6 +45,6 @@ public abstract class UserMapperDecorator implements UserMapper {
   @Override
   public void update(ChangePasswordRequest dto, User entity) {
     delegate.update(dto, entity);
-    entity.setPassword(passwordEncoder.encode(dto.newPassword()));
+    entity.setPassword(passwordEncoder.encode(dto.password()));
   }
 }

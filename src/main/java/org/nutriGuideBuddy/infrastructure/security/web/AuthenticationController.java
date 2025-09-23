@@ -3,7 +3,7 @@ package org.nutriGuideBuddy.infrastructure.security.web;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.nutriGuideBuddy.features.user.service.UserService;
-import org.nutriGuideBuddy.infrastructure.brevo_api.EmailVerificationService;
+import org.nutriGuideBuddy.infrastructure.email.EmailVerificationService;
 import org.nutriGuideBuddy.infrastructure.security.dto.AuthenticationRequest;
 import org.nutriGuideBuddy.infrastructure.security.dto.AuthenticationResponse;
 import org.nutriGuideBuddy.infrastructure.security.dto.ChangePasswordRequest;
@@ -43,7 +43,7 @@ public class AuthenticationController {
 
   @PatchMapping("/change-password")
   public Mono<Void> modifyPassword(
-      @RequestBody ChangePasswordRequest dto, @RequestParam String token) {
+      @RequestBody @Valid ChangePasswordRequest dto, @RequestParam String token) {
     return userService.modifyPassword(dto, token);
   }
 }

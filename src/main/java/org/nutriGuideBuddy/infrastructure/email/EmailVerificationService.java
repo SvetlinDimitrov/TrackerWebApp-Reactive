@@ -1,4 +1,4 @@
-package org.nutriGuideBuddy.infrastructure.brevo_api;
+package org.nutriGuideBuddy.infrastructure.email;
 
 import org.nutriGuideBuddy.infrastructure.security.dto.EmailValidationRequest;
 import reactor.core.publisher.Mono;
