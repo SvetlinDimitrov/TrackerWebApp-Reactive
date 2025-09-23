@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.nutriGuideBuddy.features.user.enums.DietType;
 import org.nutriGuideBuddy.features.user.enums.NutritionAuthority;
 import org.nutriGuideBuddy.infrastructure.rdi.dto.JsonAllowedNutrients;
+import org.nutriGuideBuddy.infrastructure.rdi.dto.JsonDietType;
 import org.nutriGuideBuddy.infrastructure.rdi.dto.JsonNutrientRdiRange;
 import org.nutriGuideBuddy.infrastructure.rdi.dto.JsonPopulationGroup;
 import org.nutriGuideBuddy.infrastructure.rdi.utils.DietAuthorityStore;
@@ -19,10 +20,10 @@ public class RdiDietAuthorityServiceImpl {
   private final DietAuthorityStore dietAuthorityStore;
 
   public Mono<List<String>> getAllDietTypes() {
-    return Flux.fromArray(DietType.values()).map(Enum::name).sort().collectList();
+    return Flux.fromArray(JsonDietType.values()).map(Enum::name).sort().collectList();
   }
 
-  public Mono<List<String>> getNutrientNames(DietType diet, NutritionAuthority authority) {
+  public Mono<List<String>> getNutrientNames(JsonDietType diet, NutritionAuthority authority) {
     return Flux.fromIterable(dietAuthorityStore.getRequirements(diet, authority).keySet())
         .map(Enum::name)
         .sort()
@@ -30,7 +31,7 @@ public class RdiDietAuthorityServiceImpl {
   }
 
   public Mono<Map<JsonAllowedNutrients, Map<JsonPopulationGroup, Set<JsonNutrientRdiRange>>>>
-      getDetailedRequirements(DietType diet, NutritionAuthority authority) {
+      getDetailedRequirements(JsonDietType diet, NutritionAuthority authority) {
     return Mono.just(dietAuthorityStore.getRequirements(diet, authority));
   }
 }

@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.*;
 import lombok.extern.slf4j.Slf4j;
-import org.nutriGuideBuddy.features.user.enums.NutritionAuthority;
 import org.nutriGuideBuddy.infrastructure.rdi.dto.*;
 import org.springframework.stereotype.Component;
 
@@ -125,7 +124,7 @@ public class NutrientAuthorityStore extends AbstractAuthorityStore {
   }
 
   public Map<JsonAllowedNutrients, Map<JsonPopulationGroup, Set<JsonNutrientRdiRange>>>
-      getRequirements(NutritionAuthority authority) {
+      getRequirements(JsonNutritionAuthority authority) {
     JsonNutritionAuthority jsonAuth = JsonNutritionAuthority.valueOf(authority.name());
     return nutrientStore.getOrDefault(jsonAuth, Collections.emptyMap());
   }

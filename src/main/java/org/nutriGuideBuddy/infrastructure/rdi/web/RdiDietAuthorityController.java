@@ -4,9 +4,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import lombok.RequiredArgsConstructor;
-import org.nutriGuideBuddy.features.user.enums.DietType;
 import org.nutriGuideBuddy.features.user.enums.NutritionAuthority;
 import org.nutriGuideBuddy.infrastructure.rdi.dto.JsonAllowedNutrients;
+import org.nutriGuideBuddy.infrastructure.rdi.dto.JsonDietType;
 import org.nutriGuideBuddy.infrastructure.rdi.dto.JsonNutrientRdiRange;
 import org.nutriGuideBuddy.infrastructure.rdi.dto.JsonPopulationGroup;
 import org.nutriGuideBuddy.infrastructure.rdi.service.RdiDietAuthorityServiceImpl;
@@ -30,14 +30,14 @@ public class RdiDietAuthorityController {
 
   @GetMapping("/{diet}/{authority}/nutrients")
   public Mono<List<String>> getNutritions(
-      @PathVariable DietType diet, @PathVariable NutritionAuthority authority) {
+      @PathVariable JsonDietType diet, @PathVariable NutritionAuthority authority) {
     return service.getNutrientNames(diet, authority);
   }
 
   @GetMapping("/{diet}/{authority}/nutrients/detailed")
   public Mono<Map<JsonAllowedNutrients, Map<JsonPopulationGroup, Set<JsonNutrientRdiRange>>>>
       getNutritionsDetailed(
-          @PathVariable DietType diet, @PathVariable NutritionAuthority authority) {
+          @PathVariable JsonDietType diet, @PathVariable NutritionAuthority authority) {
     return service.getDetailedRequirements(diet, authority);
   }
 }

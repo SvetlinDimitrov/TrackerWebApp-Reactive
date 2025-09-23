@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.nutriGuideBuddy.features.user.enums.NutritionAuthority;
 import org.nutriGuideBuddy.infrastructure.rdi.dto.JsonAllowedNutrients;
 import org.nutriGuideBuddy.infrastructure.rdi.dto.JsonNutrientRdiRange;
+import org.nutriGuideBuddy.infrastructure.rdi.dto.JsonNutritionAuthority;
 import org.nutriGuideBuddy.infrastructure.rdi.dto.JsonPopulationGroup;
 import org.nutriGuideBuddy.infrastructure.rdi.service.RdiNutritionAuthorityServiceImpl;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,13 +29,13 @@ public class RdiNutritionAuthorityController {
   }
 
   @GetMapping("/{authority}/nutrients")
-  public Mono<List<String>> getNutritionNames(@PathVariable NutritionAuthority authority) {
+  public Mono<List<String>> getNutritionNames(@PathVariable JsonNutritionAuthority authority) {
     return service.getNutrientNames(authority);
   }
 
   @GetMapping("/{authority}/nutrients/detailed")
   public Mono<Map<JsonAllowedNutrients, Map<JsonPopulationGroup, Set<JsonNutrientRdiRange>>>>
-      getNutritionDetailed(@PathVariable NutritionAuthority authority) {
+      getNutritionDetailed(@PathVariable JsonNutritionAuthority authority) {
     return service.getDetailedRequirements(authority);
   }
 }

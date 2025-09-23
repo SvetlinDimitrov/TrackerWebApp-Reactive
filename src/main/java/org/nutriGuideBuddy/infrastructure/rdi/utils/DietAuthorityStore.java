@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.*;
 import lombok.extern.slf4j.Slf4j;
-import org.nutriGuideBuddy.features.user.enums.DietType;
 import org.nutriGuideBuddy.features.user.enums.NutritionAuthority;
 import org.nutriGuideBuddy.infrastructure.rdi.dto.*;
 import org.springframework.stereotype.Component;
@@ -16,19 +15,20 @@ import org.springframework.stereotype.Component;
 public class DietAuthorityStore extends AbstractAuthorityStore {
 
   private final Map<
-          DietType,
+          JsonDietType,
           Map<
               JsonNutritionAuthority,
               Map<JsonAllowedNutrients, Map<JsonPopulationGroup, Set<JsonNutrientRdiRange>>>>>
-      store = new EnumMap<>(DietType.class);
+      store = new EnumMap<>(JsonDietType.class);
 
   private final Map<
-          DietType, Map<JsonAllowedNutrients, Map<JsonPopulationGroup, Set<JsonNutrientRdiRange>>>>
-      baselineStore = new EnumMap<>(DietType.class);
+          JsonDietType,
+          Map<JsonAllowedNutrients, Map<JsonPopulationGroup, Set<JsonNutrientRdiRange>>>>
+      baselineStore = new EnumMap<>(JsonDietType.class);
 
   @PostConstruct
   private void init() {
-    for (DietType dietType : DietType.values()) {
+    for (var dietType : JsonDietType.values()) {
       String path = String.format("rdi/covers/%s/%s", dietType.name(), "standard.json");
 
       try (InputStream inputStream = getClass().getClassLoader().getResourceAsStream(path)) {
@@ -189,7 +189,7 @@ public class DietAuthorityStore extends AbstractAuthorityStore {
   }
 
   public Map<JsonAllowedNutrients, Map<JsonPopulationGroup, Set<JsonNutrientRdiRange>>>
-      getRequirements(DietType diet, NutritionAuthority authority) {
+      getRequirements(JsonDietType diet, NutritionAuthority authority) {
     JsonNutritionAuthority jsonAuth = JsonNutritionAuthority.valueOf(authority.name());
 
     Map<JsonAllowedNutrients, Map<JsonPopulationGroup, Set<JsonNutrientRdiRange>>> merged =
