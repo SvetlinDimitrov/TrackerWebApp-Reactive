@@ -7,6 +7,7 @@ import java.util.Set;
 import org.nutriGuideBuddy.features.shared.annotaions.ValidImageUrl;
 import org.nutriGuideBuddy.features.shared.dto.NutritionUpdateRequest;
 import org.nutriGuideBuddy.features.shared.dto.ServingUpdateRequest;
+import org.nutriGuideBuddy.features.shared.enums.CalorieUnits;
 
 public record MealFoodUpdateRequest(
     @Size(min = 1, max = 255, message = "must be between 1 and 255 characters") String name,
@@ -15,6 +16,6 @@ public record MealFoodUpdateRequest(
         String largeInfo,
     @ValidImageUrl(message = "must be a valid image URL") String picture,
     @DecimalMin(value = "0.01", message = "must be a positive number") Double calorieAmount,
-    @Size(min = 1, max = 255, message = "must be between 1 and 255 characters") String calorieUnit,
+    CalorieUnits calorieUnit,
     Set<@Valid ServingUpdateRequest> servings,
     Set<@Valid NutritionUpdateRequest> nutrients) {}

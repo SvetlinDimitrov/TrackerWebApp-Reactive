@@ -7,7 +7,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class NutriGuideBuddyApplication {
 
   // TODO:: CUSTOM FOOD FEATURE
-  // TODO:: ADD toGramss IN SERVING
   // TODO:: UPDATE TO JAVA 21
   // TODO:: UPDATE TO JAVA 23
   // TODO:: UPDATE SPRING MAX VERSION

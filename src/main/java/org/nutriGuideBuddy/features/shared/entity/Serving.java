@@ -1,7 +1,6 @@
 package org.nutriGuideBuddy.features.shared.entity;
 
 import lombok.*;
-import org.nutriGuideBuddy.features.shared.enums.ServingMetric;
 import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
 
@@ -18,8 +17,11 @@ public class Serving extends BaseEntity {
   private Double amount;
 
   @Column("metric")
-  private ServingMetric metric;
+  private String metric;
 
   @Column("main")
   private Boolean main = false;
+
+  @Column("grams_total")
+  private double gramsTotal;
 }
