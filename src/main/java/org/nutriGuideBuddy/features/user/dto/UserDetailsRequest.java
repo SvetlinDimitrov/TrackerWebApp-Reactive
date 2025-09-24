@@ -16,4 +16,4 @@ public record UserDetailsRequest(
     Gender gender,
     Goals goal,
     DietType diet,
-    NutritionAuthority authority) {}
+    NutritionAuthority nutritionAuthority) {}
