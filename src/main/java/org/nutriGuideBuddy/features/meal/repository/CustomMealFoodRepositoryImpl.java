@@ -33,6 +33,7 @@ public class CustomMealFoodRepositoryImpl implements CustomMealFoodRepository {
                 mf.picture AS meal_food_picture,
                 mf.calorie_amount AS calorie_amount,
                 mf.calorie_unit AS calorie_unit,
+                mf.meal_id AS meal_id,
 
                 s.id AS serving_id,
                 s.amount AS serving_amount,
@@ -151,32 +152,33 @@ public class CustomMealFoodRepositoryImpl implements CustomMealFoodRepository {
               // Step 2: fetch full details
               String detailsQuery =
                   """
-                    SELECT
-                        mf.id AS meal_food_id,
-                        mf.name AS meal_food_name,
-                        mf.info AS meal_food_info,
-                        mf.large_info AS meal_food_large_info,
-                        mf.picture AS meal_food_picture,
-                        mf.calorie_amount AS calorie_amount,
-                        mf.calorie_unit AS calorie_unit,
+                        SELECT
+                            mf.id AS meal_food_id,
+                            mf.name AS meal_food_name,
+                            mf.info AS meal_food_info,
+                            mf.large_info AS meal_food_large_info,
+                            mf.picture AS meal_food_picture,
+                            mf.calorie_amount AS calorie_amount,
+                            mf.calorie_unit AS calorie_unit,
+                            mf.meal_id AS meal_id,
 
-                        s.id AS serving_id,
-                        s.amount AS serving_amount,
-                        s.grams_total AS serving_grams_total,
-                        s.metric AS serving_metric,
-                        s.main AS serving_main,
+                            s.id AS serving_id,
+                            s.amount AS serving_amount,
+                            s.grams_total AS serving_grams_total,
+                            s.metric AS serving_metric,
+                            s.main AS serving_main,
 
-                        n.id AS nutrition_id,
-                        n.name AS nutrition_name,
-                        n.unit AS nutrition_unit,
-                        n.amount AS nutrition_amount
+                            n.id AS nutrition_id,
+                            n.name AS nutrition_name,
+                            n.unit AS nutrition_unit,
+                            n.amount AS nutrition_amount
 
-                    FROM meal_foods mf
-                    LEFT JOIN meal_foods_servings mfs ON mfs.meal_food_id = mf.id
-                    LEFT JOIN servings s ON s.id = mfs.serving_id
-                    LEFT JOIN meal_foods_nutritions mfn ON mfn.meal_food_id = mf.id
-                    LEFT JOIN nutritions n ON n.id = mfn.nutrition_id
-                    WHERE mf.id IN ("""
+                        FROM meal_foods mf
+                        LEFT JOIN meal_foods_servings mfs ON mfs.meal_food_id = mf.id
+                        LEFT JOIN servings s ON s.id = mfs.serving_id
+                        LEFT JOIN meal_foods_nutritions mfn ON mfn.meal_food_id = mf.id
+                        LEFT JOIN nutritions n ON n.id = mfn.nutrition_id
+                        WHERE mf.id IN ("""
                       + IntStream.range(0, ids.size())
                           .mapToObj(i -> ":mfId" + i)
                           .collect(Collectors.joining(", "))
@@ -260,15 +262,16 @@ public class CustomMealFoodRepositoryImpl implements CustomMealFoodRepository {
       row.get("meal_food_picture", String.class), // [4]
       row.get("calorie_amount", Double.class), // [5]
       row.get("calorie_unit", String.class), // [6]
-      row.get("serving_id", Long.class), // [7]
-      row.get("serving_amount", Double.class), // [8]
-      row.get("serving_grams_total", Double.class), // [9]  <-- NEW
-      row.get("serving_metric", String.class), // [10]
-      row.get("serving_main", Boolean.class), // [11]
-      row.get("nutrition_id", Long.class), // [12]
-      row.get("nutrition_name", String.class), // [13]
-      row.get("nutrition_unit", String.class), // [14]
-      row.get("nutrition_amount", Double.class) // [15]
+      row.get("meal_id", Long.class), // [7]
+      row.get("serving_id", Long.class), // [8]
+      row.get("serving_amount", Double.class), // [9]
+      row.get("serving_grams_total", Double.class), // [10]
+      row.get("serving_metric", String.class), // [11]
+      row.get("serving_main", Boolean.class), // [12]
+      row.get("nutrition_id", Long.class), // [13]
+      row.get("nutrition_name", String.class), // [14]
+      row.get("nutrition_unit", String.class), // [15]
+      row.get("nutrition_amount", Double.class) // [16]
     };
   }
 
@@ -282,6 +285,7 @@ public class CustomMealFoodRepositoryImpl implements CustomMealFoodRepository {
     String picture = (String) first[4];
     Double calorieAmount = (Double) first[5];
     String calorieUnit = (String) first[6];
+    Long mealId = (Long) first[7];
 
     List<ServingProjection> servings = new ArrayList<>();
     List<NutritionProjection> nutritions = new ArrayList<>();
@@ -291,36 +295,39 @@ public class CustomMealFoodRepositoryImpl implements CustomMealFoodRepository {
 
     for (Object[] r : rows) {
       // Servings
-      Long sId = (Long) r[7];
+      Long sId = (Long) r[8];
       if (sId != null && seenServingIds.add(sId)) {
         servings.add(
             new ServingProjection(
                 sId,
-                (Double) r[8], // amount
-                (Double) r[9], // gramsTotal
-                (String) r[10], // metric
-                (Boolean) r[11] // main
+                (Double) r[9], // amount
+                (Double) r[10], // gramsTotal
+                (String) r[11], // metric
+                (Boolean) r[12] // main
                 ));
       }
 
       // Nutritions
-      Long nId = (Long) r[12];
+      Long nId = (Long) r[13];
       if (nId != null && seenNutritionIds.add(nId)) {
         nutritions.add(
-            new NutritionProjection(nId, (String) r[13], (String) r[14], (Double) r[15]));
+            new NutritionProjection(nId, (String) r[14], (String) r[15], (Double) r[16]));
       }
     }
 
-    return new MealFoodProjection(
-        mealFoodId,
-        name,
-        info,
-        largeInfo,
-        picture,
-        calorieAmount,
-        calorieUnit,
-        servings,
-        nutritions);
+    var foodProjection = new MealFoodProjection();
+    foodProjection.setId(mealFoodId);
+    foodProjection.setName(name);
+    foodProjection.setInfo(info);
+    foodProjection.setLargeInfo(largeInfo);
+    foodProjection.setPicture(picture);
+    foodProjection.setCalorieAmount(calorieAmount);
+    foodProjection.setCalorieUnit(calorieUnit);
+    foodProjection.setMealId(mealId);
+    foodProjection.setServings(servings);
+    foodProjection.setNutritions(nutritions);
+
+    return foodProjection;
   }
 
   private Flux<MealFoodProjection> mapRowsToFluxProjections(List<Object[]> rows) {
@@ -331,39 +338,42 @@ public class CustomMealFoodRepositoryImpl implements CustomMealFoodRepository {
       MealFoodProjection mf =
           map.computeIfAbsent(
               id,
-              key ->
-                  new MealFoodProjection(
-                      id,
-                      (String) r[1],
-                      (String) r[2],
-                      (String) r[3],
-                      (String) r[4],
-                      (Double) r[5],
-                      (String) r[6],
-                      new ArrayList<>(),
-                      new ArrayList<>()));
+              key -> {
+                MealFoodProjection mealFoodProjection = new MealFoodProjection();
+                mealFoodProjection.setId(id);
+                mealFoodProjection.setName((String) r[1]);
+                mealFoodProjection.setInfo((String) r[2]);
+                mealFoodProjection.setLargeInfo((String) r[3]);
+                mealFoodProjection.setPicture((String) r[4]);
+                mealFoodProjection.setCalorieAmount((Double) r[5]);
+                mealFoodProjection.setCalorieUnit((String) r[6]);
+                mealFoodProjection.setMealId((Long) r[7]);
+                mealFoodProjection.setServings(new ArrayList<>());
+                mealFoodProjection.setNutritions(new ArrayList<>());
+                return mealFoodProjection;
+              });
 
       // Servings
-      Long sId = (Long) r[7];
+      Long sId = (Long) r[8];
       if (sId != null
           && mf.getServings().stream().noneMatch(sp -> Objects.equals(sp.getId(), sId))) {
         mf.getServings()
             .add(
                 new ServingProjection(
                     sId,
-                    (Double) r[8], // amount
-                    (Double) r[9], // gramsTotal
-                    (String) r[10], // metric
-                    (Boolean) r[11] // main
+                    (Double) r[9], // amount
+                    (Double) r[10], // gramsTotal
+                    (String) r[11], // metric
+                    (Boolean) r[12] // main
                     ));
       }
 
       // Nutritions
-      Long nId = (Long) r[12];
+      Long nId = (Long) r[13];
       if (nId != null
           && mf.getNutritions().stream().noneMatch(np -> Objects.equals(np.getId(), nId))) {
         mf.getNutritions()
-            .add(new NutritionProjection(nId, (String) r[13], (String) r[14], (Double) r[15]));
+            .add(new NutritionProjection(nId, (String) r[14], (String) r[15], (Double) r[16]));
       }
     }
 

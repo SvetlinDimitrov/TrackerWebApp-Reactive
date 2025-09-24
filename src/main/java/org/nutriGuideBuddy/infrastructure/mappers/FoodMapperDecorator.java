@@ -9,18 +9,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public abstract class MealFoodMapperDecorator implements MealFoodMapper {
+public abstract class FoodMapperDecorator implements FoodMapper {
 
-  private MealFoodMapper delegate;
+  private FoodMapper delegate;
 
   @Autowired
-  public void setDelegate(MealFoodMapper delegate) {
+  public void setDelegate(FoodMapper delegate) {
     this.delegate = delegate;
   }
 
   @Override
-  public FoodCreateRequest toMealCreateRequest(FoodItemResponse dto) {
-    var mealCreateRequest = delegate.toMealCreateRequest(dto);
+  public FoodCreateRequest toCreateRequest(FoodItemResponse dto) {
+    var mealCreateRequest = delegate.toCreateRequest(dto);
     String info =
         Optional.ofNullable(dto.brandName())
             .filter(b -> !b.isBlank())

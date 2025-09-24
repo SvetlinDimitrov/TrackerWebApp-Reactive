@@ -1,15 +1,13 @@
-package org.nutriGuideBuddy.features.meal.dto;
+package org.nutriGuideBuddy.features.shared.dto;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.Size;
 import java.util.Set;
 import org.nutriGuideBuddy.features.shared.annotaions.ValidImageUrl;
-import org.nutriGuideBuddy.features.shared.dto.NutritionUpdateRequest;
-import org.nutriGuideBuddy.features.shared.dto.ServingUpdateRequest;
 import org.nutriGuideBuddy.features.shared.enums.CalorieUnits;
 
-public record MealFoodUpdateRequest(
+public record FoodUpdateRequest(
     @Size(min = 1, max = 255, message = "must be between 1 and 255 characters") String name,
     @Size(min = 1, max = 255, message = "must be between 1 and 255 characters") String info,
     @Size(min = 1, max = 65535, message = "must be between 1 and 65535 characters")

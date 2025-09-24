@@ -13,7 +13,7 @@ import org.nutriGuideBuddy.features.meal.dto.CustomPageableMeal;
 import org.nutriGuideBuddy.features.meal.dto.MealFilter;
 import org.nutriGuideBuddy.features.meal.repository.projection.MealConsumedProjection;
 import org.nutriGuideBuddy.features.meal.repository.projection.MealFoodConsumedProjection;
-import org.nutriGuideBuddy.features.meal.repository.projection.MealFoodShortProjection;
+import org.nutriGuideBuddy.features.shared.repository.projection.FoodShortProjection;
 import org.nutriGuideBuddy.features.meal.repository.projection.MealProjection;
 import org.springframework.r2dbc.core.DatabaseClient;
 import org.springframework.stereotype.Repository;
@@ -369,7 +369,7 @@ public class CustomMealRepositoryImpl implements CustomMealRepository {
     Instant createdAt = (Instant) first[3];
     Instant updatedAt = (Instant) first[4];
 
-    List<MealFoodShortProjection> foods = new ArrayList<>();
+    List<FoodShortProjection> foods = new ArrayList<>();
     double totalCalories = 0.0;
 
     for (Object[] r : rows) {
@@ -378,8 +378,8 @@ public class CustomMealRepositoryImpl implements CustomMealRepository {
       Double calories = (Double) r[7];
 
       if (foodId != null) {
-        MealFoodShortProjection food =
-            new MealFoodShortProjection(foodId, foodName, calories != null ? calories : 0.0);
+        FoodShortProjection food =
+            new FoodShortProjection(foodId, foodName, calories != null ? calories : 0.0);
         foods.add(food);
         totalCalories += calories != null ? calories : 0.0;
       }
@@ -409,8 +409,8 @@ public class CustomMealRepositoryImpl implements CustomMealRepository {
                       id, userId, mealName, createdAt, updatedAt, 0.0, new ArrayList<>()));
 
       if (foodId != null) {
-        MealFoodShortProjection food =
-            new MealFoodShortProjection(foodId, foodName, calories != null ? calories : 0.0);
+        FoodShortProjection food =
+            new FoodShortProjection(foodId, foodName, calories != null ? calories : 0.0);
         meal.getFoods().add(food);
         meal.setTotalCalories(meal.getTotalCalories() + (calories != null ? calories : 0.0));
       }

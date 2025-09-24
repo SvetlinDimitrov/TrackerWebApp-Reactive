@@ -1,4 +1,4 @@
-package org.nutriGuideBuddy.features.meal.service;
+package org.nutriGuideBuddy.features.custom_food.service;
 
 import static org.nutriGuideBuddy.infrastructure.exceptions.ExceptionMessages.NUTRITIONS_WITH_IDS_DO_NOT_BELONG_TO_WITH_ID;
 
@@ -6,8 +6,8 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
-import org.nutriGuideBuddy.features.meal.entity.MealFoodNutrition;
-import org.nutriGuideBuddy.features.meal.repository.MealFoodNutritionRepository;
+import org.nutriGuideBuddy.features.custom_food.entity.CustomFoodNutrition;
+import org.nutriGuideBuddy.features.custom_food.repository.CustomFoodNutritionRepository;
 import org.nutriGuideBuddy.features.shared.dto.NutritionCreateRequest;
 import org.nutriGuideBuddy.features.shared.dto.NutritionUpdateRequest;
 import org.nutriGuideBuddy.features.shared.dto.NutritionView;
@@ -21,99 +21,92 @@ import reactor.core.publisher.Mono;
 
 @Service
 @RequiredArgsConstructor
-public class MealFoodNutritionServiceImpl implements MealFoodNutritionService {
+public class CustomFoodNutritionServiceImpl {
 
-  private final MealFoodNutritionRepository repository;
+  private final CustomFoodNutritionRepository repository;
   private final NutritionServiceImpl nutritionService;
   private final NutritionMapper mapper;
   private final TransactionalOperator operator;
 
-  public Flux<NutritionView> create(Set<NutritionCreateRequest> requests, Long foodId) {
+  public Flux<NutritionView> create(Set<NutritionCreateRequest> requests, Long customFoodId) {
     return nutritionService
         .create(requests)
         .collectList()
         .flatMapMany(
             nutritions -> {
-              var mealFoodNutritions =
+              var joins =
                   nutritions.stream()
-                      .map(nutrition -> new MealFoodNutrition(foodId, nutrition.getId()))
+                      .map(n -> new CustomFoodNutrition(customFoodId, n.getId()))
                       .toList();
 
               return repository
-                  .saveAll(mealFoodNutritions)
+                  .saveAll(joins)
                   .thenMany(Flux.fromIterable(nutritions).map(mapper::toView));
             })
         .as(operator::transactional);
   }
 
-  public Flux<NutritionView> update(Set<NutritionUpdateRequest> requests, Long foodId) {
-    Set<Long> ids = requests.stream().map(NutritionUpdateRequest::id).collect(Collectors.toSet());
+  public Flux<NutritionView> update(Set<NutritionUpdateRequest> requests, Long customFoodId) {
+    Set<Long> requestedIds =
+        requests.stream().map(NutritionUpdateRequest::id).collect(Collectors.toSet());
 
     return repository
-        .findByMealFoodId(foodId)
-        .map(MealFoodNutrition::getNutritionId)
+        .findByCustomFoodId(customFoodId)
+        .map(CustomFoodNutrition::getNutritionId)
         .collectList()
         .flatMapMany(
-            existingNutritionIds -> {
-              HashSet<Long> existingNutritionIdsSet = new HashSet<>(existingNutritionIds);
+            existingIds -> {
+              HashSet<Long> existing = new HashSet<>(existingIds);
 
-              boolean allBelong = existingNutritionIdsSet.containsAll(ids);
-              if (!allBelong) {
+              Set<Long> missing =
+                  requestedIds.stream()
+                      .filter(id -> !existing.contains(id))
+                      .collect(Collectors.toSet());
+
+              if (!missing.isEmpty()) {
                 return Flux.error(
                     new BadRequestException(
                         String.format(
                             NUTRITIONS_WITH_IDS_DO_NOT_BELONG_TO_WITH_ID,
-                            ids,
-                            "meal food",
-                            foodId)));
+                            missing,
+                            "custom food",
+                            customFoodId)));
               }
 
-              return nutritionService
-                  .updateAndFetch(requests, existingNutritionIdsSet)
-                  .map(mapper::toView);
+              return nutritionService.updateAndFetch(requests, existing).map(mapper::toView);
             })
         .as(operator::transactional);
   }
 
-  public Mono<Void> deleteNutritionsForFoodId(Long foodId) {
+  public Mono<Void> deleteNutritionsForFoodId(Long customFoodId) {
     return repository
-        .findByMealFoodId(foodId)
+        .findByCustomFoodId(customFoodId)
         .collectList()
         .flatMap(
-            mealFoodNutritions -> {
-              if (mealFoodNutritions.isEmpty()) {
-                return Mono.empty();
-              }
-
+            joins -> {
+              if (joins.isEmpty()) return Mono.empty();
               Set<Long> nutritionIds =
-                  mealFoodNutritions.stream()
-                      .map(MealFoodNutrition::getNutritionId)
+                  joins.stream()
+                      .map(CustomFoodNutrition::getNutritionId)
                       .collect(Collectors.toSet());
-
               return nutritionService.delete(nutritionIds);
             })
         .as(operator::transactional);
   }
 
-  public Mono<Void> deleteNutritionsForFoodIdIn(Set<Long> foodIds) {
-    if (foodIds == null || foodIds.isEmpty()) {
-      return Mono.empty();
-    }
+  public Mono<Void> deleteNutritionsForFoodIdIn(Set<Long> customFoodIds) {
+    if (customFoodIds == null || customFoodIds.isEmpty()) return Mono.empty();
 
     return repository
-        .findByMealFoodIdIn(foodIds)
+        .findByCustomFoodIdIn(customFoodIds)
         .collectList()
         .flatMap(
-            mealFoodNutritions -> {
-              if (mealFoodNutritions.isEmpty()) {
-                return Mono.empty();
-              }
-
+            joins -> {
+              if (joins.isEmpty()) return Mono.empty();
               Set<Long> nutritionIds =
-                  mealFoodNutritions.stream()
-                      .map(MealFoodNutrition::getNutritionId)
+                  joins.stream()
+                      .map(CustomFoodNutrition::getNutritionId)
                       .collect(Collectors.toSet());
-
               return nutritionService.delete(nutritionIds);
             })
         .as(operator::transactional);

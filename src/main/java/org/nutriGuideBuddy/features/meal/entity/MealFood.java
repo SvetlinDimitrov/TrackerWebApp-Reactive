@@ -1,8 +1,8 @@
 package org.nutriGuideBuddy.features.meal.entity;
 
+import java.time.Instant;
 import lombok.*;
-import org.nutriGuideBuddy.features.shared.entity.AuditableEntity;
-import org.nutriGuideBuddy.features.shared.enums.CalorieUnits;
+import org.nutriGuideBuddy.features.shared.entity.BaseFood;
 import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
 
@@ -13,29 +13,14 @@ import org.springframework.data.relational.core.mapping.Table;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "meal_foods")
-public class MealFood extends AuditableEntity {
-
-  @Column("name")
-  private String name;
-
-  @Column("info")
-  private String info;
-
-  @Column("large_info")
-  private String largeInfo;
-
-  @Column("picture")
-  private String picture;
-
-  @Column("calorie_amount")
-  private Double calorieAmount;
-
-  @Column("calorie_unit")
-  private CalorieUnits calorieUnit;
+public class MealFood extends BaseFood {
 
   @Column("meal_id")
   private Long mealId;
 
-  @Column("user_id")
-  private Long userId;
+  @Column("created_at")
+  private Instant createdAt = Instant.now();
+
+  @Column("updated_at")
+  private Instant updatedAt = Instant.now();
 }

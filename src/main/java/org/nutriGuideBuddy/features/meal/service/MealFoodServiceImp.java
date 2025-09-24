@@ -12,9 +12,7 @@ import org.nutriGuideBuddy.features.meal.dto.*;
 import org.nutriGuideBuddy.features.meal.entity.MealFood;
 import org.nutriGuideBuddy.features.meal.repository.CustomMealFoodRepository;
 import org.nutriGuideBuddy.features.meal.repository.MealFoodRepository;
-import org.nutriGuideBuddy.features.shared.dto.FoodCreateRequest;
-import org.nutriGuideBuddy.features.shared.dto.NutritionView;
-import org.nutriGuideBuddy.features.shared.dto.ServingView;
+import org.nutriGuideBuddy.features.shared.dto.*;
 import org.nutriGuideBuddy.infrastructure.exceptions.NotFoundException;
 import org.nutriGuideBuddy.infrastructure.mappers.MealFoodMapper;
 import org.nutriGuideBuddy.infrastructure.security.service.ReactiveUserDetailsServiceImpl;
@@ -143,7 +141,7 @@ public class MealFoodServiceImp implements MealFoodService {
         .as(operator::transactional);
   }
 
-  public Mono<MealFoodView> update(MealFoodUpdateRequest dto, Long foodId, Long mealId) {
+  public Mono<MealFoodView> update(FoodUpdateRequest dto, Long foodId, Long mealId) {
     return findByIdAndMealIdOrThrow(foodId, mealId)
         .flatMap(
             existingMealFood -> {
@@ -188,10 +186,5 @@ public class MealFoodServiceImp implements MealFoodService {
 
   public Mono<Long> countByMealIdAndFilter(Long mealId, MealFoodFilter filter) {
     return customMealFoodRepository.countByMealIdAndFilter(mealId, filter);
-  }
-
-  @Override
-  public Mono<Double> sumConsumedCaloriesByUserIdAndDate(Long userId, LocalDate date) {
-    return mealFoodRepository.sumCaloriesByUserIdOnDate(userId, date);
   }
 }

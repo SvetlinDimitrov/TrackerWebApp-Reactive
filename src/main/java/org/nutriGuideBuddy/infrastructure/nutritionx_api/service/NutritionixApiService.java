@@ -11,7 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.nutriGuideBuddy.features.shared.dto.FoodCreateRequest;
 import org.nutriGuideBuddy.infrastructure.exceptions.BadRequestException;
 import org.nutriGuideBuddy.infrastructure.exceptions.ServiceUnavaibleException;
-import org.nutriGuideBuddy.infrastructure.mappers.MealFoodMapper;
+import org.nutriGuideBuddy.infrastructure.mappers.FoodMapper;
 import org.nutriGuideBuddy.infrastructure.nutritionx_api.dto.FoodItemResponse;
 import org.nutriGuideBuddy.infrastructure.nutritionx_api.dto.ListFoodsResponse;
 import org.springframework.beans.factory.annotation.Value;
@@ -40,7 +40,7 @@ public class NutritionixApiService {
 
   private WebClient webClient;
 
-  private final MealFoodMapper mealFoodMapper;
+  private final FoodMapper foodMapper;
 
   @PostConstruct
   private void init() {
@@ -74,7 +74,7 @@ public class NutritionixApiService {
         .onStatus(HttpStatusCode::isError, this::handleErrorResponse)
         .bodyToMono(new ParameterizedTypeReference<Map<String, List<FoodItemResponse>>>() {})
         .map(m -> m.getOrDefault("foods", List.of()))
-        .map(list -> list.stream().map(mealFoodMapper::toMealCreateRequest).toList());
+        .map(list -> list.stream().map(foodMapper::toCreateRequest).toList());
   }
 
   public Mono<List<FoodCreateRequest>> getBrandedFoodById(String id) {
@@ -91,7 +91,7 @@ public class NutritionixApiService {
         .onStatus(HttpStatusCode::isError, this::handleErrorResponse)
         .bodyToMono(new ParameterizedTypeReference<Map<String, List<FoodItemResponse>>>() {})
         .map(m -> m.getOrDefault("foods", List.of()))
-        .map(list -> list.stream().map(mealFoodMapper::toMealCreateRequest).toList());
+        .map(list -> list.stream().map(foodMapper::toCreateRequest).toList());
   }
 
   public Mono<ListFoodsResponse> getAllFoodsByFoodName(String foodName) {

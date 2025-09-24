@@ -12,7 +12,7 @@ import org.nutriGuideBuddy.features.shared.dto.MealConsumedView;
 @Mapper(
     componentModel = "spring",
     nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE,
-    uses = {MealFoodMapper.class})
+    uses = { FoodMapper.class})
 @DecoratedWith(MealMapperDecorator.class)
 public interface MealMapper {
 

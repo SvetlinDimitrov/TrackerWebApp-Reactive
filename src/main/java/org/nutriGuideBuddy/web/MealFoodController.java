@@ -2,10 +2,11 @@ package org.nutriGuideBuddy.web;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.nutriGuideBuddy.features.meal.dto.MealFoodView;
+import org.nutriGuideBuddy.features.shared.dto.FoodView;
+import org.nutriGuideBuddy.features.shared.dto.FoodUpdateRequest;
 import org.nutriGuideBuddy.features.shared.dto.FoodCreateRequest;
 import org.nutriGuideBuddy.features.meal.dto.MealFoodFilter;
-import org.nutriGuideBuddy.features.meal.dto.MealFoodUpdateRequest;
-import org.nutriGuideBuddy.features.meal.dto.MealFoodView;
 import org.nutriGuideBuddy.features.meal.service.MealFoodService;
 import org.nutriGuideBuddy.infrastructure.security.access_validator.MealAccessValidator;
 import org.nutriGuideBuddy.infrastructure.security.access_validator.MealFoodAccessValidator;
@@ -67,7 +68,7 @@ public class MealFoodController {
   @PatchMapping("/{id}")
   @ResponseStatus(HttpStatus.OK)
   public Mono<MealFoodView> updateFood(
-      @RequestBody @Valid MealFoodUpdateRequest dto,
+      @RequestBody @Valid FoodUpdateRequest dto,
       @PathVariable Long mealId,
       @PathVariable Long id) {
     return userDetailsAccessValidator

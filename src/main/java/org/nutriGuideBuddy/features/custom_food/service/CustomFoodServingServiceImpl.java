@@ -1,4 +1,4 @@
-package org.nutriGuideBuddy.features.meal.service;
+package org.nutriGuideBuddy.features.custom_food.service;
 
 import static org.nutriGuideBuddy.infrastructure.exceptions.ExceptionMessages.SERVINGS_WITH_IDS_DO_NOT_BELONG_TO_WITH_ID;
 
@@ -6,8 +6,8 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
-import org.nutriGuideBuddy.features.meal.entity.MealFoodServing;
-import org.nutriGuideBuddy.features.meal.repository.MealFoodServingRepository;
+import org.nutriGuideBuddy.features.custom_food.entity.CustomFoodServing;
+import org.nutriGuideBuddy.features.custom_food.repository.CustomFoodServingRepository;
 import org.nutriGuideBuddy.features.shared.dto.ServingCreateRequest;
 import org.nutriGuideBuddy.features.shared.dto.ServingUpdateRequest;
 import org.nutriGuideBuddy.features.shared.dto.ServingView;
@@ -21,101 +21,83 @@ import reactor.core.publisher.Mono;
 
 @Service
 @RequiredArgsConstructor
-public class MealFoodServingServiceImpl implements MealFoodServingService {
+public class CustomFoodServingServiceImpl {
 
-  private final MealFoodServingRepository repository;
+  private final CustomFoodServingRepository repository;
   private final ServingServiceImpl servingService;
   private final ServingMapper mapper;
   private final TransactionalOperator operator;
 
-  public Flux<ServingView> create(Set<ServingCreateRequest> requests, Long foodId) {
+  public Flux<ServingView> create(Set<ServingCreateRequest> requests, Long customFoodId) {
     return servingService
         .create(requests)
         .collectList()
         .flatMapMany(
             servings -> {
-              var mealFoodServings =
+              var joins =
                   servings.stream()
-                      .map(serving -> new MealFoodServing(foodId, serving.getId()))
+                      .map(s -> new CustomFoodServing(customFoodId, s.getId()))
                       .toList();
 
               return repository
-                  .saveAll(mealFoodServings)
+                  .saveAll(joins)
                   .thenMany(Flux.fromIterable(servings).map(mapper::toView));
             })
         .as(operator::transactional);
   }
 
-  public Flux<ServingView> update(Set<ServingUpdateRequest> requests, Long foodId) {
-    Set<Long> requestedIds =
-        requests.stream().map(ServingUpdateRequest::id).collect(Collectors.toSet());
+  public Flux<ServingView> update(Set<ServingUpdateRequest> requests, Long customFoodId) {
+    Set<Long> ids = requests.stream().map(ServingUpdateRequest::id).collect(Collectors.toSet());
 
     return repository
-        .findByMealFoodId(foodId)
-        .map(MealFoodServing::getServingId)
+        .findByCustomFoodId(customFoodId)
+        .map(CustomFoodServing::getServingId)
         .collectList()
         .flatMapMany(
-            existingServingIds -> {
-              HashSet<Long> existingSet = new HashSet<>(existingServingIds);
-
+            existingIds -> {
+              HashSet<Long> existing = new HashSet<>(existingIds);
               Set<Long> missing =
-                  requestedIds.stream()
-                      .filter(id -> !existingSet.contains(id))
-                      .collect(Collectors.toSet());
+                  ids.stream().filter(id -> !existing.contains(id)).collect(Collectors.toSet());
 
               if (!missing.isEmpty()) {
                 return Flux.error(
                     new BadRequestException(
                         String.format(SERVINGS_WITH_IDS_DO_NOT_BELONG_TO_WITH_ID,
                             missing,
-                            "meal food",
-                            foodId)));
+                            "custom food",
+                            customFoodId)));
               }
 
-              return servingService.updateAndFetchAll(requests, existingSet).map(mapper::toView);
+              return servingService.updateAndFetchAll(requests, existing).map(mapper::toView);
             })
         .as(operator::transactional);
   }
 
-  public Mono<Void> deleteServingsForFoodId(Long foodId) {
+  public Mono<Void> deleteServingsForFoodId(Long customFoodId) {
     return repository
-        .findByMealFoodId(foodId)
+        .findByCustomFoodId(customFoodId)
         .collectList()
         .flatMap(
-            mealFoodServings -> {
-              if (mealFoodServings.isEmpty()) {
-                return Mono.empty();
-              }
-
+            joins -> {
+              if (joins.isEmpty()) return Mono.empty();
               Set<Long> servingIds =
-                  mealFoodServings.stream()
-                      .map(MealFoodServing::getServingId)
-                      .collect(Collectors.toSet());
-
+                  joins.stream().map(CustomFoodServing::getServingId).collect(Collectors.toSet());
               return servingService.delete(servingIds);
             })
         .as(operator::transactional);
   }
 
-  public Mono<Void> deleteServingsForFoodIdIn(Set<Long> foodIds) {
-    if (foodIds == null || foodIds.isEmpty()) {
-      return Mono.empty();
-    }
+  public Mono<Void> deleteServingsForFoodIdIn(Set<Long> customFoodIds) {
+    if (customFoodIds == null || customFoodIds.isEmpty()) return Mono.empty();
 
     return repository
-        .findByMealFoodIdIn(foodIds)
+        .findByCustomFoodIdIn(customFoodIds)
         .collectList()
         .flatMap(
-            mealFoodServings -> {
-              if (mealFoodServings.isEmpty()) {
-                return Mono.empty();
-              }
-
+            joins -> {
+              if (joins.isEmpty()) return Mono.empty();
               Set<Long> servingIds =
-                  mealFoodServings.stream()
-                      .map(MealFoodServing::getServingId)
-                      .collect(Collectors.toSet());
-
+                  joins.stream().map(CustomFoodServing::getServingId).collect(Collectors.toSet());
               return servingService.delete(servingIds);
             })
         .as(operator::transactional);

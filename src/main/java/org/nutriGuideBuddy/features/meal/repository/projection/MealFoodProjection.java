@@ -1,24 +1,13 @@
 package org.nutriGuideBuddy.features.meal.repository.projection;
 
-import java.util.ArrayList;
-import java.util.List;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import org.nutriGuideBuddy.features.shared.repository.projection.NutritionProjection;
-import org.nutriGuideBuddy.features.shared.repository.projection.ServingProjection;
+import lombok.*;
+import org.nutriGuideBuddy.features.shared.repository.projection.FoodProjection;
 
-@Data
+@Setter
+@Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class MealFoodProjection {
-  private Long id;
-  private String name;
-  private String info;
-  private String largeInfo;
-  private String picture;
-  private Double calorieAmount;
-  private String calorieUnit;
-  private List<ServingProjection> servings = new ArrayList<>();
-  private List<NutritionProjection> nutritions = new ArrayList<>();
+public class MealFoodProjection extends FoodProjection {
+
+  private Long mealId;
 }
