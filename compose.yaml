@@ -4,25 +4,27 @@ services:
   mysql-db:
     image: mysql:8.3.0
     ports:
-      - "3306:3306"
+      - "${MYSQL_PORT:-3306}:3306"
     environment:
-      MYSQL_ROOT_PASSWORD: 12345
-      MYSQL_DATABASE: reactiveDB
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE:-reactiveDB}
     volumes:
       - mysql_data:/var/lib/mysql
     networks:
       - backend
+    restart: ${RESTART_POLICY:-unless-stopped}
 
   phpmyadmin:
     image: phpmyadmin/phpmyadmin:latest
     ports:
-      - "5678:80"
+      - "${PMA_PORT:-5678}:80"
     environment:
-      PMA_HOST: mysql-db
-      PMA_USER: root
-      PMA_PASSWORD: 12345
+      PMA_HOST: ${PMA_HOST:-mysql-db}
+      PMA_USER: ${PMA_HOST:-root}
+      PMA_PASSWORD: ${PMA_PASSWORD}
     networks:
       - backend
+    restart: ${RESTART_POLICY:-unless-stopped}
 
 networks:
   backend:
