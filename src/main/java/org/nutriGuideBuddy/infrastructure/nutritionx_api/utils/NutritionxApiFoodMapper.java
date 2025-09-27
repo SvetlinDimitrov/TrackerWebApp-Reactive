@@ -1,25 +1,46 @@
 package org.nutriGuideBuddy.infrastructure.nutritionx_api.utils;
 
-import org.mapstruct.*;
+import java.util.Optional;
 import org.nutriGuideBuddy.features.shared.dto.FoodCreateRequest;
-import org.nutriGuideBuddy.infrastructure.mappers.CustomFoodServingMapper;
-import org.nutriGuideBuddy.infrastructure.mappers.MealFoodNutritionMapper;
+import org.nutriGuideBuddy.features.shared.enums.CalorieUnits;
 import org.nutriGuideBuddy.infrastructure.nutritionx_api.dto.FoodItemResponse;
+import org.springframework.stereotype.Component;
 
-@Mapper(
-    componentModel = "spring",
-    nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE,
-    uses = {CustomFoodServingMapper.class, MealFoodNutritionMapper.class})
-@DecoratedWith(NutritionxApiFoodMapperDecorator.class)
-public interface NutritionxApiFoodMapper {
+@Component
+public final class NutritionxApiFoodMapper {
 
-  @Mapping(target = "name", source = "foodName")
-  @Mapping(target = "calorieUnit", constant = "KCAL")
-  @Mapping(target = "calorieAmount", source = "nfCalories")
-  @Mapping(target = "info", ignore = true)
-  @Mapping(target = "largeInfo", ignore = true)
-  @Mapping(target = "picture", ignore = true)
-  @Mapping(target = "servings", ignore = true)
-  @Mapping(target = "nutrients", ignore = true)
-  FoodCreateRequest toCreateRequest(FoodItemResponse dto);
+  /**
+   * Builds a FoodCreateRequest from a Nutritionix FoodItemResponse. - name: dto.foodName -
+   * calorieUnit: KCAL - calorieAmount: dto.nfCalories - info: "Brand: <brandName>" if present -
+   * largeInfo: null (intentionally) - picture: dto.photo().thumb if present - servings:
+   * AllowedServingMapper.map(dto) - nutrients: AllowedNutrientMapper.map(dto)
+   */
+  public static FoodCreateRequest toCreateRequest(FoodItemResponse dto) {
+    if (dto == null) {
+      return null;
+    }
+
+    String name = dto.foodName();
+    Double calorieAmount = dto.nfCalories();
+
+    var info =
+        Optional.ofNullable(blankToNull(dto.brandName())).map(b -> "Brand: " + b).orElse(null);
+
+    var picture =
+        Optional.ofNullable(dto.photo()).map(FoodItemResponse.Photo::thumb).orElse(null);
+
+    return new FoodCreateRequest(
+        name,
+        info,
+        null,
+        picture,
+        calorieAmount,
+        CalorieUnits.KCAL,
+        AllowedServingMapper.map(dto),
+        AllowedNutrientMapper.map(dto));
+  }
+
+  private static String blankToNull(String s) {
+    return (s == null || s.isBlank()) ? null : s;
+  }
 }

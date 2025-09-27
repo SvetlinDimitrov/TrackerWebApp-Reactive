@@ -8,6 +8,6 @@ public record MealView(
     Long userId,
     String name,
     LocalDate createdAt,
-    LocalDate updateAt,
+    LocalDate updatedAt,
     Double totalCalories,
     List<MealFoodShortView> foods) {}

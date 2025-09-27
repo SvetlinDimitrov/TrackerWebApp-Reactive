@@ -10,7 +10,7 @@ public class MailTemplateConfig {
 
   @Bean
   public ClassLoaderTemplateResolver emailTemplateResolver() {
-    ClassLoaderTemplateResolver resolver = new ClassLoaderTemplateResolver();
+    var resolver = new ClassLoaderTemplateResolver();
     resolver.setPrefix("templates/email/");
     resolver.setSuffix(".html");
     resolver.setTemplateMode("HTML");
@@ -23,7 +23,7 @@ public class MailTemplateConfig {
   @Bean
   public SpringTemplateEngine emailTemplateEngine(
       ClassLoaderTemplateResolver emailTemplateResolver) {
-    SpringTemplateEngine engine = new SpringTemplateEngine();
+    var engine = new SpringTemplateEngine();
     engine.addTemplateResolver(emailTemplateResolver);
     return engine;
   }

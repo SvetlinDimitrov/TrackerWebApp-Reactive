@@ -19,7 +19,7 @@ public class MealFoodNutritionCustomRepositoryImpl implements MealFoodNutritionC
   public Mono<Map<String, MealFoodNutritionConsumedDetailedProjection>> findUserDailyNutrition(
       Long userId, LocalDate date) {
 
-    String sql =
+    var sql =
         """
             SELECT n.id     AS nutrition_id,
                    n.name   AS nutrition_name,
@@ -43,7 +43,7 @@ public class MealFoodNutritionCustomRepositoryImpl implements MealFoodNutritionC
       findUserNutritionDailyAmounts(
           Long userId, String nutritionName, LocalDate startDate, LocalDate endDate) {
 
-    String sql =
+    var sql =
         """
             SELECT DATE(mf.created_at) AS day,
                    m.id    AS meal_id,

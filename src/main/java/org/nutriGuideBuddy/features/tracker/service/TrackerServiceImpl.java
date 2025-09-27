@@ -14,7 +14,6 @@ import org.nutriGuideBuddy.features.shared.dto.MealConsumedView;
 import org.nutriGuideBuddy.features.shared.enums.AllowedNutrients;
 import org.nutriGuideBuddy.features.tracker.dto.*;
 import org.nutriGuideBuddy.features.tracker.utils.CalorieCalculator;
-import org.nutriGuideBuddy.features.user.enums.Gender;
 import org.nutriGuideBuddy.features.user.service.UserDetailsSnapshotService;
 import org.nutriGuideBuddy.infrastructure.rdi.dto.JsonAllowedNutrients;
 import org.nutriGuideBuddy.infrastructure.rdi.dto.JsonNutrientRdiRange;
@@ -54,7 +53,7 @@ public class TrackerServiceImpl implements TrackerService {
                           Map<String, MealFoodNutritionConsumedDetailedView> consumedMap =
                               tuple.getT3();
 
-                          Gender gender = snapshot.gender();
+                          var gender = snapshot.gender();
                           int age = snapshot.age();
 
                           Map<
@@ -64,11 +63,11 @@ public class TrackerServiceImpl implements TrackerService {
                                   requirementFactory.build(
                                       snapshot.nutritionAuthority(), snapshot.diet());
 
-                          Set<NutritionIntakeView> nutrients =
+                          var nutrientsSet =
                               Arrays.stream(AllowedNutrients.values())
                                   .map(
                                       nutrient -> {
-                                        JsonAllowedNutrients jsonNutrient =
+                                        var jsonNutrient =
                                             JsonAllowedNutrients.valueOf(nutrient.name());
 
                                         Map<JsonPopulationGroup, Set<JsonNutrientRdiRange>>
@@ -104,7 +103,7 @@ public class TrackerServiceImpl implements TrackerService {
                                       })
                                   .collect(Collectors.toSet());
 
-                          return new TrackerView(calorieGoal, consumedList, nutrients);
+                          return new TrackerView(calorieGoal, consumedList, nutrientsSet);
                         }));
   }
 
@@ -118,7 +117,7 @@ public class TrackerServiceImpl implements TrackerService {
   }
 
   public Mono<Map<LocalDate, Set<MealConsumedView>>> getCaloriesInRange(CalorieRequest request) {
-    LocalDate today = LocalDate.now();
+    var today = LocalDate.now();
 
     LocalDate startDate;
     LocalDate endDate;

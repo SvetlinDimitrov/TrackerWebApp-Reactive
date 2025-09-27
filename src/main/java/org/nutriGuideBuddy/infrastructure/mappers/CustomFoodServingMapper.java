@@ -5,7 +5,7 @@ import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.NullValuePropertyMappingStrategy;
 import org.nutriGuideBuddy.features.custom_food.entity.CustomFoodServing;
-import org.nutriGuideBuddy.features.custom_food.repository.projection.CustomFoodServingProjetion;
+import org.nutriGuideBuddy.features.custom_food.repository.projection.CustomFoodServingProjection;
 import org.nutriGuideBuddy.features.shared.dto.ServingCreateRequest;
 import org.nutriGuideBuddy.features.shared.dto.ServingUpdateRequest;
 import org.nutriGuideBuddy.features.shared.dto.ServingView;
@@ -15,7 +15,7 @@ import org.nutriGuideBuddy.features.shared.dto.ServingView;
     nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
 public interface CustomFoodServingMapper {
 
-  ServingView toView(CustomFoodServingProjetion projection);
+  ServingView toView(CustomFoodServingProjection projection);
 
   ServingView toView(CustomFoodServing entity);
 

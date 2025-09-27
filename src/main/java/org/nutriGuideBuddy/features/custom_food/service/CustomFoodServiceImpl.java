@@ -9,8 +9,6 @@ import org.nutriGuideBuddy.features.custom_food.repository.CustomFoodCustomRepos
 import org.nutriGuideBuddy.features.custom_food.repository.CustomFoodRepository;
 import org.nutriGuideBuddy.features.shared.dto.FoodCreateRequest;
 import org.nutriGuideBuddy.features.shared.dto.FoodUpdateRequest;
-import org.nutriGuideBuddy.features.shared.dto.NutritionView;
-import org.nutriGuideBuddy.features.shared.dto.ServingView;
 import org.nutriGuideBuddy.infrastructure.exceptions.NotFoundException;
 import org.nutriGuideBuddy.infrastructure.exceptions.ValidationException;
 import org.nutriGuideBuddy.infrastructure.mappers.CustomFoodMapper;
@@ -52,18 +50,9 @@ public class CustomFoodServiceImpl implements CustomFoodService {
                   .save(entity)
                   .flatMap(
                       saved -> {
-                        Long foodId = saved.getId();
-
-                        Flux<ServingView> servingFlux =
-                            dto.servings() != null
-                                ? servingService.create(dto.servings(), foodId)
-                                : Flux.empty();
-
-                        Flux<NutritionView> nutritionFlux =
-                            dto.nutrients() != null
-                                ? nutritionService.create(dto.nutrients(), foodId)
-                                : Flux.empty();
-
+                        var foodId = saved.getId();
+                        var servingFlux = servingService.create(dto.servings(), foodId);
+                        var nutritionFlux = nutritionService.create(dto.nutrients(), foodId);
                         return Mono.zip(servingFlux.collectList(), nutritionFlux.collectList())
                             .map(
                                 tuple ->
@@ -128,9 +117,9 @@ public class CustomFoodServiceImpl implements CustomFoodService {
                                     .save(existing)
                                     .flatMap(
                                         saved -> {
-                                          Flux<ServingView> servingFlux =
+                                          var servingFlux =
                                               servingService.update(dto.servings(), id);
-                                          Flux<NutritionView> nutritionFlux =
+                                          var nutritionFlux =
                                               nutritionService.update(dto.nutrients(), id);
 
                                           return Mono.zip(

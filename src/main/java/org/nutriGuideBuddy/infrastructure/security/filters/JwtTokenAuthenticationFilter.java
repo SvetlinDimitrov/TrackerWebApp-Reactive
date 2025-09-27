@@ -5,7 +5,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.jetbrains.annotations.NotNull;
 import org.nutriGuideBuddy.infrastructure.security.service.JwtTokenService;
 import org.nutriGuideBuddy.infrastructure.security.service.ReactiveUserDetailsServiceImpl;
 import org.springframework.core.io.buffer.DataBuffer;
@@ -36,9 +35,8 @@ public class JwtTokenAuthenticationFilter implements WebFilter {
   private final ReactiveUserDetailsServiceImpl userDetailsService;
   private final ObjectMapper objectMapper;
 
-  @NotNull
   @Override
-  public Mono<Void> filter(ServerWebExchange exchange, @NotNull WebFilterChain chain) {
+  public Mono<Void> filter(ServerWebExchange exchange, WebFilterChain chain) {
     String token = resolveToken(exchange.getRequest());
 
     if (StringUtils.hasText(token)) {

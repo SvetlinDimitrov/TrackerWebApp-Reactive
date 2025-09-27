@@ -33,7 +33,7 @@ public class UserDetailsSnapshotCustomRepositoryImpl
     Map<String, Object> binds = new LinkedHashMap<>();
     binds.put("userId", userId);
 
-    StringBuilder where = new StringBuilder(" WHERE uds.user_id = :userId");
+    var where = new StringBuilder(" WHERE uds.user_id = :userId");
 
     if (filter.getFrom() != null) {
       where.append(" AND uds.created_at >= :from");

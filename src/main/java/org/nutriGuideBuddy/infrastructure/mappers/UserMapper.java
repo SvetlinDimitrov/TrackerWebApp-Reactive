@@ -1,9 +1,9 @@
 package org.nutriGuideBuddy.infrastructure.mappers;
 
-import org.mapstruct.DecoratedWith;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.MappingTarget;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import org.mapstruct.*;
 import org.nutriGuideBuddy.features.user.dto.UserCreateRequest;
 import org.nutriGuideBuddy.features.user.dto.UserDetailsView;
 import org.nutriGuideBuddy.features.user.dto.UserUpdateRequest;
@@ -18,8 +18,8 @@ import org.nutriGuideBuddy.infrastructure.security.dto.ChangePasswordRequest;
 @DecoratedWith(UserMapperDecorator.class)
 public interface UserMapper {
 
-  @Mapping(target = "createdAt", ignore = true)
-  @Mapping(target = "updatedAt", ignore = true)
+  @Mapping(target = "createdAt", source = "createdAt", qualifiedByName = "instantToLocalDate")
+  @Mapping(target = "updatedAt", source = "updatedAt", qualifiedByName = "instantToLocalDate")
   UserView toView(User entity);
 
   @Mapping(target = "details", source = "userDetails")
@@ -30,4 +30,10 @@ public interface UserMapper {
   void update(ChangePasswordRequest dto, @MappingTarget User entity);
 
   void update(UserUpdateRequest dto, @MappingTarget User entity);
+
+  @Named("instantToLocalDate")
+  static LocalDate instantToLocalDate(Instant instant) {
+    if (instant == null) return null;
+    return instant.atZone(ZoneId.systemDefault()).toLocalDate();
+  }
 }

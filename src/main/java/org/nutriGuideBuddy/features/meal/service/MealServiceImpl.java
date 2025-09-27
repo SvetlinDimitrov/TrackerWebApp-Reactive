@@ -60,7 +60,7 @@ public class MealServiceImpl implements MealService {
                             return Mono.error(
                                 ValidationException.duplicate(Meal.class.getSimpleName(), "name"));
                           }
-                          Meal meal = mapper.toEntity(dto);
+                          var meal = mapper.toEntity(dto);
                           meal.setUserId(userId);
                           return repository.save(meal);
                         }))
@@ -111,7 +111,7 @@ public class MealServiceImpl implements MealService {
               Map<LocalDate, Set<MealConsumedView>> result = new LinkedHashMap<>();
               dailyMap.forEach(
                   (day, meals) -> {
-                    Set<MealConsumedView> views =
+                    var views =
                         meals.stream().map(mapper::toConsumedView).collect(Collectors.toSet());
                     result.put(day, views);
                   });

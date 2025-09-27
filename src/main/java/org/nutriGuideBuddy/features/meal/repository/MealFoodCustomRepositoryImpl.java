@@ -24,7 +24,7 @@ public class MealFoodCustomRepositoryImpl implements MealFoodCustomRepository {
 
   @Override
   public Mono<MealFoodProjection> findById(Long mealFoodId) {
-    String sql =
+    var sql =
         """
             SELECT
                 mf.id   AS meal_food_id,
@@ -71,7 +71,7 @@ public class MealFoodCustomRepositoryImpl implements MealFoodCustomRepository {
     Map<String, Object> binds = new LinkedHashMap<>();
     binds.put("mealId", mealId);
 
-    StringBuilder where = new StringBuilder(" WHERE mf.meal_id = :mealId");
+    var where = new StringBuilder(" WHERE mf.meal_id = :mealId");
 
     if (filter.getName() != null && !filter.getName().isBlank()) {
       where.append(" AND LOWER(mf.name) LIKE :name");
@@ -196,7 +196,7 @@ public class MealFoodCustomRepositoryImpl implements MealFoodCustomRepository {
   public Mono<Long> countByMealIdAndFilter(Long mealId, MealFoodFilter filter) {
     if (filter == null) filter = new MealFoodFilter();
 
-    StringBuilder sql =
+    var sql =
         new StringBuilder(
             "SELECT COUNT(mf.id) AS total_count FROM meal_foods mf WHERE mf.meal_id = :mealId");
     Map<String, Object> binds = new LinkedHashMap<>();
@@ -277,11 +277,11 @@ public class MealFoodCustomRepositoryImpl implements MealFoodCustomRepository {
     String calorieUnit = (String) first[6];
     Long mealId = (Long) first[7];
 
-    List<MealFoodServingProjection> servings = new ArrayList<>();
-    List<MealFoodNutritionProjection> nutritions = new ArrayList<>();
+    var servings = new ArrayList<MealFoodServingProjection>();
+    var nutritions = new ArrayList<MealFoodNutritionProjection>();
 
-    Set<Long> seenServingIds = new HashSet<>();
-    Set<Long> seenNutritionIds = new HashSet<>();
+    var seenServingIds = new HashSet<Long>();
+    var seenNutritionIds = new HashSet<Long>();
 
     for (Object[] r : rows) {
       Long sId = (Long) r[8];

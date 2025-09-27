@@ -30,11 +30,13 @@ public class NutritionixApiService {
 
   private static final int BUFFER_SIZE = 64 * 1024 * 1024;
   private static final String BASE_URL = "https://trackapi.nutritionix.com";
-  private final NutritionxApiFoodMapper nutritionxApiFoodMapper;
+
   @Value("${api.id}")
   public String X_API_ID;
+
   @Value("${api.key}")
   public String X_API_KEY;
+
   private WebClient webClient;
 
   @PostConstruct
@@ -68,7 +70,7 @@ public class NutritionixApiService {
         .onStatus(HttpStatusCode::isError, this::handleErrorResponse)
         .bodyToMono(new ParameterizedTypeReference<Map<String, List<FoodItemResponse>>>() {})
         .map(m -> m.getOrDefault("foods", List.of()))
-        .map(list -> list.stream().map(nutritionxApiFoodMapper::toCreateRequest).toList());
+        .map(list -> list.stream().map(NutritionxApiFoodMapper::toCreateRequest).toList());
   }
 
   public Mono<List<FoodCreateRequest>> getBrandedFoodById(String id) {
@@ -85,7 +87,7 @@ public class NutritionixApiService {
         .onStatus(HttpStatusCode::isError, this::handleErrorResponse)
         .bodyToMono(new ParameterizedTypeReference<Map<String, List<FoodItemResponse>>>() {})
         .map(m -> m.getOrDefault("foods", List.of()))
-        .map(list -> list.stream().map(nutritionxApiFoodMapper::toCreateRequest).toList());
+        .map(list -> list.stream().map(NutritionxApiFoodMapper::toCreateRequest).toList());
   }
 
   public Mono<ListFoodsResponse> getAllFoodsByFoodName(String foodName) {

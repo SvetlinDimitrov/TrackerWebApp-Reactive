@@ -9,7 +9,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class CustomFoodServingProjetion {
+public class CustomFoodServingProjection {
 
   private Long id;
   private Double amount;

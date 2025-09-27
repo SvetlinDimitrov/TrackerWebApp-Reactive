@@ -32,7 +32,7 @@ public class MealCustomRepositoryImpl implements MealCustomRepository {
     if (filter == null) filter = new MealFilter();
     if (filter.getPageable() == null) filter.setPageable(new CustomPageableMeal());
 
-    StringBuilder sql =
+    var sql =
         new StringBuilder(
             "SELECT "
                 + "m.id AS meal_id, "
@@ -88,7 +88,6 @@ public class MealCustomRepositoryImpl implements MealCustomRepository {
       }
     }
 
-    // Sorting
     Map<String, String> sortMap =
         Optional.ofNullable(filter.getPageable().getSort()).orElse(Collections.emptyMap());
     if (!sortMap.isEmpty()) {
@@ -127,8 +126,7 @@ public class MealCustomRepositoryImpl implements MealCustomRepository {
   public Mono<Long> countByFilterAndUserId(MealFilter filter, Long userId) {
     if (filter == null) filter = new MealFilter();
 
-    StringBuilder sql =
-        new StringBuilder("SELECT COUNT(m.id) AS total_count FROM meals m WHERE 1=1");
+    var sql = new StringBuilder("SELECT COUNT(m.id) AS total_count FROM meals m WHERE 1=1");
     Map<String, Object> binds = new LinkedHashMap<>();
 
     if (userId != null) {
@@ -303,13 +301,16 @@ public class MealCustomRepositoryImpl implements MealCustomRepository {
               String foodName = row.get("food_name", String.class);
               Double amount = row.get("calories", Double.class);
 
-              MealFoodConsumedProjection food =
+              var mealFoodConsumedProjection =
                   new MealFoodConsumedProjection(foodId, foodName, amount);
-              MealConsumedProjection meal =
+              var mealConsumedProjection =
                   new MealConsumedProjection(
-                      mealId, mealName, amount, new HashSet<>(Collections.singletonList(food)));
+                      mealId,
+                      mealName,
+                      amount,
+                      new HashSet<>(Collections.singletonList(mealFoodConsumedProjection)));
 
-              return Map.entry(day, meal);
+              return Map.entry(day, mealConsumedProjection);
             })
         .all()
         .collectList()
@@ -324,23 +325,22 @@ public class MealCustomRepositoryImpl implements MealCustomRepository {
 
               for (var entry : list) {
                 LocalDate day = entry.getKey();
-                MealConsumedProjection incoming = entry.getValue();
+                var mealConsumedProjection = entry.getValue();
 
                 result.computeIfAbsent(day, k -> new HashSet<>()).stream()
-                    .filter(m -> m.getId().equals(incoming.getId()))
+                    .filter(m -> m.getId().equals(mealConsumedProjection.getId()))
                     .findFirst()
                     .ifPresentOrElse(
                         existing -> {
-                          Set<MealFoodConsumedProjection> foods =
-                              new HashSet<>(existing.getFoods());
-                          foods.addAll(incoming.getFoods());
-                          existing.setFoods(foods);
+                          var foodsSet = new HashSet<>(existing.getFoods());
+                          foodsSet.addAll(mealConsumedProjection.getFoods());
+                          existing.setFoods(foodsSet);
                           existing.setAmount(
-                              foods.stream()
+                              foodsSet.stream()
                                   .mapToDouble(MealFoodConsumedProjection::getAmount)
                                   .sum());
                         },
-                        () -> result.get(day).add(incoming));
+                        () -> result.get(day).add(mealConsumedProjection));
               }
 
               return result;
@@ -372,7 +372,7 @@ public class MealCustomRepositoryImpl implements MealCustomRepository {
     Instant createdAt = (Instant) first[3];
     Instant updatedAt = (Instant) first[4];
 
-    List<MealFoodShortProjection> foods = new ArrayList<>();
+    var mealFoodShortProjections = new ArrayList<MealFoodShortProjection>();
     double totalCalories = 0.0;
 
     for (Object[] r : rows) {
@@ -381,14 +381,15 @@ public class MealCustomRepositoryImpl implements MealCustomRepository {
       Double calories = (Double) r[7];
 
       if (foodId != null) {
-        MealFoodShortProjection food =
+        var mealFoodShortProjection =
             new MealFoodShortProjection(foodId, foodName, calories != null ? calories : 0.0);
-        foods.add(food);
+        mealFoodShortProjections.add(mealFoodShortProjection);
         totalCalories += calories != null ? calories : 0.0;
       }
     }
 
-    return new MealProjection(mealId, userId, name, createdAt, updatedAt, totalCalories, foods);
+    return new MealProjection(
+        mealId, userId, name, createdAt, updatedAt, totalCalories, mealFoodShortProjections);
   }
 
   private Flux<MealProjection> mapRowsToProjections(List<Object[]> rows) {
@@ -412,9 +413,9 @@ public class MealCustomRepositoryImpl implements MealCustomRepository {
                       id, userId, mealName, createdAt, updatedAt, 0.0, new ArrayList<>()));
 
       if (foodId != null) {
-        MealFoodShortProjection food =
+        var mealFoodShortProjection =
             new MealFoodShortProjection(foodId, foodName, calories != null ? calories : 0.0);
-        meal.getFoods().add(food);
+        meal.getFoods().add(mealFoodShortProjection);
         meal.setTotalCalories(meal.getTotalCalories() + (calories != null ? calories : 0.0));
       }
     }

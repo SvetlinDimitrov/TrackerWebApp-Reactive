@@ -48,8 +48,8 @@ public class EmailVerificationServiceImpl implements EmailVerificationService {
                 return Mono.error(
                     ValidationException.duplicate(User.class.getSimpleName(), "email"));
               }
-              String token = jwtUtil.generateToken(dto.email());
-              String url = frontendUrl + "/email-verification?token=" + token;
+              var token = jwtUtil.generateToken(dto.email());
+              var url = frontendUrl + "/email-verification?token=" + token;
               return sendTemplateEmail(
                   dto.email(),
                   "Email Verification",
@@ -70,8 +70,8 @@ public class EmailVerificationServiceImpl implements EmailVerificationService {
               if (!exists) {
                 return Mono.error(NotFoundException.by(User.class.getSimpleName(), "email", email));
               }
-              String token = jwtUtil.generateToken(email);
-              String url = frontendUrl + "/recreate-password?token=" + token;
+              var token = jwtUtil.generateToken(email);
+              var url = frontendUrl + "/recreate-password?token=" + token;
               return sendTemplateEmail(
                   email,
                   "Reset Password",
@@ -89,9 +89,9 @@ public class EmailVerificationServiceImpl implements EmailVerificationService {
 
     return Mono.fromCallable(
             () -> {
-              Context ctx = new Context();
+              var ctx = new Context();
               ctx.setVariables(model);
-              String html = emailTemplateEngine.process(templateName, ctx);
+              var html = emailTemplateEngine.process(templateName, ctx);
 
               // compose message
               MimeMessage message = mailSender.createMimeMessage();

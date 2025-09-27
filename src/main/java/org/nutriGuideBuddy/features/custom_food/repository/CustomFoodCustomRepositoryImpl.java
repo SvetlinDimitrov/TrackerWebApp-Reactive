@@ -10,7 +10,7 @@ import org.nutriGuideBuddy.features.custom_food.dto.CustomFoodFilter;
 import org.nutriGuideBuddy.features.custom_food.dto.CustomPageableCustomFood;
 import org.nutriGuideBuddy.features.custom_food.repository.projection.CustomFoodNutritionProjection;
 import org.nutriGuideBuddy.features.custom_food.repository.projection.CustomFoodProjection;
-import org.nutriGuideBuddy.features.custom_food.repository.projection.CustomFoodServingProjetion;
+import org.nutriGuideBuddy.features.custom_food.repository.projection.CustomFoodServingProjection;
 import org.springframework.r2dbc.core.DatabaseClient;
 import org.springframework.stereotype.Repository;
 import reactor.core.publisher.Flux;
@@ -70,7 +70,7 @@ public class CustomFoodCustomRepositoryImpl implements CustomFoodCustomRepositor
     Map<String, Object> binds = new LinkedHashMap<>();
     binds.put("userId", userId);
 
-    StringBuilder where = new StringBuilder(" WHERE cf.user_id = :userId");
+    var where = new StringBuilder(" WHERE cf.user_id = :userId");
 
     if (filter.getName() != null && !filter.getName().isBlank()) {
       where.append(" AND LOWER(cf.name) LIKE :name");
@@ -196,7 +196,7 @@ public class CustomFoodCustomRepositoryImpl implements CustomFoodCustomRepositor
   public Mono<Long> countByUserIdAndFilter(Long userId, CustomFoodFilter filter) {
     if (filter == null) filter = new CustomFoodFilter();
 
-    StringBuilder sql =
+    var sql =
         new StringBuilder(
             "SELECT COUNT(cf.id) AS total_count FROM custom_food cf WHERE cf.user_id = :userId");
     Map<String, Object> binds = new LinkedHashMap<>();
@@ -279,17 +279,17 @@ public class CustomFoodCustomRepositoryImpl implements CustomFoodCustomRepositor
     Double calorieAmount = (Double) first[5];
     String calorieUnit = (String) first[6];
 
-    List<CustomFoodServingProjetion> servings = new ArrayList<>();
-    List<CustomFoodNutritionProjection> nutritions = new ArrayList<>();
+    var servingsList = new ArrayList<CustomFoodServingProjection>();
+    var nutritionsList = new ArrayList<CustomFoodNutritionProjection>();
 
-    Set<Long> seenServingIds = new HashSet<>();
-    Set<Long> seenNutritionIds = new HashSet<>();
+    var seenServingIds = new HashSet<Long>();
+    var seenNutritionIds = new HashSet<Long>();
 
     for (Object[] r : rows) {
       Long sId = (Long) r[7];
       if (sId != null && seenServingIds.add(sId)) {
-        servings.add(
-            new CustomFoodServingProjetion(
+        servingsList.add(
+            new CustomFoodServingProjection(
                 sId,
                 (Double) r[8], // amount
                 (Double) r[9], // gramsTotal
@@ -300,23 +300,23 @@ public class CustomFoodCustomRepositoryImpl implements CustomFoodCustomRepositor
 
       Long nId = (Long) r[12];
       if (nId != null && seenNutritionIds.add(nId)) {
-        nutritions.add(
+        nutritionsList.add(
             new CustomFoodNutritionProjection(nId, (String) r[13], (String) r[14], (Double) r[15]));
       }
     }
 
-    CustomFoodProjection p = new CustomFoodProjection();
-    p.setId(id);
-    p.setName(name);
-    p.setInfo(info);
-    p.setLargeInfo(largeInfo);
-    p.setPicture(picture);
-    p.setCalorieAmount(calorieAmount);
-    p.setCalorieUnit(calorieUnit);
-    p.setServings(servings);
-    p.setNutrients(nutritions);
+    var customFoodProjection = new CustomFoodProjection();
+    customFoodProjection.setId(id);
+    customFoodProjection.setName(name);
+    customFoodProjection.setInfo(info);
+    customFoodProjection.setLargeInfo(largeInfo);
+    customFoodProjection.setPicture(picture);
+    customFoodProjection.setCalorieAmount(calorieAmount);
+    customFoodProjection.setCalorieUnit(calorieUnit);
+    customFoodProjection.setServings(servingsList);
+    customFoodProjection.setNutrients(nutritionsList);
 
-    return p;
+    return customFoodProjection;
   }
 
   private Flux<CustomFoodProjection> mapRowsToFluxProjections(List<Object[]> rows) {
@@ -324,36 +324,40 @@ public class CustomFoodCustomRepositoryImpl implements CustomFoodCustomRepositor
 
     for (Object[] r : rows) {
       Long id = (Long) r[0];
-      CustomFoodProjection cf =
+      var customFoodProjection =
           map.computeIfAbsent(
               id,
               key -> {
-                CustomFoodProjection p = new CustomFoodProjection();
-                p.setId(id);
-                p.setName((String) r[1]);
-                p.setInfo((String) r[2]);
-                p.setLargeInfo((String) r[3]);
-                p.setPicture((String) r[4]);
-                p.setCalorieAmount((Double) r[5]);
-                p.setCalorieUnit((String) r[6]);
-                p.setServings(new ArrayList<>());
-                p.setNutrients(new ArrayList<>());
-                return p;
+                var customFoodProjection1 = new CustomFoodProjection();
+                customFoodProjection1.setId(id);
+                customFoodProjection1.setName((String) r[1]);
+                customFoodProjection1.setInfo((String) r[2]);
+                customFoodProjection1.setLargeInfo((String) r[3]);
+                customFoodProjection1.setPicture((String) r[4]);
+                customFoodProjection1.setCalorieAmount((Double) r[5]);
+                customFoodProjection1.setCalorieUnit((String) r[6]);
+                customFoodProjection1.setServings(new ArrayList<>());
+                customFoodProjection1.setNutrients(new ArrayList<>());
+                return customFoodProjection1;
               });
 
       Long sId = (Long) r[7];
       if (sId != null
-          && cf.getServings().stream().noneMatch(sp -> Objects.equals(sp.getId(), sId))) {
-        cf.getServings()
+          && customFoodProjection.getServings().stream()
+              .noneMatch(sp -> Objects.equals(sp.getId(), sId))) {
+        customFoodProjection
+            .getServings()
             .add(
-                new CustomFoodServingProjetion(
+                new CustomFoodServingProjection(
                     sId, (Double) r[8], (Double) r[9], (String) r[10], (Boolean) r[11]));
       }
 
       Long nId = (Long) r[12];
       if (nId != null
-          && cf.getNutrients().stream().noneMatch(np -> Objects.equals(np.getId(), nId))) {
-        cf.getNutrients()
+          && customFoodProjection.getNutrients().stream()
+              .noneMatch(np -> Objects.equals(np.getId(), nId))) {
+        customFoodProjection
+            .getNutrients()
             .add(
                 new CustomFoodNutritionProjection(
                     nId, (String) r[13], (String) r[14], (Double) r[15]));

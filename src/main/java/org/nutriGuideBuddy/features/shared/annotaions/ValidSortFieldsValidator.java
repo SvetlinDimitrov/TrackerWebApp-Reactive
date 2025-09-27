@@ -4,8 +4,8 @@ import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 import java.lang.reflect.Field;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
-import org.apache.commons.lang3.reflect.FieldUtils;
 import org.nutriGuideBuddy.features.shared.dto.CustomPageable;
 import org.springframework.data.relational.core.mapping.Column;
 
@@ -23,11 +23,15 @@ public class ValidSortFieldsValidator
 
   @Override
   public boolean isValid(CustomPageable pageable, ConstraintValidatorContext context) {
-    Set<String> validFields = getValidFields(entityClass);
+    // If pageable is null or has no sort specified, it's valid.
+    if (pageable == null) return true;
+    Map<String, String> sort = pageable.getSort();
+    if (sort == null || sort.isEmpty()) return true;
 
+    Set<String> validFields = getValidFields(entityClass);
     validFields.removeAll(excludedFields);
 
-    for (String sortField : pageable.getSort().keySet()) {
+    for (String sortField : sort.keySet()) {
       if (!validFields.contains(sortField)) {
         context.disableDefaultConstraintViolation();
         context
@@ -41,15 +45,22 @@ public class ValidSortFieldsValidator
     return true;
   }
 
-  private Set<String> getValidFields(Class<?> entityClass) {
+  private Set<String> getValidFields(Class<?> type) {
     Set<String> fields = new HashSet<>();
-    for (Field field : FieldUtils.getAllFields(entityClass)) {
-      if (field.isAnnotationPresent(Column.class)) {
-        fields.add(field.getAnnotation(Column.class).value());
-      }
-    }
-    fields.add("id");
 
+    Class<?> current = type;
+    while (current != null && current != Object.class) {
+      for (Field f : current.getDeclaredFields()) {
+        Column col = f.getAnnotation(Column.class);
+        if (col != null && !col.value().isBlank()) {
+          fields.add(col.value());
+        }
+      }
+      current = current.getSuperclass();
+    }
+
+    // Always allow "id" (common primary key)
+    fields.add("id");
     return fields;
   }
 }

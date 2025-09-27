@@ -50,16 +50,16 @@ public class MealFoodServiceImp implements MealFoodService {
         .getById(mealId)
         .flatMap(
             mealView -> {
-              MealFood mealFood = mapper.toEntity(dto);
-              mealFood.setMealId(mealId);
-              mealFood.setUserId(userId);
+              var entity = mapper.toEntity(dto);
+              entity.setMealId(mealId);
+              entity.setUserId(userId);
 
-              LocalDate createdAtLdt = mealView.createdAt();
+              var createdAtLdt = mealView.createdAt();
               Instant createdAt = createdAtLdt.atStartOfDay(ZoneOffset.UTC).toInstant();
-              mealFood.setCreatedAt(createdAt);
+              entity.setCreatedAt(createdAt);
 
               return repository
-                  .save(mealFood)
+                  .save(entity)
                   .flatMap(
                       savedMealFood -> {
                         Long foodId = savedMealFood.getId();
@@ -111,8 +111,8 @@ public class MealFoodServiceImp implements MealFoodService {
                   .save(existingMealFood)
                   .flatMap(
                       savedMealFood -> {
-                        Flux<ServingView> servingFlux = servingService.update(dto.servings(), id);
-                        Flux<NutritionView> nutritionFlux =
+                        var servingFlux = servingService.update(dto.servings(), id);
+                        var nutritionFlux =
                             nutritionService.update(dto.nutrients(), id);
                         return Mono.zip(servingFlux.collectList(), nutritionFlux.collectList())
                             .map(

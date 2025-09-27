@@ -41,9 +41,9 @@ public class MealFoodNutritionServiceImpl implements MealFoodNutritionService {
     return Flux.fromIterable(requests)
         .map(
             req -> {
-              var e = mapper.toEntity(req);
-              e.setFoodId(foodId);
-              return e;
+              var entity = mapper.toEntity(req);
+              entity.setFoodId(foodId);
+              return entity;
             })
         .collectList()
         .flatMapMany(repository::saveAll)
@@ -62,10 +62,10 @@ public class MealFoodNutritionServiceImpl implements MealFoodNutritionService {
         .collectList()
         .flatMapMany(
             existing -> {
-              Set<Long> existingIds =
+              var existingIds =
                   existing.stream().map(BaseEntity::getId).collect(Collectors.toSet());
 
-              Set<Long> requestedIds =
+              var requestedIds =
                   requests.stream().map(NutritionUpdateRequest::id).collect(Collectors.toSet());
               requestedIds.removeAll(existingIds);
 

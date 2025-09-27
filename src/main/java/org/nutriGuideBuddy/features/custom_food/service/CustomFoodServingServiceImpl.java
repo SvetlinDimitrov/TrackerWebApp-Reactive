@@ -35,9 +35,9 @@ public class CustomFoodServingServiceImpl implements CustomFoodServingService {
     return Flux.fromIterable(requests)
         .map(
             req -> {
-              var e = mapper.toEntity(req);
-              e.setFoodId(customFoodId);
-              return e;
+              var entity = mapper.toEntity(req);
+              entity.setFoodId(customFoodId);
+              return entity;
             })
         .collectList()
         .flatMapMany(repository::saveAll)
@@ -55,10 +55,9 @@ public class CustomFoodServingServiceImpl implements CustomFoodServingService {
         .collectList()
         .flatMapMany(
             existing -> {
-              Set<Long> existingIds =
+              var existingIds =
                   existing.stream().map(BaseEntity::getId).collect(Collectors.toSet());
-
-              Set<Long> requestedIds =
+              var requestedIds =
                   requests.stream().map(ServingUpdateRequest::id).collect(Collectors.toSet());
 
               requestedIds.removeAll(existingIds);
@@ -80,13 +79,13 @@ public class CustomFoodServingServiceImpl implements CustomFoodServingService {
 
               existing.forEach(
                   e -> {
-                    var r = byId.get(e.getId());
-                    if (r != null) {
-                      mapper.update(r, e);
+                    var request = byId.get(e.getId());
+                    if (request != null) {
+                      mapper.update(request, e);
                     }
                   });
 
-              long mainCount =
+              var mainCount =
                   existing.stream().filter(s -> Boolean.TRUE.equals(s.getMain())).count();
 
               if (mainCount != 1) {
