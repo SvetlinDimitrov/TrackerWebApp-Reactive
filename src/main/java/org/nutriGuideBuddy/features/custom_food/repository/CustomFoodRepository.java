@@ -14,4 +14,6 @@ public interface CustomFoodRepository extends R2dbcRepository<CustomFood, Long> 
   Mono<Boolean> existsByIdAndUserId(Long id, Long userId);
 
   Mono<Boolean> existsByNameAndUserId(String name, Long userId);
+
+  Mono<Long> countByUserId(Long userId);
 }

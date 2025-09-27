@@ -6,7 +6,6 @@ import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.nutriGuideBuddy.features.shared.repository.projection.FoodShortProjection;
 
 @Data
 @NoArgsConstructor
@@ -18,5 +17,5 @@ public class MealProjection {
   private Instant createdAt;
   private Instant updatedAt;
   private Double totalCalories;
-  private List<FoodShortProjection> foods = new ArrayList<>();
+  private List<MealFoodShortProjection> foods = new ArrayList<>();
 }

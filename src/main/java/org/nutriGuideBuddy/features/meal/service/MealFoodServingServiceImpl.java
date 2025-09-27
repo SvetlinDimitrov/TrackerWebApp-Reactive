@@ -1,122 +1,101 @@
 package org.nutriGuideBuddy.features.meal.service;
 
+import static org.nutriGuideBuddy.infrastructure.exceptions.ExceptionMessages.EXACTLY_ONE_MAIN_SERVING_AFTER_UPDATE;
 import static org.nutriGuideBuddy.infrastructure.exceptions.ExceptionMessages.SERVINGS_WITH_IDS_DO_NOT_BELONG_TO_WITH_ID;
 
-import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import org.nutriGuideBuddy.features.meal.entity.MealFood;
 import org.nutriGuideBuddy.features.meal.entity.MealFoodServing;
 import org.nutriGuideBuddy.features.meal.repository.MealFoodServingRepository;
 import org.nutriGuideBuddy.features.shared.dto.ServingCreateRequest;
 import org.nutriGuideBuddy.features.shared.dto.ServingUpdateRequest;
 import org.nutriGuideBuddy.features.shared.dto.ServingView;
-import org.nutriGuideBuddy.features.shared.service.ServingServiceImpl;
+import org.nutriGuideBuddy.features.shared.entity.BaseEntity;
 import org.nutriGuideBuddy.infrastructure.exceptions.BadRequestException;
-import org.nutriGuideBuddy.infrastructure.mappers.ServingMapper;
+import org.nutriGuideBuddy.infrastructure.mappers.MealFoodServingMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.reactive.TransactionalOperator;
 import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 
 @Service
 @RequiredArgsConstructor
 public class MealFoodServingServiceImpl implements MealFoodServingService {
 
   private final MealFoodServingRepository repository;
-  private final ServingServiceImpl servingService;
-  private final ServingMapper mapper;
+  private final MealFoodServingMapper mapper;
   private final TransactionalOperator operator;
 
   public Flux<ServingView> create(Set<ServingCreateRequest> requests, Long foodId) {
-    return servingService
-        .create(requests)
-        .collectList()
-        .flatMapMany(
-            servings -> {
-              var mealFoodServings =
-                  servings.stream()
-                      .map(serving -> new MealFoodServing(foodId, serving.getId()))
-                      .toList();
+    if (requests == null || requests.isEmpty()) {
+      return Flux.empty();
+    }
 
-              return repository
-                  .saveAll(mealFoodServings)
-                  .thenMany(Flux.fromIterable(servings).map(mapper::toView));
+    return Flux.fromIterable(requests)
+        .map(
+            req -> {
+              MealFoodServing e = mapper.toEntity(req);
+              e.setFoodId(foodId);
+              return e;
             })
+        .collectList()
+        .flatMapMany(repository::saveAll)
+        .map(mapper::toView)
         .as(operator::transactional);
   }
 
   public Flux<ServingView> update(Set<ServingUpdateRequest> requests, Long foodId) {
-    Set<Long> requestedIds =
-        requests.stream().map(ServingUpdateRequest::id).collect(Collectors.toSet());
-
-    return repository
-        .findByMealFoodId(foodId)
-        .map(MealFoodServing::getServingId)
-        .collectList()
-        .flatMapMany(
-            existingServingIds -> {
-              HashSet<Long> existingSet = new HashSet<>(existingServingIds);
-
-              Set<Long> missing =
-                  requestedIds.stream()
-                      .filter(id -> !existingSet.contains(id))
-                      .collect(Collectors.toSet());
-
-              if (!missing.isEmpty()) {
-                return Flux.error(
-                    new BadRequestException(
-                        String.format(SERVINGS_WITH_IDS_DO_NOT_BELONG_TO_WITH_ID,
-                            missing,
-                            "meal food",
-                            foodId)));
-              }
-
-              return servingService.updateAndFetchAll(requests, existingSet).map(mapper::toView);
-            })
-        .as(operator::transactional);
-  }
-
-  public Mono<Void> deleteServingsForFoodId(Long foodId) {
-    return repository
-        .findByMealFoodId(foodId)
-        .collectList()
-        .flatMap(
-            mealFoodServings -> {
-              if (mealFoodServings.isEmpty()) {
-                return Mono.empty();
-              }
-
-              Set<Long> servingIds =
-                  mealFoodServings.stream()
-                      .map(MealFoodServing::getServingId)
-                      .collect(Collectors.toSet());
-
-              return servingService.delete(servingIds);
-            })
-        .as(operator::transactional);
-  }
-
-  public Mono<Void> deleteServingsForFoodIdIn(Set<Long> foodIds) {
-    if (foodIds == null || foodIds.isEmpty()) {
-      return Mono.empty();
+    if (requests == null || requests.isEmpty()) {
+      return repository.findAllByFoodId(foodId).map(mapper::toView);
     }
 
     return repository
-        .findByMealFoodIdIn(foodIds)
+        .findAllByFoodId(foodId)
         .collectList()
-        .flatMap(
-            mealFoodServings -> {
-              if (mealFoodServings.isEmpty()) {
-                return Mono.empty();
+        .flatMapMany(
+            existing -> {
+              Set<Long> existingIds =
+                  existing.stream().map(BaseEntity::getId).collect(Collectors.toSet());
+
+              Set<Long> requestedIds =
+                  requests.stream().map(ServingUpdateRequest::id).collect(Collectors.toSet());
+
+              requestedIds.removeAll(existingIds);
+              if (!requestedIds.isEmpty()) {
+                return Flux.error(
+                    new BadRequestException(
+                        String.format(
+                            SERVINGS_WITH_IDS_DO_NOT_BELONG_TO_WITH_ID,
+                            requestedIds,
+                            MealFood.class.getSimpleName(),
+                            foodId)));
               }
 
-              Set<Long> servingIds =
-                  mealFoodServings.stream()
-                      .map(MealFoodServing::getServingId)
-                      .collect(Collectors.toSet());
+              Map<Long, ServingUpdateRequest> byId =
+                  requests.stream()
+                      .filter(r -> r.id() != null)
+                      .collect(Collectors.toMap(ServingUpdateRequest::id, r -> r));
 
-              return servingService.delete(servingIds);
+              existing.forEach(
+                  e -> {
+                    var r = byId.get(e.getId());
+                    if (r != null) {
+                      mapper.update(r, e);
+                    }
+                  });
+
+              long mainCount =
+                  existing.stream().filter(s -> Boolean.TRUE.equals(s.getMain())).count();
+
+              if (mainCount != 1) {
+                return Flux.error(
+                    new BadRequestException(
+                        String.format(EXACTLY_ONE_MAIN_SERVING_AFTER_UPDATE, mainCount)));
+              }
+
+              return repository.saveAll(existing).map(mapper::toView);
             })
         .as(operator::transactional);
   }

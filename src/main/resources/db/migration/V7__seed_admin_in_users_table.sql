@@ -4,13 +4,18 @@ WHERE NOT EXISTS (
   SELECT 1 FROM users WHERE email = 'admin@example.com'
 );
 
-INSERT INTO user_details (kilograms, height, age, workout_state, gender, user_id)
+INSERT INTO user_details (
+  kilograms, height, age, workout_state, gender, goal, diet, nutrition_authority, user_id
+)
 SELECT
-  75.0,
-  180.0,
-  40,
-  'LIGHTLY_ACTIVE',
-  'MALE',
+  75.0,                          -- weight
+  180.0,                         -- height
+  40,                            -- age
+  'LIGHTLY_ACTIVE',              -- WorkoutState
+  'MALE',                        -- Gender
+  'MAINTAIN_WEIGHT',             -- Goals
+  'NONE',                        -- DietType
+  'NIH_IOM',                     -- NutritionAuthority
   u.id
 FROM users u
 WHERE u.email = 'admin@example.com'

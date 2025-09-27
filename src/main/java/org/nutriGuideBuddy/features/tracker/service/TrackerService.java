@@ -6,21 +6,21 @@ import java.time.ZoneId;
 import java.util.*;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import org.nutriGuideBuddy.features.meal.service.MealFoodNutritionService;
 import org.nutriGuideBuddy.features.meal.service.MealService;
 import org.nutriGuideBuddy.features.shared.dto.MealConsumedView;
-import org.nutriGuideBuddy.features.shared.dto.NutritionConsumedDetailedView;
-import org.nutriGuideBuddy.features.shared.dto.NutritionConsumedView;
+import org.nutriGuideBuddy.features.meal.dto.MealFoodNutritionConsumedDetailedView;
+import org.nutriGuideBuddy.features.meal.dto.MealFoodNutritionConsumedView;
 import org.nutriGuideBuddy.features.shared.enums.AllowedNutrients;
-import org.nutriGuideBuddy.features.shared.service.NutritionServiceImpl;
 import org.nutriGuideBuddy.features.tracker.dto.*;
 import org.nutriGuideBuddy.features.tracker.utils.CalorieCalculator;
 import org.nutriGuideBuddy.features.user.enums.Gender;
 import org.nutriGuideBuddy.features.user.service.UserDetailsSnapshotService;
-import org.nutriGuideBuddy.infrastructure.rdi.utils.NutrientRequirementFactory;
-import org.nutriGuideBuddy.infrastructure.rdi.utils.RdiFinder;
 import org.nutriGuideBuddy.infrastructure.rdi.dto.JsonAllowedNutrients;
 import org.nutriGuideBuddy.infrastructure.rdi.dto.JsonNutrientRdiRange;
 import org.nutriGuideBuddy.infrastructure.rdi.dto.JsonPopulationGroup;
+import org.nutriGuideBuddy.infrastructure.rdi.utils.NutrientRequirementFactory;
+import org.nutriGuideBuddy.infrastructure.rdi.utils.RdiFinder;
 import org.nutriGuideBuddy.infrastructure.security.service.ReactiveUserDetailsServiceImpl;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
@@ -30,7 +30,7 @@ import reactor.core.publisher.Mono;
 public class TrackerService {
 
   private final UserDetailsSnapshotService userDetailsSnapshotService;
-  private final NutritionServiceImpl nutritionService;
+  private final MealFoodNutritionService nutritionService;
   private final MealService mealService;
   private final NutrientRequirementFactory requirementFactory;
 
@@ -51,7 +51,7 @@ public class TrackerService {
                         tuple -> {
                           double calorieGoal = tuple.getT1();
                           var consumedList = tuple.getT2();
-                          Map<String, NutritionConsumedDetailedView> consumedMap = tuple.getT3();
+                          Map<String, MealFoodNutritionConsumedDetailedView> consumedMap = tuple.getT3();
 
                           Gender gender = snapshot.gender();
                           int age = snapshot.age();
@@ -83,7 +83,7 @@ public class TrackerService {
                                                 calorieGoal,
                                                 snapshot.kilograms());
 
-                                        Set<NutritionConsumedView> consumed =
+                                        Set<MealFoodNutritionConsumedView> consumed =
                                             consumedMap.containsKey(nutrient.getNutrientName())
                                                 ? consumedMap
                                                     .get(nutrient.getNutrientName())
@@ -107,12 +107,12 @@ public class TrackerService {
                         }));
   }
 
-  public Mono<Map<LocalDate, Set<NutritionConsumedView>>> getNutritionForRange(
+  public Mono<Map<LocalDate, Set<MealFoodNutritionConsumedView>>> getNutritionForRange(
       NutritionRequest request) {
     return ReactiveUserDetailsServiceImpl.getPrincipalId()
         .flatMap(
             userId ->
-                nutritionService.findUserNutritionDailyAmountsView(
+                nutritionService.findUserNutritionDailyAmounts(
                     userId, request.name(), request.startDate(), request.endDate()));
   }
 

@@ -17,4 +17,5 @@ public class ExceptionMessages {
       "After update, exactly one serving must be marked as main. Found: %s";
   public static final String SERVICE_TEMPORARILY_UNAVAILABLE =
       "%s service is temporarily unavailable.";
+  public static final String Food_NOT_FOUND_BY_NAME = "Food not found";
 }

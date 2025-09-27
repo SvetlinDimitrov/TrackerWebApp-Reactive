@@ -1,6 +1,5 @@
 package org.nutriGuideBuddy.features.meal.service;
 
-import java.util.Set;
 import org.nutriGuideBuddy.features.meal.dto.MealFoodFilter;
 import org.nutriGuideBuddy.features.meal.dto.MealFoodView;
 import org.nutriGuideBuddy.features.meal.entity.MealFood;
@@ -20,8 +19,6 @@ public interface MealFoodService {
   Mono<MealFoodView> getById(Long foodId);
 
   Mono<Void> delete(Long id, Long mealId);
-
-  Mono<Void> deleteAllByMealIdsIn(Set<Long> mealIds);
 
   Mono<MealFoodView> update(FoodUpdateRequest dto, Long foodId, Long mealId);
 

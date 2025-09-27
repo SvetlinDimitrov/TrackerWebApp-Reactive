@@ -6,7 +6,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class NutriGuideBuddyApplication {
 
-  // TODO:: Test custom food endpoints and add seeder
+  // TODO:: save admin from delete and updates
+  // TODO:: prevent having foods with same name in a meal
   // TODO:: USE VAR
   // TODO:: UPDATE TO JAVA 21
   // TODO:: UPDATE TO JAVA 23

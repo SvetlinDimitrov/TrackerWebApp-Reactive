@@ -28,7 +28,4 @@ public class BaseFood extends BaseEntity {
 
   @Column("calorie_unit")
   private CalorieUnits calorieUnit;
-
-  @Column("user_id")
-  private Long userId;
 }

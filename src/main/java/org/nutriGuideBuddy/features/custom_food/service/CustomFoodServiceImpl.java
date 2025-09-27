@@ -4,11 +4,9 @@ import static org.nutriGuideBuddy.infrastructure.exceptions.ExceptionMessages.NO
 
 import java.util.Map;
 import java.util.Set;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.nutriGuideBuddy.features.custom_food.dto.CustomFoodFilter;
 import org.nutriGuideBuddy.features.custom_food.dto.CustomFoodView;
-import org.nutriGuideBuddy.features.custom_food.entity.CustomFood;
 import org.nutriGuideBuddy.features.custom_food.repository.CustomFoodCustomRepository;
 import org.nutriGuideBuddy.features.custom_food.repository.CustomFoodRepository;
 import org.nutriGuideBuddy.features.shared.dto.FoodCreateRequest;
@@ -37,44 +35,45 @@ public class CustomFoodServiceImpl {
 
   public Mono<CustomFoodView> create(FoodCreateRequest dto) {
     return ReactiveUserDetailsServiceImpl.getPrincipalId()
+        .flatMap(userId -> create(dto, userId))
+        .as(operator::transactional);
+  }
+
+  public Mono<CustomFoodView> create(FoodCreateRequest dto, Long userId) {
+    return repository
+        .existsByNameAndUserId(dto.name(), userId)
         .flatMap(
-            userId ->
-                repository
-                    .existsByNameAndUserId(dto.name(), userId)
-                    .flatMap(
-                        exists -> {
-                          if (Boolean.TRUE.equals(exists)) {
-                            return Mono.error(
-                                new ValidationException(Map.of("name", "already exists")));
-                          }
-                          var entity = mapper.toEntity(dto);
-                          entity.setUserId(userId);
-                          return repository
-                              .save(entity)
-                              .flatMap(
-                                  saved -> {
-                                    Long foodId = saved.getId();
+            exists -> {
+              if (Boolean.TRUE.equals(exists)) {
+                return Mono.error(new ValidationException(Map.of("name", "already exists")));
+              }
+              var entity = mapper.toEntity(dto);
+              entity.setUserId(userId);
+              return repository
+                  .save(entity)
+                  .flatMap(
+                      saved -> {
+                        Long foodId = saved.getId();
 
-                                    Flux<ServingView> servingFlux =
-                                        dto.servings() != null
-                                            ? servingService.create(dto.servings(), foodId)
-                                            : Flux.empty();
+                        Flux<ServingView> servingFlux =
+                            dto.servings() != null
+                                ? servingService.create(dto.servings(), foodId)
+                                : Flux.empty();
 
-                                    Flux<NutritionView> nutritionFlux =
-                                        dto.nutrients() != null
-                                            ? nutritionService.create(dto.nutrients(), foodId)
-                                            : Flux.empty();
+                        Flux<NutritionView> nutritionFlux =
+                            dto.nutrients() != null
+                                ? nutritionService.create(dto.nutrients(), foodId)
+                                : Flux.empty();
 
-                                    return Mono.zip(
-                                            servingFlux.collectList(), nutritionFlux.collectList())
-                                        .map(
-                                            tuple ->
-                                                mapper.toView(
-                                                    saved,
-                                                    Set.copyOf(tuple.getT1()),
-                                                    Set.copyOf(tuple.getT2())));
-                                  });
-                        }))
+                        return Mono.zip(servingFlux.collectList(), nutritionFlux.collectList())
+                            .map(
+                                tuple ->
+                                    mapper.toView(
+                                        saved,
+                                        Set.copyOf(tuple.getT1()),
+                                        Set.copyOf(tuple.getT2())));
+                      });
+            })
         .as(operator::transactional);
   }
 
@@ -115,15 +114,9 @@ public class CustomFoodServiceImpl {
                               .flatMap(
                                   saved -> {
                                     Flux<ServingView> servingFlux =
-                                        dto.servings() != null
-                                            ? servingService.update(dto.servings(), id)
-                                            : Flux.empty();
-
+                                        servingService.update(dto.servings(), id);
                                     Flux<NutritionView> nutritionFlux =
-                                        dto.nutrients() != null
-                                            ? nutritionService.update(dto.nutrients(), id)
-                                            : Flux.empty();
-
+                                        nutritionService.update(dto.nutrients(), id);
                                     return Mono.zip(
                                             servingFlux.collectList(), nutritionFlux.collectList())
                                         .map(
@@ -138,43 +131,14 @@ public class CustomFoodServiceImpl {
   }
 
   public Mono<Void> delete(Long id) {
-    return Mono.defer(
-            () -> {
-              Mono<Void> deleteServings = servingService.deleteServingsForFoodId(id);
-              Mono<Void> deleteNutritions = nutritionService.deleteNutritionsForFoodId(id);
-              Mono<Void> deleteCustomFood = repository.deleteById(id);
-
-              return Mono.when(deleteServings, deleteNutritions).then(deleteCustomFood);
-            })
-        .as(operator::transactional);
-  }
-
-  // Do not call the repository delete method here.
-  // When a user is deleted, its foods are removed automatically via cascade.
-  // Only delete associated entities (servings, nutritions) explicitly.
-  public Mono<Void> deleteAllByUserId(Long userId) {
-    return repository
-        .findAllByUserId(userId)
-        .collectList()
-        .flatMap(
-            customFoods -> {
-              if (customFoods.isEmpty()) {
-                return Mono.empty();
-              }
-
-              Set<Long> mealFoodIds =
-                  customFoods.stream().map(CustomFood::getId).collect(Collectors.toSet());
-
-              Mono<Void> deleteServings = servingService.deleteServingsForFoodIdIn(mealFoodIds);
-              Mono<Void> deleteNutritions =
-                  nutritionService.deleteNutritionsForFoodIdIn(mealFoodIds);
-
-              return Mono.when(deleteServings, deleteNutritions).then();
-            })
-        .as(operator::transactional);
+    return repository.deleteById(id).as(operator::transactional);
   }
 
   public Mono<Boolean> existsByIdAndUserId(Long id, Long userId) {
     return repository.existsByIdAndUserId(id, userId);
+  }
+
+  public Mono<Long> countByUserId(Long userId) {
+    return repository.countByUserId(userId);
   }
 }

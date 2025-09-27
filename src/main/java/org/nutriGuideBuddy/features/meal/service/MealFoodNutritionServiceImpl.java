@@ -2,18 +2,22 @@ package org.nutriGuideBuddy.features.meal.service;
 
 import static org.nutriGuideBuddy.infrastructure.exceptions.ExceptionMessages.NUTRITIONS_WITH_IDS_DO_NOT_BELONG_TO_WITH_ID;
 
-import java.util.HashSet;
+import java.time.LocalDate;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
-import org.nutriGuideBuddy.features.meal.entity.MealFoodNutrition;
+import org.nutriGuideBuddy.features.meal.dto.MealFoodNutritionConsumedDetailedView;
+import org.nutriGuideBuddy.features.meal.dto.MealFoodNutritionConsumedView;
+import org.nutriGuideBuddy.features.meal.entity.MealFood;
+import org.nutriGuideBuddy.features.meal.repository.MealFoodNutritionCustomRepository;
 import org.nutriGuideBuddy.features.meal.repository.MealFoodNutritionRepository;
 import org.nutriGuideBuddy.features.shared.dto.NutritionCreateRequest;
 import org.nutriGuideBuddy.features.shared.dto.NutritionUpdateRequest;
 import org.nutriGuideBuddy.features.shared.dto.NutritionView;
-import org.nutriGuideBuddy.features.shared.service.NutritionServiceImpl;
+import org.nutriGuideBuddy.features.shared.entity.BaseEntity;
 import org.nutriGuideBuddy.infrastructure.exceptions.BadRequestException;
-import org.nutriGuideBuddy.infrastructure.mappers.NutritionMapper;
+import org.nutriGuideBuddy.infrastructure.mappers.MealFoodNutritionMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.reactive.TransactionalOperator;
 import reactor.core.publisher.Flux;
@@ -24,98 +28,101 @@ import reactor.core.publisher.Mono;
 public class MealFoodNutritionServiceImpl implements MealFoodNutritionService {
 
   private final MealFoodNutritionRepository repository;
-  private final NutritionServiceImpl nutritionService;
-  private final NutritionMapper mapper;
+  private final MealFoodNutritionCustomRepository customRepository;
+  private final MealFoodNutritionMapper mapper;
   private final TransactionalOperator operator;
 
+  @Override
   public Flux<NutritionView> create(Set<NutritionCreateRequest> requests, Long foodId) {
-    return nutritionService
-        .create(requests)
-        .collectList()
-        .flatMapMany(
-            nutritions -> {
-              var mealFoodNutritions =
-                  nutritions.stream()
-                      .map(nutrition -> new MealFoodNutrition(foodId, nutrition.getId()))
-                      .toList();
+    if (requests == null || requests.isEmpty()) {
+      return Flux.empty();
+    }
 
-              return repository
-                  .saveAll(mealFoodNutritions)
-                  .thenMany(Flux.fromIterable(nutritions).map(mapper::toView));
+    return Flux.fromIterable(requests)
+        .map(
+            req -> {
+              var e = mapper.toEntity(req);
+              e.setFoodId(foodId);
+              return e;
             })
+        .collectList()
+        .flatMapMany(repository::saveAll)
+        .map(mapper::toView)
         .as(operator::transactional);
   }
 
+  @Override
   public Flux<NutritionView> update(Set<NutritionUpdateRequest> requests, Long foodId) {
-    Set<Long> ids = requests.stream().map(NutritionUpdateRequest::id).collect(Collectors.toSet());
+    if (requests == null || requests.isEmpty()) {
+      return repository.findAllByFoodId(foodId).map(mapper::toView);
+    }
 
     return repository
-        .findByMealFoodId(foodId)
-        .map(MealFoodNutrition::getNutritionId)
+        .findAllByFoodId(foodId)
         .collectList()
         .flatMapMany(
-            existingNutritionIds -> {
-              HashSet<Long> existingNutritionIdsSet = new HashSet<>(existingNutritionIds);
+            existing -> {
+              Set<Long> existingIds =
+                  existing.stream().map(BaseEntity::getId).collect(Collectors.toSet());
 
-              boolean allBelong = existingNutritionIdsSet.containsAll(ids);
-              if (!allBelong) {
+              Set<Long> requestedIds =
+                  requests.stream().map(NutritionUpdateRequest::id).collect(Collectors.toSet());
+              requestedIds.removeAll(existingIds);
+
+              if (!requestedIds.isEmpty()) {
                 return Flux.error(
                     new BadRequestException(
                         String.format(
                             NUTRITIONS_WITH_IDS_DO_NOT_BELONG_TO_WITH_ID,
-                            ids,
-                            "meal food",
+                            requestedIds,
+                            MealFood.class.getSimpleName(),
                             foodId)));
               }
+              Map<Long, NutritionUpdateRequest> byId =
+                  requests.stream()
+                      .filter(r -> r.id() != null)
+                      .collect(Collectors.toMap(NutritionUpdateRequest::id, r -> r));
 
-              return nutritionService
-                  .updateAndFetch(requests, existingNutritionIdsSet)
-                  .map(mapper::toView);
+              existing.forEach(
+                  e -> {
+                    var r = byId.get(e.getId());
+                    if (r != null) {
+                      mapper.update(r, e);
+                    }
+                  });
+
+              return repository.saveAll(existing).map(mapper::toView);
             })
         .as(operator::transactional);
   }
 
-  public Mono<Void> deleteNutritionsForFoodId(Long foodId) {
-    return repository
-        .findByMealFoodId(foodId)
-        .collectList()
-        .flatMap(
-            mealFoodNutritions -> {
-              if (mealFoodNutritions.isEmpty()) {
-                return Mono.empty();
-              }
-
-              Set<Long> nutritionIds =
-                  mealFoodNutritions.stream()
-                      .map(MealFoodNutrition::getNutritionId)
-                      .collect(Collectors.toSet());
-
-              return nutritionService.delete(nutritionIds);
-            })
-        .as(operator::transactional);
+  @Override
+  public Mono<Map<String, MealFoodNutritionConsumedDetailedView>> findUserDailyNutrition(
+      Long userId, LocalDate date) {
+    return customRepository
+        .findUserDailyNutrition(userId, date)
+        .map(
+            resultMap ->
+                resultMap.entrySet().stream()
+                    .collect(
+                        Collectors.toMap(
+                            Map.Entry::getKey, e -> mapper.toConsumedDetailedView(e.getValue()))));
   }
 
-  public Mono<Void> deleteNutritionsForFoodIdIn(Set<Long> foodIds) {
-    if (foodIds == null || foodIds.isEmpty()) {
-      return Mono.empty();
-    }
-
-    return repository
-        .findByMealFoodIdIn(foodIds)
-        .collectList()
-        .flatMap(
-            mealFoodNutritions -> {
-              if (mealFoodNutritions.isEmpty()) {
-                return Mono.empty();
-              }
-
-              Set<Long> nutritionIds =
-                  mealFoodNutritions.stream()
-                      .map(MealFoodNutrition::getNutritionId)
-                      .collect(Collectors.toSet());
-
-              return nutritionService.delete(nutritionIds);
-            })
-        .as(operator::transactional);
+  @Override
+  public Mono<Map<LocalDate, Set<MealFoodNutritionConsumedView>>> findUserNutritionDailyAmounts(
+      Long userId, String nutritionName, LocalDate startDate, LocalDate endDate) {
+    return customRepository
+        .findUserNutritionDailyAmounts(userId, nutritionName, startDate, endDate)
+        .map(
+            resultMap ->
+                resultMap.entrySet().stream()
+                    .collect(
+                        Collectors.toMap(
+                            Map.Entry::getKey,
+                            e ->
+                                e.getValue().stream()
+                                    .map(mapper::toConsumedView)
+                                    .collect(Collectors.toSet()))));
   }
 }

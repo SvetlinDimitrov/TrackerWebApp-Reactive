@@ -12,14 +12,21 @@ import org.nutriGuideBuddy.features.shared.dto.ServingView;
 
 @Mapper(
     componentModel = "spring",
-    nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-@DecoratedWith(CustomFoodDecorator.class)
+    nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE,
+    uses = {CustomFoodNutritionMapper.class, CustomFoodServingMapper.class})
 public interface CustomFoodMapper {
 
   CustomFoodView toView(CustomFoodProjection projection);
 
+  @Mapping(target = "id", source = "entity.id")
+  @Mapping(target = "name", source = "entity.name")
+  @Mapping(target = "info", source = "entity.info")
+  @Mapping(target = "largeInfo", source = "entity.largeInfo")
+  @Mapping(target = "picture", source = "entity.picture")
+  @Mapping(target = "calorieAmount", source = "entity.calorieAmount")
+  @Mapping(target = "calorieUnit", source = "entity.calorieUnit")
   CustomFoodView toView(
-      CustomFood entity, Set<ServingView> servings, Set<NutritionView> nutritions);
+      CustomFood entity, Set<ServingView> servings, Set<NutritionView> nutrients);
 
   CustomFood toEntity(FoodCreateRequest dto);
 

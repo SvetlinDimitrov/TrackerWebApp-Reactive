@@ -3,7 +3,6 @@ package org.nutriGuideBuddy.web;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.nutriGuideBuddy.features.meal.dto.MealFoodView;
-import org.nutriGuideBuddy.features.shared.dto.FoodView;
 import org.nutriGuideBuddy.features.shared.dto.FoodUpdateRequest;
 import org.nutriGuideBuddy.features.shared.dto.FoodCreateRequest;
 import org.nutriGuideBuddy.features.meal.dto.MealFoodFilter;

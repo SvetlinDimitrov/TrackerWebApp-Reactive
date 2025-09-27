@@ -8,9 +8,9 @@ import java.util.stream.IntStream;
 import lombok.RequiredArgsConstructor;
 import org.nutriGuideBuddy.features.custom_food.dto.CustomFoodFilter;
 import org.nutriGuideBuddy.features.custom_food.dto.CustomPageableCustomFood;
+import org.nutriGuideBuddy.features.custom_food.repository.projection.CustomFoodNutritionProjection;
 import org.nutriGuideBuddy.features.custom_food.repository.projection.CustomFoodProjection;
-import org.nutriGuideBuddy.features.shared.repository.projection.NutritionProjection;
-import org.nutriGuideBuddy.features.shared.repository.projection.ServingProjection;
+import org.nutriGuideBuddy.features.custom_food.repository.projection.CustomFoodServingProjetion;
 import org.springframework.r2dbc.core.DatabaseClient;
 import org.springframework.stereotype.Repository;
 import reactor.core.publisher.Flux;
@@ -27,13 +27,13 @@ public class CustomFoodCustomRepositoryImpl implements CustomFoodCustomRepositor
     String sql =
         """
             SELECT
-                cf.id AS custom_food_id,
+                cf.id   AS custom_food_id,
                 cf.name AS custom_food_name,
                 cf.info AS custom_food_info,
                 cf.large_info AS custom_food_large_info,
                 cf.picture AS custom_food_picture,
                 cf.calorie_amount AS calorie_amount,
-                cf.calorie_unit AS calorie_unit,
+                cf.calorie_unit   AS calorie_unit,
 
                 s.id AS serving_id,
                 s.amount AS serving_amount,
@@ -47,10 +47,8 @@ public class CustomFoodCustomRepositoryImpl implements CustomFoodCustomRepositor
                 n.amount AS nutrition_amount
 
             FROM custom_food cf
-            LEFT JOIN custom_food_servings cfs ON cfs.custom_food_id = cf.id
-            LEFT JOIN servings s ON s.id = cfs.serving_id
-            LEFT JOIN custom_food_nutritions cfn ON cfn.custom_food_id = cf.id
-            LEFT JOIN nutritions n ON n.id = cfn.nutrition_id
+            LEFT JOIN custom_food_servings s ON s.food_id = cf.id
+            LEFT JOIN custom_food_nutritions n ON n.food_id = cf.id
             WHERE cf.id = :customFoodId
             ORDER BY s.id, n.id
             """;
@@ -111,24 +109,21 @@ public class CustomFoodCustomRepositoryImpl implements CustomFoodCustomRepositor
 
     Map<String, String> sortMap =
         Optional.ofNullable(filter.getPageable().getSort()).orElse(Collections.emptyMap());
-    String orderBy;
-    if (!sortMap.isEmpty()) {
-      orderBy =
-          sortMap.entrySet().stream()
-              .map(
-                  e ->
-                      "cf."
-                          + e.getKey()
-                          + ("desc".equalsIgnoreCase(e.getValue()) ? " DESC" : " ASC"))
-              .collect(Collectors.joining(", "));
-    } else {
-      orderBy = "cf.name ASC";
-    }
+    String orderBy =
+        sortMap.isEmpty()
+            ? "cf.name ASC"
+            : sortMap.entrySet().stream()
+                .map(
+                    e ->
+                        "cf."
+                            + e.getKey()
+                            + ("desc".equalsIgnoreCase(e.getValue()) ? " DESC" : " ASC"))
+                .collect(Collectors.joining(", "));
 
     int pageSize = Optional.ofNullable(filter.getPageable().getPageSize()).orElse(25);
     int pageNumber = Optional.ofNullable(filter.getPageable().getPageNumber()).orElse(0);
 
-    // Step 1: fetch IDs only
+    // Step 1: fetch IDs
     String idQuery =
         "SELECT cf.id FROM custom_food cf "
             + where
@@ -151,35 +146,34 @@ public class CustomFoodCustomRepositoryImpl implements CustomFoodCustomRepositor
         .filter(ids -> !ids.isEmpty())
         .flatMapMany(
             ids -> {
-              // Step 2: fetch full details
+              // Step 2: fetch details
               String detailsQuery =
                   """
-                    SELECT
-                        cf.id AS custom_food_id,
-                        cf.name AS custom_food_name,
-                        cf.info AS custom_food_info,
-                        cf.large_info AS custom_food_large_info,
-                        cf.picture AS custom_food_picture,
-                        cf.calorie_amount AS calorie_amount,
-                        cf.calorie_unit AS calorie_unit,
+                        SELECT
+                            cf.id   AS custom_food_id,
+                            cf.name AS custom_food_name,
+                            cf.info AS custom_food_info,
+                            cf.large_info AS custom_food_large_info,
+                            cf.picture AS custom_food_picture,
+                            cf.calorie_amount AS calorie_amount,
+                            cf.calorie_unit   AS calorie_unit,
 
-                        s.id AS serving_id,
-                        s.amount AS serving_amount,
-                        s.grams_total AS serving_grams_total,
-                        s.metric AS serving_metric,
-                        s.main AS serving_main,
+                            s.id AS serving_id,
+                            s.amount AS serving_amount,
+                            s.grams_total AS serving_grams_total,
+                            s.metric AS serving_metric,
+                            s.main AS serving_main,
 
-                        n.id AS nutrition_id,
-                        n.name AS nutrition_name,
-                        n.unit AS nutrition_unit,
-                        n.amount AS nutrition_amount
+                            n.id AS nutrition_id,
+                            n.name AS nutrition_name,
+                            n.unit AS nutrition_unit,
+                            n.amount AS nutrition_amount
 
-                    FROM custom_food cf
-                    LEFT JOIN custom_food_servings cfs ON cfs.custom_food_id = cf.id
-                    LEFT JOIN servings s ON s.id = cfs.serving_id
-                    LEFT JOIN custom_food_nutritions cfn ON cfn.custom_food_id = cf.id
-                    LEFT JOIN nutritions n ON n.id = cfn.nutrition_id
-                    WHERE cf.id IN ("""
+                        FROM custom_food cf
+                        LEFT JOIN custom_food_servings s ON s.food_id = cf.id
+                        LEFT JOIN custom_food_nutritions n ON n.food_id = cf.id
+                        WHERE cf.id IN (
+                        """
                       + IntStream.range(0, ids.size())
                           .mapToObj(i -> ":cfId" + i)
                           .collect(Collectors.joining(", "))
@@ -285,18 +279,17 @@ public class CustomFoodCustomRepositoryImpl implements CustomFoodCustomRepositor
     Double calorieAmount = (Double) first[5];
     String calorieUnit = (String) first[6];
 
-    List<ServingProjection> servings = new ArrayList<>();
-    List<NutritionProjection> nutritions = new ArrayList<>();
+    List<CustomFoodServingProjetion> servings = new ArrayList<>();
+    List<CustomFoodNutritionProjection> nutritions = new ArrayList<>();
 
     Set<Long> seenServingIds = new HashSet<>();
     Set<Long> seenNutritionIds = new HashSet<>();
 
     for (Object[] r : rows) {
-      // Servings
       Long sId = (Long) r[7];
       if (sId != null && seenServingIds.add(sId)) {
         servings.add(
-            new ServingProjection(
+            new CustomFoodServingProjetion(
                 sId,
                 (Double) r[8], // amount
                 (Double) r[9], // gramsTotal
@@ -305,11 +298,10 @@ public class CustomFoodCustomRepositoryImpl implements CustomFoodCustomRepositor
                 ));
       }
 
-      // Nutritions
       Long nId = (Long) r[12];
       if (nId != null && seenNutritionIds.add(nId)) {
         nutritions.add(
-            new NutritionProjection(nId, (String) r[13], (String) r[14], (Double) r[15]));
+            new CustomFoodNutritionProjection(nId, (String) r[13], (String) r[14], (Double) r[15]));
       }
     }
 
@@ -322,7 +314,7 @@ public class CustomFoodCustomRepositoryImpl implements CustomFoodCustomRepositor
     p.setCalorieAmount(calorieAmount);
     p.setCalorieUnit(calorieUnit);
     p.setServings(servings);
-    p.setNutritions(nutritions);
+    p.setNutrients(nutritions);
 
     return p;
   }
@@ -345,26 +337,26 @@ public class CustomFoodCustomRepositoryImpl implements CustomFoodCustomRepositor
                 p.setCalorieAmount((Double) r[5]);
                 p.setCalorieUnit((String) r[6]);
                 p.setServings(new ArrayList<>());
-                p.setNutritions(new ArrayList<>());
+                p.setNutrients(new ArrayList<>());
                 return p;
               });
 
-      // Servings
       Long sId = (Long) r[7];
       if (sId != null
           && cf.getServings().stream().noneMatch(sp -> Objects.equals(sp.getId(), sId))) {
         cf.getServings()
             .add(
-                new ServingProjection(
+                new CustomFoodServingProjetion(
                     sId, (Double) r[8], (Double) r[9], (String) r[10], (Boolean) r[11]));
       }
 
-      // Nutritions
       Long nId = (Long) r[12];
       if (nId != null
-          && cf.getNutritions().stream().noneMatch(np -> Objects.equals(np.getId(), nId))) {
-        cf.getNutritions()
-            .add(new NutritionProjection(nId, (String) r[13], (String) r[14], (Double) r[15]));
+          && cf.getNutrients().stream().noneMatch(np -> Objects.equals(np.getId(), nId))) {
+        cf.getNutrients()
+            .add(
+                new CustomFoodNutritionProjection(
+                    nId, (String) r[13], (String) r[14], (Double) r[15]));
       }
     }
 

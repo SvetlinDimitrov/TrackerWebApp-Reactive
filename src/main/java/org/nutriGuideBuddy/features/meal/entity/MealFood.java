@@ -12,15 +12,18 @@ import org.springframework.data.relational.core.mapping.Table;
 @EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "meal_foods")
+@Table("meal_foods")
 public class MealFood extends BaseFood {
+
+  @Column("created_at")
+  private Instant createdAt;
+
+  @Column("updated_at")
+  private Instant updatedAt;
 
   @Column("meal_id")
   private Long mealId;
 
-  @Column("created_at")
-  private Instant createdAt = Instant.now();
-
-  @Column("updated_at")
-  private Instant updatedAt = Instant.now();
+  @Column("user_id")
+  private Long userId;
 }

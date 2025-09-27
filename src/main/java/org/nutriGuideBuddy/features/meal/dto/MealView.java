@@ -2,7 +2,6 @@ package org.nutriGuideBuddy.features.meal.dto;
 
 import java.time.LocalDate;
 import java.util.List;
-import org.nutriGuideBuddy.features.shared.dto.FoodShortView;
 
 public record MealView(
     Long id,
@@ -11,4 +10,4 @@ public record MealView(
     LocalDate createdAt,
     LocalDate updateAt,
     Double totalCalories,
-    List<FoodShortView> foods) {}
+    List<MealFoodShortView> foods) {}

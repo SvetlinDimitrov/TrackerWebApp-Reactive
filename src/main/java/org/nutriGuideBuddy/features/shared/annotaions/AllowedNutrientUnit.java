@@ -5,11 +5,7 @@ import jakarta.validation.Payload;
 import java.lang.annotation.*;
 
 @Documented
-@Constraint(
-    validatedBy = {
-      AllowedNutrientUnitCreateValidator.class,
-      AllowedNutrientUnitUpdateValidator.class
-    })
+@Constraint(validatedBy = AllowedNutrientUnitValidator.class)
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface AllowedNutrientUnit {

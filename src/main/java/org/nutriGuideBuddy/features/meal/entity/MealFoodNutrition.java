@@ -1,19 +1,18 @@
 package org.nutriGuideBuddy.features.meal.entity;
 
 import lombok.*;
+import org.nutriGuideBuddy.features.shared.entity.BaseNutrition;
 import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
 
 @Getter
 @Setter
+@ToString(callSuper = true)
+@EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
-@AllArgsConstructor
-@Table("meal_foods_nutritions")
-public class MealFoodNutrition {
+@Table("meal_food_nutrition")
+public class MealFoodNutrition extends BaseNutrition {
 
-  @Column("meal_food_id")
-  private Long mealFoodId;
-
-  @Column("nutrition_id")
-  private Long nutritionId;
+  @Column("food_id")
+  private Long foodId;
 }

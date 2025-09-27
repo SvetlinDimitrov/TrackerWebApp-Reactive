@@ -1,21 +1,18 @@
 package org.nutriGuideBuddy.features.custom_food.entity;
 
 import lombok.*;
+import org.nutriGuideBuddy.features.shared.entity.BaseNutrition;
 import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
 
 @Getter
 @Setter
-@ToString
-@EqualsAndHashCode
+@ToString(callSuper = true)
+@EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
-@AllArgsConstructor
 @Table("custom_food_nutritions")
-public class CustomFoodNutrition {
+public class CustomFoodNutrition extends BaseNutrition {
 
-  @Column("custom_food_id")
-  private Long customFoodId;
-
-  @Column("nutrition_id")
-  private Long nutritionId;
+  @Column("food_id")
+  private Long foodId;
 }

@@ -1,7 +1,0 @@
-CREATE TABLE servings (
-    id BIGINT AUTO_INCREMENT PRIMARY KEY,
-    amount DOUBLE NOT NULL,
-    metric VARCHAR(50) NOT NULL,
-    main BOOLEAN DEFAULT FALSE,
-    grams_total DOUBLE NOT NULL
-);

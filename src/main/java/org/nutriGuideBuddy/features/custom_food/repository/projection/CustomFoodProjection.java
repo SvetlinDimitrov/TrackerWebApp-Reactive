@@ -1,10 +1,21 @@
 package org.nutriGuideBuddy.features.custom_food.repository.projection;
 
+import java.util.ArrayList;
+import java.util.List;
 import lombok.*;
-import org.nutriGuideBuddy.features.shared.repository.projection.FoodProjection;
 
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
-public class CustomFoodProjection extends FoodProjection {}
+public class CustomFoodProjection {
+
+    private Long id;
+    private String name;
+    private String info;
+    private String largeInfo;
+    private String picture;
+    private Double calorieAmount;
+    private String calorieUnit;
+    private List<CustomFoodServingProjetion> servings = new ArrayList<>();
+    private List<CustomFoodNutritionProjection> nutrients = new ArrayList<>();
+}

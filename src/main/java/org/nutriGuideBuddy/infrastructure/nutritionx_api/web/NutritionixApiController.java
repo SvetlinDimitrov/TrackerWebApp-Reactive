@@ -22,8 +22,8 @@ public class NutritionixApiController {
     return service.getAllFoodsByFoodName(foodName);
   }
 
-  @GetMapping("/common/{term}")
-  public Mono<List<FoodCreateRequest>> getFoodBySearchCriteria(@PathVariable String term) {
+  @GetMapping("/common")
+  public Mono<List<FoodCreateRequest>> getFoodBySearchCriteria(@RequestParam String term) {
     return service.getCommonFoodBySearchTerm(term);
   }
 

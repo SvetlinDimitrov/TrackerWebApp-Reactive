@@ -4,8 +4,6 @@ import static org.nutriGuideBuddy.infrastructure.exceptions.ExceptionMessages.*;
 
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
-import org.nutriGuideBuddy.features.custom_food.service.CustomFoodServiceImpl;
-import org.nutriGuideBuddy.features.meal.service.MealService;
 import org.nutriGuideBuddy.features.user.dto.*;
 import org.nutriGuideBuddy.features.user.entity.User;
 import org.nutriGuideBuddy.features.user.repository.UserCustomRepository;
@@ -25,8 +23,6 @@ import reactor.core.publisher.Mono;
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
-  private final MealService mealService;
-  private final CustomFoodServiceImpl customFoodService;
   private final JwtEmailVerificationService emailVerificationService;
   private final UserDetailsService userDetailsService;
   private final UserRepository repository;
@@ -112,10 +108,7 @@ public class UserServiceImpl implements UserService {
 
   @Override
   public Mono<Void> delete(Long id) {
-    return mealService
-        .deleteAllByUserId(id)
-        .then(customFoodService.deleteAllByUserId(id))
-        .then(repository.deleteById(id))
+    return repository.deleteById(id)
         .as(operator::transactional);
   }
 

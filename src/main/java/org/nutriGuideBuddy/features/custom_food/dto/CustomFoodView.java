@@ -1,6 +1,16 @@
 package org.nutriGuideBuddy.features.custom_food.dto;
 
-import com.fasterxml.jackson.annotation.JsonUnwrapped;
-import org.nutriGuideBuddy.features.shared.dto.FoodView;
+import java.util.Set;
+import org.nutriGuideBuddy.features.shared.dto.NutritionView;
+import org.nutriGuideBuddy.features.shared.dto.ServingView;
 
-public record CustomFoodView(@JsonUnwrapped FoodView baseFood) {}
+public record CustomFoodView(
+    Long id,
+    String name,
+    String info,
+    String largeInfo,
+    String picture,
+    Double calorieAmount,
+    String calorieUnit,
+    Set<ServingView> servings,
+    Set<NutritionView> nutrients) {}

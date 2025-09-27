@@ -8,11 +8,12 @@ import org.nutriGuideBuddy.features.meal.entity.Meal;
 import org.nutriGuideBuddy.features.meal.repository.projection.MealConsumedProjection;
 import org.nutriGuideBuddy.features.meal.repository.projection.MealProjection;
 import org.nutriGuideBuddy.features.shared.dto.MealConsumedView;
+import org.nutriGuideBuddy.infrastructure.nutritionx_api.utils.NutritionxApiFoodMapper;
 
 @Mapper(
     componentModel = "spring",
     nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE,
-    uses = { FoodMapper.class})
+    uses = { NutritionxApiFoodMapper.class})
 @DecoratedWith(MealMapperDecorator.class)
 public interface MealMapper {
 

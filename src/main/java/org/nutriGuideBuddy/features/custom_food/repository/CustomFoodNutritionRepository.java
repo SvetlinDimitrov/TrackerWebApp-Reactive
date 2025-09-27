@@ -1,13 +1,11 @@
 package org.nutriGuideBuddy.features.custom_food.repository;
 
-import java.util.Set;
 import org.nutriGuideBuddy.features.custom_food.entity.CustomFoodNutrition;
-import org.springframework.data.r2dbc.repository.R2dbcRepository;
+import org.springframework.data.repository.reactive.ReactiveCrudRepository;
 import reactor.core.publisher.Flux;
 
-public interface CustomFoodNutritionRepository extends R2dbcRepository<CustomFoodNutrition, Long> {
+public interface CustomFoodNutritionRepository
+    extends ReactiveCrudRepository<CustomFoodNutrition, Long> {
 
-  Flux<CustomFoodNutrition> findByCustomFoodId(Long customFoodId);
-
-  Flux<CustomFoodNutrition> findByCustomFoodIdIn(Set<Long> customFoodIds);
+  Flux<CustomFoodNutrition> findAllByFoodId(Long foodId);
 }

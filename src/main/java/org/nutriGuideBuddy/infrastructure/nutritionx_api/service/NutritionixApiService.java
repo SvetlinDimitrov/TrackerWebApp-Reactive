@@ -1,5 +1,6 @@
 package org.nutriGuideBuddy.infrastructure.nutritionx_api.service;
 
+import static org.nutriGuideBuddy.infrastructure.exceptions.ExceptionMessages.Food_NOT_FOUND_BY_NAME;
 import static org.nutriGuideBuddy.infrastructure.exceptions.ExceptionMessages.SERVICE_TEMPORARILY_UNAVAILABLE;
 
 import jakarta.annotation.PostConstruct;
@@ -10,10 +11,11 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.nutriGuideBuddy.features.shared.dto.FoodCreateRequest;
 import org.nutriGuideBuddy.infrastructure.exceptions.BadRequestException;
+import org.nutriGuideBuddy.infrastructure.exceptions.NotFoundException;
 import org.nutriGuideBuddy.infrastructure.exceptions.ServiceUnavaibleException;
-import org.nutriGuideBuddy.infrastructure.mappers.FoodMapper;
 import org.nutriGuideBuddy.infrastructure.nutritionx_api.dto.FoodItemResponse;
 import org.nutriGuideBuddy.infrastructure.nutritionx_api.dto.ListFoodsResponse;
+import org.nutriGuideBuddy.infrastructure.nutritionx_api.utils.NutritionxApiFoodMapper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpStatusCode;
@@ -40,7 +42,7 @@ public class NutritionixApiService {
 
   private WebClient webClient;
 
-  private final FoodMapper foodMapper;
+  private final NutritionxApiFoodMapper nutritionxApiFoodMapper;
 
   @PostConstruct
   private void init() {
@@ -74,7 +76,7 @@ public class NutritionixApiService {
         .onStatus(HttpStatusCode::isError, this::handleErrorResponse)
         .bodyToMono(new ParameterizedTypeReference<Map<String, List<FoodItemResponse>>>() {})
         .map(m -> m.getOrDefault("foods", List.of()))
-        .map(list -> list.stream().map(foodMapper::toCreateRequest).toList());
+        .map(list -> list.stream().map(nutritionxApiFoodMapper::toCreateRequest).toList());
   }
 
   public Mono<List<FoodCreateRequest>> getBrandedFoodById(String id) {
@@ -91,7 +93,7 @@ public class NutritionixApiService {
         .onStatus(HttpStatusCode::isError, this::handleErrorResponse)
         .bodyToMono(new ParameterizedTypeReference<Map<String, List<FoodItemResponse>>>() {})
         .map(m -> m.getOrDefault("foods", List.of()))
-        .map(list -> list.stream().map(foodMapper::toCreateRequest).toList());
+        .map(list -> list.stream().map(nutritionxApiFoodMapper::toCreateRequest).toList());
   }
 
   public Mono<ListFoodsResponse> getAllFoodsByFoodName(String foodName) {
@@ -114,6 +116,7 @@ public class NutritionixApiService {
   private Mono<? extends Throwable> handleErrorResponse(ClientResponse response) {
     return response
         .bodyToMono(String.class)
+        .defaultIfEmpty("")
         .flatMap(
             body -> {
               log.error(
@@ -121,6 +124,11 @@ public class NutritionixApiService {
                   response.statusCode(),
                   response.headers().asHttpHeaders().getContentType(),
                   body);
+
+              if (response.statusCode().value() == 404) {
+                return Mono.error(new NotFoundException(String.format(Food_NOT_FOUND_BY_NAME)));
+              }
+
               return Mono.error(
                   new ServiceUnavaibleException(
                       String.format(SERVICE_TEMPORARILY_UNAVAILABLE, "Nutritionix api")));

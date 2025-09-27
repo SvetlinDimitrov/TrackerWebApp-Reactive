@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 public class MealFilter {
   private String name;
   private LocalDate createdAt;
-  private Set<String> idsIn;
-  private Set<String> idsNotIn;
+  private Set<Long> idsIn;
+  private Set<Long> idsNotIn;
   @Valid private CustomPageableMeal pageable = new CustomPageableMeal();
 }

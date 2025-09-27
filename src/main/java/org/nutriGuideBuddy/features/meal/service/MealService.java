@@ -25,8 +25,6 @@ public interface MealService {
 
   Mono<Void> deleteById(Long id);
 
-  Mono<Void> deleteAllByUserId(Long userId);
-
   Mono<Boolean> existsByIdAndUserId(Long id, Long userId);
 
   Flux<MealConsumedView> getAllConsumedByDateAndUserId(Long userId, LocalDate date);

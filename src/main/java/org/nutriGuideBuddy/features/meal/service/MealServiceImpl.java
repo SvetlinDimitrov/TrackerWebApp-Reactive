@@ -13,7 +13,7 @@ import org.nutriGuideBuddy.features.meal.dto.MealFilter;
 import org.nutriGuideBuddy.features.meal.dto.MealUpdateRequest;
 import org.nutriGuideBuddy.features.meal.dto.MealView;
 import org.nutriGuideBuddy.features.meal.entity.Meal;
-import org.nutriGuideBuddy.features.meal.repository.CustomMealRepository;
+import org.nutriGuideBuddy.features.meal.repository.MealCustomRepository;
 import org.nutriGuideBuddy.features.meal.repository.MealRepository;
 import org.nutriGuideBuddy.features.shared.dto.MealConsumedView;
 import org.nutriGuideBuddy.infrastructure.exceptions.NotFoundException;
@@ -29,11 +29,10 @@ import reactor.core.publisher.Mono;
 @RequiredArgsConstructor
 public class MealServiceImpl implements MealService {
 
-  private final CustomMealRepository customRepository;
+  private final MealCustomRepository customRepository;
   private final MealRepository repository;
   private final MealMapper mapper;
   private final TransactionalOperator operator;
-  private final MealFoodService mealFoodService;
 
   public Flux<MealView> getAll(MealFilter filter) {
     return ReactiveUserDetailsServiceImpl.getPrincipalId()
@@ -91,27 +90,7 @@ public class MealServiceImpl implements MealService {
   }
 
   public Mono<Void> deleteById(Long id) {
-    return mealFoodService
-        .deleteAllByMealIdsIn(Set.of(id))
-        .then(repository.deleteById(id))
-        .as(operator::transactional);
-  }
-
-  // Do not call the repository delete method here.
-  // When a user is deleted, its meals are removed automatically via cascade.
-  public Mono<Void> deleteAllByUserId(Long userId) {
-    return repository
-        .findAllByUserId(userId)
-        .map(Meal::getId)
-        .collectList()
-        .flatMap(
-            mealIds -> {
-              if (mealIds.isEmpty()) {
-                return Mono.empty();
-              }
-              return mealFoodService.deleteAllByMealIdsIn(Set.copyOf(mealIds));
-            })
-        .as(operator::transactional);
+    return repository.deleteById(id).as(operator::transactional);
   }
 
   public Mono<Boolean> existsByIdAndUserId(Long id, Long userId) {
