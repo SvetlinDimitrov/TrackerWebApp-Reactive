@@ -80,14 +80,12 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     return repository
         .findByUserId(userId)
         .switchIfEmpty(
-            Mono.error(
-                new NotFoundException(String.format(USER_DETAILS_NOT_FOUND_FOR_USER_ID, userId))));
+            Mono.error(NotFoundException.by(UserDetails.class.getSimpleName(), "userId", userId)));
   }
 
   private Mono<UserDetails> findByIdOrThrow(Long id) {
     return repository
         .findById(id)
-        .switchIfEmpty(
-            Mono.error(new NotFoundException(String.format(NOT_FOUND_BY_ID, "UserDetails", id))));
+        .switchIfEmpty(Mono.error(NotFoundException.byId(UserDetails.class.getSimpleName(), id)));
   }
 }

@@ -1,8 +1,5 @@
 package org.nutriGuideBuddy.infrastructure.nutritionx_api.service;
 
-import static org.nutriGuideBuddy.infrastructure.exceptions.ExceptionMessages.Food_NOT_FOUND_BY_NAME;
-import static org.nutriGuideBuddy.infrastructure.exceptions.ExceptionMessages.SERVICE_TEMPORARILY_UNAVAILABLE;
-
 import jakarta.annotation.PostConstruct;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
@@ -12,7 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.nutriGuideBuddy.features.shared.dto.FoodCreateRequest;
 import org.nutriGuideBuddy.infrastructure.exceptions.BadRequestException;
 import org.nutriGuideBuddy.infrastructure.exceptions.NotFoundException;
-import org.nutriGuideBuddy.infrastructure.exceptions.ServiceUnavaibleException;
+import org.nutriGuideBuddy.infrastructure.exceptions.ServiceUnavailableException;
 import org.nutriGuideBuddy.infrastructure.nutritionx_api.dto.FoodItemResponse;
 import org.nutriGuideBuddy.infrastructure.nutritionx_api.dto.ListFoodsResponse;
 import org.nutriGuideBuddy.infrastructure.nutritionx_api.utils.NutritionxApiFoodMapper;
@@ -61,11 +58,10 @@ public class NutritionixApiService {
   }
 
   public Mono<List<FoodCreateRequest>> getCommonFoodBySearchTerm(String query) {
-
     if (query.isBlank()) {
-      return Mono.error(new BadRequestException("term is empty"));
+      return Mono.error(
+          BadRequestException.message("Required request parameter 'term' must not be blank."));
     }
-
     return webClient
         .post()
         .uri(uriBuilder -> uriBuilder.path("/v2/natural/nutrients").build())
@@ -82,7 +78,7 @@ public class NutritionixApiService {
   public Mono<List<FoodCreateRequest>> getBrandedFoodById(String id) {
 
     if (id == null || id.isBlank()) {
-      return Mono.error(new BadRequestException("id is empty"));
+      return Mono.error(BadRequestException.of("Path variable 'id'", "must not be blank"));
     }
 
     return webClient
@@ -99,7 +95,8 @@ public class NutritionixApiService {
   public Mono<ListFoodsResponse> getAllFoodsByFoodName(String foodName) {
 
     if (foodName.isBlank()) {
-      return Mono.error(new BadRequestException("foodName is empty"));
+      return Mono.error(
+          BadRequestException.message("Required request parameter 'foodName' must not be blank."));
     }
 
     return webClient
@@ -126,12 +123,16 @@ public class NutritionixApiService {
                   body);
 
               if (response.statusCode().value() == 404) {
-                return Mono.error(new NotFoundException(String.format(Food_NOT_FOUND_BY_NAME)));
+                return Mono.error(NotFoundException.of("Food"));
               }
 
-              return Mono.error(
-                  new ServiceUnavaibleException(
-                      String.format(SERVICE_TEMPORARILY_UNAVAILABLE, "Nutritionix api")));
+              return response
+                  .createException()
+                  .flatMap(
+                      ex ->
+                          Mono.error(
+                              ServiceUnavailableException.withCause(
+                                  "Nutritionix API", ex.getMessage(), ex)));
             });
   }
 }

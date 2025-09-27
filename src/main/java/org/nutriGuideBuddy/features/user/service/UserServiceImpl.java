@@ -2,7 +2,6 @@ package org.nutriGuideBuddy.features.user.service;
 
 import static org.nutriGuideBuddy.infrastructure.exceptions.ExceptionMessages.*;
 
-import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.nutriGuideBuddy.features.user.dto.*;
 import org.nutriGuideBuddy.features.user.entity.User;
@@ -96,7 +95,8 @@ public class UserServiceImpl implements UserService {
             existingUser -> {
               if (existingUser != null) {
                 if (!existingUser.getId().equals(id)) {
-                  return Mono.error(new ValidationException(Map.of("email", "already in use.")));
+                  return Mono.error(
+                      ValidationException.duplicate(User.class.getSimpleName(), "email"));
                 }
                 userMapper.update(userDto, existingUser);
                 return repository.save(existingUser).map(userMapper::toView);
@@ -108,8 +108,7 @@ public class UserServiceImpl implements UserService {
 
   @Override
   public Mono<Void> delete(Long id) {
-    return repository.deleteById(id)
-        .as(operator::transactional);
+    return repository.deleteById(id).as(operator::transactional);
   }
 
   @Override
@@ -121,7 +120,7 @@ public class UserServiceImpl implements UserService {
                 findByEmail(email)
                     .switchIfEmpty(
                         Mono.error(
-                            new NotFoundException(String.format(USER_NOT_FOUND_BY_EMAIL, email))))
+                            NotFoundException.by(User.class.getSimpleName(), "email", email)))
                     .flatMap(
                         user -> {
                           userMapper.update(dto, user);
@@ -140,7 +139,6 @@ public class UserServiceImpl implements UserService {
   public Mono<User> findByIOrThrow(Long id) {
     return repository
         .findById(id)
-        .switchIfEmpty(
-            Mono.error(new NotFoundException(String.format(NOT_FOUND_BY_ID, "User", id))));
+        .switchIfEmpty(Mono.error(NotFoundException.byId(User.class.getSimpleName(), id)));
   }
 }

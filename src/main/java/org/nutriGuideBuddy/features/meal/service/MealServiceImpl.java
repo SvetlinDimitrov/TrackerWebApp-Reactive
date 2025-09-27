@@ -1,7 +1,5 @@
 package org.nutriGuideBuddy.features.meal.service;
 
-import static org.nutriGuideBuddy.infrastructure.exceptions.ExceptionMessages.NOT_FOUND_BY_ID;
-
 import java.time.LocalDate;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -58,9 +56,9 @@ public class MealServiceImpl implements MealService {
                     .existsByNameAndUserId(dto.name(), userId)
                     .flatMap(
                         exists -> {
-                          if (exists) {
-                            Map<String, String> errors = Map.of("name", "name already exists.");
-                            return Mono.error(new ValidationException(errors));
+                          if (Boolean.TRUE.equals(exists)) {
+                            return Mono.error(
+                                ValidationException.duplicate(Meal.class.getSimpleName(), "name"));
                           }
                           Meal meal = mapper.toEntity(dto);
                           meal.setUserId(userId);
@@ -79,8 +77,8 @@ public class MealServiceImpl implements MealService {
                     .flatMap(
                         exists -> {
                           if (exists) {
-                            Map<String, String> errors = Map.of("name", "name already exists.");
-                            return Mono.error(new ValidationException(errors));
+                            return Mono.error(
+                                ValidationException.duplicate(Meal.class.getSimpleName(), "name"));
                           }
                           mapper.update(dto, entity);
                           return repository.save(entity);
@@ -124,7 +122,6 @@ public class MealServiceImpl implements MealService {
   private Mono<Meal> findByIdOrThrow(Long mealId) {
     return repository
         .findById(mealId)
-        .switchIfEmpty(
-            Mono.error(new NotFoundException(String.format(NOT_FOUND_BY_ID, "Meal", mealId))));
+        .switchIfEmpty(Mono.error(NotFoundException.byId(Meal.class.getSimpleName(), mealId)));
   }
 }

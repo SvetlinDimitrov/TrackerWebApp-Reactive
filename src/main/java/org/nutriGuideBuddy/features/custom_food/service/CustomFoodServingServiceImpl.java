@@ -65,7 +65,7 @@ public class CustomFoodServingServiceImpl {
 
               if (!requestedIds.isEmpty()) {
                 return Flux.error(
-                    new BadRequestException(
+                    BadRequestException.message(
                         String.format(
                             SERVINGS_WITH_IDS_DO_NOT_BELONG_TO_WITH_ID,
                             requestedIds,
@@ -91,7 +91,7 @@ public class CustomFoodServingServiceImpl {
 
               if (mainCount != 1) {
                 return Flux.error(
-                    new BadRequestException(
+                    BadRequestException.message(
                         String.format(EXACTLY_ONE_MAIN_SERVING_AFTER_UPDATE, mainCount)));
               }
 

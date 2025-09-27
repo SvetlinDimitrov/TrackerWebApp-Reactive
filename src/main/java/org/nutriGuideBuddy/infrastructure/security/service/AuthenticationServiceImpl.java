@@ -30,8 +30,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         .flatMap(
             userPrincipal -> {
               if (!passwordEncoder.matches(dto.password(), userPrincipal.getPassword())) {
-                return Mono.error(new BadRequestException(INVALID_CREDENTIALS));
+                return Mono.error(BadRequestException.message(INVALID_CREDENTIALS));
               }
+
               JwtToken token = tokenService.generateToken(userPrincipal.getUsername());
               return Mono.just(mapper.toDto(userPrincipal.user(), userPrincipal.details(), token));
             });

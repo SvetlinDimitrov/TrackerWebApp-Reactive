@@ -7,7 +7,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class NutriGuideBuddyApplication {
 
   // TODO:: save admin from delete and updates
-  // TODO:: make exceptions messages more flexible
   // TODO:: add interfaces to services
   // TODO:: USE VAR
   // TODO:: UPDATE TO JAVA 21

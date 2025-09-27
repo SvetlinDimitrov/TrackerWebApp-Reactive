@@ -9,7 +9,6 @@ import java.util.Base64;
 import java.util.Date;
 import lombok.extern.slf4j.Slf4j;
 import org.nutriGuideBuddy.infrastructure.exceptions.BadRequestException;
-import org.nutriGuideBuddy.infrastructure.exceptions.ExceptionMessages;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Mono;
@@ -46,7 +45,7 @@ public class JwtEmailVerificationServiceImpl implements JwtEmailVerificationServ
       return Mono.just(claims.getSubject());
     } catch (Exception e) {
       log.warn("Invalid JWT token: {}", e.getMessage());
-      return Mono.error(new BadRequestException(ExceptionMessages.INVALID_JWT_TOKEN));
+      return Mono.error(BadRequestException.of("JWT", "invalid token"));
     }
   }
 }

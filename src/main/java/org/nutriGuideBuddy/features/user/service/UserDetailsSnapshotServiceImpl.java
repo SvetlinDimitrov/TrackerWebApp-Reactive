@@ -1,6 +1,5 @@
 package org.nutriGuideBuddy.features.user.service;
 
-import static org.nutriGuideBuddy.infrastructure.exceptions.ExceptionMessages.NOT_FOUND_BY_ID;
 
 import java.time.Instant;
 import lombok.RequiredArgsConstructor;
@@ -48,8 +47,7 @@ public class UserDetailsSnapshotServiceImpl implements UserDetailsSnapshotServic
     return repository
         .findById(id)
         .switchIfEmpty(
-            Mono.error(
-                new NotFoundException(String.format(NOT_FOUND_BY_ID, "UserDetailsSnapshot", id))));
+            Mono.error(NotFoundException.byId(UserDetailsSnapshot.class.getSimpleName(), id)));
   }
 
   public Mono<Boolean> existsByIdAndUserId(Long id, Long userId) {
@@ -62,8 +60,6 @@ public class UserDetailsSnapshotServiceImpl implements UserDetailsSnapshotServic
         .map(mapper::toView)
         .switchIfEmpty(
             Mono.error(
-                new NotFoundException(
-                    String.format(
-                        NOT_FOUND_BY_ID, "UserDetailsSnapshot", "for userId: " + userId))));
+                NotFoundException.by(UserDetailsSnapshot.class.getSimpleName(), "userId", userId)));
   }
 }

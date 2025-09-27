@@ -71,7 +71,7 @@ public class MealFoodNutritionServiceImpl implements MealFoodNutritionService {
 
               if (!requestedIds.isEmpty()) {
                 return Flux.error(
-                    new BadRequestException(
+                    BadRequestException.message(
                         String.format(
                             NUTRITIONS_WITH_IDS_DO_NOT_BELONG_TO_WITH_ID,
                             requestedIds,

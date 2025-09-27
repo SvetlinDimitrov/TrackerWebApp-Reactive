@@ -1,7 +1,5 @@
 package org.nutriGuideBuddy.features.meal.service;
 
-import static org.nutriGuideBuddy.infrastructure.exceptions.ExceptionMessages.NOT_FOUND_BY_ID;
-
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneOffset;
@@ -95,8 +93,7 @@ public class MealFoodServiceImp implements MealFoodService {
   public Mono<MealFoodView> getById(Long id) {
     return customRepository
         .findById(id)
-        .switchIfEmpty(
-            Mono.error(new NotFoundException(String.format(NOT_FOUND_BY_ID, "MealFood", id))))
+        .switchIfEmpty(Mono.error(NotFoundException.byId(MealFood.class.getSimpleName(), id)))
         .map(mapper::toView);
   }
 
@@ -136,8 +133,7 @@ public class MealFoodServiceImp implements MealFoodService {
   public Mono<MealFood> findByIdAndMealIdOrThrow(Long id, Long mealId) {
     return repository
         .findByIdAndMealId(id, mealId)
-        .switchIfEmpty(
-            Mono.error(new NotFoundException(String.format(NOT_FOUND_BY_ID, "MealFood", id))));
+        .switchIfEmpty(Mono.error(NotFoundException.byId(MealFood.class.getSimpleName(), id)));
   }
 
   public Mono<Long> countByMealIdAndFilter(Long mealId, MealFoodFilter filter) {

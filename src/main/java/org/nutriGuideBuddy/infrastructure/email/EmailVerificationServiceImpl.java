@@ -1,17 +1,15 @@
 package org.nutriGuideBuddy.infrastructure.email;
 
-import static org.nutriGuideBuddy.infrastructure.exceptions.ExceptionMessages.SERVICE_TEMPORARILY_UNAVAILABLE;
-import static org.nutriGuideBuddy.infrastructure.exceptions.ExceptionMessages.USER_NOT_FOUND_BY_EMAIL;
-
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.nutriGuideBuddy.features.user.entity.User;
 import org.nutriGuideBuddy.features.user.service.UserService;
 import org.nutriGuideBuddy.infrastructure.exceptions.NotFoundException;
-import org.nutriGuideBuddy.infrastructure.exceptions.ServiceUnavaibleException;
+import org.nutriGuideBuddy.infrastructure.exceptions.ServiceUnavailableException;
 import org.nutriGuideBuddy.infrastructure.exceptions.ValidationException;
 import org.nutriGuideBuddy.infrastructure.security.dto.EmailValidationRequest;
 import org.nutriGuideBuddy.infrastructure.security.service.JwtEmailVerificationService;
@@ -50,7 +48,8 @@ public class EmailVerificationServiceImpl implements EmailVerificationService {
         .flatMap(
             exists -> {
               if (exists) {
-                return Mono.error(new ValidationException(Map.of("email", "User already exists")));
+                return Mono.error(
+                    ValidationException.duplicate(User.class.getSimpleName(), "email"));
               }
               String token = jwtUtil.generateToken(dto.email());
               String url = frontendUrl + "/email-verification?token=" + token;
@@ -72,8 +71,7 @@ public class EmailVerificationServiceImpl implements EmailVerificationService {
         .flatMap(
             exists -> {
               if (!exists) {
-                return Mono.error(
-                    new NotFoundException(String.format(USER_NOT_FOUND_BY_EMAIL, email)));
+                return Mono.error(NotFoundException.by(User.class.getSimpleName(), "email", email));
               }
               String token = jwtUtil.generateToken(email);
               String url = frontendUrl + "/recreate-password?token=" + token;
@@ -121,8 +119,7 @@ public class EmailVerificationServiceImpl implements EmailVerificationService {
                   subject,
                   recipientEmail,
                   e.getMessage());
-              return new ServiceUnavaibleException(
-                  String.format(SERVICE_TEMPORARILY_UNAVAILABLE, "Email"));
+              return ServiceUnavailableException.withCause("Email", e.getMessage(), e);
             })
         .onErrorMap(
             MailException.class,
@@ -132,8 +129,7 @@ public class EmailVerificationServiceImpl implements EmailVerificationService {
                   subject,
                   recipientEmail,
                   e.getMessage());
-              return new ServiceUnavaibleException(
-                  String.format(SERVICE_TEMPORARILY_UNAVAILABLE, "Email"));
+              return ServiceUnavailableException.withCause("Email", e.getMessage(), e);
             })
         .subscribeOn(Schedulers.boundedElastic())
         .then();

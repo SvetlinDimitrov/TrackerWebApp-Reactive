@@ -1,10 +1,7 @@
 package org.nutriGuideBuddy.infrastructure.security.service;
 
-import static org.nutriGuideBuddy.infrastructure.exceptions.ExceptionMessages.USER_NOT_FOUND_BY_EMAIL;
-
 import org.nutriGuideBuddy.features.user.service.UserDetailsService;
 import org.nutriGuideBuddy.features.user.service.UserService;
-import org.nutriGuideBuddy.infrastructure.exceptions.ExceptionMessages;
 import org.nutriGuideBuddy.infrastructure.exceptions.NotFoundException;
 import org.nutriGuideBuddy.infrastructure.security.config.UserPrincipal;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +18,9 @@ import reactor.core.publisher.Mono;
 @Service
 public class ReactiveUserDetailsServiceImpl implements ReactiveUserDetailsService {
 
+  public static final String USER_NOT_FOUND_BY_EMAIL = "User not found with email: %s";
+  public static final String PRINCIPAL_NOT_FOUND =
+      "Authenticated user not found in the security context.";
   private UserService userService;
   private UserDetailsService userDetailsService;
 
@@ -46,7 +46,7 @@ public class ReactiveUserDetailsServiceImpl implements ReactiveUserDetailsServic
                   && token.getPrincipal() instanceof UserPrincipal principal) {
                 return Mono.just(principal);
               }
-              return Mono.error(new NotFoundException(ExceptionMessages.PRINCIPAL_NOT_FOUND));
+              return Mono.error(NotFoundException.message(PRINCIPAL_NOT_FOUND));
             });
   }
 

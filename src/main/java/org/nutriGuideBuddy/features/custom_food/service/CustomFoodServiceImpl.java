@@ -1,8 +1,5 @@
 package org.nutriGuideBuddy.features.custom_food.service;
 
-import static org.nutriGuideBuddy.infrastructure.exceptions.ExceptionMessages.NOT_FOUND_BY_ID;
-
-import java.util.Map;
 import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import org.nutriGuideBuddy.features.custom_food.dto.CustomFoodFilter;
@@ -46,7 +43,8 @@ public class CustomFoodServiceImpl {
         .flatMap(
             exists -> {
               if (Boolean.TRUE.equals(exists)) {
-                return Mono.error(new ValidationException(Map.of("name", "already exists")));
+                return Mono.error(
+                    ValidationException.duplicate(CustomFood.class.getSimpleName(), "name"));
               }
               var entity = mapper.toEntity(dto);
               entity.setUserId(userId);
@@ -103,9 +101,7 @@ public class CustomFoodServiceImpl {
                 repository
                     .findByIdAndUserId(id, userId)
                     .switchIfEmpty(
-                        Mono.error(
-                            new NotFoundException(
-                                String.format(NOT_FOUND_BY_ID, "CustomFood", id))))
+                        Mono.error(NotFoundException.byId(CustomFood.class.getSimpleName(), id)))
                     .flatMap(
                         existing -> {
                           Mono<Boolean> nameIsFree;
@@ -124,7 +120,8 @@ public class CustomFoodServiceImpl {
                               isFree -> {
                                 if (!isFree) {
                                   return Mono.error(
-                                      new ValidationException(Map.of("name", "already exists")));
+                                      ValidationException.duplicate(
+                                          CustomFood.class.getSimpleName(), "name"));
                                 }
 
                                 mapper.update(dto, existing);
