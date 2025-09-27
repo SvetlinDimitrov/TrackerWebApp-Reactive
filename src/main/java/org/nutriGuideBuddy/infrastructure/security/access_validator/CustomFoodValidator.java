@@ -1,7 +1,7 @@
 package org.nutriGuideBuddy.infrastructure.security.access_validator;
 
 import lombok.RequiredArgsConstructor;
-import org.nutriGuideBuddy.features.custom_food.service.CustomFoodServiceImpl;
+import org.nutriGuideBuddy.features.custom_food.service.CustomFoodService;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Mono;
@@ -10,7 +10,7 @@ import reactor.core.publisher.Mono;
 @RequiredArgsConstructor
 public class CustomFoodValidator extends AbstractAccessValidator {
 
-  private final CustomFoodServiceImpl service;
+  private final CustomFoodService service;
 
   /** Owner-only: custom food must belong to the authenticated user. */
   public Mono<Void> validateFoodAccess(Long foodId) {

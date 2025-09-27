@@ -4,7 +4,7 @@ import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.nutriGuideBuddy.features.custom_food.service.CustomFoodServiceImpl;
+import org.nutriGuideBuddy.features.custom_food.service.CustomFoodService;
 import org.nutriGuideBuddy.features.shared.dto.FoodCreateRequest;
 import org.nutriGuideBuddy.features.shared.enums.CalorieUnits;
 import org.nutriGuideBuddy.features.user.repository.UserRepository;
@@ -19,7 +19,7 @@ import reactor.core.publisher.Mono;
 @RequiredArgsConstructor
 public class CustomFoodSeederService {
 
-  private final CustomFoodServiceImpl customFoodService;
+  private final CustomFoodService customFoodService;
   private final UserRepository userRepository;
   private final FoodSeedUtils foodSeedUtils;
 

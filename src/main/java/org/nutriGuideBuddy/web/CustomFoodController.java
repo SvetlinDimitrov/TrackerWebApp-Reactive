@@ -4,7 +4,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.nutriGuideBuddy.features.custom_food.dto.CustomFoodFilter;
 import org.nutriGuideBuddy.features.custom_food.dto.CustomFoodView;
-import org.nutriGuideBuddy.features.custom_food.service.CustomFoodServiceImpl;
+import org.nutriGuideBuddy.features.custom_food.service.CustomFoodService;
 import org.nutriGuideBuddy.features.shared.dto.FoodCreateRequest;
 import org.nutriGuideBuddy.features.shared.dto.FoodUpdateRequest;
 import org.nutriGuideBuddy.infrastructure.security.access_validator.CustomFoodValidator;
@@ -18,7 +18,7 @@ import reactor.core.publisher.Mono;
 @RequestMapping("/api/v1/custom-foods")
 public class CustomFoodController {
 
-  private final CustomFoodServiceImpl service;
+  private final CustomFoodService service;
   private final CustomFoodValidator validator;
 
   @PostMapping("/get-all")

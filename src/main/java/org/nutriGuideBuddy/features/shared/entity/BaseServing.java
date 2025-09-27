@@ -9,7 +9,7 @@ import org.springframework.data.relational.core.mapping.Column;
 @EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
 @AllArgsConstructor
-public class BaseServing extends BaseEntity {
+public abstract class BaseServing extends BaseEntity {
 
   @Column("amount")
   private Double amount;

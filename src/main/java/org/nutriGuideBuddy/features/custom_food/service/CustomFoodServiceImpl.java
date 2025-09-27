@@ -22,12 +22,12 @@ import reactor.core.publisher.Mono;
 
 @Service
 @RequiredArgsConstructor
-public class CustomFoodServiceImpl {
+public class CustomFoodServiceImpl implements CustomFoodService {
 
   private final CustomFoodRepository repository;
-  private final CustomFoodCustomRepository customMealFoodRepository;
-  private final CustomFoodNutritionServiceImpl nutritionService;
-  private final CustomFoodServingServiceImpl servingService;
+  private final CustomFoodCustomRepository customRepository;
+  private final CustomFoodNutritionService nutritionService;
+  private final CustomFoodServingService servingService;
   private final CustomFoodMapper mapper;
   private final TransactionalOperator operator;
 
@@ -78,20 +78,18 @@ public class CustomFoodServiceImpl {
 
   public Mono<Long> countByFilter(CustomFoodFilter filter) {
     return ReactiveUserDetailsServiceImpl.getPrincipalId()
-        .flatMap(userId -> customMealFoodRepository.countByUserIdAndFilter(userId, filter));
+        .flatMap(userId -> customRepository.countByUserIdAndFilter(userId, filter));
   }
 
   public Flux<CustomFoodView> getAll(CustomFoodFilter filter) {
     return ReactiveUserDetailsServiceImpl.getPrincipalId()
         .flatMapMany(
             userId ->
-                customMealFoodRepository
-                    .findAllByUserIdAndFilter(userId, filter)
-                    .map(mapper::toView));
+                customRepository.findAllByUserIdAndFilter(userId, filter).map(mapper::toView));
   }
 
   public Mono<CustomFoodView> getById(Long id) {
-    return customMealFoodRepository.findById(id).map(mapper::toView);
+    return customRepository.findById(id).map(mapper::toView);
   }
 
   public Mono<CustomFoodView> update(FoodUpdateRequest dto, Long id) {

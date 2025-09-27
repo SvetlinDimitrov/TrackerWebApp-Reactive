@@ -9,7 +9,7 @@ import org.springframework.data.relational.core.mapping.Column;
 @EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
 @AllArgsConstructor
-public class BaseNutrition extends BaseEntity {
+public abstract class BaseNutrition extends BaseEntity {
 
   @Column("name")
   private String name;

@@ -22,7 +22,7 @@ import reactor.core.publisher.Flux;
 
 @Service
 @RequiredArgsConstructor
-public class CustomFoodNutritionServiceImpl {
+public class CustomFoodNutritionServiceImpl implements CustomFoodNutritionService {
 
   private final CustomFoodNutritionRepository repository;
   private final CustomFoodNutritionMapper mapper;

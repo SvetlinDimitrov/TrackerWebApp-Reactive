@@ -21,7 +21,7 @@ import reactor.core.publisher.Flux;
 
 @Service
 @RequiredArgsConstructor
-public class CustomFoodServingServiceImpl {
+public class CustomFoodServingServiceImpl implements CustomFoodServingService {
 
   private final CustomFoodServingRepository repository;
   private final CustomFoodServingMapper mapper;
