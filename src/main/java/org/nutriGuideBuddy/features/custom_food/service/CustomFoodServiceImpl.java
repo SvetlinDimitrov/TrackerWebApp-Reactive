@@ -7,6 +7,7 @@ import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import org.nutriGuideBuddy.features.custom_food.dto.CustomFoodFilter;
 import org.nutriGuideBuddy.features.custom_food.dto.CustomFoodView;
+import org.nutriGuideBuddy.features.custom_food.entity.CustomFood;
 import org.nutriGuideBuddy.features.custom_food.repository.CustomFoodCustomRepository;
 import org.nutriGuideBuddy.features.custom_food.repository.CustomFoodRepository;
 import org.nutriGuideBuddy.features.shared.dto.FoodCreateRequest;
@@ -107,25 +108,47 @@ public class CustomFoodServiceImpl {
                                 String.format(NOT_FOUND_BY_ID, "CustomFood", id))))
                     .flatMap(
                         existing -> {
-                          mapper.update(dto, existing);
+                          Mono<Boolean> nameIsFree;
 
-                          return repository
-                              .save(existing)
-                              .flatMap(
-                                  saved -> {
-                                    Flux<ServingView> servingFlux =
-                                        servingService.update(dto.servings(), id);
-                                    Flux<NutritionView> nutritionFlux =
-                                        nutritionService.update(dto.nutrients(), id);
-                                    return Mono.zip(
-                                            servingFlux.collectList(), nutritionFlux.collectList())
-                                        .map(
-                                            tuple ->
-                                                mapper.toView(
-                                                    saved,
-                                                    Set.copyOf(tuple.getT1()),
-                                                    Set.copyOf(tuple.getT2())));
-                                  });
+                          if (dto.name() != null
+                              && !dto.name().equalsIgnoreCase(existing.getName())) {
+                            nameIsFree =
+                                repository
+                                    .existsByNameAndUserIdAndIdNot(dto.name(), userId, id)
+                                    .map(exists -> !Boolean.TRUE.equals(exists));
+                          } else {
+                            nameIsFree = Mono.just(true);
+                          }
+
+                          return nameIsFree.flatMap(
+                              isFree -> {
+                                if (!isFree) {
+                                  return Mono.error(
+                                      new ValidationException(Map.of("name", "already exists")));
+                                }
+
+                                mapper.update(dto, existing);
+
+                                return repository
+                                    .save(existing)
+                                    .flatMap(
+                                        saved -> {
+                                          Flux<ServingView> servingFlux =
+                                              servingService.update(dto.servings(), id);
+                                          Flux<NutritionView> nutritionFlux =
+                                              nutritionService.update(dto.nutrients(), id);
+
+                                          return Mono.zip(
+                                                  servingFlux.collectList(),
+                                                  nutritionFlux.collectList())
+                                              .map(
+                                                  tuple ->
+                                                      mapper.toView(
+                                                          saved,
+                                                          Set.copyOf(tuple.getT1()),
+                                                          Set.copyOf(tuple.getT2())));
+                                        });
+                              });
                         }))
         .as(operator::transactional);
   }

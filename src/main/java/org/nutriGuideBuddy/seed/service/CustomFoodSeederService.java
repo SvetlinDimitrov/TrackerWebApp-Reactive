@@ -60,16 +60,8 @@ public class CustomFoodSeederService {
                                       List<String> shuffledNames = new ArrayList<>(FOOD_NAMES);
                                       Collections.shuffle(shuffledNames, random);
 
-                                      List<String> chosenNames = new ArrayList<>();
-                                      for (int i = 0; i < foodCount; i++) {
-                                        String baseName =
-                                            shuffledNames.get(i % shuffledNames.size());
-                                        String uniqueName =
-                                            (i < shuffledNames.size())
-                                                ? baseName
-                                                : baseName + " " + (i / shuffledNames.size() + 1);
-                                        chosenNames.add(uniqueName);
-                                      }
+                                      List<String> chosenNames =
+                                          getChosenNames(foodCount, shuffledNames);
 
                                       List<Mono<?>> creations = new ArrayList<>();
                                       for (int i = 0; i < chosenNames.size(); i++) {
@@ -101,6 +93,17 @@ public class CustomFoodSeederService {
                                     })))
         .then()
         .doOnTerminate(() -> log.info("CustomFood seeding completed."));
+  }
+
+  private List<String> getChosenNames(int foodCount, List<String> shuffledNames) {
+    List<String> chosenNames = new ArrayList<>();
+    for (int i = 0; i < foodCount; i++) {
+      String baseName = shuffledNames.get(i % shuffledNames.size());
+      String uniqueName =
+          (i < shuffledNames.size()) ? baseName : baseName + " " + (i / shuffledNames.size() + 1);
+      chosenNames.add(uniqueName);
+    }
+    return chosenNames;
   }
 
   private String randomPicture() {

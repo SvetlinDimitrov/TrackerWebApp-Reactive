@@ -32,7 +32,7 @@ CREATE TABLE IF NOT EXISTS custom_food_nutritions (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     food_id BIGINT NOT NULL,
     name VARCHAR(100),
-    unit VARCHAR(20),
+    unit VARCHAR(50),
     amount DOUBLE,
     CONSTRAINT fk_cfn_custom_food
       FOREIGN KEY (food_id) REFERENCES custom_food(id)

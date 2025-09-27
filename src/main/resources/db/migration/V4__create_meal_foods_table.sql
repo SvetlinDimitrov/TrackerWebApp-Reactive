@@ -31,7 +31,7 @@ CREATE TABLE meal_food_nutrition (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     food_id BIGINT NOT NULL,
     name VARCHAR(100),
-    unit VARCHAR(20),
+    unit VARCHAR(50),
     amount DOUBLE,
     CONSTRAINT fk_mfn_meal_food FOREIGN KEY (food_id) REFERENCES meal_foods(id) ON DELETE CASCADE,
     INDEX idx_mfn_meal_food (food_id),
