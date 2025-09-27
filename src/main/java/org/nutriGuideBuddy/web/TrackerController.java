@@ -5,8 +5,8 @@ import java.time.LocalDate;
 import java.util.Map;
 import java.util.Set;
 import lombok.RequiredArgsConstructor;
-import org.nutriGuideBuddy.features.shared.dto.MealConsumedView;
 import org.nutriGuideBuddy.features.meal.dto.MealFoodNutritionConsumedView;
+import org.nutriGuideBuddy.features.shared.dto.MealConsumedView;
 import org.nutriGuideBuddy.features.tracker.dto.CalorieRequest;
 import org.nutriGuideBuddy.features.tracker.dto.NutritionRequest;
 import org.nutriGuideBuddy.features.tracker.dto.TrackerRequest;
@@ -27,18 +27,23 @@ public class TrackerController {
   @PostMapping
   public Mono<TrackerView> get(
       @RequestBody(required = false) @Valid TrackerRequest dto, @PathVariable Long userId) {
-    return userAccessValidator.validateAccess(userId).then(service.get(dto, userId));
+    return userAccessValidator
+        .validateAccess(userId)
+        .then(userAccessValidator.validateFullyRegistered())
+        .then(service.get(dto, userId));
   }
 
   @PostMapping("/nutrition")
   public Mono<Map<LocalDate, Set<MealFoodNutritionConsumedView>>> getNutritionAmountInRange(
       @RequestBody @Valid NutritionRequest request) {
-    return service.getNutritionForRange(request);
+    return userAccessValidator
+        .validateFullyRegistered()
+        .then(service.getNutritionForRange(request));
   }
 
   @PostMapping("/calories")
   public Mono<Map<LocalDate, Set<MealConsumedView>>> getCaloriesInRange(
       @RequestBody(required = false) @Valid CalorieRequest request) {
-    return service.getCaloriesInRange(request);
+    return userAccessValidator.validateFullyRegistered().then(service.getCaloriesInRange(request));
   }
 }

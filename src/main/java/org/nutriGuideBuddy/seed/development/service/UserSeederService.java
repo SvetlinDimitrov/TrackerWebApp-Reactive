@@ -1,11 +1,10 @@
-package org.nutriGuideBuddy.seed.service;
+package org.nutriGuideBuddy.seed.development.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.nutriGuideBuddy.features.user.entity.User;
-import org.nutriGuideBuddy.features.user.enums.UserRole;
 import org.nutriGuideBuddy.features.user.repository.UserRepository;
-import org.nutriGuideBuddy.seed.enums.EmailEnum;
+import org.nutriGuideBuddy.seed.development.enums.UsersForSeed;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
@@ -23,29 +22,37 @@ public class UserSeederService {
   public Mono<Void> seed() {
     log.info("Starting User seeding...");
 
-    return Flux.fromArray(EmailEnum.values())
+    return Flux.fromArray(UsersForSeed.values())
         .flatMap(
-            emailEnum ->
+            userDef ->
                 userRepository
-                    .existsByEmail(emailEnum.getEmail())
+                    .existsByEmail(userDef.getEmail())
                     .flatMap(
                         exists -> {
                           if (exists) return Mono.empty();
 
                           User user = new User();
-                          user.setUsername(emailEnum.name().toLowerCase());
-                          user.setEmail(emailEnum.getEmail());
+                          user.setUsername(userDef.name().toLowerCase());
+                          user.setEmail(userDef.getEmail());
                           user.setPassword(passwordEncoder.encode(DEFAULT_PASSWORD));
-                          user.setRole(UserRole.USER);
+                          user.setRole(userDef.getRole());
 
                           return userRepository
                               .save(user)
                               .doOnSuccess(
-                                  u ->
+                                  u -> {
+                                    if (userDef == UsersForSeed.GOD) {
+                                      log.info(
+                                          "👑 Seeded GOD user '{}' (email '{}')",
+                                          u.getUsername(),
+                                          u.getEmail());
+                                    } else {
                                       log.info(
                                           "🧑 Seeded user '{}' (email '{}')",
                                           u.getUsername(),
-                                          u.getEmail()));
+                                          u.getEmail());
+                                    }
+                                  });
                         }))
         .then(Mono.fromRunnable(() -> log.info("User seeding completed.")));
   }

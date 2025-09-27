@@ -1,35 +1,59 @@
 package org.nutriGuideBuddy.infrastructure.security.access_validator;
 
+import lombok.RequiredArgsConstructor;
 import org.nutriGuideBuddy.features.user.enums.UserRole;
-import org.nutriGuideBuddy.infrastructure.security.config.UserPrincipal;
+import org.nutriGuideBuddy.features.user.service.UserService;
 import org.springframework.security.access.AccessDeniedException;
-import org.springframework.security.core.context.ReactiveSecurityContextHolder;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Mono;
 
 @Component
-public class UserAccessValidator {
+@RequiredArgsConstructor
+public class UserAccessValidator extends AbstractAccessValidator {
 
-  public Mono<Void> validateAccess(Long id) {
-    return ReactiveSecurityContextHolder.getContext()
+  private final UserService userService;
+
+  /** Owner-only: the authenticated user's id must match the target id. */
+  public Mono<Void> validateAccess(Long ownerId) {
+    return currentPrincipal()
         .flatMap(
-            securityContext -> {
-              UserPrincipal principal =
-                  (UserPrincipal) securityContext.getAuthentication().getPrincipal();
-              if (principal == null || !principal.user().getId().equals(id)) {
-                return Mono.error(new AccessDeniedException("Access denied"));
-              }
-              return Mono.empty();
+            p ->
+                p.user().getId().equals(ownerId)
+                    ? Mono.empty()
+                    : Mono.error(new AccessDeniedException("Access denied")));
+  }
+
+  /** Guard: completes if the current user has the role; otherwise 403. */
+  public Mono<Void> hasRole(UserRole role) {
+    return currentPrincipal()
+        .flatMap(
+            p ->
+                p.user().getRole() == role
+                    ? Mono.empty()
+                    : Mono.error(new AccessDeniedException("Access denied")));
+  }
+
+  /** Guard: allow if user has the bypassRole OR is the owner. */
+  public Mono<Void> ensureRoleOrOwner(UserRole bypassRole, Long ownerId) {
+    return currentPrincipal()
+        .flatMap(
+            p -> {
+              boolean hasRole = p.user().getRole() == bypassRole;
+              boolean isOwner = p.user().getId().equals(ownerId);
+              return (hasRole || isOwner)
+                  ? Mono.empty()
+                  : Mono.error(new AccessDeniedException("Access denied"));
             });
   }
 
-  public Mono<Boolean> hasRole(UserRole role) {
-    return ReactiveSecurityContextHolder.getContext()
-        .map(
-            securityContext -> {
-              UserPrincipal principal =
-                  (UserPrincipal) securityContext.getAuthentication().getPrincipal();
-              return principal != null && role == principal.user().getRole();
-            });
+  public Mono<Void> ensureNotGod(Long targetUserId) {
+    return userService
+        .findByIOrThrow(targetUserId)
+        .flatMap(
+            user ->
+                user.getRole() == UserRole.GOD
+                    ? Mono.error(
+                        new AccessDeniedException("GOD user cannot be modified or deleted."))
+                    : Mono.empty());
   }
 }

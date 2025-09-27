@@ -1,16 +1,15 @@
-package org.nutriGuideBuddy.seed.service;
+package org.nutriGuideBuddy.seed.development.service;
 
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.nutriGuideBuddy.features.custom_food.service.CustomFoodServiceImpl;
 import org.nutriGuideBuddy.features.shared.dto.FoodCreateRequest;
 import org.nutriGuideBuddy.features.shared.enums.CalorieUnits;
 import org.nutriGuideBuddy.features.user.repository.UserRepository;
-import org.nutriGuideBuddy.seed.enums.EmailEnum;
-import org.nutriGuideBuddy.seed.utils.FoodSeedUtils;
+import org.nutriGuideBuddy.seed.development.enums.UsersForSeed;
+import org.nutriGuideBuddy.seed.development.utils.FoodSeedUtils;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -36,8 +35,7 @@ public class CustomFoodSeederService {
   public Mono<Void> seed() {
     log.info("Starting CustomFood seeding...");
 
-    Set<String> emails =
-        Arrays.stream(EmailEnum.values()).map(EmailEnum::getEmail).collect(Collectors.toSet());
+    Set<String> emails = UsersForSeed.emailsExceptGod();
 
     return userRepository
         .findAllByEmailIn(emails)

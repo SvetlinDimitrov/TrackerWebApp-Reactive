@@ -42,7 +42,7 @@ public class SecurityConfig {
                 exchanges
                     .pathMatchers(HttpMethod.POST, "/api/v1/user")
                     .permitAll()
-                    .pathMatchers("/api/v1/auth/**")
+                    .pathMatchers("/api/v1/auth/**", "api/v1/rdi/**")
                     .permitAll()
                     .anyExchange()
                     .authenticated())

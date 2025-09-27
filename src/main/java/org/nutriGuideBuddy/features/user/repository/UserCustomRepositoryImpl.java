@@ -7,6 +7,7 @@ import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.nutriGuideBuddy.features.user.dto.UserFilter;
 import org.nutriGuideBuddy.features.user.entity.User;
+import org.nutriGuideBuddy.features.user.enums.UserRole;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.r2dbc.core.R2dbcEntityTemplate;
 import org.springframework.data.relational.core.query.Criteria;
@@ -16,15 +17,17 @@ import reactor.core.publisher.Mono;
 
 @Repository
 @RequiredArgsConstructor
-public class UserRepositoryCustomImpl implements UserCustomRepository {
+public class UserCustomRepositoryImpl implements UserCustomRepository {
 
   private final R2dbcEntityTemplate entityTemplate;
 
   public Flux<User> findAllByFilter(UserFilter filter) {
     var criteria = Criteria.empty();
-    if(filter == null){
+    if (filter == null) {
       filter = new UserFilter();
     }
+
+    criteria = criteria.and(where("role").not(UserRole.GOD));
 
     if (filter.getUsername() != null && !filter.getUsername().isBlank()) {
       criteria = criteria.and(where("username").like("%" + filter.getUsername() + "%"));
@@ -72,9 +75,11 @@ public class UserRepositoryCustomImpl implements UserCustomRepository {
 
   public Mono<Long> countByFilter(UserFilter filter) {
     var criteria = Criteria.empty();
-    if(filter == null){
+    if (filter == null) {
       filter = new UserFilter();
     }
+
+    criteria = criteria.and(where("role").not(UserRole.GOD));
 
     if (filter.getUsername() != null && !filter.getUsername().isBlank()) {
       criteria = criteria.and(where("username").like("%" + filter.getUsername() + "%"));

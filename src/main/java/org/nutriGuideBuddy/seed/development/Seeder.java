@@ -1,8 +1,8 @@
-package org.nutriGuideBuddy.seed;
+package org.nutriGuideBuddy.seed.development;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.nutriGuideBuddy.seed.service.*;
+import org.nutriGuideBuddy.seed.development.service.*;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;

@@ -17,7 +17,7 @@ import reactor.core.publisher.Mono;
 public class UserController {
 
   private final UserService service;
-  private final UserAccessValidator accessValidator;
+  private final UserAccessValidator validator;
 
   @PostMapping
   @ResponseStatus(HttpStatus.CREATED)
@@ -29,31 +29,25 @@ public class UserController {
   @PostMapping("/get/all")
   @ResponseStatus(HttpStatus.OK)
   public Flux<UserView> getAll(@RequestBody(required = false) @Valid UserFilter filter) {
-    return service.getAll(filter);
+    return validator.hasRole(UserRole.GOD).thenMany(service.getAll(filter));
   }
 
   @PostMapping("/get/count")
   @ResponseStatus(HttpStatus.OK)
   public Mono<Long> count(@RequestBody(required = false) @Valid UserFilter filter) {
-    return service.countByFilter(filter);
+    return validator.hasRole(UserRole.GOD).then(service.countByFilter(filter));
   }
 
   @GetMapping("/{id}")
   @ResponseStatus(HttpStatus.OK)
   public Mono<UserView> getById(@PathVariable Long id) {
-    return accessValidator
-        .hasRole(UserRole.ADMIN)
-        .flatMap(isAdmin -> isAdmin ? Mono.empty() : accessValidator.validateAccess(id))
-        .then(service.getById(id));
+    return validator.ensureRoleOrOwner(UserRole.GOD, id).then(service.getById(id));
   }
 
   @GetMapping("/{id}/with-details")
   @ResponseStatus(HttpStatus.OK)
   public Mono<UserWithDetailsView> getByIdWithDetails(@PathVariable Long id) {
-    return accessValidator
-        .hasRole(UserRole.ADMIN)
-        .flatMap(isAdmin -> isAdmin ? Mono.empty() : accessValidator.validateAccess(id))
-        .then(service.getByIdWithDetails(id));
+    return validator.ensureRoleOrOwner(UserRole.GOD, id).then(service.getByIdWithDetails(id));
   }
 
   @GetMapping("/me")
@@ -72,18 +66,18 @@ public class UserController {
   @ResponseStatus(HttpStatus.OK)
   public Mono<UserView> update(
       @RequestBody @Valid UserUpdateRequest userDto, @PathVariable Long id) {
-    return accessValidator
-        .hasRole(UserRole.ADMIN)
-        .flatMap(isAdmin -> isAdmin ? Mono.empty() : accessValidator.validateAccess(id))
+    return validator
+        .ensureRoleOrOwner(UserRole.GOD, id)
+        .then(validator.ensureNotGod(id))
         .then(service.update(userDto, id));
   }
 
   @DeleteMapping("/{id}")
   @ResponseStatus(HttpStatus.NO_CONTENT)
   public Mono<Void> delete(@PathVariable Long id) {
-    return accessValidator
-        .hasRole(UserRole.ADMIN)
-        .flatMap(isAdmin -> isAdmin ? Mono.empty() : accessValidator.validateAccess(id))
+    return validator
+        .ensureRoleOrOwner(UserRole.GOD, id)
+        .then(validator.ensureNotGod(id))
         .then(service.delete(id));
   }
 }

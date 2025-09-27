@@ -8,19 +8,16 @@ import reactor.core.publisher.Mono;
 
 @Component
 @RequiredArgsConstructor
-public class MealFoodAccessValidator {
+public class MealFoodAccessValidator extends AbstractAccessValidator {
 
   private final MealFoodService mealFoodService;
 
-  public Mono<Void> validateFood(Long mealId, Long foodId) {
+  /** Ensures the given food belongs to the given meal. */
+  public Mono<Void> validateFoodAccess(Long mealId, Long foodId) {
     return mealFoodService
         .existsByIdAndMealId(foodId, mealId)
         .flatMap(
-            hasAccess -> {
-              if (!hasAccess) {
-                return Mono.error(new AccessDeniedException("Access denied"));
-              }
-              return Mono.empty();
-            });
+            hasAccess ->
+                hasAccess ? Mono.empty() : Mono.error(new AccessDeniedException("Access denied")));
   }
 }

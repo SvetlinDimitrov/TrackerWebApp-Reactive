@@ -2,26 +2,22 @@ package org.nutriGuideBuddy.infrastructure.security.access_validator;
 
 import lombok.RequiredArgsConstructor;
 import org.nutriGuideBuddy.features.user.service.UserDetailsSnapshotService;
-import org.nutriGuideBuddy.infrastructure.security.service.ReactiveUserDetailsServiceImpl;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Mono;
 
 @Component
 @RequiredArgsConstructor
-public class UserDetailsSnapshotAccessValidator {
+public class UserDetailsSnapshotAccessValidator extends AbstractAccessValidator {
 
   private final UserDetailsSnapshotService service;
 
-  public Mono<Void> validateAccess(Long id) {
-    return ReactiveUserDetailsServiceImpl.getPrincipalId()
-        .flatMap(userId -> service.existsByIdAndUserId(id, userId))
+  /** Owner-only: snapshot must belong to the authenticated user. */
+  public Mono<Void> validateAccess(Long snapshotId) {
+    return currentPrincipal()
+        .map(p -> p.user().getId())
+        .flatMap(userId -> service.existsByIdAndUserId(snapshotId, userId))
         .flatMap(
-            hasAccess -> {
-              if (!hasAccess) {
-                return Mono.error(new AccessDeniedException("Access denied"));
-              }
-              return Mono.empty();
-            });
+            has -> has ? Mono.empty() : Mono.error(new AccessDeniedException("Access denied")));
   }
 }

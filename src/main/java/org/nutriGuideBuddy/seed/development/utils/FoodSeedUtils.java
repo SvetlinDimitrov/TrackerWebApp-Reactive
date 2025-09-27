@@ -1,4 +1,4 @@
-package org.nutriGuideBuddy.seed.utils;
+package org.nutriGuideBuddy.seed.development.utils;
 
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;

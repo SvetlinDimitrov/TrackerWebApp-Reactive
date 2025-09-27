@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.nutriGuideBuddy.features.shared.dto.FoodCreateRequest;
 import org.nutriGuideBuddy.infrastructure.nutritionx_api.dto.ListFoodsResponse;
 import org.nutriGuideBuddy.infrastructure.nutritionx_api.service.NutritionixApiService;
+import org.nutriGuideBuddy.infrastructure.security.access_validator.UserDetailsAccessValidator;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
@@ -15,20 +16,29 @@ import reactor.core.publisher.Mono;
 public class NutritionixApiController {
 
   private final NutritionixApiService service;
+  private final UserDetailsAccessValidator userDetailsAccessValidator;
 
   @GetMapping
   @ResponseStatus(HttpStatus.OK)
   public Mono<ListFoodsResponse> getAllByName(@RequestParam String foodName) {
-    return service.getAllFoodsByFoodName(foodName);
+    return userDetailsAccessValidator
+        .validateFullyRegistered()
+        .then(service.getAllFoodsByFoodName(foodName));
   }
 
   @GetMapping("/common")
+  @ResponseStatus(HttpStatus.OK)
   public Mono<List<FoodCreateRequest>> getFoodBySearchCriteria(@RequestParam String term) {
-    return service.getCommonFoodBySearchTerm(term);
+    return userDetailsAccessValidator
+        .validateFullyRegistered()
+        .then(service.getCommonFoodBySearchTerm(term));
   }
 
   @GetMapping("/branded/{id}")
+  @ResponseStatus(HttpStatus.OK)
   public Mono<List<FoodCreateRequest>> getBrandedFoodById(@PathVariable String id) {
-    return service.getBrandedFoodById(id);
+    return userDetailsAccessValidator
+        .validateFullyRegistered()
+        .then(service.getBrandedFoodById(id));
   }
 }

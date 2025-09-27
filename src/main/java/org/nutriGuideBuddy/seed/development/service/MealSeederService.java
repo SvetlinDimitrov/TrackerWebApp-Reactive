@@ -1,14 +1,12 @@
-package org.nutriGuideBuddy.seed.service;
+package org.nutriGuideBuddy.seed.development.service;
 
 import java.util.Set;
-import java.util.stream.Collectors;
-
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.nutriGuideBuddy.features.meal.entity.Meal;
 import org.nutriGuideBuddy.features.meal.repository.MealRepository;
 import org.nutriGuideBuddy.features.user.repository.UserRepository;
-import org.nutriGuideBuddy.seed.enums.EmailEnum;
+import org.nutriGuideBuddy.seed.development.enums.UsersForSeed;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
@@ -25,8 +23,7 @@ public class MealSeederService {
   public Mono<Void> seed() {
     log.info("Starting Meal seeding...");
 
-    Set<String> emails =
-        Set.of(EmailEnum.values()).stream().map(EmailEnum::getEmail).collect(Collectors.toSet());
+    Set<String> emails = UsersForSeed.emailsExceptGod();
 
     return userRepository
         .findAllByEmailIn(emails)
@@ -40,7 +37,7 @@ public class MealSeederService {
                                     .existsByNameAndUserId(mealName, user.getId())
                                     .filter(exists -> !exists)
                                     .flatMap(
-                                        exists -> {
+                                        ignored -> {
                                           Meal meal = new Meal();
                                           meal.setUserId(user.getId());
                                           meal.setName(mealName);

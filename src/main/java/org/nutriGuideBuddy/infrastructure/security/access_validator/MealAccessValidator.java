@@ -2,26 +2,21 @@ package org.nutriGuideBuddy.infrastructure.security.access_validator;
 
 import lombok.RequiredArgsConstructor;
 import org.nutriGuideBuddy.features.meal.service.MealService;
-import org.nutriGuideBuddy.infrastructure.security.service.ReactiveUserDetailsServiceImpl;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Mono;
 
 @Component
 @RequiredArgsConstructor
-public class MealAccessValidator {
+public class MealAccessValidator extends AbstractAccessValidator {
 
   private final MealService service;
 
-  public Mono<Void> validateAccess(Long id) {
-    return ReactiveUserDetailsServiceImpl.getPrincipalId()
-        .flatMap(userId -> service.existsByIdAndUserId(id, userId))
+  /** Owner-only: meal must belong to the authenticated user. */
+  public Mono<Void> validateMealAccess(Long mealId) {
+    return currentUserId()
+        .flatMap(userId -> service.existsByIdAndUserId(mealId, userId))
         .flatMap(
-            hasAccess -> {
-              if (!hasAccess) {
-                return Mono.error(new AccessDeniedException("Access denied"));
-              }
-              return Mono.empty();
-            });
+            has -> has ? Mono.empty() : Mono.error(new AccessDeniedException("Access denied")));
   }
 }
