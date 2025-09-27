@@ -13,7 +13,7 @@ import org.nutriGuideBuddy.infrastructure.nutritionx_api.utils.NutritionxApiFood
 @Mapper(
     componentModel = "spring",
     nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE,
-    uses = { NutritionxApiFoodMapper.class})
+    uses = {NutritionxApiFoodMapper.class})
 @DecoratedWith(MealMapperDecorator.class)
 public interface MealMapper {
 

@@ -28,19 +28,16 @@ import reactor.core.scheduler.Schedulers;
 @RequiredArgsConstructor
 public class EmailVerificationServiceImpl implements EmailVerificationService {
 
-  @Value("${front-end.url}")
-  private String frontendUrl;
-
-  @Value("${mail.from.email}")
-  private String fromEmail;
-
-  @Value("${mail.from.name}")
-  private String fromName;
-
   private final JavaMailSender mailSender;
   private final UserService userService;
   private final JwtEmailVerificationService jwtUtil;
   private final SpringTemplateEngine emailTemplateEngine;
+  @Value("${front-end.url}")
+  private String frontendUrl;
+  @Value("${mail.from.email}")
+  private String fromEmail;
+  @Value("${mail.from.name}")
+  private String fromName;
 
   public Mono<Void> validateUserAndSendVerificationEmail(EmailValidationRequest dto) {
     return userService

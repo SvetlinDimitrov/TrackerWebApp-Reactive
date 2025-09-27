@@ -15,10 +15,9 @@ import reactor.core.publisher.Mono;
 @RequiredArgsConstructor
 public class MealSeederService {
 
+  private static final Set<String> MEALS = Set.of("Breakfast", "Lunch", "Snack", "Dinner");
   private final MealRepository mealRepository;
   private final UserRepository userRepository;
-
-  private static final Set<String> MEALS = Set.of("Breakfast", "Lunch", "Snack", "Dinner");
 
   public Mono<Void> seed() {
     log.info("Starting Meal seeding...");

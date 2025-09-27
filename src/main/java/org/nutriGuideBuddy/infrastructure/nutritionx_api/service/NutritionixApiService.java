@@ -30,16 +30,12 @@ public class NutritionixApiService {
 
   private static final int BUFFER_SIZE = 64 * 1024 * 1024;
   private static final String BASE_URL = "https://trackapi.nutritionix.com";
-
+  private final NutritionxApiFoodMapper nutritionxApiFoodMapper;
   @Value("${api.id}")
   public String X_API_ID;
-
   @Value("${api.key}")
   public String X_API_KEY;
-
   private WebClient webClient;
-
-  private final NutritionxApiFoodMapper nutritionxApiFoodMapper;
 
   @PostConstruct
   private void init() {

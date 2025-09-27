@@ -14,18 +14,19 @@ import reactor.core.publisher.Mono;
 @RequiredArgsConstructor
 public class GodUserSeeder implements CommandLineRunner {
 
-    private final GodUserSeederService godUserSeederService;
+  private final GodUserSeederService godUserSeederService;
 
-    @Override
-    public void run(String... args) {
-        log.info("Seeding GOD user (prod)...");
-        godUserSeederService
-            .seed()
-            .doOnTerminate(() -> log.info("GOD user seeding completed."))
-            .onErrorResume(e -> {
-                log.error("GOD user seeding failed: {}", e.getMessage(), e);
-                return Mono.empty();
+  @Override
+  public void run(String... args) {
+    log.info("Seeding GOD user (prod)...");
+    godUserSeederService
+        .seed()
+        .doOnTerminate(() -> log.info("GOD user seeding completed."))
+        .onErrorResume(
+            e -> {
+              log.error("GOD user seeding failed: {}", e.getMessage(), e);
+              return Mono.empty();
             })
-            .subscribe();
-    }
+        .subscribe();
+  }
 }

@@ -19,17 +19,14 @@ import reactor.core.publisher.Mono;
 @RequiredArgsConstructor
 public class CustomFoodSeederService {
 
-  private final CustomFoodService customFoodService;
-  private final UserRepository userRepository;
-  private final FoodSeedUtils foodSeedUtils;
-
   private static final List<String> FOOD_NAMES =
       List.of("Tofu", "Avocado", "Spinach", "Lentils", "Quinoa", "Peanuts", "Oats", "Shrimp");
-
   private static final List<String> PICTURES =
       List.of(
           "https://picsum.photos/210", "https://picsum.photos/211", "https://picsum.photos/212");
-
+  private final CustomFoodService customFoodService;
+  private final UserRepository userRepository;
+  private final FoodSeedUtils foodSeedUtils;
   private final Random random = new Random();
 
   public Mono<Void> seed() {

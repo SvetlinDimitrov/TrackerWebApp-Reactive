@@ -2,7 +2,6 @@ package org.nutriGuideBuddy.infrastructure.rdi.service;
 
 import java.util.*;
 import lombok.RequiredArgsConstructor;
-import org.nutriGuideBuddy.features.user.enums.DietType;
 import org.nutriGuideBuddy.features.user.enums.NutritionAuthority;
 import org.nutriGuideBuddy.infrastructure.rdi.dto.JsonAllowedNutrients;
 import org.nutriGuideBuddy.infrastructure.rdi.dto.JsonDietType;

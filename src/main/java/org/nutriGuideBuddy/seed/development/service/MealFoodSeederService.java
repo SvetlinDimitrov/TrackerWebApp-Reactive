@@ -22,11 +22,6 @@ import reactor.core.publisher.Mono;
 @RequiredArgsConstructor
 public class MealFoodSeederService {
 
-  private final MealRepository mealRepository;
-  private final MealFoodService mealFoodService;
-  private final UserRepository userRepository;
-  private final FoodSeedUtils foodSeedUtils;
-
   private static final List<String> FOOD_NAMES =
       List.of(
           "Apple",
@@ -44,11 +39,13 @@ public class MealFoodSeederService {
           "Beef",
           "Yogurt",
           "Orange");
-
   private static final List<String> PICTURES =
       List.of(
           "https://picsum.photos/200", "https://picsum.photos/201", "https://picsum.photos/202");
-
+  private final MealRepository mealRepository;
+  private final MealFoodService mealFoodService;
+  private final UserRepository userRepository;
+  private final FoodSeedUtils foodSeedUtils;
   private final Random random = new Random();
 
   public Mono<Void> seed() {

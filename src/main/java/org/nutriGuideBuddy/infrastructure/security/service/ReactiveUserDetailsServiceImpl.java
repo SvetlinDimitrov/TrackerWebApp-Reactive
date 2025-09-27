@@ -24,19 +24,6 @@ public class ReactiveUserDetailsServiceImpl implements ReactiveUserDetailsServic
   private UserService userService;
   private UserDetailsService userDetailsService;
 
-  @Override
-  public Mono<UserDetails> findByUsername(String email) {
-    return userService
-        .findByEmail(email)
-        .switchIfEmpty(
-            Mono.error(new AccessDeniedException(String.format(USER_NOT_FOUND_BY_EMAIL, email))))
-        .flatMap(
-            user ->
-                userDetailsService
-                    .findByUserIdOrThrow(user.getId())
-                    .map(details -> new UserPrincipal(user, details)));
-  }
-
   public static Mono<UserPrincipal> getPrincipal() {
     return ReactiveSecurityContextHolder.getContext()
         .flatMap(
@@ -52,6 +39,19 @@ public class ReactiveUserDetailsServiceImpl implements ReactiveUserDetailsServic
 
   public static Mono<Long> getPrincipalId() {
     return getPrincipal().map(userPrincipal -> userPrincipal.user().getId());
+  }
+
+  @Override
+  public Mono<UserDetails> findByUsername(String email) {
+    return userService
+        .findByEmail(email)
+        .switchIfEmpty(
+            Mono.error(new AccessDeniedException(String.format(USER_NOT_FOUND_BY_EMAIL, email))))
+        .flatMap(
+            user ->
+                userDetailsService
+                    .findByUserIdOrThrow(user.getId())
+                    .map(details -> new UserPrincipal(user, details)));
   }
 
   @Autowired

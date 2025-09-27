@@ -15,9 +15,9 @@ import reactor.core.publisher.Mono;
 @RequiredArgsConstructor
 public class UserSeederService {
 
+  private static final String DEFAULT_PASSWORD = "12345";
   private final UserRepository userRepository;
   private final PasswordEncoder passwordEncoder;
-  private static final String DEFAULT_PASSWORD = "12345";
 
   public Mono<Void> seed() {
     log.info("Starting User seeding...");

@@ -67,6 +67,28 @@ public class ValidImageUrlValidator implements ConstraintValidator<ValidImageUrl
           // LinkedIn
           "media.licdn.com");
 
+  private static String lower(String s) {
+    return s == null ? null : s.toLowerCase(Locale.ROOT);
+  }
+
+  // Tiny query parser (no decoding needed for our keys)
+  private static Map<String, String> parseQuery(String rawQuery) {
+    if (rawQuery == null || rawQuery.isBlank()) return Map.of();
+    String[] parts = rawQuery.split("&");
+    java.util.HashMap<String, String> map = new java.util.HashMap<>(parts.length * 2);
+    for (String p : parts) {
+      int eq = p.indexOf('=');
+      if (eq > 0 && eq < p.length() - 1) {
+        String k = p.substring(0, eq);
+        String v = p.substring(eq + 1);
+        map.put(k, v);
+      } else if (eq < 0 && !p.isBlank()) {
+        map.put(p, "");
+      }
+    }
+    return map;
+  }
+
   @Override
   public boolean isValid(String value, ConstraintValidatorContext context) {
     if (value == null || value.isBlank()) return true; // optional field
@@ -118,27 +140,5 @@ public class ValidImageUrlValidator implements ConstraintValidator<ValidImageUrl
     }
 
     return false;
-  }
-
-  private static String lower(String s) {
-    return s == null ? null : s.toLowerCase(Locale.ROOT);
-  }
-
-  // Tiny query parser (no decoding needed for our keys)
-  private static Map<String, String> parseQuery(String rawQuery) {
-    if (rawQuery == null || rawQuery.isBlank()) return Map.of();
-    String[] parts = rawQuery.split("&");
-    java.util.HashMap<String, String> map = new java.util.HashMap<>(parts.length * 2);
-    for (String p : parts) {
-      int eq = p.indexOf('=');
-      if (eq > 0 && eq < p.length() - 1) {
-        String k = p.substring(0, eq);
-        String v = p.substring(eq + 1);
-        map.put(k, v);
-      } else if (eq < 0 && !p.isBlank()) {
-        map.put(p, "");
-      }
-    }
-    return map;
   }
 }

@@ -25,8 +25,7 @@ public interface CustomFoodMapper {
   @Mapping(target = "picture", source = "entity.picture")
   @Mapping(target = "calorieAmount", source = "entity.calorieAmount")
   @Mapping(target = "calorieUnit", source = "entity.calorieUnit")
-  CustomFoodView toView(
-      CustomFood entity, Set<ServingView> servings, Set<NutritionView> nutrients);
+  CustomFoodView toView(CustomFood entity, Set<ServingView> servings, Set<NutritionView> nutrients);
 
   CustomFood toEntity(FoodCreateRequest dto);
 

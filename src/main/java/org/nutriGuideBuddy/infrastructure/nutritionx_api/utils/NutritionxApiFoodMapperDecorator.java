@@ -26,9 +26,7 @@ public abstract class NutritionxApiFoodMapperDecorator implements NutritionxApiF
             .orElse(null);
 
     String picture =
-        Optional.ofNullable(dto.photo())
-            .map(FoodItemResponse.Photo::thumb)
-            .orElse(null);
+        Optional.ofNullable(dto.photo()).map(FoodItemResponse.Photo::thumb).orElse(null);
     return new FoodCreateRequest(
         mealCreateRequest.name(),
         info,

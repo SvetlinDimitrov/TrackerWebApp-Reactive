@@ -3,319 +3,1197 @@
   "nutrients": {
     "CALCIUM_CA": {
       "ALL": [
-        { "ageMin": 1, "ageMax": 3, "rdiMin": 350, "unit": "mg", "isDerived": false },
-        { "ageMin": 4, "ageMax": 6, "rdiMin": 450, "unit": "mg", "isDerived": false },
-        { "ageMin": 7, "ageMax": 10, "rdiMin": 550, "unit": "mg", "isDerived": false }
+        {
+          "ageMin": 1,
+          "ageMax": 3,
+          "rdiMin": 350,
+          "unit": "mg",
+          "isDerived": false
+        },
+        {
+          "ageMin": 4,
+          "ageMax": 6,
+          "rdiMin": 450,
+          "unit": "mg",
+          "isDerived": false
+        },
+        {
+          "ageMin": 7,
+          "ageMax": 10,
+          "rdiMin": 550,
+          "unit": "mg",
+          "isDerived": false
+        }
       ],
       "MALE": [
-        { "ageMin": 11, "ageMax": 18, "rdiMin": 1000, "unit": "mg", "isDerived": false },
-        { "ageMin": 19, "ageMax": 150, "rdiMin": 700, "unit": "mg", "isDerived": false, "rdiMax": 2500 }
+        {
+          "ageMin": 11,
+          "ageMax": 18,
+          "rdiMin": 1000,
+          "unit": "mg",
+          "isDerived": false
+        },
+        {
+          "ageMin": 19,
+          "ageMax": 150,
+          "rdiMin": 700,
+          "unit": "mg",
+          "isDerived": false,
+          "rdiMax": 2500
+        }
       ],
       "FEMALE": [
-        { "ageMin": 11, "ageMax": 18, "rdiMin": 800, "unit": "mg", "isDerived": false },
-        { "ageMin": 19, "ageMax": 150, "rdiMin": 700, "unit": "mg", "isDerived": false, "rdiMax": 2500 }
+        {
+          "ageMin": 11,
+          "ageMax": 18,
+          "rdiMin": 800,
+          "unit": "mg",
+          "isDerived": false
+        },
+        {
+          "ageMin": 19,
+          "ageMax": 150,
+          "rdiMin": 700,
+          "unit": "mg",
+          "isDerived": false,
+          "rdiMax": 2500
+        }
       ]
     },
     "IRON_FE": {
       "ALL": [
-        { "ageMin": 1, "ageMax": 3, "rdiMin": 6.9, "unit": "mg", "isDerived": false },
-        { "ageMin": 4, "ageMax": 6, "rdiMin": 6.1, "unit": "mg", "isDerived": false },
-        { "ageMin": 7, "ageMax": 10, "rdiMin": 8.7, "unit": "mg", "isDerived": false }
+        {
+          "ageMin": 1,
+          "ageMax": 3,
+          "rdiMin": 6.9,
+          "unit": "mg",
+          "isDerived": false
+        },
+        {
+          "ageMin": 4,
+          "ageMax": 6,
+          "rdiMin": 6.1,
+          "unit": "mg",
+          "isDerived": false
+        },
+        {
+          "ageMin": 7,
+          "ageMax": 10,
+          "rdiMin": 8.7,
+          "unit": "mg",
+          "isDerived": false
+        }
       ],
       "MALE": [
-        { "ageMin": 11, "ageMax": 18, "rdiMin": 11.3, "unit": "mg", "isDerived": false },
-        { "ageMin": 19, "ageMax": 150, "rdiMin": 8.7, "unit": "mg", "isDerived": false, "rdiMax": 45 }
+        {
+          "ageMin": 11,
+          "ageMax": 18,
+          "rdiMin": 11.3,
+          "unit": "mg",
+          "isDerived": false
+        },
+        {
+          "ageMin": 19,
+          "ageMax": 150,
+          "rdiMin": 8.7,
+          "unit": "mg",
+          "isDerived": false,
+          "rdiMax": 45
+        }
       ],
       "FEMALE": [
-        { "ageMin": 11, "ageMax": 50, "rdiMin": 14.8, "unit": "mg", "isDerived": false },
-        { "ageMin": 51, "ageMax": 150, "rdiMin": 8.7, "unit": "mg", "isDerived": false, "rdiMax": 45 }
+        {
+          "ageMin": 11,
+          "ageMax": 50,
+          "rdiMin": 14.8,
+          "unit": "mg",
+          "isDerived": false
+        },
+        {
+          "ageMin": 51,
+          "ageMax": 150,
+          "rdiMin": 8.7,
+          "unit": "mg",
+          "isDerived": false,
+          "rdiMax": 45
+        }
       ]
     },
     "ZINC_ZN": {
       "ALL": [
-        { "ageMin": 1, "ageMax": 3, "rdiMin": 5.0, "unit": "mg", "isDerived": false },
-        { "ageMin": 4, "ageMax": 6, "rdiMin": 6.5, "unit": "mg", "isDerived": false },
-        { "ageMin": 7, "ageMax": 10, "rdiMin": 7.0, "unit": "mg", "isDerived": false }
+        {
+          "ageMin": 1,
+          "ageMax": 3,
+          "rdiMin": 5.0,
+          "unit": "mg",
+          "isDerived": false
+        },
+        {
+          "ageMin": 4,
+          "ageMax": 6,
+          "rdiMin": 6.5,
+          "unit": "mg",
+          "isDerived": false
+        },
+        {
+          "ageMin": 7,
+          "ageMax": 10,
+          "rdiMin": 7.0,
+          "unit": "mg",
+          "isDerived": false
+        }
       ],
       "MALE": [
-        { "ageMin": 11, "ageMax": 14, "rdiMin": 9.0, "unit": "mg", "isDerived": false },
-        { "ageMin": 15, "ageMax": 18, "rdiMin": 9.5, "unit": "mg", "isDerived": false },
-        { "ageMin": 19, "ageMax": 150, "rdiMin": 9.5, "unit": "mg", "isDerived": false, "rdiMax": 25 }
+        {
+          "ageMin": 11,
+          "ageMax": 14,
+          "rdiMin": 9.0,
+          "unit": "mg",
+          "isDerived": false
+        },
+        {
+          "ageMin": 15,
+          "ageMax": 18,
+          "rdiMin": 9.5,
+          "unit": "mg",
+          "isDerived": false
+        },
+        {
+          "ageMin": 19,
+          "ageMax": 150,
+          "rdiMin": 9.5,
+          "unit": "mg",
+          "isDerived": false,
+          "rdiMax": 25
+        }
       ],
       "FEMALE": [
-        { "ageMin": 11, "ageMax": 18, "rdiMin": 7.0, "unit": "mg", "isDerived": false },
-        { "ageMin": 19, "ageMax": 150, "rdiMin": 7.0, "unit": "mg", "isDerived": false, "rdiMax": 25 }
+        {
+          "ageMin": 11,
+          "ageMax": 18,
+          "rdiMin": 7.0,
+          "unit": "mg",
+          "isDerived": false
+        },
+        {
+          "ageMin": 19,
+          "ageMax": 150,
+          "rdiMin": 7.0,
+          "unit": "mg",
+          "isDerived": false,
+          "rdiMax": 25
+        }
       ]
     },
     "IODINE_I": {
       "ALL": [
-        { "ageMin": 1, "ageMax": 3, "rdiMin": 70, "unit": "µg", "isDerived": false },
-        { "ageMin": 4, "ageMax": 6, "rdiMin": 100, "unit": "µg", "isDerived": false },
-        { "ageMin": 7, "ageMax": 10, "rdiMin": 110, "unit": "µg", "isDerived": false }
+        {
+          "ageMin": 1,
+          "ageMax": 3,
+          "rdiMin": 70,
+          "unit": "µg",
+          "isDerived": false
+        },
+        {
+          "ageMin": 4,
+          "ageMax": 6,
+          "rdiMin": 100,
+          "unit": "µg",
+          "isDerived": false
+        },
+        {
+          "ageMin": 7,
+          "ageMax": 10,
+          "rdiMin": 110,
+          "unit": "µg",
+          "isDerived": false
+        }
       ],
       "MALE": [
-        { "ageMin": 11, "ageMax": 18, "rdiMin": 130, "unit": "µg", "isDerived": false },
-        { "ageMin": 19, "ageMax": 150, "rdiMin": 140, "unit": "µg", "isDerived": false, "rdiMax": 500 }
+        {
+          "ageMin": 11,
+          "ageMax": 18,
+          "rdiMin": 130,
+          "unit": "µg",
+          "isDerived": false
+        },
+        {
+          "ageMin": 19,
+          "ageMax": 150,
+          "rdiMin": 140,
+          "unit": "µg",
+          "isDerived": false,
+          "rdiMax": 500
+        }
       ],
       "FEMALE": [
-        { "ageMin": 11, "ageMax": 18, "rdiMin": 130, "unit": "µg", "isDerived": false },
-        { "ageMin": 19, "ageMax": 150, "rdiMin": 140, "unit": "µg", "isDerived": false, "rdiMax": 500 }
+        {
+          "ageMin": 11,
+          "ageMax": 18,
+          "rdiMin": 130,
+          "unit": "µg",
+          "isDerived": false
+        },
+        {
+          "ageMin": 19,
+          "ageMax": 150,
+          "rdiMin": 140,
+          "unit": "µg",
+          "isDerived": false,
+          "rdiMax": 500
+        }
       ]
     },
     "MAGNESIUM_MG": {
       "ALL": [
-        { "ageMin": 1, "ageMax": 3, "rdiMin": 85, "unit": "mg", "isDerived": false },
-        { "ageMin": 4, "ageMax": 6, "rdiMin": 120, "unit": "mg", "isDerived": false },
-        { "ageMin": 7, "ageMax": 10, "rdiMin": 200, "unit": "mg", "isDerived": false }
+        {
+          "ageMin": 1,
+          "ageMax": 3,
+          "rdiMin": 85,
+          "unit": "mg",
+          "isDerived": false
+        },
+        {
+          "ageMin": 4,
+          "ageMax": 6,
+          "rdiMin": 120,
+          "unit": "mg",
+          "isDerived": false
+        },
+        {
+          "ageMin": 7,
+          "ageMax": 10,
+          "rdiMin": 200,
+          "unit": "mg",
+          "isDerived": false
+        }
       ],
       "MALE": [
-        { "ageMin": 11, "ageMax": 14, "rdiMin": 280, "unit": "mg", "isDerived": false },
-        { "ageMin": 15, "ageMax": 18, "rdiMin": 300, "unit": "mg", "isDerived": false },
-        { "ageMin": 19, "ageMax": 150, "rdiMin": 300, "unit": "mg", "isDerived": false, "rdiMax": 400 }
+        {
+          "ageMin": 11,
+          "ageMax": 14,
+          "rdiMin": 280,
+          "unit": "mg",
+          "isDerived": false
+        },
+        {
+          "ageMin": 15,
+          "ageMax": 18,
+          "rdiMin": 300,
+          "unit": "mg",
+          "isDerived": false
+        },
+        {
+          "ageMin": 19,
+          "ageMax": 150,
+          "rdiMin": 300,
+          "unit": "mg",
+          "isDerived": false,
+          "rdiMax": 400
+        }
       ],
       "FEMALE": [
-        { "ageMin": 11, "ageMax": 14, "rdiMin": 280, "unit": "mg", "isDerived": false },
-        { "ageMin": 15, "ageMax": 18, "rdiMin": 300, "unit": "mg", "isDerived": false },
-        { "ageMin": 19, "ageMax": 150, "rdiMin": 270, "unit": "mg", "isDerived": false, "rdiMax": 400 }
+        {
+          "ageMin": 11,
+          "ageMax": 14,
+          "rdiMin": 280,
+          "unit": "mg",
+          "isDerived": false
+        },
+        {
+          "ageMin": 15,
+          "ageMax": 18,
+          "rdiMin": 300,
+          "unit": "mg",
+          "isDerived": false
+        },
+        {
+          "ageMin": 19,
+          "ageMax": 150,
+          "rdiMin": 270,
+          "unit": "mg",
+          "isDerived": false,
+          "rdiMax": 400
+        }
       ]
     },
     "PHOSPHORUS_P": {
       "ALL": [
-        { "ageMin": 1, "ageMax": 3, "rdiMin": 270, "unit": "mg", "isDerived": false },
-        { "ageMin": 4, "ageMax": 6, "rdiMin": 350, "unit": "mg", "isDerived": false },
-        { "ageMin": 7, "ageMax": 10, "rdiMin": 450, "unit": "mg", "isDerived": false }
+        {
+          "ageMin": 1,
+          "ageMax": 3,
+          "rdiMin": 270,
+          "unit": "mg",
+          "isDerived": false
+        },
+        {
+          "ageMin": 4,
+          "ageMax": 6,
+          "rdiMin": 350,
+          "unit": "mg",
+          "isDerived": false
+        },
+        {
+          "ageMin": 7,
+          "ageMax": 10,
+          "rdiMin": 450,
+          "unit": "mg",
+          "isDerived": false
+        }
       ],
       "MALE": [
-        { "ageMin": 11, "ageMax": 18, "rdiMin": 775, "unit": "mg", "isDerived": false },
-        { "ageMin": 19, "ageMax": 150, "rdiMin": 550, "unit": "mg", "isDerived": false, "rdiMax": 4000 }
+        {
+          "ageMin": 11,
+          "ageMax": 18,
+          "rdiMin": 775,
+          "unit": "mg",
+          "isDerived": false
+        },
+        {
+          "ageMin": 19,
+          "ageMax": 150,
+          "rdiMin": 550,
+          "unit": "mg",
+          "isDerived": false,
+          "rdiMax": 4000
+        }
       ],
       "FEMALE": [
-        { "ageMin": 11, "ageMax": 18, "rdiMin": 625, "unit": "mg", "isDerived": false },
-        { "ageMin": 19, "ageMax": 150, "rdiMin": 550, "unit": "mg", "isDerived": false, "rdiMax": 4000 }
+        {
+          "ageMin": 11,
+          "ageMax": 18,
+          "rdiMin": 625,
+          "unit": "mg",
+          "isDerived": false
+        },
+        {
+          "ageMin": 19,
+          "ageMax": 150,
+          "rdiMin": 550,
+          "unit": "mg",
+          "isDerived": false,
+          "rdiMax": 4000
+        }
       ]
     },
     "SODIUM_NA": {
       "ALL": [
-        { "ageMin": 1, "ageMax": 3, "rdiMin": 800, "unit": "mg", "isDerived": false },
-        { "ageMin": 4, "ageMax": 6, "rdiMin": 1200, "unit": "mg", "isDerived": false },
-        { "ageMin": 7, "ageMax": 10, "rdiMin": 1600, "unit": "mg", "isDerived": false }
+        {
+          "ageMin": 1,
+          "ageMax": 3,
+          "rdiMin": 800,
+          "unit": "mg",
+          "isDerived": false
+        },
+        {
+          "ageMin": 4,
+          "ageMax": 6,
+          "rdiMin": 1200,
+          "unit": "mg",
+          "isDerived": false
+        },
+        {
+          "ageMin": 7,
+          "ageMax": 10,
+          "rdiMin": 1600,
+          "unit": "mg",
+          "isDerived": false
+        }
       ],
       "MALE": [
-        { "ageMin": 11, "ageMax": 18, "rdiMin": 2000, "unit": "mg", "isDerived": false },
-        { "ageMin": 19, "ageMax": 150, "rdiMin": 2400, "unit": "mg", "isDerived": false, "rdiMax": 2400 }
+        {
+          "ageMin": 11,
+          "ageMax": 18,
+          "rdiMin": 2000,
+          "unit": "mg",
+          "isDerived": false
+        },
+        {
+          "ageMin": 19,
+          "ageMax": 150,
+          "rdiMin": 2400,
+          "unit": "mg",
+          "isDerived": false,
+          "rdiMax": 2400
+        }
       ],
       "FEMALE": [
-        { "ageMin": 11, "ageMax": 18, "rdiMin": 2000, "unit": "mg", "isDerived": false },
-        { "ageMin": 19, "ageMax": 150, "rdiMin": 2400, "unit": "mg", "isDerived": false, "rdiMax": 2400 }
+        {
+          "ageMin": 11,
+          "ageMax": 18,
+          "rdiMin": 2000,
+          "unit": "mg",
+          "isDerived": false
+        },
+        {
+          "ageMin": 19,
+          "ageMax": 150,
+          "rdiMin": 2400,
+          "unit": "mg",
+          "isDerived": false,
+          "rdiMax": 2400
+        }
       ]
     },
     "POTASSIUM_K": {
       "ALL": [
-        { "ageMin": 1, "ageMax": 3, "rdiMin": 1100, "unit": "mg", "isDerived": false },
-        { "ageMin": 4, "ageMax": 6, "rdiMin": 1600, "unit": "mg", "isDerived": false },
-        { "ageMin": 7, "ageMax": 10, "rdiMin": 2000, "unit": "mg", "isDerived": false }
+        {
+          "ageMin": 1,
+          "ageMax": 3,
+          "rdiMin": 1100,
+          "unit": "mg",
+          "isDerived": false
+        },
+        {
+          "ageMin": 4,
+          "ageMax": 6,
+          "rdiMin": 1600,
+          "unit": "mg",
+          "isDerived": false
+        },
+        {
+          "ageMin": 7,
+          "ageMax": 10,
+          "rdiMin": 2000,
+          "unit": "mg",
+          "isDerived": false
+        }
       ],
       "MALE": [
-        { "ageMin": 11, "ageMax": 18, "rdiMin": 3100, "unit": "mg", "isDerived": false },
-        { "ageMin": 19, "ageMax": 150, "rdiMin": 3500, "unit": "mg", "isDerived": false }
+        {
+          "ageMin": 11,
+          "ageMax": 18,
+          "rdiMin": 3100,
+          "unit": "mg",
+          "isDerived": false
+        },
+        {
+          "ageMin": 19,
+          "ageMax": 150,
+          "rdiMin": 3500,
+          "unit": "mg",
+          "isDerived": false
+        }
       ],
       "FEMALE": [
-        { "ageMin": 11, "ageMax": 18, "rdiMin": 3100, "unit": "mg", "isDerived": false },
-        { "ageMin": 19, "ageMax": 150, "rdiMin": 3500, "unit": "mg", "isDerived": false }
+        {
+          "ageMin": 11,
+          "ageMax": 18,
+          "rdiMin": 3100,
+          "unit": "mg",
+          "isDerived": false
+        },
+        {
+          "ageMin": 19,
+          "ageMax": 150,
+          "rdiMin": 3500,
+          "unit": "mg",
+          "isDerived": false
+        }
       ]
     },
     "CHLORIDE": {
       "ALL": [
-        { "ageMin": 1, "ageMax": 3, "rdiMin": 1.5, "unit": "g", "isDerived": false },
-        { "ageMin": 4, "ageMax": 6, "rdiMin": 1.9, "unit": "g", "isDerived": false },
-        { "ageMin": 7, "ageMax": 10, "rdiMin": 2.3, "unit": "g", "isDerived": false }
+        {
+          "ageMin": 1,
+          "ageMax": 3,
+          "rdiMin": 1.5,
+          "unit": "g",
+          "isDerived": false
+        },
+        {
+          "ageMin": 4,
+          "ageMax": 6,
+          "rdiMin": 1.9,
+          "unit": "g",
+          "isDerived": false
+        },
+        {
+          "ageMin": 7,
+          "ageMax": 10,
+          "rdiMin": 2.3,
+          "unit": "g",
+          "isDerived": false
+        }
       ],
       "MALE": [
-        { "ageMin": 11, "ageMax": 18, "rdiMin": 2.8, "unit": "g", "isDerived": false },
-        { "ageMin": 19, "ageMax": 150, "rdiMin": 3.0, "unit": "g", "isDerived": false }
+        {
+          "ageMin": 11,
+          "ageMax": 18,
+          "rdiMin": 2.8,
+          "unit": "g",
+          "isDerived": false
+        },
+        {
+          "ageMin": 19,
+          "ageMax": 150,
+          "rdiMin": 3.0,
+          "unit": "g",
+          "isDerived": false
+        }
       ],
       "FEMALE": [
-        { "ageMin": 11, "ageMax": 18, "rdiMin": 2.8, "unit": "g", "isDerived": false },
-        { "ageMin": 19, "ageMax": 150, "rdiMin": 3.0, "unit": "g", "isDerived": false }
+        {
+          "ageMin": 11,
+          "ageMax": 18,
+          "rdiMin": 2.8,
+          "unit": "g",
+          "isDerived": false
+        },
+        {
+          "ageMin": 19,
+          "ageMax": 150,
+          "rdiMin": 3.0,
+          "unit": "g",
+          "isDerived": false
+        }
       ]
     },
     "COPPER_CU": {
       "ALL": [
-        { "ageMin": 1, "ageMax": 3, "rdiMin": 400, "unit": "µg", "isDerived": false },
-        { "ageMin": 4, "ageMax": 6, "rdiMin": 600, "unit": "µg", "isDerived": false },
-        { "ageMin": 7, "ageMax": 10, "rdiMin": 700, "unit": "µg", "isDerived": false }
+        {
+          "ageMin": 1,
+          "ageMax": 3,
+          "rdiMin": 400,
+          "unit": "µg",
+          "isDerived": false
+        },
+        {
+          "ageMin": 4,
+          "ageMax": 6,
+          "rdiMin": 600,
+          "unit": "µg",
+          "isDerived": false
+        },
+        {
+          "ageMin": 7,
+          "ageMax": 10,
+          "rdiMin": 700,
+          "unit": "µg",
+          "isDerived": false
+        }
       ],
       "MALE": [
-        { "ageMin": 11, "ageMax": 18, "rdiMin": 800, "unit": "µg", "isDerived": false },
-        { "ageMin": 19, "ageMax": 150, "rdiMin": 1200, "unit": "µg", "isDerived": false, "rdiMax": 10000 }
+        {
+          "ageMin": 11,
+          "ageMax": 18,
+          "rdiMin": 800,
+          "unit": "µg",
+          "isDerived": false
+        },
+        {
+          "ageMin": 19,
+          "ageMax": 150,
+          "rdiMin": 1200,
+          "unit": "µg",
+          "isDerived": false,
+          "rdiMax": 10000
+        }
       ],
       "FEMALE": [
-        { "ageMin": 11, "ageMax": 18, "rdiMin": 800, "unit": "µg", "isDerived": false },
-        { "ageMin": 19, "ageMax": 150, "rdiMin": 1200, "unit": "µg", "isDerived": false, "rdiMax": 10000 }
+        {
+          "ageMin": 11,
+          "ageMax": 18,
+          "rdiMin": 800,
+          "unit": "µg",
+          "isDerived": false
+        },
+        {
+          "ageMin": 19,
+          "ageMax": 150,
+          "rdiMin": 1200,
+          "unit": "µg",
+          "isDerived": false,
+          "rdiMax": 10000
+        }
       ]
     },
     "SELENIUM_SE": {
       "ALL": [
-        { "ageMin": 1, "ageMax": 3, "rdiMin": 15, "unit": "µg", "isDerived": false },
-        { "ageMin": 4, "ageMax": 6, "rdiMin": 20, "unit": "µg", "isDerived": false },
-        { "ageMin": 7, "ageMax": 10, "rdiMin": 30, "unit": "µg", "isDerived": false }
+        {
+          "ageMin": 1,
+          "ageMax": 3,
+          "rdiMin": 15,
+          "unit": "µg",
+          "isDerived": false
+        },
+        {
+          "ageMin": 4,
+          "ageMax": 6,
+          "rdiMin": 20,
+          "unit": "µg",
+          "isDerived": false
+        },
+        {
+          "ageMin": 7,
+          "ageMax": 10,
+          "rdiMin": 30,
+          "unit": "µg",
+          "isDerived": false
+        }
       ],
       "MALE": [
-        { "ageMin": 11, "ageMax": 18, "rdiMin": 45, "unit": "µg", "isDerived": false },
-        { "ageMin": 19, "ageMax": 150, "rdiMin": 75, "unit": "µg", "isDerived": false, "rdiMax": 450 }
+        {
+          "ageMin": 11,
+          "ageMax": 18,
+          "rdiMin": 45,
+          "unit": "µg",
+          "isDerived": false
+        },
+        {
+          "ageMin": 19,
+          "ageMax": 150,
+          "rdiMin": 75,
+          "unit": "µg",
+          "isDerived": false,
+          "rdiMax": 450
+        }
       ],
       "FEMALE": [
-        { "ageMin": 11, "ageMax": 18, "rdiMin": 45, "unit": "µg", "isDerived": false },
-        { "ageMin": 19, "ageMax": 150, "rdiMin": 60, "unit": "µg", "isDerived": false, "rdiMax": 450 }
+        {
+          "ageMin": 11,
+          "ageMax": 18,
+          "rdiMin": 45,
+          "unit": "µg",
+          "isDerived": false
+        },
+        {
+          "ageMin": 19,
+          "ageMax": 150,
+          "rdiMin": 60,
+          "unit": "µg",
+          "isDerived": false,
+          "rdiMax": 450
+        }
       ]
     },
     "MANGANESE_MN": {
       "ALL": [
-        { "ageMin": 1, "ageMax": 150, "unit": "mg", "isDerived": false, "rdiMax": 4, "note": "Safe upper level applies to supplemental intake; no RNI established." }
+        {
+          "ageMin": 1,
+          "ageMax": 150,
+          "unit": "mg",
+          "isDerived": false,
+          "rdiMax": 4,
+          "note": "Safe upper level applies to supplemental intake; no RNI established."
+        }
       ]
     },
     "FLUORIDE": {
       "ALL": [
-        { "ageMin": 1, "ageMax": 150, "unit": "mg", "isDerived": false, "rdiMax": 7, "note": "Adult UL set at 7 mg/day to avoid dental fluorosis." }
+        {
+          "ageMin": 1,
+          "ageMax": 150,
+          "unit": "mg",
+          "isDerived": false,
+          "rdiMax": 7,
+          "note": "Adult UL set at 7 mg/day to avoid dental fluorosis."
+        }
       ]
     },
     "MOLYBDENUM_MO": {
       "ALL": [
-        { "ageMin": 1, "ageMax": 150, "unit": "µg", "isDerived": false, "rdiMax": 600, "note": "Safe upper level set at 600 µg/day for adults." }
+        {
+          "ageMin": 1,
+          "ageMax": 150,
+          "unit": "µg",
+          "isDerived": false,
+          "rdiMax": 600,
+          "note": "Safe upper level set at 600 µg/day for adults."
+        }
       ]
     },
     "CHOLINE": {
       "ALL": [
-        { "ageMin": 1, "ageMax": 150, "unit": "mg", "isDerived": false, "rdiMax": 3500, "note": "No RNI; safe upper level set at 3500 mg/day." }
+        {
+          "ageMin": 1,
+          "ageMax": 150,
+          "unit": "mg",
+          "isDerived": false,
+          "rdiMax": 3500,
+          "note": "No RNI; safe upper level set at 3500 mg/day."
+        }
       ]
     },
-
     "VITAMIN_A": {
       "ALL": [
-        { "ageMin": 1, "ageMax": 3, "rdiMin": 400, "unit": "µg", "isDerived": false },
-        { "ageMin": 4, "ageMax": 6, "rdiMin": 500, "unit": "µg", "isDerived": false },
-        { "ageMin": 7, "ageMax": 10, "rdiMin": 500, "unit": "µg", "isDerived": false }
+        {
+          "ageMin": 1,
+          "ageMax": 3,
+          "rdiMin": 400,
+          "unit": "µg",
+          "isDerived": false
+        },
+        {
+          "ageMin": 4,
+          "ageMax": 6,
+          "rdiMin": 500,
+          "unit": "µg",
+          "isDerived": false
+        },
+        {
+          "ageMin": 7,
+          "ageMax": 10,
+          "rdiMin": 500,
+          "unit": "µg",
+          "isDerived": false
+        }
       ],
       "MALE": [
-        { "ageMin": 11, "ageMax": 18, "rdiMin": 600, "unit": "µg", "isDerived": false },
-        { "ageMin": 19, "ageMax": 150, "rdiMin": 700, "unit": "µg", "isDerived": false, "rdiMax": 1500 }
+        {
+          "ageMin": 11,
+          "ageMax": 18,
+          "rdiMin": 600,
+          "unit": "µg",
+          "isDerived": false
+        },
+        {
+          "ageMin": 19,
+          "ageMax": 150,
+          "rdiMin": 700,
+          "unit": "µg",
+          "isDerived": false,
+          "rdiMax": 1500
+        }
       ],
       "FEMALE": [
-        { "ageMin": 11, "ageMax": 18, "rdiMin": 600, "unit": "µg", "isDerived": false },
-        { "ageMin": 19, "ageMax": 150, "rdiMin": 600, "unit": "µg", "isDerived": false, "rdiMax": 1500 }
+        {
+          "ageMin": 11,
+          "ageMax": 18,
+          "rdiMin": 600,
+          "unit": "µg",
+          "isDerived": false
+        },
+        {
+          "ageMin": 19,
+          "ageMax": 150,
+          "rdiMin": 600,
+          "unit": "µg",
+          "isDerived": false,
+          "rdiMax": 1500
+        }
       ]
     },
     "VITAMIN_D_D2_D3": {
       "ALL": [
-        { "ageMin": 1, "ageMax": 150, "rdiMin": 10, "unit": "µg", "isDerived": false, "rdiMax": 100, "note": "SACN (2016): 10 µg/day recommended for all ≥1 year; safe upper level 100 µg/day." }
+        {
+          "ageMin": 1,
+          "ageMax": 150,
+          "rdiMin": 10,
+          "unit": "µg",
+          "isDerived": false,
+          "rdiMax": 100,
+          "note": "SACN (2016): 10 µg/day recommended for all ≥1 year; safe upper level 100 µg/day."
+        }
       ]
     },
     "VITAMIN_C": {
       "ALL": [
-        { "ageMin": 1, "ageMax": 3, "rdiMin": 30, "unit": "mg", "isDerived": false },
-        { "ageMin": 4, "ageMax": 6, "rdiMin": 30, "unit": "mg", "isDerived": false },
-        { "ageMin": 7, "ageMax": 10, "rdiMin": 30, "unit": "mg", "isDerived": false }
+        {
+          "ageMin": 1,
+          "ageMax": 3,
+          "rdiMin": 30,
+          "unit": "mg",
+          "isDerived": false
+        },
+        {
+          "ageMin": 4,
+          "ageMax": 6,
+          "rdiMin": 30,
+          "unit": "mg",
+          "isDerived": false
+        },
+        {
+          "ageMin": 7,
+          "ageMax": 10,
+          "rdiMin": 30,
+          "unit": "mg",
+          "isDerived": false
+        }
       ],
       "MALE": [
-        { "ageMin": 11, "ageMax": 18, "rdiMin": 35, "unit": "mg", "isDerived": false },
-        { "ageMin": 19, "ageMax": 150, "rdiMin": 40, "unit": "mg", "isDerived": false, "rdiMax": 1000 }
+        {
+          "ageMin": 11,
+          "ageMax": 18,
+          "rdiMin": 35,
+          "unit": "mg",
+          "isDerived": false
+        },
+        {
+          "ageMin": 19,
+          "ageMax": 150,
+          "rdiMin": 40,
+          "unit": "mg",
+          "isDerived": false,
+          "rdiMax": 1000
+        }
       ],
       "FEMALE": [
-        { "ageMin": 11, "ageMax": 18, "rdiMin": 35, "unit": "mg", "isDerived": false },
-        { "ageMin": 19, "ageMax": 150, "rdiMin": 40, "unit": "mg", "isDerived": false, "rdiMax": 1000 }
+        {
+          "ageMin": 11,
+          "ageMax": 18,
+          "rdiMin": 35,
+          "unit": "mg",
+          "isDerived": false
+        },
+        {
+          "ageMin": 19,
+          "ageMax": 150,
+          "rdiMin": 40,
+          "unit": "mg",
+          "isDerived": false,
+          "rdiMax": 1000
+        }
       ]
     },
     "VITAMIN_B1_THIAMIN": {
       "ALL": [
-        { "ageMin": 1, "ageMax": 3, "rdiMin": 0.5, "unit": "mg", "isDerived": false },
-        { "ageMin": 4, "ageMax": 6, "rdiMin": 0.7, "unit": "mg", "isDerived": false },
-        { "ageMin": 7, "ageMax": 10, "rdiMin": 0.9, "unit": "mg", "isDerived": false }
+        {
+          "ageMin": 1,
+          "ageMax": 3,
+          "rdiMin": 0.5,
+          "unit": "mg",
+          "isDerived": false
+        },
+        {
+          "ageMin": 4,
+          "ageMax": 6,
+          "rdiMin": 0.7,
+          "unit": "mg",
+          "isDerived": false
+        },
+        {
+          "ageMin": 7,
+          "ageMax": 10,
+          "rdiMin": 0.9,
+          "unit": "mg",
+          "isDerived": false
+        }
       ],
       "MALE": [
-        { "ageMin": 11, "ageMax": 18, "rdiMin": 1.1, "unit": "mg", "isDerived": false },
-        { "ageMin": 19, "ageMax": 150, "rdiMin": 1.0, "unit": "mg", "isDerived": false }
+        {
+          "ageMin": 11,
+          "ageMax": 18,
+          "rdiMin": 1.1,
+          "unit": "mg",
+          "isDerived": false
+        },
+        {
+          "ageMin": 19,
+          "ageMax": 150,
+          "rdiMin": 1.0,
+          "unit": "mg",
+          "isDerived": false
+        }
       ],
       "FEMALE": [
-        { "ageMin": 11, "ageMax": 18, "rdiMin": 0.9, "unit": "mg", "isDerived": false },
-        { "ageMin": 19, "ageMax": 150, "rdiMin": 0.8, "unit": "mg", "isDerived": false }
+        {
+          "ageMin": 11,
+          "ageMax": 18,
+          "rdiMin": 0.9,
+          "unit": "mg",
+          "isDerived": false
+        },
+        {
+          "ageMin": 19,
+          "ageMax": 150,
+          "rdiMin": 0.8,
+          "unit": "mg",
+          "isDerived": false
+        }
       ]
     },
     "VITAMIN_B2_RIBOFLAVIN": {
       "ALL": [
-        { "ageMin": 1, "ageMax": 3, "rdiMin": 0.6, "unit": "mg", "isDerived": false },
-        { "ageMin": 4, "ageMax": 6, "rdiMin": 0.8, "unit": "mg", "isDerived": false },
-        { "ageMin": 7, "ageMax": 10, "rdiMin": 1.0, "unit": "mg", "isDerived": false }
+        {
+          "ageMin": 1,
+          "ageMax": 3,
+          "rdiMin": 0.6,
+          "unit": "mg",
+          "isDerived": false
+        },
+        {
+          "ageMin": 4,
+          "ageMax": 6,
+          "rdiMin": 0.8,
+          "unit": "mg",
+          "isDerived": false
+        },
+        {
+          "ageMin": 7,
+          "ageMax": 10,
+          "rdiMin": 1.0,
+          "unit": "mg",
+          "isDerived": false
+        }
       ],
       "MALE": [
-        { "ageMin": 11, "ageMax": 18, "rdiMin": 1.3, "unit": "mg", "isDerived": false },
-        { "ageMin": 19, "ageMax": 150, "rdiMin": 1.3, "unit": "mg", "isDerived": false }
+        {
+          "ageMin": 11,
+          "ageMax": 18,
+          "rdiMin": 1.3,
+          "unit": "mg",
+          "isDerived": false
+        },
+        {
+          "ageMin": 19,
+          "ageMax": 150,
+          "rdiMin": 1.3,
+          "unit": "mg",
+          "isDerived": false
+        }
       ],
       "FEMALE": [
-        { "ageMin": 11, "ageMax": 18, "rdiMin": 1.1, "unit": "mg", "isDerived": false },
-        { "ageMin": 19, "ageMax": 150, "rdiMin": 1.1, "unit": "mg", "isDerived": false }
+        {
+          "ageMin": 11,
+          "ageMax": 18,
+          "rdiMin": 1.1,
+          "unit": "mg",
+          "isDerived": false
+        },
+        {
+          "ageMin": 19,
+          "ageMax": 150,
+          "rdiMin": 1.1,
+          "unit": "mg",
+          "isDerived": false
+        }
       ]
     },
     "VITAMIN_B3_NIACIN": {
       "ALL": [
-        { "ageMin": 1, "ageMax": 3, "rdiMin": 8, "unit": "mg", "isDerived": false },
-        { "ageMin": 4, "ageMax": 6, "rdiMin": 11, "unit": "mg", "isDerived": false },
-        { "ageMin": 7, "ageMax": 10, "rdiMin": 13, "unit": "mg", "isDerived": false }
+        {
+          "ageMin": 1,
+          "ageMax": 3,
+          "rdiMin": 8,
+          "unit": "mg",
+          "isDerived": false
+        },
+        {
+          "ageMin": 4,
+          "ageMax": 6,
+          "rdiMin": 11,
+          "unit": "mg",
+          "isDerived": false
+        },
+        {
+          "ageMin": 7,
+          "ageMax": 10,
+          "rdiMin": 13,
+          "unit": "mg",
+          "isDerived": false
+        }
       ],
       "MALE": [
-        { "ageMin": 11, "ageMax": 18, "rdiMin": 17, "unit": "mg", "isDerived": false },
-        { "ageMin": 19, "ageMax": 150, "rdiMin": 16, "unit": "mg", "isDerived": false, "rdiMax": 500 }
+        {
+          "ageMin": 11,
+          "ageMax": 18,
+          "rdiMin": 17,
+          "unit": "mg",
+          "isDerived": false
+        },
+        {
+          "ageMin": 19,
+          "ageMax": 150,
+          "rdiMin": 16,
+          "unit": "mg",
+          "isDerived": false,
+          "rdiMax": 500
+        }
       ],
       "FEMALE": [
-        { "ageMin": 11, "ageMax": 18, "rdiMin": 15, "unit": "mg", "isDerived": false },
-        { "ageMin": 19, "ageMax": 150, "rdiMin": 13, "unit": "mg", "isDerived": false, "rdiMax": 500 }
+        {
+          "ageMin": 11,
+          "ageMax": 18,
+          "rdiMin": 15,
+          "unit": "mg",
+          "isDerived": false
+        },
+        {
+          "ageMin": 19,
+          "ageMax": 150,
+          "rdiMin": 13,
+          "unit": "mg",
+          "isDerived": false,
+          "rdiMax": 500
+        }
       ]
     },
     "VITAMIN_B6": {
       "ALL": [
-        { "ageMin": 1, "ageMax": 3, "rdiMin": 0.7, "unit": "mg", "isDerived": false },
-        { "ageMin": 4, "ageMax": 6, "rdiMin": 0.9, "unit": "mg", "isDerived": false },
-        { "ageMin": 7, "ageMax": 10, "rdiMin": 1.0, "unit": "mg", "isDerived": false }
+        {
+          "ageMin": 1,
+          "ageMax": 3,
+          "rdiMin": 0.7,
+          "unit": "mg",
+          "isDerived": false
+        },
+        {
+          "ageMin": 4,
+          "ageMax": 6,
+          "rdiMin": 0.9,
+          "unit": "mg",
+          "isDerived": false
+        },
+        {
+          "ageMin": 7,
+          "ageMax": 10,
+          "rdiMin": 1.0,
+          "unit": "mg",
+          "isDerived": false
+        }
       ],
       "MALE": [
-        { "ageMin": 11, "ageMax": 18, "rdiMin": 1.2, "unit": "mg", "isDerived": false },
-        { "ageMin": 19, "ageMax": 150, "rdiMin": 1.4, "unit": "mg", "isDerived": false, "rdiMax": 10 }
+        {
+          "ageMin": 11,
+          "ageMax": 18,
+          "rdiMin": 1.2,
+          "unit": "mg",
+          "isDerived": false
+        },
+        {
+          "ageMin": 19,
+          "ageMax": 150,
+          "rdiMin": 1.4,
+          "unit": "mg",
+          "isDerived": false,
+          "rdiMax": 10
+        }
       ],
       "FEMALE": [
-        { "ageMin": 11, "ageMax": 18, "rdiMin": 1.1, "unit": "mg", "isDerived": false },
-        { "ageMin": 19, "ageMax": 150, "rdiMin": 1.2, "unit": "mg", "isDerived": false, "rdiMax": 10 }
+        {
+          "ageMin": 11,
+          "ageMax": 18,
+          "rdiMin": 1.1,
+          "unit": "mg",
+          "isDerived": false
+        },
+        {
+          "ageMin": 19,
+          "ageMax": 150,
+          "rdiMin": 1.2,
+          "unit": "mg",
+          "isDerived": false,
+          "rdiMax": 10
+        }
       ]
     },
     "VITAMIN_B9_FOLATE": {
       "ALL": [
-        { "ageMin": 1, "ageMax": 3, "rdiMin": 70, "unit": "µg", "isDerived": false },
-        { "ageMin": 4, "ageMax": 6, "rdiMin": 100, "unit": "µg", "isDerived": false },
-        { "ageMin": 7, "ageMax": 10, "rdiMin": 150, "unit": "µg", "isDerived": false }
+        {
+          "ageMin": 1,
+          "ageMax": 3,
+          "rdiMin": 70,
+          "unit": "µg",
+          "isDerived": false
+        },
+        {
+          "ageMin": 4,
+          "ageMax": 6,
+          "rdiMin": 100,
+          "unit": "µg",
+          "isDerived": false
+        },
+        {
+          "ageMin": 7,
+          "ageMax": 10,
+          "rdiMin": 150,
+          "unit": "µg",
+          "isDerived": false
+        }
       ],
       "MALE": [
-        { "ageMin": 11, "ageMax": 18, "rdiMin": 200, "unit": "µg", "isDerived": false },
-        { "ageMin": 19, "ageMax": 150, "rdiMin": 200, "unit": "µg", "isDerived": false, "rdiMax": 1000 }
+        {
+          "ageMin": 11,
+          "ageMax": 18,
+          "rdiMin": 200,
+          "unit": "µg",
+          "isDerived": false
+        },
+        {
+          "ageMin": 19,
+          "ageMax": 150,
+          "rdiMin": 200,
+          "unit": "µg",
+          "isDerived": false,
+          "rdiMax": 1000
+        }
       ],
       "FEMALE": [
-        { "ageMin": 11, "ageMax": 18, "rdiMin": 200, "unit": "µg", "isDerived": false },
-        { "ageMin": 19, "ageMax": 150, "rdiMin": 200, "unit": "µg", "isDerived": false, "rdiMax": 1000 }
+        {
+          "ageMin": 11,
+          "ageMax": 18,
+          "rdiMin": 200,
+          "unit": "µg",
+          "isDerived": false
+        },
+        {
+          "ageMin": 19,
+          "ageMax": 150,
+          "rdiMin": 200,
+          "unit": "µg",
+          "isDerived": false,
+          "rdiMax": 1000
+        }
       ]
     },
     "VITAMIN_B12": {
       "ALL": [
-        { "ageMin": 1, "ageMax": 3, "rdiMin": 0.5, "unit": "µg", "isDerived": false },
-        { "ageMin": 4, "ageMax": 6, "rdiMin": 0.8, "unit": "µg", "isDerived": false },
-        { "ageMin": 7, "ageMax": 10, "rdiMin": 1.0, "unit": "µg", "isDerived": false }
+        {
+          "ageMin": 1,
+          "ageMax": 3,
+          "rdiMin": 0.5,
+          "unit": "µg",
+          "isDerived": false
+        },
+        {
+          "ageMin": 4,
+          "ageMax": 6,
+          "rdiMin": 0.8,
+          "unit": "µg",
+          "isDerived": false
+        },
+        {
+          "ageMin": 7,
+          "ageMax": 10,
+          "rdiMin": 1.0,
+          "unit": "µg",
+          "isDerived": false
+        }
       ],
       "MALE": [
-        { "ageMin": 11, "ageMax": 18, "rdiMin": 1.2, "unit": "µg", "isDerived": false },
-        { "ageMin": 19, "ageMax": 150, "rdiMin": 1.5, "unit": "µg", "isDerived": false }
+        {
+          "ageMin": 11,
+          "ageMax": 18,
+          "rdiMin": 1.2,
+          "unit": "µg",
+          "isDerived": false
+        },
+        {
+          "ageMin": 19,
+          "ageMax": 150,
+          "rdiMin": 1.5,
+          "unit": "µg",
+          "isDerived": false
+        }
       ],
       "FEMALE": [
-        { "ageMin": 11, "ageMax": 18, "rdiMin": 1.2, "unit": "µg", "isDerived": false },
-        { "ageMin": 19, "ageMax": 150, "rdiMin": 1.5, "unit": "µg", "isDerived": false }
+        {
+          "ageMin": 11,
+          "ageMax": 18,
+          "rdiMin": 1.2,
+          "unit": "µg",
+          "isDerived": false
+        },
+        {
+          "ageMin": 19,
+          "ageMax": 150,
+          "rdiMin": 1.5,
+          "unit": "µg",
+          "isDerived": false
+        }
       ]
     },
-
     "CARBOHYDRATE": {
       "ALL": [
         {

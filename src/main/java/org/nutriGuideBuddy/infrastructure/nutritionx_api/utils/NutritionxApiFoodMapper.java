@@ -9,7 +9,7 @@ import org.nutriGuideBuddy.infrastructure.nutritionx_api.dto.FoodItemResponse;
 @Mapper(
     componentModel = "spring",
     nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE,
-    uses = { CustomFoodServingMapper.class, MealFoodNutritionMapper.class})
+    uses = {CustomFoodServingMapper.class, MealFoodNutritionMapper.class})
 @DecoratedWith(NutritionxApiFoodMapperDecorator.class)
 public interface NutritionxApiFoodMapper {
 

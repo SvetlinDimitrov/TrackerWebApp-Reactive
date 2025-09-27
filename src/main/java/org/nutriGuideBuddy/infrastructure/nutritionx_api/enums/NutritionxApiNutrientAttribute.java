@@ -216,12 +216,6 @@ public enum NutritionxApiNutrientAttribute {
 
   // ----------------------------------------------------------------
 
-  private final int id;
-  private final boolean nfp2018;
-  private final String usdaTag; // may be null
-  private final String label;
-  private final String unit;
-
   private static final Map<Integer, NutritionxApiNutrientAttribute> BY_ID;
   private static final Map<String, NutritionxApiNutrientAttribute> BY_USDA;
 
@@ -237,6 +231,12 @@ public enum NutritionxApiNutrientAttribute {
     BY_ID = Collections.unmodifiableMap(byId);
     BY_USDA = Collections.unmodifiableMap(byUsda);
   }
+
+  private final int id;
+  private final boolean nfp2018;
+  private final String usdaTag; // may be null
+  private final String label;
+  private final String unit;
 
   public static Optional<NutritionxApiNutrientAttribute> byId(int id) {
     return Optional.ofNullable(BY_ID.get(id));

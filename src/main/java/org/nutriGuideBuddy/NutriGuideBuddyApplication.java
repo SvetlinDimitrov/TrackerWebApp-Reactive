@@ -6,7 +6,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class NutriGuideBuddyApplication {
 
-  // TODO:: add interfaces to services
   // TODO:: USE VAR
   // TODO:: UPDATE TO JAVA 21
   // TODO:: UPDATE TO JAVA 23

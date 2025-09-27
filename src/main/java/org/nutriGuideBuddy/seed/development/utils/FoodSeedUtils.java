@@ -11,8 +11,6 @@ import org.springframework.stereotype.Component;
 @Component
 public class FoodSeedUtils {
 
-  private final Random random = new Random();
-
   public static final List<String> METRICS =
       List.of(
           "Gram",
@@ -24,6 +22,7 @@ public class FoodSeedUtils {
           "Slice",
           "Milliliter",
           "Liter");
+  private final Random random = new Random();
 
   public double randomCalorieAmount() {
     return 50.0 + random.nextDouble() * 500.0;

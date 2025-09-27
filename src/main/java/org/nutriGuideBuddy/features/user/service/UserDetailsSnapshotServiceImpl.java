@@ -1,6 +1,5 @@
 package org.nutriGuideBuddy.features.user.service;
 
-
 import java.time.Instant;
 import lombok.RequiredArgsConstructor;
 import org.nutriGuideBuddy.features.user.dto.UserDetailsSnapshotFilter;

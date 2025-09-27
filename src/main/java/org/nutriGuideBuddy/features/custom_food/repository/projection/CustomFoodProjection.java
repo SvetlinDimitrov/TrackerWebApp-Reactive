@@ -9,13 +9,13 @@ import lombok.*;
 @NoArgsConstructor
 public class CustomFoodProjection {
 
-    private Long id;
-    private String name;
-    private String info;
-    private String largeInfo;
-    private String picture;
-    private Double calorieAmount;
-    private String calorieUnit;
-    private List<CustomFoodServingProjetion> servings = new ArrayList<>();
-    private List<CustomFoodNutritionProjection> nutrients = new ArrayList<>();
+  private Long id;
+  private String name;
+  private String info;
+  private String largeInfo;
+  private String picture;
+  private Double calorieAmount;
+  private String calorieUnit;
+  private List<CustomFoodServingProjetion> servings = new ArrayList<>();
+  private List<CustomFoodNutritionProjection> nutrients = new ArrayList<>();
 }
